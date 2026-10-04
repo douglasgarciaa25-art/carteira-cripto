@@ -1,7 +1,16 @@
-Cripto Radar IA
-- Envie todo o conteúdo deste pacote para a raiz do repositório.
-- A Vercel criará /api/ai automaticamente.
-- O painel consulta a IA a cada 60 segundos enquanto o app está aberto.
-- Para memória permanente, conecte um KV/Redis compatível e configure KV_REST_API_URL e KV_REST_API_TOKEN na Vercel.
-- Não inclui cron frequente porque o plano Hobby da Vercel não aceita execução agendada várias vezes ao dia.
-- A IA não executa ordens financeiras.
+CRIPTO RADAR — PACOTE COMPLETO ADAPTADO
+
+Todos os arquivos devem ser enviados para a RAIZ do repositório GitHub.
+Não é necessário criar a pasta api.
+
+Arquivos:
+- index.html
+- ai-radar.js
+- ai.js
+- vercel.json
+- sw.js
+- manifest.webmanifest
+- icon.svg
+
+O vercel.json encaminha /api/ai para o ai.js que fica na raiz.
+A IA analisa o mercado, mas não executa ordens financeiras automaticamente.

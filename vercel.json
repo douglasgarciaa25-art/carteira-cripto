@@ -1,7 +1,14 @@
 {
-  "functions": {
-    "api/ai.js": {
-      "maxDuration": 10
-    }
-  }
+  "builds": [
+    { "src": "ai.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "ai-radar.js", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
+    { "src": "manifest.webmanifest", "use": "@vercel/static" },
+    { "src": "icon.svg", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/ai", "dest": "/ai.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
