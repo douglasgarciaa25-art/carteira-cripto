@@ -182,29 +182,45 @@ BTC 0,00015"></textarea>
   <div class="small">Os preços podem variar entre corretoras. O painel é informativo; “tempo real” depende da disponibilidade da fonte e da conexão do aparelho.</div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
 // PWA + notificações locais do Radar.
 // Observação: notificações com o site totalmente fechado exigem push por servidor.
 let deferredInstallPrompt=null;
 const lastNotifiedSignals={};
 
 function notifyStatus(msg){const e=document.getElementById('notifyStatus');if(e)e.textContent=msg;}
+async function getRadarSW(){
+ if(!('serviceWorker' in navigator))return null;
+ try{
+  await navigator.serviceWorker.register('./sw.js');
+  return await navigator.serviceWorker.ready;
+ }catch(e){return null;}
+}
+async function showRadarNotification(title,options={}){
+ const reg=await getRadarSW();
+ if(reg&&reg.showNotification)return reg.showNotification(title,{icon:'./icon.svg',badge:'./icon.svg',...options});
+ if('Notification' in window)return new Notification(title,{icon:'./icon.svg',...options});
+}
 async function enableRadarNotifications(){
  if(!('Notification' in window)){notifyStatus('Este navegador não oferece notificações web.');return;}
  try{
-   const p=await Notification.requestPermission();
-   if(p==='granted'){
-     localStorage.setItem('radarNotifications','on');
-     notifyStatus('✓ Notificações ativadas.');
-     new Notification('Cripto Radar',{body:'Alertas ativados. O Radar avisará quando um sinal mudar.',icon:'./icon.svg'});
-   }else notifyStatus('Permissão de notificações não concedida.');
+  const perm=await Notification.requestPermission();
+  if(perm==='granted'){
+   localStorage.setItem('radarNotifications','on');
+   notifyStatus('✓ Notificações ativas neste aparelho.');
+   await showRadarNotification('Cripto Radar',{body:'Alertas ativados com sucesso.',tag:'radar-test',data:{url:'./'}});
+  }else{
+   localStorage.removeItem('radarNotifications');
+   notifyStatus(perm==='denied'?'Notificações bloqueadas. Libere a permissão nas configurações do navegador.':'Permissão não concedida.');
+  }
  }catch(e){notifyStatus('Não foi possível ativar notificações neste navegador.');}
 }
-function radarNotify(key,title,body){
+async function radarNotify(key,title,body){
  if(Notification.permission!=='granted'||localStorage.getItem('radarNotifications')!=='on')return;
  if(lastNotifiedSignals[key]===body)return;
  lastNotifiedSignals[key]=body;
- try{new Notification(title,{body,icon:'./icon.svg',tag:key,renotify:true});}catch(e){}
+ try{await showRadarNotification(title,{body,tag:key,renotify:true,data:{url:'./'}});}catch(e){}
 }
 function checkPortfolioNotifications(){
  if(!printWallet?.length)return;
@@ -225,8 +241,15 @@ function checkMarketBuyNotifications(){
 document.getElementById('enableNotifications')?.addEventListener('click',enableRadarNotifications);
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installApp');if(b)b.style.display='inline-block';});
 document.getElementById('installApp')?.addEventListener('click',async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;});
-if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-if(localStorage.getItem('radarNotifications')==='on'&&Notification.permission==='granted')notifyStatus('✓ Notificações ativadas.');
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) getRadarSW();
+if('Notification' in window){
+ if(Notification.permission==='granted'){
+  localStorage.setItem('radarNotifications','on');
+  notifyStatus('✓ Notificações ativas neste aparelho.');
+ }else if(Notification.permission==='denied'){
+  notifyStatus('Notificações bloqueadas. Libere a permissão nas configurações do navegador.');
+ }
+}
 setInterval(()=>{try{checkPortfolioNotifications();checkMarketBuyNotifications();}catch(e){}},4000);
 
 </script>

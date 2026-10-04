@@ -1,0 +1,19 @@
+{
+  "name": "Cripto Radar",
+  "short_name": "Cripto Radar",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07101d",
+  "theme_color": "#0b1220",
+  "description": "Radar de mercado e acompanhamento de carteira cripto.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "./",
+  "scope": "./"
+}
