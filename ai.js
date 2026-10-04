@@ -1,0 +1,15 @@
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+async function market(){for(const b of ['https://data-api.binance.vision','https://api.binance.com'])try{const r=await fetch(b+'/api/v3/ticker/24hr');if(r.ok){const j=await r.json();if(Array.isArray(j))return j.filter(x=>x.symbol?.endsWith('USDT'))}}catch(e){}throw Error()}
+async function kv(c){const u=process.env.KV_REST_API_URL,t=process.env.KV_REST_API_TOKEN;if(!u||!t)return null;try{const r=await fetch(u,{method:'POST',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify(c)});return r.ok?(await r.json()).result:null}catch(e){return null}}
+module.exports=async(req,res)=>{res.setHeader('Cache-Control','no-store');try{
+ const rows=(await market()).filter(x=>Number(x.quoteVolume)>0&&!['USDT','USDC','FDUSD','TUSD','DAI'].includes(x.symbol.slice(0,-4))).sort((a,b)=>Number(a.quoteVolume)-Number(b.quoteVolume));
+ let w={momentum:.42,liquidity:.43,stability:.15},s=await kv(['GET','radar:weights']);if(s)try{w={...w,...JSON.parse(s)}}catch(e){}
+ const all=rows.map((x,i)=>{const ch=+x.priceChangePercent||0,liq=rows.length>1?i/(rows.length-1):1,m=clamp((ch+8)/20,0,1),st=1-clamp(Math.abs(ch-3)/18,0,1);return{symbol:x.symbol.slice(0,-4),change24h:ch,volume:+x.quoteVolume,score:Math.round(100*(w.momentum*m+w.liquidity*liq+w.stability*st))}}).sort((a,b)=>b.score-a.score),top=all.slice(0,8);
+ const prev=await kv(['GET','radar:last']);let learning={enabled:!!(process.env.KV_REST_API_URL&&process.env.KV_REST_API_TOKEN),evaluated:0,hits:0};
+ if(prev)try{const p=JSON.parse(prev),map=new Map(all.map(x=>[x.symbol,x])),ev=(p.top||[]).map(x=>map.get(x.symbol)).filter(Boolean);learning.evaluated=ev.length;learning.hits=ev.filter(x=>x.change24h>0).length;const hr=ev.length?learning.hits/ev.length:.5;if(ev.length>=3){w.momentum=clamp(w.momentum+(hr>.7?.015:hr<.45?-.02:0),.25,.60);w.liquidity=clamp(w.liquidity+(hr<.45?.015:hr>.7?-.01:0),.25,.60);w.stability=Math.max(.05,1-w.momentum-w.liquidity);await kv(['SET','radar:weights',JSON.stringify(w)])}}catch(e){}
+ const at=new Date().toISOString();await kv(['SET','radar:last',JSON.stringify({at,top:top.slice(0,5),weights:w})]);
+ const q=String(req.body?.question||req.query?.question||''),lead=top[0];let answer=lead?`Maior score agora: ${lead.symbol} (${lead.score}/100), ${lead.change24h.toFixed(2)}% em 24h. Estou cruzando liquidez, força e estabilidade.`:'Sem leitura suficiente.';
+ if(/aprendeu|aprendizado|acerto/i.test(q))answer=learning.enabled?`Memória ativa: comparei ${learning.evaluated} sinais anteriores e ${learning.hits} ficaram positivos. Ajusto os pesos gradualmente.`:'Estou analisando o mercado, mas para aprender entre execuções falta conectar a memória KV na Vercel.';
+ if(/risco|perigo/i.test(q)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];if(x)answer=`Mais cautela agora em ${x.symbol}: movimento de ${x.change24h.toFixed(2)}% em 24h. Movimento forte aumenta o risco de entrada atrasada.`}
+ res.status(200).json({ok:true,at,answer,top,weights:w,learning});
+}catch(e){res.status(503).json({ok:false,error:'Mercado indisponível'})}};

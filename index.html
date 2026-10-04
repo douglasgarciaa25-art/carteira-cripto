@@ -91,12 +91,19 @@ section{margin-top:12px}.row{display:flex;justify-content:space-between;gap:10px
 .notify-card{border:1px solid #7c3aed88!important;background:#17102a66!important}
 .notify-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .notify-status{margin-top:8px;font-size:12px;color:var(--muted)}
-</style>
+.ai-radar-card{border:1px solid #7c3aed88!important;background:#17102a66!important}.ai-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.ai-status{font-size:11px;color:#86efac}.ai-msg{margin-top:10px;padding:11px;border-radius:12px;background:#0b1727;line-height:1.5;font-size:13px}.ai-top{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ai-top span{font-size:10px;padding:5px 7px;border-radius:999px;background:#172554;color:#93c5fd}.ai-input{display:flex;gap:8px;margin-top:10px}.ai-input input{flex:1;min-width:0;border:1px solid #334b69;background:#091524;color:#fff;border-radius:12px;padding:11px}.ai-note{font-size:10px;color:var(--muted);margin-top:8px}</style>
 </head>
 <body><main>
 <div class="top"><div><h1>Cripto Radar</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
+<section class="card ai-radar-card" id="aiRadarCard">
+<div class="ai-head"><div class="coin">🤖 IA Radar</div><div id="aiStatus" class="ai-status">Iniciando IA…</div></div>
+<div class="small">Agente adaptativo no servidor: cruza liquidez, força, volume e estabilidade e pode guardar o desempenho dos sinais.</div>
+<div id="aiMessages"><div class="ai-msg">Carregando análise do mercado…</div></div>
+<div class="ai-input"><input id="aiQuestion" placeholder="Ex.: o que você aprendeu hoje?"><button id="aiAsk" type="button">PERGUNTAR</button></div>
+<div class="ai-note">Informativo: não executa compras ou vendas e não garante retorno.</div>
+</section>
 <section class="card notify-card">
  <div class="coin">🔔 Notificações do Radar</div>
  <div class="small">Receba avisos enquanto o site estiver aberto quando surgir um novo sinal de compra, venda/redução ou realização parcial. Instale o Radar na tela inicial para usar como aplicativo.</div>
@@ -992,4 +999,5 @@ setInterval(updateMarketRumors,60000);
 
 
 </script></main>
+<script src="./ai-radar.js"></script>
 </body></html>
