@@ -91,7 +91,33 @@ section{margin-top:12px}.row{display:flex;justify-content:space-between;gap:10px
 .notify-card{border:1px solid #7c3aed88!important;background:#17102a66!important}
 .notify-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .notify-status{margin-top:8px;font-size:12px;color:var(--muted)}
-.ai-radar-card{border:1px solid #7c3aed88!important;background:#17102a66!important}.ai-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.ai-status{font-size:11px;color:#86efac}.ai-msg{margin-top:10px;padding:11px;border-radius:12px;background:#0b1727;line-height:1.5;font-size:13px}.ai-top{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ai-top span{font-size:10px;padding:5px 7px;border-radius:999px;background:#172554;color:#93c5fd}.ai-input{display:flex;gap:8px;margin-top:10px}.ai-input input{flex:1;min-width:0;border:1px solid #334b69;background:#091524;color:#fff;border-radius:12px;padding:11px}.ai-note{font-size:10px;color:var(--muted);margin-top:8px}</style>
+.ai-radar-card{border:1px solid #7c3aed88!important;background:#17102a66!important}.ai-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.ai-status{font-size:11px;color:#86efac}.ai-msg{margin-top:10px;padding:11px;border-radius:12px;background:#0b1727;line-height:1.5;font-size:13px}.ai-top{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ai-top span{font-size:10px;padding:5px 7px;border-radius:999px;background:#172554;color:#93c5fd}.ai-input{display:flex;gap:8px;margin-top:10px}.ai-input input{flex:1;min-width:0;border:1px solid #334b69;background:#091524;color:#fff;border-radius:12px;padding:11px}.ai-note{font-size:10px;color:var(--muted);margin-top:8px}
+/* ===== Cripto Radar • Layout 2026 ===== */
+:root{--bg:#050b14;--card:#0d1828;--card2:#111f33;--line:#223653;--blue:#2f7cff;--blue2:#65a3ff;--ok:#32d583;--warn:#fdb022;--bad:#f97066;--text:#f4f8ff;--muted:#91a4bf}
+html{scroll-behavior:smooth}body{background:radial-gradient(circle at 50% -10%,#17335e 0,#091525 28%,#050b14 62%);color:var(--text);min-height:100vh}main{max-width:920px;padding:18px 16px 90px}
+.top{position:relative;padding:20px 18px;margin-bottom:12px;border:1px solid #29466e;border-radius:24px;background:linear-gradient(135deg,rgba(24,54,96,.9),rgba(8,19,34,.96));box-shadow:0 18px 50px #0007;overflow:hidden}.top:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-65px;top:-95px;background:#2672ff22;box-shadow:0 0 70px #2672ff55}.top h1{font-size:30px;letter-spacing:-.8px}.top .sub{margin:5px 0 0;max-width:600px}.pill{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;border:1px solid #2a4263;background:#0d1b2d;padding:8px 12px;box-shadow:inset 0 1px #ffffff08}
+.card{background:linear-gradient(145deg,rgba(17,31,51,.97),rgba(10,21,37,.97));border:1px solid #223a5c;border-radius:22px;padding:17px;box-shadow:0 12px 35px #0005;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.card:hover{border-color:#31557f}.coin{font-size:18px;letter-spacing:-.2px}.small{line-height:1.45}.row{padding:11px 2px}.grid{gap:12px}.market-card{position:relative;overflow:hidden}.market-card:after{content:"";position:absolute;inset:auto -35px -60px auto;width:110px;height:110px;border-radius:50%;background:#2672ff13}.best-card{background:linear-gradient(145deg,#103426,#0b1d1d)!important}.opp-card{background:linear-gradient(145deg,#10213c,#0b1727)!important}
+button,.btn-print{min-height:44px;box-shadow:0 7px 18px #0004;transition:transform .12s ease,filter .12s ease}button:active,.btn-print:active{transform:scale(.98)}button:hover,.btn-print:hover{filter:brightness(1.08)}input,textarea{outline:none;transition:border-color .15s ease,box-shadow .15s ease}input:focus,textarea:focus{border-color:#4c8fff!important;box-shadow:0 0 0 3px #2672ff22}
+.ai-radar-card{background:linear-gradient(145deg,#171a3a,#0c1729)!important}.notify-card{background:linear-gradient(145deg,#1a1535,#0c1729)!important}.wallet-extra{background:linear-gradient(145deg,#0d2038,#0a1626)!important;border-color:#347ff0!important}.wallet-total{font-size:32px;letter-spacing:-1px;color:#fff}.market-info-grid{gap:10px}.market-info-item{border:1px solid #1e3450;padding:11px}.wallet-tips,.wallet-guide,.wallet-opps,.buy-alert-box,.market-info{box-shadow:inset 0 1px #ffffff08}.live-feed{border:1px solid #ffffff0d}
+#marketRumorsCard{border-color:#6a5528}.rumor-tag,.wallet-signal,.badge-op,.live-feed{letter-spacing:.15px}.ai-msg{border:1px solid #1d3553;padding:13px}.ai-input{margin-top:12px}.ai-input button{flex:0 0 auto}
+section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .dot{box-shadow:0 0 10px currentColor}
+@media(min-width:760px){main{padding-top:24px}.market-info-grid{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){main{padding:12px 11px 72px}.top{padding:17px 15px;border-radius:20px}.top h1{font-size:27px}.card{padding:14px;border-radius:18px}.coin{font-size:17px}.grid{gap:9px}.wallet-total{font-size:29px}.notify-row>*{flex:1}.ai-input{display:grid;grid-template-columns:1fr}.ai-input button{width:100%}.row{align-items:flex-start}.row>span:last-child,.row>b:last-child{flex:0 0 auto}.wallet-tools>*{min-width:100%}.market-card .price{font-size:25px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Alarme de urgência */
+.urgent-card{border:1px solid #ef444488!important;background:linear-gradient(135deg,#2a1018cc,#17102acc)!important}.urgent-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.urgent-badge{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;background:#3b1b23;color:#fca5a5}.urgent-list{margin-top:9px}.urgent-item{padding:9px 10px;margin-top:7px;border-radius:12px;background:#0b1727;border:1px solid #293b55;font-size:12px}.urgent-item.risk{border-color:#ef444477;background:#3a151c88}.urgent-item.rocket{border-color:#22c55e77;background:#123b2488}.urgent-title{font-weight:900}.urgent-meta{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.4}
+
+.smart-allocation{margin-top:14px;padding:13px;border:1px solid #7c3aed66;border-radius:14px;background:linear-gradient(135deg,#17102a99,#0b1727)}
+.smart-allocation-title{font-weight:900;font-size:16px;margin-bottom:5px}
+.smart-alloc-row{display:grid;grid-template-columns:minmax(72px,.7fr) minmax(100px,1fr) minmax(90px,1.2fr);gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #293750}
+.smart-alloc-row:last-child{border-bottom:0}
+.smart-alloc-action{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;text-align:center}
+.smart-buy{background:#123d2d;color:#86efac}.smart-hold{background:#172554;color:#93c5fd}.smart-cut{background:#4b2027;color:#fca5a5}.smart-watch{background:#493c16;color:#fde68a}
+.smart-alloc-meta{font-size:11px;color:var(--muted);line-height:1.35}
+@media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
+</style>
 </head>
 <body><main>
 <div class="top"><div><h1>Cripto Radar</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
@@ -111,6 +137,12 @@ section{margin-top:12px}.row{display:flex;justify-content:space-between;gap:10px
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
 </section>
 
+<section class="card urgent-card" id="urgentRadarCard">
+ <div class="urgent-head"><div class="coin">🚨 Alarme de urgência</div><div class="urgent-badge">CARTEIRA + MERCADO</div></div>
+ <div class="small">Procura risco forte nas moedas da sua carteira e oportunidades de alta com confirmação de movimento, volume e liquidez. O percentual é um score heurístico do Radar, não uma previsão garantida.</div>
+ <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais…</div></div>
+</section>
+
 <section class="card" style="margin-bottom:12px">
   <div class="coin">⭐ Destaques agora</div>
   <div class="small">As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.</div>
@@ -120,12 +152,17 @@ section{margin-top:12px}.row{display:flex;justify-content:space-between;gap:10px
 
 <section class="card">
   <div class="coin">💰 Quanto investir</div>
-  <div class="small">Gestor inteligente da carteira: compara todas as moedas que você possui, o valor real de cada posição e o mercado para sugerir uma distribuição-alvo dinâmica.</div>
+  <div class="small">Digite quanto pretende aportar. O gestor compara todas as moedas da sua carteira, o valor real de cada posição e o mercado para sugerir uma distribuição-alvo dinâmica.</div>
   <div style="display:flex;gap:8px;margin-top:12px">
     <input id="aporte" type="number" value="100" min="1" inputmode="decimal" style="flex:1;border:1px solid var(--line);background:#0b1525;color:#fff;border-radius:12px;padding:11px;font-size:16px">
     <button onclick="calcAporte()">Recalcular</button>
   </div>
   <div id="allocation" style="margin-top:10px"></div>
+  <div id="smartAllocation" class="smart-allocation">
+    <div class="smart-allocation-title">🤖 Movimentação inteligente da carteira</div>
+    <div class="small">A IA/Radar considera todas as moedas que você já possui e as melhores oportunidades atuais para sugerir onde manter, reduzir ou direcionar um novo aporte. É uma análise informativa e não garante lucro.</div>
+    <div id="smartAllocationList" style="margin-top:10px"><div class="small">Aguardando dados da carteira e do mercado…</div></div>
+  </div>
 </section>
 
 <section class="card">
@@ -257,7 +294,42 @@ if('Notification' in window){
   notifyStatus('Notificações bloqueadas. Libere a permissão nas configurações do navegador.');
  }
 }
+
+let urgentAudioCtx=null,urgentLast={};
+function urgentSiren(kind='risk'){
+ try{
+  if(navigator.vibrate)navigator.vibrate(kind==='risk'?[220,100,220,100,420]:[120,80,120]);
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  urgentAudioCtx=urgentAudioCtx||new AC(); if(urgentAudioCtx.state==='suspended')urgentAudioCtx.resume();
+  const now=urgentAudioCtx.currentTime;
+  [0,.18,.36].forEach((d,i)=>{const o=urgentAudioCtx.createOscillator(),g=urgentAudioCtx.createGain();o.type='sine';o.frequency.value=kind==='risk'?(i%2?620:880):(i%2?880:1120);g.gain.setValueAtTime(.0001,now+d);g.gain.exponentialRampToValueAtTime(.16,now+d+.02);g.gain.exponentialRampToValueAtTime(.0001,now+d+.14);o.connect(g);g.connect(urgentAudioCtx.destination);o.start(now+d);o.stop(now+d+.16)});
+ }catch(e){}
+}
+function urgentSignal(rawSymbol,held=false){
+ const symbol=normalizeWalletSymbol(rawSymbol),c=walletMarketData[symbol];
+ if(!c||walletStable.has(symbol))return null;
+ const ch=Number(c.change24h),vol=Number(c.volume||0),liq=relativeLiquidityInfo(symbol);
+ if(!Number.isFinite(ch))return null;
+ // Risco: queda relevante + liquidez/volume confirmando o movimento.
+ let risk=0;if(ch<=-3)risk+=25;if(ch<=-5)risk+=25;if(ch<=-8)risk+=20;risk+=Math.min(25,liq.score*8);if(held)risk+=5;risk=Math.min(99,risk);
+ // Alta forte: momentum positivo sem estar excessivamente esticado + liquidez alta.
+ let up=0;if(ch>=1&&ch<=3)up+=25;if(ch>3&&ch<=6)up+=38;if(ch>6&&ch<=9)up+=28;if(ch>9)up+=12;up+=Math.min(36,liq.score*12);if(vol>=1e8)up+=8;up=Math.min(96,up);
+ if(held&&risk>=70)return {kind:'risk',symbol,score:risk,title:'RISCO FORTE DE QUEDA',why:`${ch.toFixed(2)}% em 24h • liquidez ${liq.level}`};
+ if(up>=78)return {kind:'rocket',symbol,score:up,title:'POSSÍVEL ALTA FORTE',why:`${ch>=0?'+':''}${ch.toFixed(2)}% em 24h • liquidez ${liq.level}`};
+ return null;
+}
+function renderUrgentRadar(){
+ const box=document.getElementById('urgentRadarList');if(!box)return;
+ const held=new Set((printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol)));
+ const risks=[...held].map(s=>urgentSignal(s,true)).filter(x=>x?.kind==='risk');
+ const rockets=Object.keys(walletMarketData||{}).map(s=>urgentSignal(s,held.has(s))).filter(x=>x?.kind==='rocket').sort((a,b)=>b.score-a.score).slice(0,3);
+ const items=[...risks,...rockets];
+ box.innerHTML=items.length?items.map(x=>`<div class="urgent-item ${x.kind}"><div class="urgent-title">${x.kind==='risk'?'🚨':'🚀'} ${x.symbol} — ${x.title} • score ${x.score}%</div><div class="urgent-meta">${x.why}</div></div>`).join(''):'<div class="urgent-item"><div class="urgent-title">🟢 Nenhum sinal urgente agora</div><div class="urgent-meta">O Radar continua verificando automaticamente.</div></div>';
+ for(const x of items){const key=x.kind+'-'+x.symbol,stamp=x.title+'-'+Math.floor(x.score/5);if(urgentLast[key]===stamp)continue;urgentLast[key]=stamp;urgentSiren(x.kind);radarNotify('urgent-'+key,(x.kind==='risk'?'🚨 URGENTE: ':'🚀 OPORTUNIDADE: ')+x.symbol,`${x.title} • score ${x.score}% • ${x.why}`)}
+}
+
 setInterval(()=>{try{checkPortfolioNotifications();checkMarketBuyNotifications();}catch(e){}},4000);
+setInterval(()=>{try{renderUrgentRadar();}catch(e){}},4000);
 
 </script>
 <script>
@@ -290,18 +362,29 @@ function renderTopHighlights(){
 async function refresh(){ await opportunities(); renderTopHighlights(); }
 
 function calcAporte(){
- const aporte=Math.max(0,+document.getElementById("aporte").value||0), box=document.getElementById("allocation");
- if(!printWallet?.length){box.innerHTML='<div class="small">Adicione sua carteira abaixo para a IA/Radar calcular a distribuição dinâmica de todas as moedas.</div>';return}
- const positions=printWallet.map(w=>{const symbol=normalizeWalletSymbol(w.symbol),price=Number(walletPrices[symbol]||0),value=price*Number(w.qty||0),md=walletMarketData[symbol]||{},dir=walletDirection(symbol),liq=relativeLiquidityInfo(symbol),buy=walletBuySignal(symbol);let weight=1;
-   if(walletStable.has(symbol)) weight=.65;
-   else {weight+=Math.max(0,liq.score)*.45; weight+=Math.max(-2,Math.min(4,Number(buy.score||0)))*.28; const ch=Number(md.change24h); if(Number.isFinite(ch)){if(ch>=1&&ch<=6)weight+=.8;if(ch>9)weight-=.65;if(ch<=-4)weight-=1.0;if(ch<=-8)weight-=1.4;} if(dir.action==='COMPRAR / APORTAR')weight+=1.2;if(dir.action==='MANTER')weight+=.25;if(dir.action==='REALIZAR PARTE')weight-=1.1;if(dir.action.includes('VENDER'))weight-=1.7;}
-   return {symbol,value,dir,weight:Math.max(.08,weight)};
+ const el=document.getElementById("allocation");
+ const aporte=Math.max(0,+document.getElementById("aporte").value||0);
+ if(!el)return;
+ if(!Array.isArray(printWallet)||!printWallet.length){el.innerHTML='<div class="small">Adicione as moedas da sua carteira para o gestor calcular a distribuição.</div>';return}
+ const rows=printWallet.map(w=>{
+   const symbol=normalizeWalletSymbol(w.symbol), price=Number(walletPrices[symbol]||0), current=price*Number(w.qty||0), c=walletMarketData[symbol]||{};
+   const ch=Number(c.change24h), liq=relativeLiquidityInfo(symbol), dir=walletDirection(symbol);
+   let score=1+(liq?.score||0);
+   if(Number.isFinite(ch)){if(ch>=1&&ch<=7)score+=2.5;else if(ch>7&&ch<=12)score+=1.2;else if(ch>12)score+=.3;else if(ch<=-8)score-=1.5;else if(ch<0)score-=.5;}
+   if(dir.action==='COMPRAR / APORTAR')score+=3;
+   else if(dir.action==='MANTER')score+=1;
+   else if(dir.action==='REALIZAR PARTE')score*=.45;
+   else if(dir.action==='VENDER / REDUZIR'||dir.action==='ATENÇÃO PARA VENDA')score*=.15;
+   return {symbol,current,ch,liq,dir,score:Math.max(.05,score)};
  });
- const currentTotal=positions.reduce((a,x)=>a+x.value,0), targetTotal=currentTotal+aporte, sumW=positions.reduce((a,x)=>a+x.weight,0)||1;
- const rows=positions.map(x=>{const pct=100*x.weight/sumW,target=targetTotal*x.weight/sumW,diff=target-x.value;let action=Math.abs(diff)<Math.max(2,targetTotal*.01)?'MANTER':diff>0?'APORTAR':'REDUZIR / REALIZAR'; if(x.dir.action.includes('VENDER'))action='REDUZIR / VENDER'; else if(x.dir.action==='REALIZAR PARTE')action='REALIZAR PARTE'; return {...x,pct,target,diff,action}});
- box.innerHTML='<div style="font-weight:900;margin:10px 0 4px">🤖 Distribuição dinâmica da sua carteira</div><div class="small">Valor atual '+WALLET_BRL.format(currentTotal)+' • novo aporte '+WALLET_BRL.format(aporte)+' • valor analisado '+WALLET_BRL.format(targetTotal)+'</div>'+rows.map(x=>`<div class="row"><span><b>${x.symbol}</b><div class="small">Atual ${WALLET_BRL.format(x.value)} • alvo ${x.pct.toFixed(1)}% (${WALLET_BRL.format(x.target)}) • ${x.dir.action}</div></span><span style="text-align:right"><b>${x.action}</b><div class="small ${x.diff>=0?'ok':'warn'}">${x.diff>=0?'+':''}${WALLET_BRL.format(x.diff)}</div></span></div>`).join('')+'<div class="small" style="margin-top:8px">A porcentagem-alvo varia com liquidez, volume, movimento de 24h, sinal de compra/venda e concentração. É apoio à decisão, não garantia de lucro nem ordem automática.</div>';
+ const currentTotal=rows.reduce((a,x)=>a+x.current,0), futureTotal=currentTotal+aporte, scoreTotal=rows.reduce((a,x)=>a+x.score,0)||1;
+ rows.forEach(x=>{x.targetPct=100*x.score/scoreTotal;x.targetValue=futureTotal*x.targetPct/100;x.diff=x.targetValue-x.current;});
+ rows.sort((a,b)=>b.targetPct-a.targetPct);
+ el.innerHTML='<div class="small" style="margin-bottom:8px"><b>🤖 Gestor da carteira inteira</b> • valor atual '+WALLET_BRL.format(currentTotal)+' • após aporte '+WALLET_BRL.format(futureTotal)+'</div>'+rows.map(x=>{
+   const action=x.diff>1?'APORTAR':x.diff<-1?'REDUZIR':'MANTER', cls=action==='APORTAR'?'ok':action==='REDUZIR'?'bad':'warn';
+   return `<div class="row"><span><b>${x.symbol}</b><div class="small">Atual ${WALLET_BRL.format(x.current)} • alvo ${x.targetPct.toFixed(1)}% • ${Number.isFinite(x.ch)?((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h'):'mercado aguardando'} • ${x.dir.action}</div></span><span style="text-align:right"><b class="${cls}">${action}</b><div class="small">${x.diff>=0?'+':''}${WALLET_BRL.format(x.diff)}</div></span></div>`;
+ }).join('')+'<div class="small" style="margin-top:8px">O alvo varia com mercado, liquidez e sinais do Radar. Apoio à decisão; não garante lucro e não executa ordens.</div>';
 }
-
 let latestOpportunities=[];
 async function trendsFromBinance(){
  const bases=["https://data-api.binance.vision","https://api1.binance.com","https://api2.binance.com","https://api3.binance.com","https://api4.binance.com","https://api.binance.com"];
@@ -370,7 +453,7 @@ async function autoUpdateTrends(){
 }
 function startTrendAutoUpdate(){
  if(trendAutoTimer) clearInterval(trendAutoTimer);
- trendAutoTimer=setInterval(autoUpdateTrends,15000);
+ trendAutoTimer=setInterval(autoUpdateTrends,4000);
 }
 
 startTrendAutoUpdate();
@@ -655,7 +738,6 @@ function renderPrintWallet(){
  let total=0;
  const rows=printWallet.map((w,i)=>{const sym=normalizeWalletSymbol(w.symbol),p=walletPrices[sym]||0,v=p*w.qty,sig=walletSignal(w.symbol),md=walletMarketData[sym]||{},alert=sellAlert(w.symbol);total+=v;return `<tr><td><div class="coin-cell">${signalDot(sig)}<b>${w.symbol}</b>${sym!==w.symbol?` <span class="small">→ ${sym}</span>`:''}</div><div class="sell-alert ${alert.sell?'on':'off'}">${alert.text}</div><div class="small" style="margin-top:5px">24h: ${Number.isFinite(Number(md.change24h))?((Number(md.change24h)>=0?'+':'')+Number(md.change24h).toFixed(2)+'%'):'—'} • Volume: ${formatMarketVolume(md.volume)} • Liquidez: ${liquidityProfile(sym).level}</div></td><td>${w.qty}</td><td>${p?WALLET_BRL.format(p):'—'}</td><td>${p?WALLET_BRL.format(v):'—'}</td><td>${sig.label}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="wallet-edit-one" data-i="${i}">✏️ Editar</button><button type="button" class="wallet-delete-one" data-i="${i}">🗑️ Excluir</button></div></td></tr><tr class="wallet-spark-row"><td colspan="6"><div class="wallet-spark-label">Tendência de preço • últimos 7 dias</div><div class="wallet-spark" data-symbol="${sym}" data-state="${sig.state}"><span class="small">Carregando gráfico…</span></div></td></tr>`}).join('');
  document.getElementById('walletTotal').textContent=WALLET_BRL.format(total);
- calcAporte();
  document.getElementById('walletTable').innerHTML=printWallet.length?`<table><thead><tr><th>Moeda</th><th>Qtd.</th><th>Preço</th><th>Valor</th><th>Sinal</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table>`:'<div class="small">Sua carteira ainda está vazia.</div>';
  loadWalletSparklines();
  document.querySelectorAll('.wallet-edit-one').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;showWalletEditor([printWallet[i]],'edit',i);const row=document.querySelector('#walletEditRows .wallet-edit-row');if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.querySelector('.wallet-qty').focus();}});
@@ -1005,4 +1087,40 @@ setInterval(updateMarketRumors,60000);
 
 </script></main>
 <script src="./ai-radar.js"></script>
+
+<script>
+function renderSmartAllocation(){
+  const box=document.getElementById('smartAllocationList'); if(!box)return;
+  const held=(typeof printWallet!=='undefined'&&Array.isArray(printWallet))?printWallet:[];
+  const market=(typeof walletMarketData!=='undefined'&&walletMarketData)?walletMarketData:{};
+  const opps=(typeof latestOpportunities!=='undefined'&&Array.isArray(latestOpportunities))?latestOpportunities:[];
+
+  const heldRows=held.map(w=>{
+    const s=typeof normalizeWalletSymbol==='function'?normalizeWalletSymbol(w.symbol):String(w.symbol||'').toUpperCase();
+    const m=market[s]||{};
+    let d={action:'ANALISAR',why:'Aguardando confirmação do mercado'};
+    try{ if(typeof walletDirection==='function') d=walletDirection(s)||d; }catch(e){}
+    const action=String(d.action||'ANALISAR');
+    const cls=/COMPRAR|APORTAR/.test(action)?'smart-buy':/VENDER|REDUZIR/.test(action)?'smart-cut':/MANTER/.test(action)?'smart-hold':'smart-watch';
+    const ch=Number(m.change24h);
+    return {s,action,why:d.why||'',cls,ch:Number.isFinite(ch)?ch:null,held:true,score:0};
+  });
+
+  const owned=new Set(heldRows.map(x=>x.s));
+  const extra=opps.filter(x=>x&&x.symbol&&!owned.has(String(x.symbol).toUpperCase())).slice(0,3).map(x=>{
+    const s=String(x.symbol).toUpperCase();
+    let sig=null; try{ if(typeof walletBuySignal==='function') sig=walletBuySignal(s); }catch(e){}
+    const strong=sig&&sig.label==='ALARME DE COMPRA';
+    return {s,action:strong?'OPORTUNIDADE FORTE':'OPORTUNIDADE',why:(sig&&sig.why)||('Top do Radar • força '+(Number(x.change)||0).toFixed(2)+'% em 24h'),cls:strong?'smart-buy':'smart-watch',ch:Number(x.change)||0,held:false,score:Number(x.score)||0};
+  });
+
+  const rows=[...heldRows,...extra];
+  if(!rows.length){box.innerHTML='<div class="small">Adicione sua carteira para a IA comparar suas moedas com as melhores movimentações do mercado.</div>';return;}
+
+  box.innerHTML=rows.map(x=>'<div class="smart-alloc-row"><b>'+x.s+(x.held?'':' ⭐')+'</b><span class="smart-alloc-action '+x.cls+'">'+x.action+'</span><div class="smart-alloc-meta">'+(x.ch===null?'':((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h • '))+(x.why||'Analisando mercado')+'</div></div>').join('');
+}
+setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
+</script>
+
 </body></html>

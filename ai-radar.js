@@ -7,7 +7,7 @@ function radarContext(){
    let direction=null;try{direction=typeof walletDirection==='function'?walletDirection(s):null}catch(e){}
    return {symbol:s,qty:Number(w.qty)||0,priceBRL:Number(p)||0,valueBRL:(Number(p)||0)*(Number(w.qty)||0),change24h:Number(m.change24h)||0,volume24h:Number(m.volume)||0,liquidityPct:Number(m.liquidityPct)||0,direction:direction?.action||'',reason:direction?.why||''};
   });
-  const opportunities=(typeof latestOpportunities!=='undefined'?latestOpportunities:[]).map(x=>({symbol:x.symbol,change24h:Number(x.change)||0,volume24h:Number(x.volume)||0,score:Number(x.score)||0}));
+  const opportunities=(typeof latestOpportunities!=='undefined'?latestOpportunities:[]).slice(0,8).map(x=>({symbol:x.symbol,change24h:Number(x.change)||0,volume24h:Number(x.volume)||0,score:Number(x.score)||0}));
   return {wallet,opportunities,clientAt:new Date().toISOString()};
  }catch(e){return {wallet:[],opportunities:[],clientAt:new Date().toISOString()}}
 }
