@@ -442,7 +442,7 @@ async function opportunities(){
   return latestOpportunities;
  }
 }
-calcAporte(); opportunities().then(()=>renderTopHighlights());
+// Inicialização adiada até carteira e formatadores estarem declarados.
 
 let trendAutoTimer=null;
 async function autoUpdateTrends(){
@@ -948,7 +948,14 @@ if(importChatBtn) importChatBtn.onclick=()=>{
  document.getElementById('ocrStatus').textContent=items.length?`✓ ${items.length} moeda(s) importada(s). Confira e toque em Atualizar carteira.`:'Não encontrei uma lista válida. Use, por exemplo: SUI 11,1981';
 };
 
-renderPrintWallet();refreshWalletNameIndex().then(updateWalletPrices);
+renderPrintWallet();
+refreshWalletNameIndex().then(async()=>{
+  try{await updateWalletPrices()}catch(e){}
+  try{await opportunities()}catch(e){}
+  try{renderTopHighlights()}catch(e){}
+  try{calcAporte()}catch(e){}
+  try{renderSmartAllocation()}catch(e){}
+});
 
 // Feed rápido com fallback automático para navegadores móveis/arquivo local.
 let marketWS=null, marketWSRetry=null, liveRenderTimer=null, wsFailures=0, restFastTimer=null;
