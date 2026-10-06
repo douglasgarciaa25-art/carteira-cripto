@@ -173,22 +173,6 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </section>
 
 
-
-<section class="card" id="binanceAccountCard">
- <div class="coin">🟡 Minha carteira Binance</div>
- <div class="small">Conecte pelo próprio aplicativo. As chaves ficam somente na memória desta página e não são gravadas no navegador. Ao fechar/recarregar, será necessário informá-las novamente.</div>
- <input id="binanceApiKey" type="password" autocomplete="off" placeholder="Binance API Key" style="width:100%;margin-top:10px;padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69">
- <input id="binanceSecretKey" type="password" autocomplete="off" placeholder="Binance Secret Key" style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69">
- <div class="small" style="margin-top:7px">Use uma chave com leitura + Spot Trading. Mantenha saques desativados.</div>
- <div class="wallet-actions"><button id="binanceLoad" type="button" class="connect-btn">CONECTAR / ATUALIZAR BINANCE</button><button id="binanceForget" type="button" class="disconnect-btn" style="display:inline-block">LIMPAR CHAVES</button></div>
- <div id="binanceStatus" class="small" style="margin-top:10px">Aguardando conexão.</div>
- <div id="binanceBalances" style="margin-top:8px"></div>
- <div style="margin-top:14px;padding-top:12px;border-top:1px solid #29415f"><b>Compra e venda Spot</b><div class="small">Toda ordem exige confirmação manual. Saques não são usados.</div>
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><input id="tradeSymbol" placeholder="Moeda, ex.: SUI" style="padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69"><select id="tradeSide" style="padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69"><option value="BUY">COMPRAR</option><option value="SELL">VENDER</option></select></div>
- <input id="tradeAmount" type="number" min="0" step="any" placeholder="Compra: valor em USDT • Venda: quantidade da moeda" style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69">
- <button id="tradePrepare" type="button" style="width:100%;margin-top:8px">REVISAR ORDEM</button><div id="tradeResult" class="small" style="margin-top:8px"></div></div>
-</section>
-
 <section class="card wallet-extra">
   <div class="coin">📸 Atualizar minha carteira por print <span class="small">• EXTRA</span></div>
   <div class="small">Envie um print da sua carteira. O app tenta identificar moeda e quantidade, mostra uma prévia para você conferir e só atualiza depois da sua confirmação. Os preços e o valor aproximado da carteira continuam atualizando automaticamente.</div>
@@ -494,6 +478,28 @@ function persistWallet(){
 let printWallet=loadSavedWallet();
 let walletPrices={};
 let walletMarketData={};
+// Confirmação curta: combina candles de 4h com leituras recentes do preço.
+const walletShortReadings={};
+function recordShortReading(symbol,price){
+ symbol=normalizeWalletSymbol(symbol); price=Number(price);
+ if(!symbol||!Number.isFinite(price)||price<=0)return;
+ const a=walletShortReadings[symbol]||(walletShortReadings[symbol]=[]);
+ const now=Date.now(), last=a[a.length-1];
+ if(!last || now-last.t>=3500){a.push({t:now,p:price}); if(a.length>18)a.splice(0,a.length-18);}
+}
+function shortReadingTrend(symbol){
+ const a=walletShortReadings[normalizeWalletSymbol(symbol)]||[];
+ if(a.length<3)return {dir:0,pct:0,confirmed:false};
+ const first=a[0].p,last=a[a.length-1].p,pct=first?((last/first)-1)*100:0;
+ const recent=a.slice(-5); let ups=0,downs=0;
+ for(let i=1;i<recent.length;i++){if(recent[i].p>recent[i-1].p)ups++;else if(recent[i].p<recent[i-1].p)downs++;}
+ return {dir:ups>=3?1:downs>=3?-1:0,pct,confirmed:Math.max(ups,downs)>=3};
+}
+function candleTrendInfo(symbol){
+ const c=walletMarketData[normalizeWalletSymbol(symbol)]||{}, h=c.shortTrend||{};
+ return {trend4h:Number(h.trend4h)||0,trend12h:Number(h.trend12h)||0,trend24h:Number(h.trend24h)||0,accel:Number(h.accel)||0,ready:!!h.ready};
+}
+
 let walletNameIndex=new Map();
 const WALLET_ALIAS={
  'CHAINLINK':'LINK','TETHERUS':'USDT','TETHERUSD':'USDT','TETHER':'USDT',
@@ -655,35 +661,35 @@ function walletDirection(rawSymbol){
  const symbol=normalizeWalletSymbol(rawSymbol), c=walletMarketData[symbol];
  if(!c) return {action:'AGUARDAR',icon:'⚪',cls:'guide-wait',why:'Dados de mercado ainda insuficientes.'};
  if(walletStable.has(symbol)) return {action:'MANTER',icon:'🔵',cls:'guide-hold',why:'Ativo de referência/estável; sem sinal direcional pelo Radar.'};
-
- const ch=Number(c.change24h), vol=Number(c.volume||0), liq=relativeLiquidityInfo(symbol);
+ const ch=Number(c.change24h), vol=Number(c.volume||0), liq=relativeLiquidityInfo(symbol), t=candleTrendInfo(symbol), live=shortReadingTrend(symbol);
  const volTxt=vol>=1e9?(vol/1e9).toFixed(2)+' bi':vol>=1e6?(vol/1e6).toFixed(1)+' mi':Math.round(vol).toLocaleString('pt-BR');
-
- // Prioridade: risco/saída -> realização -> entrada -> manutenção.
- if(Number.isFinite(ch) && ch<=-8 && liq.score>=2)
-   return {action:'VENDER / REDUZIR',icon:'🔴',cls:'guide-sell',why:`Queda forte (${ch.toFixed(2)}%) confirmada por liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
- if(Number.isFinite(ch) && ch<=-4 && liq.score>=2)
-   return {action:'ATENÇÃO PARA VENDA',icon:'🔴',cls:'guide-sell',why:`Pressão negativa (${ch.toFixed(2)}%) com liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
- if(Number.isFinite(ch) && ch>=9 && liq.score>=2)
-   return {action:'REALIZAR PARTE',icon:'🟠',cls:'guide-profit',why:`Alta muito forte (${ch.toFixed(2)}%); risco de devolver parte do movimento.`,liq:liq.level,vol:volTxt};
-
+ const downConfirm=(t.ready && t.trend4h<-.35 && t.trend12h<-.7) || (live.confirmed&&live.dir<0);
+ const upConfirm=(t.ready && t.trend4h>.30 && t.trend12h>.55) || (live.confirmed&&live.dir>0);
+ const acceleratingUp=t.ready&&t.accel>.15&&t.trend4h>0;
+ const recovering=t.ready&&t.trend4h>0&&t.trend12h<=0;
+ const trendTxt=t.ready?`curto prazo ${t.trend4h>=0?'+':''}${t.trend4h.toFixed(2)}%/4h e ${t.trend12h>=0?'+':''}${t.trend12h.toFixed(2)}%/12h`:'curto prazo carregando';
+ // Sinais fortes exigem confirmação adicional; 24h sozinho não decide.
+ if(Number.isFinite(ch) && ch<=-6 && liq.score>=2 && downConfirm)
+   return {action:'VENDER / REDUZIR',icon:'🔴',cls:'guide-sell',why:`Queda ${ch.toFixed(2)}% confirmada por ${trendTxt} e liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
+ if(Number.isFinite(ch) && ch<=-3.5 && liq.score>=2 && downConfirm)
+   return {action:'ATENÇÃO PARA VENDA',icon:'🔴',cls:'guide-sell',why:`Pressão negativa com confirmação: ${trendTxt} • liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
+ if(Number.isFinite(ch) && ch>=8 && liq.score>=2 && (t.ready?t.trend4h<0||t.accel<-.15:true))
+   return {action:'REALIZAR PARTE',icon:'🟠',cls:'guide-profit',why:`Alta de ${ch.toFixed(2)}% começa a perder força (${trendTxt}).`,liq:liq.level,vol:volTxt};
  const b=walletBuySignal(symbol);
  if(b.label==='ALARME DE COMPRA')
-   return {action:'COMPRAR / APORTAR',icon:'🟢',cls:'guide-buy',why:`Entrada com preço e liquidez alinhados. ${b.why}.`,liq:liq.level,vol:volTxt};
- if(b.label==='OBSERVAR COMPRA')
-   return {action:'AGUARDAR ENTRADA',icon:'🟡',cls:'guide-wait',why:`Há sinais favoráveis, mas a confirmação ainda é parcial. ${b.why}.`,liq:liq.level,vol:volTxt};
-
- if(Number.isFinite(ch) && ch>=0 && liq.score>=1)
-   return {action:'MANTER',icon:'🔵',cls:'guide-hold',why:`Momento não indica saída; variação ${ch.toFixed(2)}% e liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
-
- return {action:'AGUARDAR',icon:'🟡',cls:'guide-wait',why:`Sem confirmação suficiente para comprar ou vender. Variação ${Number.isFinite(ch)?ch.toFixed(2):'—'}%.`,liq:liq.level,vol:volTxt};
+   return {action:'COMPRAR / APORTAR',icon:'🟢',cls:'guide-buy',why:`Entrada confirmada em mais de uma leitura. ${b.why}.`,liq:liq.level,vol:volTxt};
+ if(b.label==='OBSERVAR COMPRA' || recovering)
+   return {action:'AGUARDAR ENTRADA',icon:'🟡',cls:'guide-wait',why:`Há melhora, mas falta confirmação completa. ${trendTxt}${acceleratingUp?' • aceleração positiva':''}.`,liq:liq.level,vol:volTxt};
+ if(Number.isFinite(ch) && ch>=0 && !downConfirm)
+   return {action:'MANTER',icon:'🔵',cls:'guide-hold',why:`Sem confirmação de saída • ${trendTxt} • liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
+ return {action:'AGUARDAR',icon:'🟡',cls:'guide-wait',why:`Sem confirmação suficiente. 24h ${Number.isFinite(ch)?ch.toFixed(2):'—'}% • ${trendTxt}.`,liq:liq.level,vol:volTxt};
 }
 function renderWalletGuidance(){
  const box=document.getElementById('walletGuidance'); if(!box)return;
  if(!printWallet.length){box.innerHTML='';return;}
  const items=printWallet.map(w=>({symbol:w.symbol,qty:w.qty,...walletDirection(w.symbol)}));
  box.innerHTML='<div class="wallet-guide-title">🧭 Direcionamento da minha carteira</div>'+
- '<div class="small" style="margin-bottom:5px">Leitura automática por ativo usando preço, variação 24h, volume e liquidez relativa.</div>'+
+ '<div class="small" style="margin-bottom:5px">Leitura automática por ativo usando 24h, tendência 4h/12h, aceleração, leituras recentes, volume e liquidez relativa.</div>'+
  items.map(x=>`<div class="guide-item"><div>${x.icon} <b>${x.symbol}</b> — <span class="guide-action ${x.cls}">${x.action}</span></div><div class="guide-meta">${x.why}${x.liq?` • Liquidez: ${x.liq}`:''}${x.vol?` • Volume 24h: US$ ${x.vol}`:''}</div></div>`).join('')+
  '<div class="small" style="margin-top:8px">Direcionamento informativo: não executa ordens e não usa boatos como gatilho isolado. Reavalie antes de operar.</div>';
 }
@@ -692,21 +698,30 @@ function walletBuySignal(rawSymbol){
  const symbol=normalizeWalletSymbol(rawSymbol),c=walletMarketData[symbol];
  if(!c)return {label:'AGUARDANDO',state:'wait',score:0,why:'aguardando dados'};
  if(walletStable.has(symbol))return {label:'SEM COMPRA',state:'neutral',score:0,why:'ativo estável'};
- const ch=Number(c.change24h),vol=Number(c.volume||0);
+ const ch=Number(c.change24h),vol=Number(c.volume||0),t=candleTrendInfo(symbol),live=shortReadingTrend(symbol);
  const vols=Object.values(walletMarketData).map(x=>Number(x.volume||0)).filter(v=>v>0).sort((a,b)=>a-b);
  const pct=vols.length?vols.filter(v=>v<=vol).length/vols.length:0;
  const liq=pct>=.80?'muito alta':pct>=.55?'alta':pct>=.25?'média':'baixa';
  const ls=pct>=.80?3:pct>=.55?2:pct>=.25?1:0;
  let score=ls,why=[`liquidez ${liq}`];
  if(Number.isFinite(ch)){
-   if(ch>=1&&ch<=5){score+=3;why.push('alta saudável 24h')}
-   else if(ch>5&&ch<=8){score+=1;why.push('alta acelerada')}
+   if(ch>=.5&&ch<=5){score+=2;why.push('24h saudável')}
+   else if(ch>5&&ch<=8){score+=0;why.push('24h acelerada')}
    else if(ch>8){score-=2;why.push('preço esticado')}
-   else if(ch>=-1&&ch<1){score+=1;why.push('estabilização')}
-   else {score-=2;why.push('queda sem reversão')}
+   else if(ch>=-1.5&&ch<.5){score+=1;why.push('24h em estabilização')}
+   else {score-=2;why.push('24h ainda negativa')}
  }
- if(score>=5&&ls>=2&&ch>0&&ch<=6)return {label:'ALARME DE COMPRA',state:'good',score,why:why.join(' • ')};
- if(score>=3&&ls>=1&&ch>=-1&&ch<=8)return {label:'OBSERVAR COMPRA',state:'watch',score,why:why.join(' • ')};
+ if(t.ready){
+   if(t.trend4h>.30&&t.trend12h>.55){score+=3;why.push('4h + 12h confirmam alta')}
+   else if(t.trend4h>0&&t.trend12h<=0){score+=1;why.push('reversão curta iniciando')}
+   else if(t.trend4h<-.30&&t.trend12h<-.55){score-=3;why.push('4h + 12h confirmam queda')}
+   if(t.accel>.15){score+=1;why.push('aceleração positiva')}
+   if(t.accel<-.15){score-=1;why.push('perda de força')}
+ }
+ if(live.confirmed){score+=live.dir;why.push(live.dir>0?'leituras recentes confirmam':'leituras recentes enfraquecem');}
+ const multiConfirm=(t.ready&&t.trend4h>.30&&t.trend12h>.55)||(live.confirmed&&live.dir>0);
+ if(score>=6&&ls>=2&&multiConfirm&&ch>-2&&ch<=7)return {label:'ALARME DE COMPRA',state:'good',score,why:why.join(' • ')};
+ if(score>=3&&ls>=1&&ch>=-2&&ch<=8)return {label:'OBSERVAR COMPRA',state:'watch',score,why:why.join(' • ')};
  return {label:'SEM COMPRA',state:'neutral',score,why:why.join(' • ')};
 }
 function renderWalletBuyAlerts(){
@@ -782,6 +797,13 @@ async function fetchSparkPrices(symbol){
    if(sr.ok){const sj=await sr.json();const hit=(sj.coins||[]).find(c=>String(c.symbol||'').toUpperCase()===symbol)||(sj.coins||[])[0];if(hit){const mr=await fetch(`https://api.coingecko.com/api/v3/coins/${encodeURIComponent(hit.id)}/market_chart?vs_currency=brl&days=7&interval=hourly`);if(mr.ok){const mj=await mr.json();vals=(mj.prices||[]).map(x=>+x[1]).filter(Number.isFinite)}}}
   }catch(e){}
  }
+ if(vals.length>=7){
+   const last=vals[vals.length-1], p4=vals[Math.max(0,vals.length-2)], p12=vals[Math.max(0,vals.length-4)], p24=vals[Math.max(0,vals.length-7)];
+   const pct=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&b?((a/b)-1)*100:0;
+   const trend4h=pct(last,p4), trend12h=pct(last,p12), trend24h=pct(last,p24);
+   const prev4=pct(p4,vals[Math.max(0,vals.length-3)]);
+   if(walletMarketData[symbol]) walletMarketData[symbol].shortTrend={trend4h,trend12h,trend24h,accel:trend4h-prev4,ready:true};
+ }
  walletSparkCache[symbol]=vals; return vals;
 }
 async function loadWalletSparklines(){
@@ -796,6 +818,7 @@ async function loadWalletSparklines(){
   const svg=sparkSVG(vals);
   el.innerHTML=svg||'<span class="small">Gráfico indisponível</span>';
  }));
+ try{renderWalletGuidance();renderWalletBuyAlerts();renderSmartAllocation();renderUrgentRadar();}catch(e){}
 }
 
 let validWalletSymbols=new Set();
@@ -815,7 +838,7 @@ async function updateWalletPrices(){
      if(x.symbol&&x.symbol.endsWith('USDT')){
       const sym=x.symbol.slice(0,-4); if(!sym||sym.length>15)continue;
       validWalletSymbols.add(sym);
-      walletMarketData[sym]={change24h:+x.priceChangePercent,volume:+x.quoteVolume,source:'Binance'};
+      const prev=walletMarketData[sym]||{}; walletMarketData[sym]={...prev,change24h:+x.priceChangePercent,volume:+x.quoteVolume,source:'Binance'}; recordShortReading(sym,+x.lastPrice);
       if(usdbrl&&Number.isFinite(+x.lastPrice))walletPrices[sym]=(+x.lastPrice)*usdbrl;
      }
     }
@@ -834,7 +857,7 @@ async function updateWalletPrices(){
    if(Array.isArray(markets)) for(const x of markets){
     const sym=String(x.symbol||'').toUpperCase(); if(!need.includes(sym))continue;
     if(Number.isFinite(+x.current_price))walletPrices[sym]=+x.current_price;
-    walletMarketData[sym]={change24h:+x.price_change_percentage_24h,volume:+x.total_volume,source:'CoinGecko'};
+    const prev=walletMarketData[sym]||{}; walletMarketData[sym]={...prev,change24h:+x.price_change_percentage_24h,volume:+x.total_volume,source:'CoinGecko'}; recordShortReading(sym,+x.current_price);
     validWalletSymbols.add(sym);
    }
   }
@@ -1020,7 +1043,7 @@ function startRealtimeMarket(){
          const pair=String(x.s||''); if(!pair.endsWith('USDT'))continue;
          const sym=pair.slice(0,-4),price=Number(x.c),change=Number(x.P),volume=Number(x.q);
          validWalletSymbols.add(sym);
-         walletMarketData[sym]={change24h:change,volume,source:'Binance WebSocket'};
+         const prev=walletMarketData[sym]||{}; walletMarketData[sym]={...prev,change24h:change,volume,source:'Binance WebSocket'}; recordShortReading(sym,price);
          if(walletPrices.USDT&&Number.isFinite(price))walletPrices[sym]=price*walletPrices.USDT;
          if(printWallet.some(w=>normalizeWalletSymbol(w.symbol)===sym))changed=true;
        }
@@ -1146,13 +1169,4 @@ setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
 </script>
 
-\n<script>
-let binanceSession={apiKey:'',secretKey:''};
-function readBinanceKeys(){const apiKey=document.getElementById('binanceApiKey')?.value.trim()||binanceSession.apiKey;const secretKey=document.getElementById('binanceSecretKey')?.value.trim()||binanceSession.secretKey;if(!apiKey||!secretKey)throw new Error('Informe a API Key e a Secret Key.');binanceSession={apiKey,secretKey};return binanceSession;}
-async function binanceCall(action,body={}){const keys=readBinanceKeys();const r=await fetch('/api/binance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...body,...keys})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.error||'Falha na Binance');return d;}
-async function loadBinanceWallet(){const st=document.getElementById('binanceStatus'),box=document.getElementById('binanceBalances');st.textContent='Conectando à Binance…';try{const d=await binanceCall('balance');const rows=d.balances||[];st.innerHTML='✓ Binance conectada • negociação '+(d.canTrade?'habilitada':'não habilitada');box.innerHTML=rows.length?rows.map(x=>'<div class="row"><span><b>'+x.asset+'</b></span><span>'+x.total.toLocaleString('pt-BR',{maximumFractionDigits:8})+(x.locked?' <span class="small">('+x.locked+' bloqueado)</span>':'')+'</span></div>').join(''):'<div class="small">Nenhum saldo Spot encontrado.</div>';const wallet=rows.filter(x=>!['BRL','USDT','USDC','FDUSD','TUSD'].includes(x.asset)).map(x=>({symbol:x.asset,qty:x.total}));if(wallet.length){printWallet=wallet;persistWallet();try{await updateWalletPrices()}catch(e){}try{calcAporte();renderSmartAllocation();renderUrgentRadar()}catch(e){}}}catch(e){st.innerHTML='<span class="bad">'+e.message+'</span>';}}
-document.getElementById('binanceLoad')?.addEventListener('click',loadBinanceWallet);
-document.getElementById('binanceForget')?.addEventListener('click',()=>{binanceSession={apiKey:'',secretKey:''};const a=document.getElementById('binanceApiKey'),s=document.getElementById('binanceSecretKey');if(a)a.value='';if(s)s.value='';document.getElementById('binanceStatus').textContent='Chaves removidas da memória desta página.';document.getElementById('binanceBalances').innerHTML='';});
-document.getElementById('tradePrepare')?.addEventListener('click',async()=>{const symbol=document.getElementById('tradeSymbol').value.trim().toUpperCase(),side=document.getElementById('tradeSide').value,amount=Number(document.getElementById('tradeAmount').value),out=document.getElementById('tradeResult');if(!symbol||!Number.isFinite(amount)||amount<=0){out.innerHTML='<span class="bad">Preencha moeda e valor/quantidade.</span>';return;}const text=side==='BUY'?`Comprar ${symbol} a mercado usando ${amount} USDT?`:`Vender ${amount} ${symbol} a mercado?`;if(!confirm(text+'\n\nA ordem será enviada de verdade à Binance.')){out.textContent='Ordem cancelada.';return;}out.textContent='Enviando ordem…';try{const payload=side==='BUY'?{side,symbol,quoteOrderQty:amount}:{side,symbol,quantity:amount};const d=await binanceCall('order',payload);out.innerHTML='<span class="ok">✓ Ordem aceita pela Binance • '+(d.order.status||'enviada')+'</span>';setTimeout(loadBinanceWallet,1000);}catch(e){out.innerHTML='<span class="bad">'+e.message+'</span>';}});
-</script>\n
 </body></html>
