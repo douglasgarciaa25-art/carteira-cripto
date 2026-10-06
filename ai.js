@@ -31,11 +31,12 @@ async function openAIHybrid(question,ctx,localAnswer,marketLine,probLine){
  const model=process.env.OPENAI_MODEL||'gpt-6-luna';
  const wallet=Array.isArray(ctx.wallet)?ctx.wallet.slice(0,40):[];
  const opportunities=Array.isArray(ctx.opportunities)?ctx.opportunities.slice(0,15):[];
+ const technical=Array.isArray(ctx.technical)?ctx.technical.slice(0,10):[];
  const history=Array.isArray(ctx.chatHistory)?ctx.chatHistory.slice(-8):[];
  const payload={
   model,
   instructions:'Você é a segunda camada do Cripto Radar. Responda SOMENTE em JSON válido, sem markdown, no formato {"answer":"texto curto em pt-BR","control":{"SIMBOLO":{"action":"COMPRAR / APORTAR|MANTER|AGUARDAR|AGUARDAR ENTRADA|REALIZAR PARTE|VENDER / REDUZIR","confidence":0-100,"reason":"motivo curto"}}}. Use os cálculos fornecidos pelo Radar como fonte numérica principal. Não transforme preço esticado em oportunidade de compra. Para mudar um sinal local para compra/venda/redução exija confirmação clara nos dados; em dúvida use AGUARDAR. Considere carteira inteira, quantidade, preço BRL, valor, 24h, liquidez e o sinal/motivo do Radar. Não invente cotações, não garanta retorno e nunca diga que executou uma ordem.',
-  input:[...history.map(m=>({role:m.role==='assistant'?'assistant':'user',content:String(m.content||'').slice(0,1600)})),{role:'user',content:'Pergunta atual: '+question+'\n\nLeitura automática do Radar: '+localAnswer+'\n'+marketLine+probLine+'\n\nCarteira/dados atuais: '+JSON.stringify({wallet,opportunities})}],
+  input:[...history.map(m=>({role:m.role==='assistant'?'assistant':'user',content:String(m.content||'').slice(0,1600)})),{role:'user',content:'Pergunta atual: '+question+'\n\nLeitura automática do Radar: '+localAnswer+'\n'+marketLine+probLine+'\n\nCarteira/dados atuais: '+JSON.stringify({wallet,opportunities,technical})}],
   max_output_tokens:500
  };
  try{
