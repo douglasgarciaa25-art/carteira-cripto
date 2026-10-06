@@ -118,8 +118,8 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .smart-alloc-meta{font-size:11px;color:var(--muted);line-height:1.35}
 @media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
 
-/* ===== Radar Trader Profissional ===== */
-.pro-trader{border:1px solid #2563eb88!important;background:linear-gradient(145deg,#0b1d35,#0a1424)!important}.pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.pro-item{padding:11px;border:1px solid #244263;border-radius:12px;background:#091524}.pro-action{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}.pro-buy{background:#123d2d;color:#86efac}.pro-hold{background:#172554;color:#93c5fd}.pro-wait{background:#493c16;color:#fde68a}.pro-profit{background:#5a3416;color:#fdba74}.pro-sell{background:#4b2027;color:#fca5a5}.pro-meter{height:7px;border-radius:99px;background:#1d2d43;overflow:hidden;margin-top:7px}.pro-meter>i{display:block;height:100%;background:currentColor}.pro-meta{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}.pro-symbol{font-weight:900;font-size:16px}@media(max-width:620px){.pro-grid{grid-template-columns:1fr}}
+/* Trader Profissional isolado: não interfere no motor principal */
+.pro-trader{border:1px solid #2563eb88!important;background:linear-gradient(145deg,#0b1d35,#0a1424)!important}.pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.pro-item{padding:11px;border:1px solid #244263;border-radius:12px;background:#091524}.pro-action{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}.pro-buy{background:#123d2d;color:#86efac}.pro-hold{background:#172554;color:#93c5fd}.pro-wait{background:#493c16;color:#fde68a}.pro-profit{background:#5a3416;color:#fdba74}.pro-sell{background:#4b2027;color:#fca5a5}.pro-meta{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}.pro-symbol{font-weight:900;font-size:16px}@media(max-width:620px){.pro-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body><main>
@@ -133,12 +133,10 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 <div class="ai-input"><input id="aiQuestion" placeholder="Ex.: o que você aprendeu hoje?"><button id="aiAsk" type="button">PERGUNTAR</button></div>
 <div class="ai-note">Informativo: não executa compras ou vendas e não garante retorno.</div>
 </section>
-
 <section class="card pro-trader" id="proTraderCard">
- <div class="ai-head"><div class="coin">📈 IA Radar • Trader Profissional</div><div id="proTraderStatus" class="ai-status">Lendo candles…</div></div>
- <div class="small">Análise técnica híbrida por candles de 15m, 1h, 4h e 1D. Cruza estrutura de mercado, EMA 9/21, RSI 14, MACD, ATR, volume, suporte/resistência, padrões de vela e risco/retorno. A IA recebe a leitura técnica como segunda camada de auditoria.</div>
- <div id="proTraderList" class="pro-grid"><div class="pro-item"><div class="small">Preparando análise técnica…</div></div></div>
- <div class="small" style="margin-top:9px">Leitura informativa. Não executa ordens e nenhum indicador isolado é tratado como certeza de alta ou queda.</div>
+ <div class="ai-head"><div class="coin">📈 IA Radar • Trader Profissional</div><div id="proTraderStatus" class="ai-status">Aguardando Radar principal…</div></div>
+ <div class="small">Módulo técnico isolado: candles 15m, 1h, 4h e 1D, EMA 9/21, RSI 14, MACD, ATR, volume, suporte/resistência e risco/retorno. Se este módulo falhar, carteira, oportunidades e alarmes continuam funcionando.</div>
+ <div id="proTraderList" class="pro-grid"><div class="pro-item"><div class="small">O Trader inicia depois do mercado principal.</div></div></div>
 </section>
 
 <section class="card notify-card">
@@ -1134,91 +1132,5 @@ setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
 </script>
 
-<script>
-// Motor técnico multi-timeframe. Mantém o Radar funcionando mesmo se candles falharem.
-const proCandleCache={};
-function ema(a,n){if(!a.length)return NaN;const k=2/(n+1);let e=a[0];for(let i=1;i<a.length;i++)e=a[i]*k+e*(1-k);return e}
-function rsi14(a){if(a.length<15)return NaN;let g=0,l=0;for(let i=a.length-14;i<a.length;i++){const d=a[i]-a[i-1];if(d>0)g+=d;else l-=d}if(l===0)return 100;const rs=(g/14)/(l/14);return 100-(100/(1+rs))}
-function atr14(k){if(k.length<15)return NaN;let t=[];for(let i=1;i<k.length;i++){const h=+k[i][2],l=+k[i][3],pc=+k[i-1][4];t.push(Math.max(h-l,Math.abs(h-pc),Math.abs(l-pc)))}return t.slice(-14).reduce((a,b)=>a+b,0)/14}
-function candlePattern(k){if(!k.length)return 'sem padrão';const x=k[k.length-1],o=+x[1],h=+x[2],l=+x[3],c=+x[4],body=Math.abs(c-o),range=Math.max(h-l,1e-12),up=h-Math.max(o,c),dn=Math.min(o,c)-l;if(body/range<.12)return 'doji / indecisão';if(dn>body*2&&up<body*.8)return c>=o?'martelo comprador':'martelo em teste';if(up>body*2&&dn<body*.8)return c<=o?'estrela cadente':'rejeição no topo';if(k.length>1){const p=k[k.length-2],po=+p[1],pc=+p[4];if(c>o&&pc<po&&o<=pc&&c>=po)return 'engolfo de alta';if(c<o&&pc>po&&o>=pc&&c<=po)return 'engolfo de baixa'}return c>=o?'vela compradora':'vela vendedora'}
-async function proFetchKlines(symbol,interval,limit=120){
- const key=symbol+'-'+interval;if(proCandleCache[key]&&Date.now()-proCandleCache[key].t<45000)return proCandleCache[key].v;
- const save=v=>{if(Array.isArray(v)&&v.length>=30){proCandleCache[key]={t:Date.now(),v};return v}return null};
- const get=async(url,ms=4500)=>{const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),ms);try{const r=await fetch(url,{cache:'no-store',signal:ctl.signal});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(timer)}};
- // 1) Binance pública. Cada host é tentado isoladamente.
- for(const b of ['https://data-api.binance.vision','https://api1.binance.com','https://api2.binance.com','https://api3.binance.com','https://api.binance.com']){try{const j=await get(`${b}/api/v3/klines?symbol=${symbol}USDT&interval=${interval}&limit=${limit}`);const ok=save(j);if(ok)return ok}catch(e){}}
- // 2) OKX pública. Converte para o mesmo formato de kline usado pelo motor.
- const okxBar={'15m':'15m','1h':'1H','4h':'4H','1d':'1Dutc'}[interval];
- if(okxBar){try{const j=await get(`https://www.okx.com/api/v5/market/candles?instId=${symbol}-USDT&bar=${okxBar}&limit=${Math.min(limit,100)}`);if(j&&Array.isArray(j.data)){const v=j.data.slice().reverse().map(x=>[+x[0],+x[1],+x[2],+x[3],+x[4],+x[5],+x[0],0,0,0,0,0]);const ok=save(v);if(ok)return ok}}catch(e){}}
- // 3) KuCoin pública como terceira fonte independente.
- const kcType={'15m':'15min','1h':'1hour','4h':'4hour','1d':'1day'}[interval];
- if(kcType){try{const j=await get(`https://api.kucoin.com/api/v1/market/candles?type=${kcType}&symbol=${symbol}-USDT`);if(j&&Array.isArray(j.data)){const v=j.data.slice(0,limit).reverse().map(x=>[+x[0]*1000,+x[1],+x[3],+x[4],+x[2],+x[5],+x[0]*1000,0,0,0,0,0]);const ok=save(v);if(ok)return ok}}catch(e){}}
- return []
-}
-function proFrame(k){if(k.length<30)return null;const c=k.map(x=>+x[4]),v=k.map(x=>+x[5]),last=c[c.length-1],e9=ema(c.slice(-60),9),e21=ema(c.slice(-80),21),r=rsi14(c),a=atr14(k),macd=ema(c.slice(-80),12)-ema(c.slice(-80),26),sigBase=[];for(let i=Math.max(26,c.length-18);i<c.length;i++)sigBase.push(ema(c.slice(0,i+1),12)-ema(c.slice(0,i+1),26));const macdSig=ema(sigBase,9),volAvg=v.slice(-21,-1).reduce((x,y)=>x+y,0)/20,volRatio=volAvg? v[v.length-1]/volAvg:1;const lows=k.slice(-30).map(x=>+x[3]),highs=k.slice(-30).map(x=>+x[2]);const support=Math.min(...lows),resistance=Math.max(...highs);let score=0;if(last>e9&&e9>e21)score+=2;else if(last<e9&&e9<e21)score-=2;if(r>=52&&r<=68)score+=1;if(r>72)score-=1;if(r<35)score-=1;if(macd>macdSig)score+=1;else score-=1;if(volRatio>1.25)score+=score>=0?1:-1;return {last,e9,e21,rsi:r,atrPct:a/last*100,macd,macdSig,volRatio,support,resistance,pattern:candlePattern(k),score}}
-function marketStructure(k){
- if(!k||k.length<12)return {label:'indisponível',score:0};
- const h=k.slice(-12).map(x=>+x[2]),l=k.slice(-12).map(x=>+x[3]);
- const h1=Math.max(...h.slice(0,6)),h2=Math.max(...h.slice(6)),l1=Math.min(...l.slice(0,6)),l2=Math.min(...l.slice(6));
- if(h2>h1&&l2>l1)return {label:'HH/HL • tendência de alta',score:2};
- if(h2<h1&&l2<l1)return {label:'LH/LL • tendência de baixa',score:-2};
- return {label:'consolidação / estrutura mista',score:0};
-}
-function proDecision(frames,market){
- const fs=Object.values(frames).filter(Boolean);if(fs.length<2)return {action:'AGUARDAR',cls:'pro-wait',score:40,technical:0,why:'Faltam candles para confirmação multi-tempo.'};
- let raw=fs.reduce((a,x)=>a+x.score+(x.structure?.score||0),0),bull=fs.filter(x=>x.score+(x.structure?.score||0)>=2).length,bear=fs.filter(x=>x.score+(x.structure?.score||0)<=-2).length;
- const ch=Number(market?.change24h),day=frames['1D']; if(day)raw+=Math.sign(day.score+(day.structure?.score||0));
- if(Number.isFinite(ch)&&ch>10)raw-=3;if(Number.isFinite(ch)&&ch<-8)raw-=1;
- let action='AGUARDAR',cls='pro-wait';
- if(bull>=3&&raw>=7){action='COMPRAR / APORTAR';cls='pro-buy'}
- else if(bear>=3&&raw<=-7){action='VENDER / REDUZIR';cls='pro-sell'}
- else if(Number.isFinite(ch)&&ch>=9&&raw<7){action='REALIZAR PARTE';cls='pro-profit'}
- else if(raw>=3){action='MANTER / OBSERVAR';cls='pro-hold'}
- const confidence=Math.max(40,Math.min(95,50+Math.abs(raw)*4+(bull>=3||bear>=3?8:0)));
- return {action,cls,score:confidence,technical:raw,why:`${bull} período(s) comprador(es), ${bear} vendedor(es) • score técnico ${raw}`};
-}
-function tradePlan(frames,decision){
- const f=frames['4h']||frames['1h']||frames['15m']; if(!f)return null;
- const entry=f.last,atr=entry*(f.atrPct/100),support=f.support,res=f.resistance;
- let stop=Math.min(entry-1.35*atr,support*0.997); if(!(stop>0&&stop<entry))stop=entry-1.5*atr;
- const risk=Math.max(entry-stop,entry*.003),t1=entry+risk*2,t2=entry+risk*3;
- const stretched=res>entry?((res-entry)/risk<1.15):false;
- return {entry,stop,t1,t2,rr1:2,rr2:3,stretched};
-}
-function logProSignal(x){try{const key='proRadarSignalLog',a=JSON.parse(localStorage.getItem(key)||'[]'),now=Date.now();const last=a.findLast?.(z=>z.symbol===x.symbol)||[...a].reverse().find(z=>z.symbol===x.symbol);if(!last||last.action!==x.action||now-last.at>3600000){a.push({at:now,symbol:x.symbol,action:x.action,confidence:x.score,price:x.plan?.entry||0,technical:x.technical});localStorage.setItem(key,JSON.stringify(a.slice(-300)))}}catch(e){}}
-async function analyzeProSymbol(symbol){
- const [m15,h1,h4,d1]=await Promise.all([proFetchKlines(symbol,'15m'),proFetchKlines(symbol,'1h'),proFetchKlines(symbol,'4h'),proFetchKlines(symbol,'1d')]);
- const frames={'15m':proFrame(m15),'1h':proFrame(h1),'4h':proFrame(h4),'1D':proFrame(d1)};
- for(const [n,k] of Object.entries({'15m':m15,'1h':h1,'4h':h4,'1D':d1}))if(frames[n])frames[n].structure=marketStructure(k);
- const d=proDecision(frames,(window.walletMarketData||{})[symbol]),plan=tradePlan(frames,d);
- if(plan?.stretched&&d.action==='COMPRAR / APORTAR'){d.action='AGUARDAR CORREÇÃO';d.cls='pro-profit';d.score=Math.min(d.score,72);d.why+=' • entrada próxima da resistência';}
- const out={symbol,frames,plan,...d};logProSignal(out);return out;
-}
-function proFrameText(n,f){return f?`${n}: RSI ${Number.isFinite(f.rsi)?f.rsi.toFixed(0):'—'} • EMA ${f.last>f.e21?'↑':'↓'} • vol ${f.volRatio.toFixed(1)}x • ${f.pattern} • ${f.structure?.label||'estrutura —'}`:`${n}: indisponível`}
-function px(v){if(!Number.isFinite(v))return '—';return v>=1000?v.toLocaleString('pt-BR',{maximumFractionDigits:2}):v.toLocaleString('pt-BR',{maximumSignificantDigits:7})}
-async function renderProTrader(){
- const box=document.getElementById('proTraderList'),st=document.getElementById('proTraderStatus');if(!box)return;let syms=[];try{syms=[...(printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol)),...(latestOpportunities||[]).slice(0,3).map(x=>String(x.symbol).toUpperCase())]}catch(e){}
- const stableSet=(typeof walletStable!=='undefined'&&walletStable&&typeof walletStable.has==='function')?walletStable:new Set(['USDT','USDC','FDUSD','TUSD','DAI','BRL']); syms=[...new Set(syms.filter(s=>s&&!stableSet.has(s)))].slice(0,8);if(!syms.length){box.innerHTML='<div class="pro-item"><div class="small">Adicione sua carteira ou aguarde o ranking do mercado.</div></div>';return}
- st.textContent='Analisando '+syms.length+' ativos • 15m/1h/4h/1D…';const settled=await Promise.allSettled(syms.map(analyzeProSymbol));const rows=settled.filter(x=>x.status==='fulfilled').map(x=>x.value);window.professionalRadarSnapshot=rows;if(!rows.length){box.innerHTML='<div class="pro-item"><div class="small">Candles indisponíveis nesta leitura. O Radar principal continua funcionando e tentará novamente.</div></div>';st.textContent='↻ Aguardando candles • Radar principal ativo';return;}
- box.innerHTML=rows.map(x=>{const p=x.plan;return `<div class="pro-item"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="pro-symbol">${x.symbol}</span><span class="pro-action ${x.cls}">${x.action}</span></div><div class="pro-meter" style="color:${x.cls==='pro-buy'?'#32d583':x.cls==='pro-sell'?'#f97066':x.cls==='pro-profit'?'#fb923c':x.cls==='pro-hold'?'#60a5fa':'#fdb022'}"><i style="width:${x.score}%"></i></div><div class="pro-meta"><b>Score/confiança ${x.score}/100</b> • ${x.why}<br><b>Períodos:</b> ${['15m','1h','4h','1D'].map(n=>n+' '+(x.frames[n]?'✓':'✕')).join(' | ')}<br>${proFrameText('15m',x.frames['15m'])}<br>${proFrameText('1h',x.frames['1h'])}<br>${proFrameText('4h',x.frames['4h'])}<br>${proFrameText('1D',x.frames['1D'])}${p?`<br><b>Plano técnico:</b> entrada ~${px(p.entry)} • invalidação ${px(p.stop)} • alvo 1 ${px(p.t1)} • alvo 2 ${px(p.t2)} • R/R 1:${p.rr1} / 1:${p.rr2}`:''}</div></div>`}).join('');
- const av=['15m','1h','4h','1D'].map(n=>n+' '+(rows.some(x=>x.frames&&x.frames[n])?'✓':'✕')).join(' | '); st.textContent='✓ '+av+' • análise resiliente ativa';try{document.dispatchEvent(new CustomEvent('professionalRadarUpdated',{detail:rows}))}catch(e){}
-}
-</script>
-<script>
-// Inicialização resiliente do Trader Profissional: nunca bloqueia o Radar principal.
-(function(){
- let proBusy=false;
- async function safeProRefresh(){
-  if(proBusy||typeof renderProTrader!=='function')return;
-  proBusy=true;
-  try{await renderProTrader()}catch(e){const st=document.getElementById('proTraderStatus');if(st)st.textContent='↻ Falha nos candles • tentando novamente';}
-  finally{proBusy=false}
- }
- window.refreshProfessionalRadar=safeProRefresh;
- const boot=()=>{setTimeout(safeProRefresh,2500);setTimeout(safeProRefresh,9000);setInterval(safeProRefresh,60000)};
- document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
- document.addEventListener('aiHybridControlUpdated',()=>setTimeout(safeProRefresh,500));
-})();
-</script>
-
+<script src="./trader-profissional.js" defer></script>
 </body></html>
