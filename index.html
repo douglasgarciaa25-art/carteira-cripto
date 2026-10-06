@@ -1298,6 +1298,14 @@ function px(sym){
  const brl=n((window.walletPrices||{})[sym]);
  return finite(brl)&&brl>0?brl:0;
 }
+async function paperFetchPrice(sym){
+ const local=px(sym);if(local>0)return local;
+ const pair=String(sym).replace(/USDT$/,'').toUpperCase()+'USDT';
+ for(const base of ['https://data-api.binance.vision','https://api.binance.com']){
+  try{const r=await fetch(base+'/api/v3/ticker/price?symbol='+pair,{cache:'no-store'});if(r.ok){const j=await r.json(),p=n(j.price);if(finite(p)&&p>0)return p}}catch(e){}
+ }
+ return 0;
+}
 function technical(sym){
  try{
   // Fonte principal: exatamente o mesmo sinal de compra usado pelo Radar visível.
@@ -1351,20 +1359,21 @@ function levels(sym,sig,entry){
  if(!(t3>t2))t3=entry+3*risk;
  return {stop,t1,t2,t3,risk};
 }
-function maybeOpen(sym){
+async function maybeOpen(sym){
  sym=String(sym||'').replace(/USDT$/,'').toUpperCase();
  if(!sym||/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(sym))return {opened:false,why:'stable'};
- const sig=technical(sym), entry=px(sym), txt=signalText(sig), conf=signalConfidence(sig);
- if(!entry)return {opened:false,why:'sem preço',symbol:sym,label:txt,confidence:conf};
+ const sig=technical(sym),txt=signalText(sig),conf=signalConfidence(sig);
  if(!confirmed(sig))return {opened:false,why:'sinal abaixo do gatilho',symbol:sym,label:txt||'SEM SINAL',confidence:conf};
- const stamp=Math.floor(now()/(15*60*1000)), key=sym+'-'+stamp;
- if(paper.seen[key])return {opened:false,why:'cooldown',symbol:sym,label:txt,confidence:conf};
- if(paper.trades.some(t=>t.symbol===sym&&t.status==='OPEN'))return {opened:false,why:'já aberta',symbol:sym,label:txt,confidence:conf};
- const L=levels(sym,sig,entry), riskUsd=paper.capital*(paper.risk/100), qty=riskUsd/Math.max(L.risk,entry*.006);
- paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,confidence:conf,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado do Radar • '+(txt||'COMPRA'),source:sig._source||'Radar'});
- paper.seen[key]=now(); save();
- try{if(typeof radarNotify==='function')radarNotify('paper-'+sym,'🧪 Paper Trading: '+sym,'Operação simulada aberta • confiança '+conf.toFixed(0)+'/100')}catch(e){}
- return {opened:true,why:'aberta',symbol:sym,label:txt,confidence:conf};
+ const entry=await paperFetchPrice(sym);
+ if(!entry)return {opened:false,why:'SEM PREÇO USDT',symbol:sym,label:txt,confidence:conf};
+ const stamp=Math.floor(now()/(15*60*1000)),key=sym+'-'+stamp;
+ if(paper.trades.some(t=>t.symbol===sym&&t.status==='OPEN'))return {opened:false,why:'JÁ EXISTE POSIÇÃO ABERTA',symbol:sym,label:txt,confidence:conf};
+ if(paper.seen[key])return {opened:false,why:'COOLDOWN 15 MIN',symbol:sym,label:txt,confidence:conf};
+ const L=levels(sym,sig,entry),riskUsd=paper.capital*(paper.risk/100),unit=Math.max(entry-L.stop,entry*.006),qty=riskUsd/unit,positionValue=qty*entry;
+ if(!(finite(qty)&&qty>0))return {opened:false,why:'QUANTIDADE INVÁLIDA',symbol:sym,label:txt,confidence:conf};
+ paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,positionValue,confidence:conf,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado • '+txt,source:sig._source||'Radar'});
+ paper.seen[key]=now();save();
+ return {opened:true,why:'ABERTA',symbol:sym,label:txt,confidence:conf,entry,qty,positionValue,stop:L.stop};
 }
 function updateTrade(t){
  if(t.status!=='OPEN')return;
@@ -1418,14 +1427,14 @@ async function refreshDerivatives(){
  const good=Object.entries(derCache).filter(([,v])=>v.ok);
  el.innerHTML=good.length?'📈 Derivativos públicos: '+good.map(([s,v])=>'<b>'+s+'</b> funding '+(finite(v.funding)?v.funding.toFixed(4)+'%':'—')+' • OI '+(finite(v.openInterest)?Math.round(v.openInterest).toLocaleString('pt-BR'):'—')+' • L/S '+(finite(v.longShort)?v.longShort.toFixed(2):'—')).join(' | '):'Derivativos: fonte indisponível ou sem contrato elegível.';
 }
-function scan(){
- const syms=candidateSymbols(), results=syms.map(maybeOpen);
- paper.trades.forEach(updateTrade); save(); render();
- const opened=results.filter(x=>x&&x.opened);
- const best=results.filter(x=>x&&x.symbol).sort((a,b)=>(b.confidence||0)-(a.confidence||0))[0];
- if(opened.length)paperStatus('✓ '+opened.length+' operação(ões) simulada(s) aberta(s) pelo sinal do Radar.');
- else if(best)paperStatus('Motor ativo • '+syms.length+' ativos verificados • melhor agora: '+best.symbol+' '+(best.confidence||0).toFixed(0)+'/100 • '+(best.label||best.why)+'.');
- else paperStatus('Motor ativo • aguardando dados/sinais do Radar.');
+async function scan(){
+ const syms=candidateSymbols(),results=[];
+ for(const sym of syms){try{results.push(await maybeOpen(sym))}catch(e){results.push({opened:false,symbol:sym,why:'ERRO '+(e.message||''),confidence:0})}}
+ paper.trades.forEach(updateTrade);save();render();
+ const opened=results.filter(x=>x&&x.opened),best=results.filter(x=>x&&x.symbol).sort((a,b)=>(b.confidence||0)-(a.confidence||0))[0];
+ if(opened.length){const x=opened[0];paperStatus('✓ OPERAÇÃO SIMULADA ABERTA • '+x.symbol+' • entrada '+x.entry.toPrecision(7)+' • posição US$ '+x.positionValue.toFixed(2)+' • stop '+x.stop.toPrecision(7)+'.')}
+ else if(best)paperStatus('Motor ativo • '+syms.length+' ativos • '+best.symbol+' '+(best.confidence||0).toFixed(0)+'/100 • '+(best.label||'')+' • NÃO ABRIU: '+best.why+'.');
+ else paperStatus('Motor ativo • aguardando dados/sinais.');
 }
 function renderRiskWarning(){
  const w=document.getElementById('paperRiskWarning'); if(!w)return;
