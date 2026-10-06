@@ -117,9 +117,6 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .smart-buy{background:#123d2d;color:#86efac}.smart-hold{background:#172554;color:#93c5fd}.smart-cut{background:#4b2027;color:#fca5a5}.smart-watch{background:#493c16;color:#fde68a}
 .smart-alloc-meta{font-size:11px;color:var(--muted);line-height:1.35}
 @media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
-
-/* Trader Profissional isolado: não interfere no motor principal */
-.pro-trader{border:1px solid #2563eb88!important;background:linear-gradient(145deg,#0b1d35,#0a1424)!important}.pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.pro-item{padding:11px;border:1px solid #244263;border-radius:12px;background:#091524}.pro-action{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}.pro-buy{background:#123d2d;color:#86efac}.pro-hold{background:#172554;color:#93c5fd}.pro-wait{background:#493c16;color:#fde68a}.pro-profit{background:#5a3416;color:#fdba74}.pro-sell{background:#4b2027;color:#fca5a5}.pro-meta{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}.pro-symbol{font-weight:900;font-size:16px}@media(max-width:620px){.pro-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body><main>
@@ -133,12 +130,6 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 <div class="ai-input"><input id="aiQuestion" placeholder="Ex.: o que você aprendeu hoje?"><button id="aiAsk" type="button">PERGUNTAR</button></div>
 <div class="ai-note">Informativo: não executa compras ou vendas e não garante retorno.</div>
 </section>
-<section class="card pro-trader" id="proTraderCard">
- <div class="ai-head"><div class="coin">📈 IA Radar • Trader Profissional</div><div id="proTraderStatus" class="ai-status">Aguardando Radar principal…</div></div>
- <div class="small">Módulo técnico isolado: candles 15m, 1h, 4h e 1D, EMA 9/21, RSI 14, MACD, ATR, volume, suporte/resistência e risco/retorno. Se este módulo falhar, carteira, oportunidades e alarmes continuam funcionando.</div>
- <div id="proTraderList" class="pro-grid"><div class="pro-item"><div class="small">O Trader inicia depois do mercado principal.</div></div></div>
-</section>
-
 <section class="card notify-card">
  <div class="coin">🔔 Notificações do Radar</div>
  <div class="small">Receba avisos enquanto o site estiver aberto quando surgir um novo sinal de compra, venda/redução ou realização parcial. Instale o Radar na tela inicial para usar como aplicativo.</div>
@@ -451,7 +442,7 @@ async function opportunities(){
   return latestOpportunities;
  }
 }
-calcAporte(); opportunities().then(()=>renderTopHighlights());
+// Inicialização adiada até carteira e formatadores estarem declarados.
 
 let trendAutoTimer=null;
 async function autoUpdateTrends(){
@@ -957,7 +948,14 @@ if(importChatBtn) importChatBtn.onclick=()=>{
  document.getElementById('ocrStatus').textContent=items.length?`✓ ${items.length} moeda(s) importada(s). Confira e toque em Atualizar carteira.`:'Não encontrei uma lista válida. Use, por exemplo: SUI 11,1981';
 };
 
-renderPrintWallet();refreshWalletNameIndex().then(updateWalletPrices);
+renderPrintWallet();
+refreshWalletNameIndex().then(async()=>{
+  try{await updateWalletPrices()}catch(e){}
+  try{await opportunities()}catch(e){}
+  try{renderTopHighlights()}catch(e){}
+  try{calcAporte()}catch(e){}
+  try{renderSmartAllocation()}catch(e){}
+});
 
 // Feed rápido com fallback automático para navegadores móveis/arquivo local.
 let marketWS=null, marketWSRetry=null, liveRenderTimer=null, wsFailures=0, restFastTimer=null;
@@ -1132,5 +1130,4 @@ setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
 </script>
 
-<script src="./trader-profissional.js" defer></script>
 </body></html>

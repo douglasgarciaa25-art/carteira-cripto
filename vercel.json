@@ -1,42 +1,14 @@
 {
   "builds": [
-    {
-      "src": "ai.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "trader-profissional.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "ai-radar.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "sw.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "manifest.webmanifest",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "icon.svg",
-      "use": "@vercel/static"
-    }
+    { "src": "ai.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "ai-radar.js", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
+    { "src": "manifest.webmanifest", "use": "@vercel/static" },
+    { "src": "icon.svg", "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "/api/ai",
-      "dest": "/ai.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/api/ai", "dest": "/ai.js" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
