@@ -179,15 +179,6 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
   <div class="wallet-tools"><label class="btn-print">📤 CARREGAR PRINT DA CARTEIRA<input id="shot" type="file" accept="image/*,.png,.jpg,.jpeg,.webp" class="hide"></label><button id="manualWallet" type="button">✏️ Adicionar manualmente</button></div>
   <div id="ocrStatus" class="status small">Toque em “CARREGAR PRINT DA CARTEIRA” para selecionar uma imagem da galeria.</div>
 <div style="margin-top:14px;padding-top:12px;border-top:1px solid #29415f">
-  <div class="small"><b>🔐 Conectar carteira Binance</b></div>
-  <div class="small" style="margin:5px 0 8px">Use uma chave API <b>somente leitura</b>. A chave e o segredo ficam salvos apenas neste aparelho. O Radar não habilita compra, venda ou saque.</div>
-  <input id="binanceApiKey" type="password" autocomplete="off" placeholder="API Key da Binance" style="width:100%;box-sizing:border-box;margin:4px 0;border-radius:10px;padding:10px;background:#0d1724;color:#eef5ff;border:1px solid #29415f">
-  <input id="binanceApiSecret" type="password" autocomplete="off" placeholder="Secret Key da Binance" style="width:100%;box-sizing:border-box;margin:4px 0;border-radius:10px;padding:10px;background:#0d1724;color:#eef5ff;border:1px solid #29415f">
-  <div class="wallet-tools"><button id="saveBinanceKeys" type="button">💾 SALVAR NESTE APARELHO</button><button id="clearBinanceKeys" type="button">🗑️ APAGAR CHAVES</button></div>
-  <div id="binanceKeyStatus" class="status small">Nenhuma chave cadastrada neste aparelho.</div>
-  <div class="small" style="margin-top:7px">⚠️ Esta tela apenas guarda as credenciais para a futura conexão segura. A leitura automática do saldo da Binance exige um endpoint no servidor; o segredo não deve ser enviado diretamente do navegador para a Binance.</div>
-</div>
-<div style="margin-top:14px;padding-top:12px;border-top:1px solid #29415f">
   <div class="small"><b>🤖 Segunda opção — lista analisada pelo ChatGPT</b></div>
   <div class="small" style="margin:5px 0 8px">Se a leitura automática errar, envie o print no ChatGPT e cole aqui a lista recebida.</div>
   <textarea id="chatImport" rows="4" style="width:100%;box-sizing:border-box;border-radius:10px;padding:10px;background:#0d1724;color:#eef5ff;border:1px solid #29415f" placeholder="Exemplo:
@@ -1130,26 +1121,6 @@ function renderSmartAllocation(){
 }
 setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
-</script>
-
-<script>
-(function(){
- const keyEl=document.getElementById('binanceApiKey'), secretEl=document.getElementById('binanceApiSecret'), status=document.getElementById('binanceKeyStatus');
- const savedKey=sessionStorage.getItem('crBinanceApiKey')||'', savedSecret=sessionStorage.getItem('crBinanceApiSecret')||'';
- if(keyEl)keyEl.value=savedKey;if(secretEl)secretEl.value=savedSecret;
- function paint(msg){const ok=!!(sessionStorage.getItem('crBinanceApiKey')&&sessionStorage.getItem('crBinanceApiSecret'));if(status)status.textContent=msg||(ok?'✓ Credenciais mantidas somente nesta sessão. Toque em Conectar para importar a carteira.':'Nenhuma chave cadastrada nesta sessão.');}
- async function syncBinance(){
-  const k=keyEl.value.trim(),sec=secretEl.value.trim(); if(!k||!sec){paint('Preencha a API Key e a Secret Key.');return;}
-  sessionStorage.setItem('crBinanceApiKey',k);sessionStorage.setItem('crBinanceApiSecret',sec);paint('Conectando à Binance…');
-  try{const r=await fetch('/api/binance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKey:k,apiSecret:sec})});const j=await r.json();if(!r.ok||!j.ok)throw Error(j.error||'Falha na Binance');
-   if(Array.isArray(j.wallet)&&j.wallet.length){printWallet=j.wallet.map(x=>({symbol:x.symbol,qty:x.qty}));localStorage.setItem('printWallet',JSON.stringify(printWallet));if(typeof renderPrintWallet==='function')renderPrintWallet();if(typeof updateWalletPrices==='function')await updateWalletPrices();if(typeof renderSmartAllocation==='function')renderSmartAllocation();if(typeof calcAporte==='function')calcAporte();}
-   paint('✓ Binance conectada em modo SOMENTE LEITURA • '+(j.wallet?.length||0)+' ativos importados.');
-  }catch(e){paint('Não foi possível conectar: '+e.message);}
- }
- document.getElementById('saveBinanceKeys')?.addEventListener('click',syncBinance);
- document.getElementById('clearBinanceKeys')?.addEventListener('click',()=>{sessionStorage.removeItem('crBinanceApiKey');sessionStorage.removeItem('crBinanceApiSecret');keyEl.value='';secretEl.value='';paint();});
- paint();
-})();
 </script>
 
 </body></html>
