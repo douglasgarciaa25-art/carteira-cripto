@@ -263,7 +263,7 @@ BTC 0,00015"></textarea>
  <div class="v7-head"><div class="coin">🧪 Paper Trading & Validação</div><div class="v7-badge">SEM ORDENS REAIS</div></div>
  <div class="small">Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.</div>
  <div class="v7-controls"><label class="small">Capital simulado (US$)<br><input id="paperCapital" type="number" min="100" step="100" value="10000"></label><label class="small">Risco/operação (%)<br><input id="paperRisk" type="number" min="0.1" max="5" step="0.1" value="1"></label><button id="paperReset" type="button">ZERAR PAPER</button></div>
- <div id="paperRiskWarning" class="small" style="margin-top:8px"></div><div id="paperEngineStatus" class="small" style="margin-top:8px">Motor do Paper: iniciando…</div><div class="v7-grid" id="paperStats"></div>
+ <div id="paperRiskWarning" class="small" style="margin-top:8px"></div><div id="paperEngineStatus" class="small" style="margin-top:8px">Motor do Paper: iniciando…</div><div class="small" style="margin-top:6px">🔔 Ative “Notificações do Radar” para receber alertas do Paper enquanto o navegador/PWA puder executar o site.</div><div class="v7-grid" id="paperStats"></div>
  <div id="paperOpen" style="margin-top:10px"></div>
  <details style="margin-top:10px"><summary><b>📓 Diário automático</b></summary><div id="paperJournal"></div></details>
  <div id="derivativesHealth" class="small" style="margin-top:10px">Derivativos: aguardando ativos elegíveis.</div>
@@ -1283,6 +1283,16 @@ const now=()=>Date.now();
 const n=v=>Number(v);
 const finite=v=>Number.isFinite(n(v));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+async function paperNotify(key,title,body){
+ try{
+  if(typeof window.radarNotify==='function'){await window.radarNotify(key,title,body);return}
+  if(typeof radarNotify==='function'){await radarNotify(key,title,body);return}
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const reg=('serviceWorker' in navigator)?await navigator.serviceWorker.ready:null;
+  if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./icon.svg',badge:'./icon.svg',tag:key,renotify:true,data:{url:'./'}});
+  else new Notification(title,{body,icon:'./icon.svg',tag:key});
+ }catch(e){}
+}
 function load(){
  try{
   const d=JSON.parse(localStorage.getItem(V7KEY)||'{}');
@@ -1373,20 +1383,31 @@ async function maybeOpen(sym){
  if(!(finite(qty)&&qty>0))return {opened:false,why:'QUANTIDADE INVÁLIDA',symbol:sym,label:txt,confidence:conf};
  paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,positionValue,confidence:conf,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado • '+txt,source:sig._source||'Radar'});
  paper.seen[key]=now();save();
+ paperNotify('paper-open-'+key,'🟢 Paper: '+sym+' aberta','Entrada '+entry.toPrecision(7)+' • confiança '+conf.toFixed(0)+'/100 • stop '+L.stop.toPrecision(7));
  return {opened:true,why:'ABERTA',symbol:sym,label:txt,confidence:conf,entry,qty,positionValue,stop:L.stop};
 }
 function updateTrade(t){
  if(t.status!=='OPEN')return;
  const p=px(t.symbol); if(!p)return;
  t.highest=Math.max(n(t.highest)||t.entry,p);
- if(p>=t.t1&&t.state==='ENTRADA'){t.state='ALVO 1';t.stop=Math.max(t.stop,t.entry)}
- if(p>=t.t2&&(t.state==='ALVO 1'||t.state==='ENTRADA')){t.state='TRAILING';t.stop=Math.max(t.stop,t.t1)}
+ if(p>=t.t1&&t.state==='ENTRADA'){
+   t.state='ALVO 1';t.stop=Math.max(t.stop,t.entry);save();
+   paperNotify('paper-a1-'+t.id,'🎯 '+t.symbol+' atingiu Alvo 1','Paper Trading • preço '+p.toPrecision(7)+' • stop movido para proteção da entrada.');
+ }
+ if(p>=t.t2&&(t.state==='ALVO 1'||t.state==='ENTRADA')){
+   t.state='TRAILING';t.stop=Math.max(t.stop,t.t1);save();
+   paperNotify('paper-trail-'+t.id,'📈 '+t.symbol+' entrou em trailing','Paper Trading • Alvo 2 alcançado • proteção elevada para '+t.stop.toPrecision(7)+'.');
+ }
  if(p>=t.t3){closeTrade(t,p,'ALVO 3');return}
  if(t.state==='TRAILING'){const trail=t.highest*.975;t.stop=Math.max(t.stop,trail)}
  if(p<=t.stop){closeTrade(t,p,t.stop>=t.entry?'TRAILING/PROTEÇÃO':'STOP');return}
  if(now()-t.openedAt>24*60*60*1000)closeTrade(t,p,'EXPIRADO 24H');
 }
-function closeTrade(t,p,reason){t.status='CLOSED';t.exit=p;t.closedAt=now();t.reason=reason;t.pnl=(p-t.entry)*t.qty;save()}
+function closeTrade(t,p,reason){
+ t.status='CLOSED';t.exit=p;t.closedAt=now();t.reason=reason;t.pnl=(p-t.entry)*t.qty;save();
+ const good=t.pnl>=0, icon=reason==='STOP'?'🔴':good?'✅':'🟠';
+ paperNotify('paper-close-'+t.id,icon+' '+t.symbol+' • '+reason,'Paper encerrado • P&L '+money(t.pnl)+' • saída '+p.toPrecision(7)+'.');
+}
 function metrics(){
  const c=paper.trades.filter(t=>t.status==='CLOSED'&&finite(t.pnl)), wins=c.filter(t=>t.pnl>0),loss=c.filter(t=>t.pnl<0);
  const gp=wins.reduce((s,t)=>s+t.pnl,0),gl=Math.abs(loss.reduce((s,t)=>s+t.pnl,0));
