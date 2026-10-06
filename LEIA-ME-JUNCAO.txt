@@ -1,0 +1,14 @@
+CRIPTO RADAR V11 — JUNÇÃO CORRIGIDA
+
+Esta versão mantém os recursos novos da V11 e preserva a base funcional da carteira/notificações.
+
+Correções principais:
+- ponte de compatibilidade entre a carteira original e os módulos V7–V11;
+- carteira local crWallet preservada;
+- atualização de mercado rápida mantida em 4 segundos quando necessário;
+- notificações e alarme de urgência mantidos;
+- Service Worker com cache novo e limpeza automática de versões antigas;
+- campo Acertos da V11 agora mostra 'Aguardando 1h' até existir validação real, em vez de parecer quebrado;
+- simulador/aporte e Paper Trading mantidos.
+
+Para publicar na Vercel/GitHub, envie todos os arquivos da pasta/ZIP para a raiz do projeto.
