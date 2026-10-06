@@ -442,7 +442,7 @@ async function opportunities(){
   return latestOpportunities;
  }
 }
-calcAporte(); opportunities().then(()=>renderTopHighlights());
+// Inicialização movida para o fim do script, após carteira e mercado estarem declarados.
 
 let trendAutoTimer=null;
 async function autoUpdateTrends(){
@@ -1083,6 +1083,13 @@ async function updateMarketRumors(){
 }
 updateMarketRumors();
 setInterval(updateMarketRumors,60000);
+
+// Inicialização segura: evita acessar printWallet/WALLET_BRL antes da declaração.
+setTimeout(()=>{
+ try{ calcAporte(); }catch(e){ console.warn('calcAporte init',e); }
+ try{ opportunities().then(()=>renderTopHighlights()).catch(()=>{}); }catch(e){ console.warn('opportunities init',e); }
+ try{ renderUrgentRadar(); }catch(e){}
+},0);
 
 
 </script></main>
