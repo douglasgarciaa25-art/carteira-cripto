@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V8</title>
+<title>Cripto Radar V10</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -140,12 +140,50 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .v8-health{margin-top:10px;padding:9px;border-radius:11px;background:#0b1727;border:1px solid #29405e}
 @media(max-width:620px){.v8-grid{grid-template-columns:repeat(2,1fr)}.v8-table{font-size:10px}}
 
+
+/* ===== V9 • resumo operacional ===== */
+.v9-card{border:1px solid #38bdf866!important;background:linear-gradient(145deg,#082338dd,#0b1727)!important}
+.v9-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.v9-box{padding:10px;border-radius:12px;border:1px solid #294766;background:#091524}.v9-box b{display:block;font-size:16px;margin-top:3px}.v9-feed{margin-top:10px;padding:10px;border-radius:12px;background:#081421;border:1px solid #294766}.v9-good{color:#86efac}.v9-warn{color:#fde68a}.v9-bad{color:#fca5a5}
+@media(max-width:620px){.v9-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* ===== V10 CORE ===== */
+.v10-card{border:1px solid #22c55e66!important;background:linear-gradient(145deg,#08251ddd,#0b1727)!important}
+.v10-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.v10-box{padding:10px;border-radius:12px;border:1px solid #294766;background:#091524}.v10-box b{display:block;font-size:15px;margin-top:3px}.v10-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.v10-log{margin-top:10px;padding:10px;border-radius:12px;background:#07111d;border:1px solid #294766;font-size:12px;line-height:1.55}.v10-ok{color:#86efac}.v10-warn{color:#fde68a}.v10-bad{color:#fca5a5}
+@media(max-width:620px){.v10-grid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body><main>
 <div class="top"><div><h1>Cripto Radar V5</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
+<section class="card v9-card" id="v9Command">
+ <div class="coin">⚡ Radar Pro • Central</div>
+ <div class="small">Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.</div>
+ <div class="v9-grid">
+  <div class="v9-box"><span class="small">Dados</span><b id="v9Data">Carregando</b></div>
+  <div class="v9-box"><span class="small">Melhor sinal</span><b id="v9Best">—</b></div>
+  <div class="v9-box"><span class="small">Paper</span><b id="v9Paper">—</b></div>
+  <div class="v9-box"><span class="small">Notificações</span><b id="v9Notif">—</b></div>
+ </div>
+ <div class="v9-feed" id="v9Action">Inicializando diagnóstico…</div>
+</section>
+
+
+<section class="card v10-card" id="v10CoreCard">
+ <div class="coin">🧠 V10 • Motor Unificado</div>
+ <div class="small">Uma única leitura para Radar, Paper e notificações. A operação de teste serve apenas para validar o funcionamento e não representa recomendação.</div>
+ <div class="v10-grid">
+  <div class="v10-box"><span class="small">Motor</span><b id="v10Engine">Iniciando</b></div>
+  <div class="v10-box"><span class="small">Preço</span><b id="v10Price">—</b></div>
+  <div class="v10-box"><span class="small">Sinal</span><b id="v10Signal">—</b></div>
+  <div class="v10-box"><span class="small">Paper</span><b id="v10Paper">—</b></div>
+ </div>
+ <div class="v10-actions"><button id="v10TestTrade" type="button">🧪 FORÇAR OPERAÇÃO TESTE BTC</button><button id="v10TestNotif" type="button">🔔 TESTAR NOTIFICAÇÃO</button></div>
+ <div class="v10-log" id="v10Diag">Executando diagnóstico…</div>
+</section>
+
 <section class="card ai-radar-card" id="aiRadarCard">
 <div class="ai-head"><div class="coin">🤖 IA Radar</div><div id="aiStatus" class="ai-status">Iniciando IA…</div></div>
 <div class="small">Agente adaptativo no servidor: cruza liquidez, força, volume e estabilidade e pode guardar o desempenho dos sinais.</div>
@@ -1570,6 +1608,148 @@ function health(){
 function init(){q('v8Run')?.addEventListener('click',run);health();exposure();setInterval(health,10000);setInterval(exposure,120000)}
 document.addEventListener('DOMContentLoaded',()=>setTimeout(init,2200));
 window.v8RunBacktest=run;
+})();
+</script>
+
+
+<script>
+/* ===== Cripto Radar V9 ===== */
+(function(){
+ const q=id=>document.getElementById(id),num=v=>Number(v),fin=v=>Number.isFinite(num(v));
+ function symbols(){
+  const x=new Set();
+  try{Object.keys(window.walletMarketData||{}).forEach(s=>x.add(String(s).replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  try{(window.printWallet||[]).forEach(a=>x.add(String(a.symbol||'').replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  try{(window.latestOpportunities||[]).forEach(a=>x.add(String(a.symbol||'').replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  return [...x].filter(Boolean);
+ }
+ function best(){
+  if(typeof window.walletBuySignal!=='function')return null;
+  let arr=[];for(const sym of symbols()){try{const z=window.walletBuySignal(sym)||{},score=num(z.confidence??z.score??0);arr.push({sym,score,label:String(z.label||z.action||z.stage||'').toUpperCase()})}catch(e){}}
+  return arr.sort((a,b)=>b.score-a.score)[0]||null;
+ }
+ function paperInfo(){
+  try{const d=JSON.parse(localStorage.getItem('criptoRadarV7Paper')||'{}'),t=Array.isArray(d.trades)?d.trades:[],o=t.filter(x=>x.status==='OPEN'),c=t.filter(x=>x.status==='CLOSED');return {open:o.length,closed:c.length}}catch(e){return {open:0,closed:0}}
+ }
+ function notificationInfo(){
+  if(!('Notification'in window))return 'Indisponível';
+  if(Notification.permission==='granted'&&localStorage.getItem('radarNotifications')==='on')return 'ATIVAS';
+  if(Notification.permission==='denied')return 'BLOQUEADAS';
+  return 'DESATIVADAS';
+ }
+ function dataHealth(){
+  let count=0,bad=0;
+  try{for(const v of Object.values(window.walletMarketData||{})){count++;const p=num(v.price??v.last??v.lastPrice);if(!(fin(p)&&p>0))bad++}}catch(e){}
+  // Technical cache also counts as a healthy market source.
+  let tech=0;try{tech=Object.keys(window.radarTechCache||{}).length}catch(e){}
+  return {count,tech,bad,healthy:(count-bad)+tech};
+ }
+ function render(){
+  const h=dataHealth(),b=best(),p=paperInfo(),ni=notificationInfo();
+  if(q('v9Data')){q('v9Data').textContent=h.healthy?('OK • '+h.healthy):'AGUARDANDO';q('v9Data').className=h.healthy?'v9-good':'v9-warn'}
+  if(q('v9Best'))q('v9Best').textContent=b?(b.sym+' '+b.score.toFixed(0)+'/100'):'—';
+  if(q('v9Paper'))q('v9Paper').textContent=p.open+' aberta'+(p.open===1?'':'s');
+  if(q('v9Notif')){q('v9Notif').textContent=ni;q('v9Notif').className=ni==='ATIVAS'?'v9-good':ni==='BLOQUEADAS'?'v9-bad':'v9-warn'}
+  let msg='';
+  if(!h.healthy)msg='⚠️ Aguardando dados confiáveis. O Radar não deve confirmar nova entrada sem preço/mercado.';
+  else if(b&&b.score>=70&&/COMPRA|ENTRADA|BUY/.test(b.label))msg='🟢 '+b.sym+' está no gatilho técnico ('+b.score.toFixed(0)+'/100). O Paper deve avaliar a abertura automaticamente.';
+  else if(b)msg='👀 Melhor leitura atual: '+b.sym+' '+b.score.toFixed(0)+'/100 • '+(b.label||'observando')+'.';
+  else msg='✓ Fontes ativas; aguardando sinal técnico.';
+  if(ni!=='ATIVAS')msg+=' 🔔 Notificações não estão ativas.';
+  if(q('v9Action'))q('v9Action').textContent=msg;
+ }
+ // notification cooldown persistence: prevents repeat spam after reload
+ const old=window.radarNotify;
+ if(typeof old==='function'){
+   window.radarNotify=async function(key,title,body){
+    try{
+      const k='radarNotifCooldownV9',d=JSON.parse(localStorage.getItem(k)||'{}'),t=Date.now();
+      if(d[key]&&t-d[key]<10*60*1000)return;
+      d[key]=t;for(const x of Object.keys(d))if(t-d[x]>86400000)delete d[x];
+      localStorage.setItem(k,JSON.stringify(d));
+    }catch(e){}
+    return old(key,title,body);
+   };
+ }
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(render,2500));
+ setInterval(render,5000);
+ window.v9Render=render;
+})();
+</script>
+
+
+<script>
+/* ===== Cripto Radar V10 • camada unificada ===== */
+(function(){
+ const q=id=>document.getElementById(id),N=v=>Number(v),finite=v=>Number.isFinite(N(v)),now=()=>Date.now();
+ const stable=/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/;
+ const core={lastPrice:{},lastDecision:{},health:{}};
+ function syms(){
+  const z=new Set(['BTC','ETH']);
+  try{Object.keys(window.walletMarketData||{}).forEach(x=>z.add(String(x).replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  try{(window.printWallet||[]).forEach(x=>z.add(String(x.symbol||'').replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  try{(window.latestOpportunities||[]).forEach(x=>z.add(String(x.symbol||'').replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  return [...z].filter(x=>x&&!stable.test(x)).slice(0,60);
+ }
+ async function price(sym){
+  sym=String(sym).replace(/USDT$/,'').toUpperCase();
+  try{const d=(window.walletMarketData||{})[sym]||(window.walletMarketData||{})[sym+'USDT']||{};for(const v of [d.price,d.last,d.lastPrice,d.close]){const x=N(v);if(finite(x)&&x>0){core.lastPrice[sym]={price:x,at:now(),source:'market'};return x}}}catch(e){}
+  for(const base of ['https://data-api.binance.vision','https://api.binance.com']){
+   try{const r=await fetch(base+'/api/v3/ticker/price?symbol='+sym+'USDT',{cache:'no-store'});if(r.ok){const j=await r.json(),x=N(j.price);if(finite(x)&&x>0){core.lastPrice[sym]={price:x,at:now(),source:'Binance REST'};return x}}}catch(e){}
+  }
+  return 0;
+ }
+ function decision(sym){
+  let x={};try{if(typeof window.walletBuySignal==='function')x=window.walletBuySignal(sym)||{}}catch(e){}
+  const score=Math.max(0,Math.min(100,N(x.confidence??x.score??x.technicalConfidence??0)||0));
+  const label=String(x.label||x.action||x.stage||'OBSERVAR').toUpperCase();
+  const buy=/COMPRA|COMPRAR|ENTRADA|BUY|APORTAR/.test(label);
+  const confirmed=buy&&score>=70;
+  return core.lastDecision[sym]={sym,score,label,buy,confirmed,at:now(),raw:x};
+ }
+ function paper(){
+  try{return JSON.parse(localStorage.getItem('criptoRadarV7Paper')||'{}')}catch(e){return{}}
+ }
+ function savePaper(d){localStorage.setItem('criptoRadarV7Paper',JSON.stringify(d))}
+ async function testTrade(){
+  const sym='BTC',entry=await price(sym);if(!entry){diag('🔴 Teste falhou: sem preço BTC/USDT.');return}
+  let d=paper();d.capital=finite(d.capital)?N(d.capital):10000;d.risk=Math.max(.1,Math.min(5,finite(d.risk)?N(d.risk):1));d.trades=Array.isArray(d.trades)?d.trades:[];d.seen=d.seen||{};
+  const riskDist=entry*.02,riskUsd=d.capital*(d.risk/100),qty=riskUsd/riskDist,id='TEST-BTC-'+now();
+  d.trades.unshift({id,symbol:sym,status:'OPEN',state:'ENTRADA TESTE',openedAt:now(),entry,stop:entry-riskDist,t1:entry+riskDist*1.5,t2:entry+riskDist*2.2,t3:entry+riskDist*3,qty,positionValue:qty*entry,confidence:0,highest:entry,exit:null,closedAt:null,pnl:null,reason:'OPERAÇÃO DE TESTE V10',source:'V10 TEST'});
+  savePaper(d);diag('🧪 Operação de teste aberta em BTC • entrada '+entry.toPrecision(8)+' • valor simulado US$ '+(qty*entry).toFixed(2)+'.');notify('v10-test-trade-'+id,'🧪 V10 • Operação de teste','BTC Paper aberto apenas para validar o sistema.');render();
+ }
+ async function notify(key,title,body){
+  try{
+   if(typeof window.radarNotify==='function'){await window.radarNotify(key,title,body);return true}
+   if(!('Notification'in window)||Notification.permission!=='granted')return false;
+   const reg=('serviceWorker'in navigator)?await navigator.serviceWorker.ready:null;
+   if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./icon.svg',badge:'./icon.svg',tag:key,data:{url:'./'}});
+   else new Notification(title,{body,icon:'./icon.svg',tag:key});
+   return true;
+  }catch(e){return false}
+ }
+ async function testNotif(){
+  if(!('Notification'in window)){diag('🔴 Este navegador não suporta notificações web.');return}
+  if(Notification.permission!=='granted'){const p=await Notification.requestPermission();if(p!=='granted'){diag('🔴 Permissão de notificação não concedida.');return}localStorage.setItem('radarNotifications','on')}
+  const sent=await notify('v10-manual-'+Math.floor(now()/60000),'🔔 Cripto Radar V10','Teste de notificação funcionando.');
+  diag(sent?'✓ Notificação de teste enviada.':'⚠️ Não foi possível enviar a notificação.');
+ }
+ function diag(msg){const e=q('v10Diag');if(e)e.textContent=msg}
+ async function render(){
+  const list=syms(),ds=list.map(decision).sort((a,b)=>b.score-a.score),best=ds[0],p=paper(),tr=Array.isArray(p.trades)?p.trades:[],open=tr.filter(x=>x.status==='OPEN');
+  const bp=await price(best?.sym||'BTC'),fresh=core.lastPrice[best?.sym||'BTC'];
+  const priceOK=bp>0&&fresh&&now()-fresh.at<120000;
+  if(q('v10Engine')){q('v10Engine').textContent=priceOK?'ONLINE':'PROTEGIDO';q('v10Engine').className=priceOK?'v10-ok':'v10-warn'}
+  if(q('v10Price')){q('v10Price').textContent=priceOK?'OK':'SEM DADO';q('v10Price').className=priceOK?'v10-ok':'v10-bad'}
+  if(q('v10Signal'))q('v10Signal').textContent=best?(best.sym+' '+best.score.toFixed(0)+'/100'):'—';
+  if(q('v10Paper'))q('v10Paper').textContent=open.length+' aberta'+(open.length===1?'':'s');
+  if(!priceOK)diag('⚠️ Circuit breaker: novas decisões devem ser ignoradas enquanto não houver preço válido/fresco.');
+  else if(best?.confirmed)diag('🟢 '+best.sym+' • '+best.label+' • '+best.score.toFixed(0)+'/100 • preço/fonte OK.');
+  else diag('✓ Motor e preço OK • '+(best?best.sym+' '+best.score.toFixed(0)+'/100 • '+best.label:'aguardando sinal')+'.');
+ }
+ document.addEventListener('DOMContentLoaded',()=>{q('v10TestTrade')?.addEventListener('click',testTrade);q('v10TestNotif')?.addEventListener('click',testNotif);setTimeout(render,2500)});
+ setInterval(render,10000);
+ window.CriptoRadarV10={price,decision,testTrade,render,core};
 })();
 </script>
 

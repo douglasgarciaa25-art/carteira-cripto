@@ -25,3 +25,7 @@ V5: confluência 5m/15m/1h/4h/1D, estrutura HH/HL e LH/LL, VWAP, divergências R
 V7: paper trading local, diário automático, máquina de estados, win rate, profit factor, expectancy, drawdown e leitura pública de funding/open interest/long-short quando disponível. Nenhuma ordem real é executada.
 
 V8: backtest histórico em candles 1h, estratégias separadas (tendência/breakout/reversão), custos de taxa+slippage, benchmark buy-and-hold/BTC, calibração por faixa de confiança, correlação da carteira e monitor de saúde dos dados. Resultados históricos não garantem retorno futuro.
+
+V9: Central Radar Pro unificada, diagnóstico de dados, resumo do melhor sinal/Paper/notificações e cooldown persistente de notificações. Mantém V8, Paper e backtest.
+
+V10: camada unificada de decisão para Radar/Paper/notificações, circuit breaker de preço, diagnóstico central, teste manual de Paper BTC e teste de notificação. O teste é somente funcional e não é recomendação financeira.
