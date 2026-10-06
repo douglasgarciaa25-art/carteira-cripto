@@ -260,10 +260,10 @@ BTC 0,00015"></textarea>
 </section>
 
 <section class="card v7-card" id="v7ValidationCard">
- <div class="v7-head"><div class="coin">🧪 V7 • Paper Trading & Validação</div><div class="v7-badge">SEM ORDENS REAIS</div></div>
+ <div class="v7-head"><div class="coin">🧪 Paper Trading & Validação</div><div class="v7-badge">SEM ORDENS REAIS</div></div>
  <div class="small">Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.</div>
  <div class="v7-controls"><label class="small">Capital simulado (US$)<br><input id="paperCapital" type="number" min="100" step="100" value="10000"></label><label class="small">Risco/operação (%)<br><input id="paperRisk" type="number" min="0.1" max="5" step="0.1" value="1"></label><button id="paperReset" type="button">ZERAR PAPER</button></div>
- <div class="v7-grid" id="paperStats"></div>
+ <div id="paperRiskWarning" class="small" style="margin-top:8px"></div><div id="paperEngineStatus" class="small" style="margin-top:8px">Motor do Paper: iniciando…</div><div class="v7-grid" id="paperStats"></div>
  <div id="paperOpen" style="margin-top:10px"></div>
  <details style="margin-top:10px"><summary><b>📓 Diário automático</b></summary><div id="paperJournal"></div></details>
  <div id="derivativesHealth" class="small" style="margin-top:10px">Derivativos: aguardando ativos elegíveis.</div>
@@ -1286,7 +1286,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function load(){
  try{
   const d=JSON.parse(localStorage.getItem(V7KEY)||'{}');
-  return {capital:finite(d.capital)?n(d.capital):10000,risk:finite(d.risk)?n(d.risk):1,trades:Array.isArray(d.trades)?d.trades:[],seen:d.seen||{}};
+  return {capital:finite(d.capital)?n(d.capital):10000,risk:finite(d.risk)?Math.max(.1,Math.min(5,n(d.risk))):1,trades:Array.isArray(d.trades)?d.trades:[],seen:d.seen||{}};
  }catch(e){return {capital:10000,risk:1,trades:[],seen:{}}}
 }
 let paper=load(), derCache={};
@@ -1300,16 +1300,45 @@ function px(sym){
 }
 function technical(sym){
  try{
-  if(typeof window.v6SignalInsight==='function')return window.v6SignalInsight(sym)||{};
-  if(typeof window.v5Insight==='function')return window.v5Insight(sym)||{};
-  if(typeof window.walletBuySignal==='function')return window.walletBuySignal(sym)||{};
+  // Fonte principal: exatamente o mesmo sinal de compra usado pelo Radar visível.
+  if(typeof window.walletBuySignal==='function'){
+    const x=window.walletBuySignal(sym);
+    if(x&&typeof x==='object')return {...x,_source:'walletBuySignal'};
+  }
+  if(typeof window.v6SignalInsight==='function'){
+    const x=window.v6SignalInsight(sym); if(x)return {...x,_source:'v6SignalInsight'};
+  }
+  if(typeof window.v5Insight==='function'){
+    const x=window.v5Insight(sym); if(x)return {...x,_source:'v5Insight'};
+  }
  }catch(e){}
  return {};
 }
+function signalText(sig){
+ return String(sig.label||sig.stage||sig.action||sig.signal||sig.status||'').trim().toUpperCase();
+}
+function signalConfidence(sig){
+ const vals=[sig.confidence,sig.score,sig.technicalConfidence,sig.confidenceScore,sig.strength];
+ for(const v of vals){const x=n(v);if(finite(x))return clamp(x,0,100)}
+ return 0;
+}
 function confirmed(sig){
- const txt=String(sig.stage||sig.label||sig.action||'').toUpperCase();
- const conf=n(sig.confidence??sig.score??0);
- return (txt.includes('CONFIRM')||txt.includes('SINAL FORTE')||txt.includes('ALARME DE COMPRA')) && conf>=70;
+ const txt=signalText(sig), conf=signalConfidence(sig);
+ const buy=/COMPRA|COMPRAR|ENTRADA|BUY|APORTAR/.test(txt);
+ const strong=/CONFIRM|FORTE|ALARME|ENTRADA POSSÍVEL|POSSIVEL/.test(txt);
+ // O paper aceita entrada de compra real do Radar a partir de 70/100.
+ return buy && (strong||conf>=70) && conf>=70;
+}
+function candidateSymbols(){
+ const set=new Set(['BTC','ETH']);
+ try{Object.keys(window.walletMarketData||{}).forEach(s=>set.add(String(s).toUpperCase()))}catch(e){}
+ try{(window.printWallet||[]).forEach(x=>set.add(String(x.symbol||'').toUpperCase()))}catch(e){}
+ try{(window.latestOpportunities||[]).forEach(x=>set.add(String(x.symbol||'').toUpperCase()))}catch(e){}
+ try{(window.radarTechCache?Object.keys(window.radarTechCache):[]).forEach(s=>set.add(String(s).replace(/USDT$/,'').toUpperCase()))}catch(e){}
+ return [...set].filter(s=>s&&!/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(s)).slice(0,60);
+}
+function paperStatus(msg){
+ const e=document.getElementById('paperEngineStatus'); if(e)e.textContent=msg;
 }
 function levels(sym,sig,entry){
  let stop=n(sig.stop||sig.invalidation), t1=n(sig.target1||sig.t1),t2=n(sig.target2||sig.t2),t3=n(sig.target3||sig.t3);
@@ -1323,15 +1352,19 @@ function levels(sym,sig,entry){
  return {stop,t1,t2,t3,risk};
 }
 function maybeOpen(sym){
- sym=String(sym||'').toUpperCase(); if(!sym||/^(USDT|USDC|FDUSD|TUSD|DAI)$/.test(sym))return;
- const sig=technical(sym), entry=px(sym); if(!entry||!confirmed(sig))return;
+ sym=String(sym||'').replace(/USDT$/,'').toUpperCase();
+ if(!sym||/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(sym))return {opened:false,why:'stable'};
+ const sig=technical(sym), entry=px(sym), txt=signalText(sig), conf=signalConfidence(sig);
+ if(!entry)return {opened:false,why:'sem preço',symbol:sym,label:txt,confidence:conf};
+ if(!confirmed(sig))return {opened:false,why:'sinal abaixo do gatilho',symbol:sym,label:txt||'SEM SINAL',confidence:conf};
  const stamp=Math.floor(now()/(15*60*1000)), key=sym+'-'+stamp;
- if(paper.seen[key])return;
- if(paper.trades.some(t=>t.symbol===sym&&t.status==='OPEN'))return;
+ if(paper.seen[key])return {opened:false,why:'cooldown',symbol:sym,label:txt,confidence:conf};
+ if(paper.trades.some(t=>t.symbol===sym&&t.status==='OPEN'))return {opened:false,why:'já aberta',symbol:sym,label:txt,confidence:conf};
  const L=levels(sym,sig,entry), riskUsd=paper.capital*(paper.risk/100), qty=riskUsd/Math.max(L.risk,entry*.006);
- const confidence=clamp(n(sig.confidence??sig.score??70),0,100);
- paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,confidence,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado V7'});
+ paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,confidence:conf,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado do Radar • '+(txt||'COMPRA'),source:sig._source||'Radar'});
  paper.seen[key]=now(); save();
+ try{if(typeof radarNotify==='function')radarNotify('paper-'+sym,'🧪 Paper Trading: '+sym,'Operação simulada aberta • confiança '+conf.toFixed(0)+'/100')}catch(e){}
+ return {opened:true,why:'aberta',symbol:sym,label:txt,confidence:conf};
 }
 function updateTrade(t){
  if(t.status!=='OPEN')return;
@@ -1386,15 +1419,27 @@ async function refreshDerivatives(){
  el.innerHTML=good.length?'📈 Derivativos públicos: '+good.map(([s,v])=>'<b>'+s+'</b> funding '+(finite(v.funding)?v.funding.toFixed(4)+'%':'—')+' • OI '+(finite(v.openInterest)?Math.round(v.openInterest).toLocaleString('pt-BR'):'—')+' • L/S '+(finite(v.longShort)?v.longShort.toFixed(2):'—')).join(' | '):'Derivativos: fonte indisponível ou sem contrato elegível.';
 }
 function scan(){
- const syms=new Set();
- try{(window.latestOpportunities||[]).slice(0,8).forEach(x=>syms.add(String(x.symbol||'').toUpperCase()))}catch(e){}
- try{(window.printWallet||[]).forEach(x=>syms.add(String(x.symbol||'').toUpperCase()))}catch(e){}
- syms.forEach(maybeOpen); paper.trades.forEach(updateTrade); save();render();
+ const syms=candidateSymbols(), results=syms.map(maybeOpen);
+ paper.trades.forEach(updateTrade); save(); render();
+ const opened=results.filter(x=>x&&x.opened);
+ const best=results.filter(x=>x&&x.symbol).sort((a,b)=>(b.confidence||0)-(a.confidence||0))[0];
+ if(opened.length)paperStatus('✓ '+opened.length+' operação(ões) simulada(s) aberta(s) pelo sinal do Radar.');
+ else if(best)paperStatus('Motor ativo • '+syms.length+' ativos verificados • melhor agora: '+best.symbol+' '+(best.confidence||0).toFixed(0)+'/100 • '+(best.label||best.why)+'.');
+ else paperStatus('Motor ativo • aguardando dados/sinais do Radar.');
+}
+function renderRiskWarning(){
+ const w=document.getElementById('paperRiskWarning'); if(!w)return;
+ const v=n(paper.risk)||1;
+ w.textContent=v>2?'⚠️ Risco elevado: '+v.toFixed(1)+'% por operação. Faixa configurável: 0,1% a 5%.':'Faixa permitida: 0,1% a 5% por operação.';
 }
 function init(){
  const cap=document.getElementById('paperCapital'),risk=document.getElementById('paperRisk');
  if(cap){cap.value=paper.capital;cap.onchange=()=>{paper.capital=Math.max(100,n(cap.value)||10000);save();render()}}
- if(risk){risk.value=paper.risk;risk.onchange=()=>{paper.risk=clamp(n(risk.value)||1,.1,5);save();render()}}
+ if(risk){paper.risk=clamp(n(paper.risk)||1,.1,5);risk.value=paper.risk;save();
+ const riskWarn=()=>{const w=document.getElementById('paperRiskWarning'),v=n(risk.value);if(w)w.textContent=finite(v)&&v>5?'Máximo permitido: 5%. O valor será ajustado para 5%.':finite(v)&&v>2?'⚠️ Risco elevado: acima de 2% por operação.':'Faixa permitida: 0,1% a 5% por operação.'};
+ const applyRisk=()=>{let v=n(risk.value);if(!finite(v))v=1;paper.risk=clamp(v,.1,5);risk.value=paper.risk;save();render();riskWarn()};
+ risk.oninput=riskWarn;risk.onchange=applyRisk;risk.onblur=applyRisk;riskWarn();
+ }
  const reset=document.getElementById('paperReset');if(reset)reset.onclick=()=>{if(confirm('Zerar todo o histórico do paper trading V7?')){paper={capital:n(cap?.value)||10000,risk:n(risk?.value)||1,trades:[],seen:{}};save();render()}};
  render();scan();refreshDerivatives();
  setInterval(scan,5000);setInterval(refreshDerivatives,60000);
