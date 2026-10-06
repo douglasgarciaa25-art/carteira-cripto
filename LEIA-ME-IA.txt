@@ -14,3 +14,6 @@ Arquivos:
 
 O vercel.json encaminha /api/ai para o ai.js que fica na raiz.
 A IA analisa o mercado, mas não executa ordens financeiras automaticamente.
+
+
+V4: regime BTC+ETH, ADX, Bollinger Bands, breakout confirmado, risco por ativo, stop/alvo ATR, perfis Conservador/Normal/Agressivo e painel de desempenho 1h/4h/24h.
