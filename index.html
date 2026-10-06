@@ -1093,6 +1093,24 @@ setInterval(updateMarketRumors,60000);
 
 
 </script></main>
+<script>
+/* Radar Pro v2 — confirmação multi-timeframe (15m/1h), RSI e volume. */
+const radarTechCache=new Map();
+function radarEMA(values,n){if(!values.length)return 0;const k=2/(n+1);let e=values[0];for(const v of values.slice(1))e=v*k+e*(1-k);return e}
+function radarRSI(values,n=14){if(values.length<n+1)return 50;let g=0,l=0;for(let i=values.length-n;i<values.length;i++){const d=values[i]-values[i-1];if(d>0)g+=d;else l-=d}if(!l)return 100;const rs=(g/n)/(l/n);return 100-(100/(1+rs))}
+async function radarKlines(symbol,interval='15m',limit=80){const pair=normalizeWalletSymbol(symbol)+'USDT';for(const b of ['https://data-api.binance.vision','https://api.binance.com'])try{const r=await fetch(`${b}/api/v3/klines?symbol=${pair}&interval=${interval}&limit=${limit}`,{cache:'no-store'});if(r.ok){const j=await r.json();if(Array.isArray(j)&&j.length>25)return j}}catch(e){}return null}
+async function radarTechnical(symbol){symbol=normalizeWalletSymbol(symbol);if(walletStable.has(symbol))return null;const old=radarTechCache.get(symbol),now=Date.now();if(old&&now-old.at<60000)return old.data;const [k15,k1h]=await Promise.all([radarKlines(symbol,'15m'),radarKlines(symbol,'1h')]);if(!k15||!k1h)return old?.data||null;const calc=k=>{const close=k.map(x=>+x[4]),vol=k.map(x=>+x[5]);const last=close.at(-1),e9=radarEMA(close.slice(-40),9),e21=radarEMA(close.slice(-55),21),rsi=radarRSI(close,14),avg=vol.slice(-21,-1).reduce((a,b)=>a+b,0)/20,vr=avg?vol.at(-1)/avg:1;return{last,e9,e21,rsi,vr,trend:e9>e21?1:e9<e21?-1:0}};const a=calc(k15),b=calc(k1h);let score=50;score+=a.trend*12+b.trend*18;score+=a.vr>=1.35?8:a.vr<.7?-5:0;score+=a.rsi>=52&&a.rsi<=68?8:a.rsi>=75?-12:a.rsi<=30?-8:0;score=Math.max(0,Math.min(100,Math.round(score)));const data={m15:a,h1:b,score,bull:a.trend>0&&b.trend>0&&a.rsi<72,bear:a.trend<0&&b.trend<0,at:now};radarTechCache.set(symbol,{at:now,data});return data}
+async function refreshRadarTechnicals(){const held=(printWallet||[]).map(x=>normalizeWalletSymbol(x.symbol));const opp=(latestOpportunities||[]).slice(0,12).map(x=>x.symbol);const syms=[...new Set([...held,...opp])].filter(x=>!walletStable.has(x)).slice(0,18);await Promise.allSettled(syms.map(radarTechnical));try{renderPrintWallet();renderUrgentRadar();renderSmartAllocation()}catch(e){}}
+function radarTechText(t){if(!t)return 'tendência técnica aguardando';return `15m ${t.m15.trend>0?'↑':t.m15.trend<0?'↓':'→'} • 1h ${t.h1.trend>0?'↑':t.h1.trend<0?'↓':'→'} • RSI ${t.m15.rsi.toFixed(0)} • vol ${t.m15.vr.toFixed(1)}x`}
+const walletBuySignalBase=walletBuySignal;
+walletBuySignal=function(rawSymbol){const base=walletBuySignalBase(rawSymbol),s=normalizeWalletSymbol(rawSymbol),t=radarTechCache.get(s)?.data;if(!t)return {...base,why:base.why+' • aguardando confirmação 15m/1h'};let score=(base.score||0)+Math.round((t.score-50)/12);if(base.label==='ALARME DE COMPRA'&&(!t.bull||t.m15.vr<.9))return {label:'OBSERVAR COMPRA',state:'watch',score,why:base.why+' • sem confirmação completa • '+radarTechText(t)};if((base.label==='ALARME DE COMPRA'||base.label==='OBSERVAR COMPRA')&&t.bull&&t.m15.vr>=1.05&&t.m15.rsi<70)return {label:'ALARME DE COMPRA',state:'good',score:Math.max(6,score),why:'tendência 15m/1h alinhada • '+radarTechText(t)};return {...base,score,why:base.why+' • '+radarTechText(t)}};
+const walletDirectionBase=walletDirection;
+walletDirection=function(rawSymbol){const s=normalizeWalletSymbol(rawSymbol),base=walletDirectionBase(s),t=radarTechCache.get(s)?.data;if(!t)return base;if(base.action==='VENDER / REDUZIR'&&!t.bear)return {action:'ATENÇÃO PARA VENDA',icon:'🟡',cls:'guide-wait',why:'Queda em 24h, porém 15m/1h ainda não confirmam tendência de baixa. '+radarTechText(t)};if(base.action==='ATENÇÃO PARA VENDA'&&t.bear&&t.m15.vr>=1.05)return {...base,why:'Pressão vendedora confirmada em 15m/1h. '+radarTechText(t)};if(base.action==='REALIZAR PARTE'&&t.m15.rsi<70)return {action:'MANTER / PROTEGER',icon:'🔵',cls:'guide-hold',why:'Alta forte, mas RSI ainda não está excessivamente esticado. '+radarTechText(t)};const b=walletBuySignal(s);if(b.label==='ALARME DE COMPRA')return {action:'COMPRAR / APORTAR',icon:'🟢',cls:'guide-buy',why:b.why};return {...base,why:base.why+' • '+radarTechText(t)}};
+const urgentSignalBase=urgentSignal;
+urgentSignal=function(rawSymbol,held=false){const s=normalizeWalletSymbol(rawSymbol),x=urgentSignalBase(s,held),t=radarTechCache.get(s)?.data;if(!x||!t)return x;if(x.kind==='rocket'&&(!t.bull||t.m15.vr<1.05||t.m15.rsi>=72))return null;if(x.kind==='risk'&&!t.bear)return null;return {...x,score:Math.min(99,Math.round((x.score+t.score)/2)),why:x.why+' • '+radarTechText(t)}};
+setTimeout(refreshRadarTechnicals,2500);setInterval(refreshRadarTechnicals,30000);
+</script>
+
 <script src="./ai-radar.js"></script>
 
 <script>
