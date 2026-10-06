@@ -17,3 +17,11 @@ A IA analisa o mercado, mas não executa ordens financeiras automaticamente.
 
 
 V4: regime BTC+ETH, ADX, Bollinger Bands, breakout confirmado, risco por ativo, stop/alvo ATR, perfis Conservador/Normal/Agressivo e painel de desempenho 1h/4h/24h.
+
+
+V5: confluência 5m/15m/1h/4h/1D, estrutura HH/HL e LH/LL, VWAP, divergências RSI, força relativa ao BTC, entrada/invalidação/3 alvos e painel de desempenho.
+
+
+V7: paper trading local, diário automático, máquina de estados, win rate, profit factor, expectancy, drawdown e leitura pública de funding/open interest/long-short quando disponível. Nenhuma ordem real é executada.
+
+V8: backtest histórico em candles 1h, estratégias separadas (tendência/breakout/reversão), custos de taxa+slippage, benchmark buy-and-hold/BTC, calibração por faixa de confiança, correlação da carteira e monitor de saúde dos dados. Resultados históricos não garantem retorno futuro.

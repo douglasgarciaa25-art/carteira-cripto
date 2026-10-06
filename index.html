@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar</title>
+<title>Cripto Radar V8</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -117,10 +117,33 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .smart-buy{background:#123d2d;color:#86efac}.smart-hold{background:#172554;color:#93c5fd}.smart-cut{background:#4b2027;color:#fca5a5}.smart-watch{background:#493c16;color:#fde68a}
 .smart-alloc-meta{font-size:11px;color:var(--muted);line-height:1.35}
 @media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
+
+/* ===== Cripto Radar V7 • validação + paper trading ===== */
+.v7-card{border:1px solid #14b8a666!important;background:linear-gradient(145deg,#0b2427cc,#0b1727)!important}
+.v7-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.v7-badge{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#123d36;color:#99f6e4}
+.v7-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.v7-stat{padding:10px;border-radius:12px;background:#091524;border:1px solid #244158}.v7-stat b{display:block;font-size:17px;margin-top:3px}
+.v7-row{padding:9px 0;border-bottom:1px solid #244158}.v7-row:last-child{border-bottom:0}
+.v7-state{display:inline-block;font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px;background:#172554;color:#bfdbfe}
+.v7-open{background:#123d2d;color:#86efac}.v7-stop{background:#4b2027;color:#fca5a5}.v7-win{background:#123d2d;color:#86efac}.v7-exp{background:#493c16;color:#fde68a}
+.v7-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.v7-controls input{width:100px;border:1px solid #334b69;background:#091524;color:#fff;border-radius:10px;padding:9px}
+@media(max-width:620px){.v7-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* ===== Cripto Radar V8 • Backtest & Calibração ===== */
+.v8-card{border:1px solid #8b5cf688!important;background:linear-gradient(145deg,#1a1232cc,#0b1727)!important}
+.v8-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.v8-box{padding:10px;border:1px solid #334b69;border-radius:12px;background:#091524}.v8-box b{display:block;font-size:16px;margin-top:3px}
+.v8-controls{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px}.v8-controls select,.v8-controls input{border:1px solid #334b69;background:#091524;color:#fff;border-radius:10px;padding:9px}
+.v8-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11px}.v8-table th,.v8-table td{padding:7px 5px;border-bottom:1px solid #263b58;text-align:right}.v8-table th:first-child,.v8-table td:first-child{text-align:left}
+.v8-health{margin-top:10px;padding:9px;border-radius:11px;background:#0b1727;border:1px solid #29405e}
+@media(max-width:620px){.v8-grid{grid-template-columns:repeat(2,1fr)}.v8-table{font-size:10px}}
+
 </style>
 </head>
 <body><main>
-<div class="top"><div><h1>Cripto Radar</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
+<div class="top"><div><h1>Cripto Radar V5</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
 <section class="card ai-radar-card" id="aiRadarCard">
@@ -214,6 +237,36 @@ BTC 0,00015"></textarea>
   <div class="row"><span>Fonte automática</span><b>Binance / CoinGecko</b></div>
   <div class="row"><span>Análise no aplicativo</span><b>Radar integrado</b></div>
   <div class="row"><span>Decisão</span><b>Você confirma</b></div>
+</section>
+
+
+
+<section class="card v8-card" id="v8BacktestCard">
+ <div class="v7-head"><div class="coin">📊 V8 • Backtest & Calibração</div><div class="v7-badge">HISTÓRICO REAL</div></div>
+ <div class="small">Testa candles históricos públicos da Binance. Resultado inclui taxa e slippage configuráveis e compara a estratégia com comprar e manter BTC no mesmo período. Backtest não garante desempenho futuro.</div>
+ <div class="v8-controls">
+  <label class="small">Moeda<br><select id="v8Symbol"><option>BTC</option><option>ETH</option><option>SOL</option><option>SUI</option><option>LINK</option><option>BNB</option><option>XRP</option><option>ADA</option><option>DOGE</option></select></label>
+  <label class="small">Período<br><select id="v8Days"><option value="30">30 dias</option><option value="60">60 dias</option><option value="90" selected>90 dias</option></select></label>
+  <label class="small">Taxa %/lado<br><input id="v8Fee" type="number" value="0.10" min="0" max="1" step="0.01"></label>
+  <label class="small">Slippage %/lado<br><input id="v8Slip" type="number" value="0.05" min="0" max="1" step="0.01"></label>
+  <button id="v8Run" type="button">RODAR BACKTEST</button>
+ </div>
+ <div id="v8Status" class="v8-health">Aguardando backtest.</div>
+ <div class="v8-grid" id="v8Stats"></div>
+ <div id="v8Strategies"></div>
+ <div id="v8Calibration"></div>
+ <div id="v8Exposure" class="v8-health">Correlação/exposição: aguardando dados.</div>
+ <div id="v8DataHealth" class="v8-health">Saúde dos dados: verificando…</div>
+</section>
+
+<section class="card v7-card" id="v7ValidationCard">
+ <div class="v7-head"><div class="coin">🧪 V7 • Paper Trading & Validação</div><div class="v7-badge">SEM ORDENS REAIS</div></div>
+ <div class="small">Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.</div>
+ <div class="v7-controls"><label class="small">Capital simulado (US$)<br><input id="paperCapital" type="number" min="100" step="100" value="10000"></label><label class="small">Risco/operação (%)<br><input id="paperRisk" type="number" min="0.1" max="5" step="0.1" value="1"></label><button id="paperReset" type="button">ZERAR PAPER</button></div>
+ <div class="v7-grid" id="paperStats"></div>
+ <div id="paperOpen" style="margin-top:10px"></div>
+ <details style="margin-top:10px"><summary><b>📓 Diário automático</b></summary><div id="paperJournal"></div></details>
+ <div id="derivativesHealth" class="small" style="margin-top:10px">Derivativos: aguardando ativos elegíveis.</div>
 </section>
 
 <section class="card">
@@ -1151,6 +1204,36 @@ const refreshRadarV3=refreshRadarTechnicals;refreshRadarTechnicals=async functio
 document.addEventListener('DOMContentLoaded',()=>{const target=document.getElementById('urgentRadarCard');if(target&&!document.getElementById('radarV4Panel')){const s=document.createElement('section');s.className='card radar-v4-card';s.id='radarV4Panel';target.insertAdjacentElement('afterend',s)}setTimeout(()=>{renderRadarV4();refreshRadarTechnicals()},1200)});setInterval(renderRadarV4,10000);
 </script>
 
+
+<style>
+.radar-v5-card{margin-bottom:12px}.radar-v5-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.radar-v5-box{background:#0b1525;border:1px solid var(--line);border-radius:12px;padding:10px}.radar-v5-box b{display:block;margin-top:3px}.v5-good{color:#86efac}.v5-warn{color:#fde68a}.v5-bad{color:#fca5a5}@media(max-width:620px){.radar-v5-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script>
+/* Radar Pro V5 — confluência multi-timeframe, estrutura, VWAP, divergência, força relativa e validação. */
+const radarV5Cache=new Map();
+function radarVWAP(k){let pv=0,v=0;for(const x of k.slice(-80)){const q=+x[5],typ=(+x[2]+ +x[3]+ +x[4])/3;pv+=typ*q;v+=q}return v?pv/v:0}
+function radarPivots(k,n=3){const c=k.map(x=>+x[4]),hi=k.map(x=>+x[2]),lo=k.map(x=>+x[3]),ph=[],pl=[];for(let i=n;i<k.length-n;i++){if(hi[i]===Math.max(...hi.slice(i-n,i+n+1)))ph.push({i,p:hi[i]});if(lo[i]===Math.min(...lo.slice(i-n,i+n+1)))pl.push({i,p:lo[i]})}return{ph:ph.slice(-3),pl:pl.slice(-3),c}}
+function radarStructure(k){const p=radarPivots(k),h=p.ph,l=p.pl;if(h.length<2||l.length<2)return{key:'range',label:'LATERAL',score:0};const hh=h.at(-1).p>h.at(-2).p,hl=l.at(-1).p>l.at(-2).p,lh=h.at(-1).p<h.at(-2).p,ll=l.at(-1).p<l.at(-2).p;if(hh&&hl)return{key:'bull',label:'HH/HL',score:1};if(lh&&ll)return{key:'bear',label:'LH/LL',score:-1};return{key:'range',label:'MISTA',score:0}}
+function radarRSISeries(v,n=14){const out=Array(v.length).fill(50);for(let i=n;i<v.length;i++)out[i]=radarRSI(v.slice(0,i+1),n);return out}
+function radarDivergence(k){const p=radarPivots(k),r=radarRSISeries(p.c);if(p.pl.length>=2){const a=p.pl.at(-2),b=p.pl.at(-1);if(b.p<a.p&&r[b.i]>r[a.i]+2)return{key:'bull',label:'DIVERGÊNCIA ALTA'}}if(p.ph.length>=2){const a=p.ph.at(-2),b=p.ph.at(-1);if(b.p>a.p&&r[b.i]<r[a.i]-2)return{key:'bear',label:'DIVERGÊNCIA BAIXA'}}return{key:'none',label:'SEM DIVERGÊNCIA'}}
+function radarTF(k){const x=radarCalc(k),vwap=radarVWAP(k),structure=radarStructure(k),divergence=radarDivergence(k);return{...x,vwap,vwapPct:vwap?((x.last-vwap)/vwap)*100:0,structure,divergence}}
+function radarTFVote(x){if(!x)return 0;let v=x.trend*2+x.structure.score*2+(x.macd.hist>=0?1:-1)+(x.last>=x.vwap?1:-1);if(x.divergence.key==='bull')v+=2;if(x.divergence.key==='bear')v-=2;return v}
+function radarRelativeStrength(d,b){if(!d||!b)return 0;const a=(d.h1.last/d.h1.e21-1)*100+(d.h4.last/d.h4.e21-1)*100;const z=(b.h1.last/b.h1.e21-1)*100+(b.h4.last/b.h4.e21-1)*100;return a-z}
+function radarConfluence(d,symbol){const cfg=radarModeCfg(),tf=[d.m5,d.m15,d.h1,d.h4,d.d1],weights=[.5,1,1.5,2,2.5];let raw=0,max=0;tf.forEach((x,i)=>{raw+=radarTFVote(x)*weights[i];max+=6*weights[i]});let score=50+(raw/max)*38;const btc=radarV5Cache.get('BTC')?.data,rs=symbol==='BTC'?0:radarRelativeStrength(d,btc);score+=Math.max(-8,Math.min(8,rs*1.5));if(d.m15.vr>=cfg.vol)score+=4;if(d.m15.breakout.up)score+=6;if(d.m15.breakout.down)score-=8;if(d.m15.divergence.key==='bull')score+=5;if(d.m15.divergence.key==='bear')score-=6;if(d.m15.rsi>74)score-=8;if(d.m15.toRes<.7)score-=6;return{score:Math.max(0,Math.min(100,Math.round(score))),rs:+rs.toFixed(2)}}
+async function radarTechnicalV5(symbol){symbol=normalizeWalletSymbol(symbol);if(walletStable.has(symbol))return null;const old=radarV5Cache.get(symbol),now=Date.now();if(old&&now-old.at<90000)return old.data;const ks=await Promise.all(['5m','15m','1h','4h','1d'].map(i=>radarKlines(symbol,i,120)));if(ks.some(x=>!x))return old?.data||radarTechCache.get(symbol)?.data||null;const [m5,m15,h1,h4,d1]=ks.map(radarTF),base={m5,m15,h1,h4,d1,at:now};const cf=radarConfluence(base,symbol);const bull=[m15,h1,h4,d1].filter(x=>radarTFVote(x)>0).length>=3&&h4.structure.key!=='bear'&&d1.trend>=0;const bear=[m15,h1,h4,d1].filter(x=>radarTFVote(x)<0).length>=3&&h4.structure.key!=='bull';const data={...base,score:cf.score,relativeStrength:cf.rs,bull,bear,reasons:[],regime:radarMarketRegime()};data.risk=radarRisk(data);data.plan=radarTradePlanV5(data);radarV5Cache.set(symbol,{at:now,data});radarTechCache.set(symbol,{at:now,data});return data}
+function radarTradePlanV5(t){if(!t?.m15?.last)return null;const p=t.m15.last,a=Math.max(t.m15.atr||0,p*.003),support=Math.max(t.m15.sup||0,t.h1.sup||0),stop=Math.min(p-a*.8,Math.max(support,p-a*1.8));const risk=Math.max(p-stop,a*.6),r1=p+risk*1.5,r2=p+risk*2,r3=p+risk*3;return{entry:p,stop,target:r2,targets:[r1,r2,r3],invalidation:stop,rr:2}}
+radarTechnical=radarTechnicalV5;
+function radarMarketRegimeV5(){const b=radarV5Cache.get('BTC')?.data,e=radarV5Cache.get('ETH')?.data;if(!b||!e)return{key:'wait',label:'AGUARDANDO',factor:0};const long=(radarTFVote(b.h4)+radarTFVote(b.d1)+radarTFVote(e.h4)+radarTFVote(e.d1));if(long>=12)return{key:'bull',label:'BULL',factor:7};if(long<=-10)return{key:'bear',label:'BEAR',factor:-18};return{key:'neutral',label:'NEUTRO',factor:0}}
+radarMarketRegime=radarMarketRegimeV5;
+function radarV5Label(n){return n>=88?'SINAL FORTE':n>=76?'COMPRA CONFIRMADA':n>=64?'ENTRADA POSSÍVEL':'OBSERVAR'}
+walletBuySignal=function(rawSymbol){const s=normalizeWalletSymbol(rawSymbol),t=radarV5Cache.get(s)?.data||radarTechCache.get(s)?.data;if(!t?.h4)return{label:'OBSERVAR COMPRA',state:'watch',score:0,why:'aguardando confluência V5'};const cfg=radarModeCfg(),reg=radarMarketRegimeV5(),risk=radarRisk(t),score=t.score,plan=radarTradePlanV5(t);const higher=t.h4.structure.key!=='bear'&&t.d1.trend>=0,confirm=t.bull&&higher&&t.m15.adx>=Math.max(16,cfg.adx-3)&&t.m15.vr>=Math.max(.85,cfg.vol-.15)&&risk.score<=cfg.riskMax&&reg.key!=='bear';const details=`Confiança técnica ${score}/100 • ${t.h4.structure.label} 4h • VWAP ${t.m15.vwapPct>=0?'+':''}${t.m15.vwapPct.toFixed(1)}% • força vs BTC ${t.relativeStrength>=0?'+':''}${t.relativeStrength.toFixed(1)} • risco ${risk.label}`;if(!confirm)return{label:'OBSERVAR COMPRA',state:'watch',score,why:details};if(score>=cfg.buy){radarSaveSignal(s,'buy',score,t.m15.last);return{label:score>=Math.max(cfg.strong,86)?'SINAL FORTE DE COMPRA':'COMPRA CONFIRMADA',state:'good',score,why:`${details} • entrada ${plan.entry.toPrecision(6)} • invalidação ${plan.invalidation.toPrecision(6)} • alvos ${plan.targets.map(x=>x.toPrecision(6)).join(' / ')}`}}return{label:'ENTRADA POSSÍVEL',state:'watch',score,why:details}}
+const walletDirectionV4=walletDirection;walletDirection=function(rawSymbol){const s=normalizeWalletSymbol(rawSymbol),t=radarV5Cache.get(s)?.data;if(!t)return walletDirectionV4(rawSymbol);if(t.bear&&t.score<=35){radarSaveSignal(s,'sell',100-t.score,t.m15.last);return{action:'ATENÇÃO PARA VENDA',icon:'🔴',cls:'guide-sell',why:`Baixa confirmada por múltiplos tempos • estrutura ${t.h4.structure.label} • confiança de baixa ${100-t.score}/100`}}const b=walletBuySignal(s);if(b.state==='good')return{action:b.score>=86?'COMPRAR / APORTAR':'ENTRADA CONFIRMADA',icon:'🟢',cls:'guide-buy',why:b.why};return walletDirectionV4(rawSymbol)}
+function radarV5Stats(){const h=radarHistory(),done=h.filter(x=>x.checks?.h24!=null);if(!done.length)return{n:h.length,win:'—',avg:'—',expect:'—'};const ret=done.map(x=>x.kind==='buy'?x.checks.h24:-x.checks.h24),wins=ret.filter(x=>x>0),loss=ret.filter(x=>x<=0),avg=ret.reduce((a,b)=>a+b,0)/ret.length,wr=wins.length/ret.length,aw=wins.length?wins.reduce((a,b)=>a+b,0)/wins.length:0,al=loss.length?Math.abs(loss.reduce((a,b)=>a+b,0)/loss.length):0,ex=wr*aw-(1-wr)*al;return{n:h.length,win:Math.round(wr*100)+'%',avg:(avg>=0?'+':'')+avg.toFixed(2)+'%',expect:(ex>=0?'+':'')+ex.toFixed(2)+'%'}}
+function renderRadarV5(){const box=document.getElementById('radarV5Panel');if(!box)return;const reg=radarMarketRegimeV5(),st=radarV5Stats(),b=radarV5Cache.get('BTC')?.data;box.innerHTML=`<div class="coin">🧠 Radar Pro V5</div><div class="small">Confluência 5m • 15m • 1h • 4h • 1D + estrutura de mercado + VWAP + divergências + força relativa ao BTC.</div><div class="radar-v5-grid"><div class="radar-v5-box"><span class="small">Regime</span><b>${reg.label}</b></div><div class="radar-v5-box"><span class="small">BTC 4h</span><b>${b?.h4?.structure?.label||'—'}</b></div><div class="radar-v5-box"><span class="small">Acerto 24h</span><b>${st.win}</b></div><div class="radar-v5-box"><span class="small">Expectancy 24h</span><b>${st.expect}</b></div></div><div class="small" style="margin-top:8px">${st.n} sinais registrados • retorno médio ${st.avg}. Confiança técnica não é probabilidade nem garantia de retorno.</div>`}
+refreshRadarTechnicals=async function(){await radarTechnicalV5('BTC');await radarTechnicalV5('ETH');const held=(printWallet||[]).map(x=>normalizeWalletSymbol(x.symbol)),opp=(latestOpportunities||[]).slice(0,12).map(x=>x.symbol),syms=[...new Set([...held,...opp])].filter(x=>!walletStable.has(x)&&x!=='BTC'&&x!=='ETH').slice(0,16);await Promise.allSettled(syms.map(radarTechnicalV5));await radarEvaluateHistory();try{renderPrintWallet();renderUrgentRadar();renderSmartAllocation();renderRadarV4();renderRadarV5()}catch(e){}}
+document.addEventListener('DOMContentLoaded',()=>{const v4=document.getElementById('radarV4Panel'),anchor=v4||document.getElementById('urgentRadarCard');if(anchor&&!document.getElementById('radarV5Panel')){const s=document.createElement('section');s.className='card radar-v5-card';s.id='radarV5Panel';anchor.insertAdjacentElement('afterend',s)}setTimeout(()=>{renderRadarV5();refreshRadarTechnicals()},1800)});setInterval(renderRadarV5,10000);
+</script>
+
 <script src="./ai-radar.js"></script>
 
 <script>
@@ -1186,6 +1269,233 @@ function renderSmartAllocation(){
 }
 setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
+</script>
+
+
+<script>
+/* ===== Cripto Radar V7 =====
+   Paper trading local; nenhuma ordem real é enviada.
+*/
+(function(){
+const V7KEY='criptoRadarV7Paper';
+const V7DER='criptoRadarV7Derivatives';
+const now=()=>Date.now();
+const n=v=>Number(v);
+const finite=v=>Number.isFinite(n(v));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function load(){
+ try{
+  const d=JSON.parse(localStorage.getItem(V7KEY)||'{}');
+  return {capital:finite(d.capital)?n(d.capital):10000,risk:finite(d.risk)?n(d.risk):1,trades:Array.isArray(d.trades)?d.trades:[],seen:d.seen||{}};
+ }catch(e){return {capital:10000,risk:1,trades:[],seen:{}}}
+}
+let paper=load(), derCache={};
+function save(){try{localStorage.setItem(V7KEY,JSON.stringify(paper))}catch(e){}}
+function px(sym){
+ const c=(window.walletMarketData||{})[sym]||{};
+ const p=n(c.price||c.last||c.lastPrice);
+ if(finite(p)&&p>0)return p;
+ const brl=n((window.walletPrices||{})[sym]);
+ return finite(brl)&&brl>0?brl:0;
+}
+function technical(sym){
+ try{
+  if(typeof window.v6SignalInsight==='function')return window.v6SignalInsight(sym)||{};
+  if(typeof window.v5Insight==='function')return window.v5Insight(sym)||{};
+  if(typeof window.walletBuySignal==='function')return window.walletBuySignal(sym)||{};
+ }catch(e){}
+ return {};
+}
+function confirmed(sig){
+ const txt=String(sig.stage||sig.label||sig.action||'').toUpperCase();
+ const conf=n(sig.confidence??sig.score??0);
+ return (txt.includes('CONFIRM')||txt.includes('SINAL FORTE')||txt.includes('ALARME DE COMPRA')) && conf>=70;
+}
+function levels(sym,sig,entry){
+ let stop=n(sig.stop||sig.invalidation), t1=n(sig.target1||sig.t1),t2=n(sig.target2||sig.t2),t3=n(sig.target3||sig.t3);
+ let atr=n(sig.atr);
+ if(!(atr>0))atr=entry*.025;
+ if(!(stop>0&&stop<entry))stop=entry-1.5*atr;
+ const risk=Math.max(entry-stop,entry*.006);
+ if(!(t1>entry))t1=entry+1.5*risk;
+ if(!(t2>t1))t2=entry+2.2*risk;
+ if(!(t3>t2))t3=entry+3*risk;
+ return {stop,t1,t2,t3,risk};
+}
+function maybeOpen(sym){
+ sym=String(sym||'').toUpperCase(); if(!sym||/^(USDT|USDC|FDUSD|TUSD|DAI)$/.test(sym))return;
+ const sig=technical(sym), entry=px(sym); if(!entry||!confirmed(sig))return;
+ const stamp=Math.floor(now()/(15*60*1000)), key=sym+'-'+stamp;
+ if(paper.seen[key])return;
+ if(paper.trades.some(t=>t.symbol===sym&&t.status==='OPEN'))return;
+ const L=levels(sym,sig,entry), riskUsd=paper.capital*(paper.risk/100), qty=riskUsd/Math.max(L.risk,entry*.006);
+ const confidence=clamp(n(sig.confidence??sig.score??70),0,100);
+ paper.trades.unshift({id:key,symbol:sym,status:'OPEN',state:'ENTRADA',openedAt:now(),entry,stop:L.stop,t1:L.t1,t2:L.t2,t3:L.t3,qty,confidence,highest:entry,exit:null,closedAt:null,pnl:null,reason:'Sinal confirmado V7'});
+ paper.seen[key]=now(); save();
+}
+function updateTrade(t){
+ if(t.status!=='OPEN')return;
+ const p=px(t.symbol); if(!p)return;
+ t.highest=Math.max(n(t.highest)||t.entry,p);
+ if(p>=t.t1&&t.state==='ENTRADA'){t.state='ALVO 1';t.stop=Math.max(t.stop,t.entry)}
+ if(p>=t.t2&&(t.state==='ALVO 1'||t.state==='ENTRADA')){t.state='TRAILING';t.stop=Math.max(t.stop,t.t1)}
+ if(p>=t.t3){closeTrade(t,p,'ALVO 3');return}
+ if(t.state==='TRAILING'){const trail=t.highest*.975;t.stop=Math.max(t.stop,trail)}
+ if(p<=t.stop){closeTrade(t,p,t.stop>=t.entry?'TRAILING/PROTEÇÃO':'STOP');return}
+ if(now()-t.openedAt>24*60*60*1000)closeTrade(t,p,'EXPIRADO 24H');
+}
+function closeTrade(t,p,reason){t.status='CLOSED';t.exit=p;t.closedAt=now();t.reason=reason;t.pnl=(p-t.entry)*t.qty;save()}
+function metrics(){
+ const c=paper.trades.filter(t=>t.status==='CLOSED'&&finite(t.pnl)), wins=c.filter(t=>t.pnl>0),loss=c.filter(t=>t.pnl<0);
+ const gp=wins.reduce((s,t)=>s+t.pnl,0),gl=Math.abs(loss.reduce((s,t)=>s+t.pnl,0));
+ const total=c.reduce((s,t)=>s+t.pnl,0), expectancy=c.length?total/c.length:0;
+ let equity=paper.capital,peak=equity,maxDD=0;
+ [...c].sort((a,b)=>a.closedAt-b.closedAt).forEach(t=>{equity+=t.pnl;peak=Math.max(peak,equity);maxDD=Math.max(maxDD,peak?((peak-equity)/peak)*100:0)});
+ return {count:c.length,win:c.length?wins.length/c.length*100:0,pf:gl?gp/gl:(gp>0?99:0),expectancy,maxDD,total};
+}
+function money(v){return (finite(v)?n(v):0).toLocaleString('pt-BR',{style:'currency',currency:'USD'})}
+function render(){
+ const m=metrics(), stats=document.getElementById('paperStats'),open=document.getElementById('paperOpen'),journal=document.getElementById('paperJournal');
+ if(stats)stats.innerHTML=[
+  ['Operações',m.count],['Win rate',m.count?m.win.toFixed(1)+'%':'—'],['Profit factor',m.count?m.pf.toFixed(2):'—'],['Expectancy',m.count?money(m.expectancy):'—'],
+  ['Drawdown',m.count?m.maxDD.toFixed(2)+'%':'—'],['P&L simulado',money(m.total)]
+ ].map(x=>'<div class="v7-stat"><span class="small">'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');
+ const active=paper.trades.filter(t=>t.status==='OPEN');
+ if(open)open.innerHTML='<b>📍 Operações simuladas abertas</b>'+(active.length?active.map(t=>'<div class="v7-row"><span class="v7-state v7-open">'+t.state+'</span> <b>'+t.symbol+'</b> • confiança '+t.confidence+'/100<div class="small">Entrada '+t.entry.toPrecision(6)+' • Stop '+t.stop.toPrecision(6)+' • A1 '+t.t1.toPrecision(6)+' • A2 '+t.t2.toPrecision(6)+' • A3 '+t.t3.toPrecision(6)+'</div></div>').join(''):'<div class="small">Nenhuma entrada confirmada em simulação agora.</div>');
+ if(journal)journal.innerHTML=paper.trades.slice(0,30).map(t=>'<div class="v7-row"><span class="v7-state '+(t.status==='OPEN'?'v7-open':t.pnl>0?'v7-win':t.reason==='EXPIRADO 24H'?'v7-exp':'v7-stop')+'">'+(t.status==='OPEN'?t.state:t.reason)+'</span> <b>'+t.symbol+'</b><div class="small">'+new Date(t.openedAt).toLocaleString('pt-BR')+' • '+(t.status==='CLOSED'?'P&L '+money(t.pnl):'aberta')+'</div></div>').join('')||'<div class="small">O diário começa quando surgir uma entrada confirmada.</div>';
+}
+async function derivatives(sym){
+ // Dados públicos de futuros; falha silenciosamente quando o ativo não possui contrato USDT.
+ const pair=sym+'USDT', base='https://fapi.binance.com';
+ try{
+  const [premium,oi,ratio]=await Promise.all([
+   fetch(base+'/fapi/v1/premiumIndex?symbol='+pair,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
+   fetch(base+'/fapi/v1/openInterest?symbol='+pair,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
+   fetch(base+'/futures/data/globalLongShortAccountRatio?symbol='+pair+'&period=5m&limit=2',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
+  ]);
+  const funding=n(premium.lastFundingRate)*100, openInterest=n(oi.openInterest), ls=Array.isArray(ratio)&&ratio.length?n(ratio[ratio.length-1].longShortRatio):NaN;
+  derCache[sym]={funding,openInterest,longShort:ls,at:now(),ok:true};return derCache[sym];
+ }catch(e){derCache[sym]={ok:false,at:now()};return derCache[sym]}
+}
+async function refreshDerivatives(){
+ const active=paper.trades.filter(t=>t.status==='OPEN').map(t=>t.symbol);
+ const candidates=[...new Set(['BTC','ETH',...active])].slice(0,5);
+ await Promise.all(candidates.map(s=>derivatives(s)));
+ const el=document.getElementById('derivativesHealth');if(!el)return;
+ const good=Object.entries(derCache).filter(([,v])=>v.ok);
+ el.innerHTML=good.length?'📈 Derivativos públicos: '+good.map(([s,v])=>'<b>'+s+'</b> funding '+(finite(v.funding)?v.funding.toFixed(4)+'%':'—')+' • OI '+(finite(v.openInterest)?Math.round(v.openInterest).toLocaleString('pt-BR'):'—')+' • L/S '+(finite(v.longShort)?v.longShort.toFixed(2):'—')).join(' | '):'Derivativos: fonte indisponível ou sem contrato elegível.';
+}
+function scan(){
+ const syms=new Set();
+ try{(window.latestOpportunities||[]).slice(0,8).forEach(x=>syms.add(String(x.symbol||'').toUpperCase()))}catch(e){}
+ try{(window.printWallet||[]).forEach(x=>syms.add(String(x.symbol||'').toUpperCase()))}catch(e){}
+ syms.forEach(maybeOpen); paper.trades.forEach(updateTrade); save();render();
+}
+function init(){
+ const cap=document.getElementById('paperCapital'),risk=document.getElementById('paperRisk');
+ if(cap){cap.value=paper.capital;cap.onchange=()=>{paper.capital=Math.max(100,n(cap.value)||10000);save();render()}}
+ if(risk){risk.value=paper.risk;risk.onchange=()=>{paper.risk=clamp(n(risk.value)||1,.1,5);save();render()}}
+ const reset=document.getElementById('paperReset');if(reset)reset.onclick=()=>{if(confirm('Zerar todo o histórico do paper trading V7?')){paper={capital:n(cap?.value)||10000,risk:n(risk?.value)||1,trades:[],seen:{}};save();render()}};
+ render();scan();refreshDerivatives();
+ setInterval(scan,5000);setInterval(refreshDerivatives,60000);
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(init,1800));
+window.v7PaperMetrics=metrics;
+})();
+</script>
+
+
+<script>
+/* ===== Cripto Radar V8 ===== */
+(function(){
+const q=id=>document.getElementById(id), N=v=>Number(v), ok=v=>Number.isFinite(N(v));
+const API=['https://data-api.binance.vision','https://api.binance.com'];
+function ema(a,n){if(!a.length)return[];let k=2/(n+1),o=[a[0]];for(let i=1;i<a.length;i++)o.push(a[i]*k+o[i-1]*(1-k));return o}
+function rsi(a,n=14){let out=Array(a.length).fill(50),g=0,l=0;if(a.length<=n)return out;for(let i=1;i<=n;i++){let d=a[i]-a[i-1];g+=Math.max(d,0);l+=Math.max(-d,0)}g/=n;l/=n;for(let i=n;i<a.length;i++){if(i>n){let d=a[i]-a[i-1];g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n}out[i]=l?100-100/(1+g/l):100}return out}
+function sma(a,n,i){if(i<n-1)return NaN;let s=0;for(let j=i-n+1;j<=i;j++)s+=a[j];return s/n}
+function stdev(a,n,i){let m=sma(a,n,i);if(!ok(m))return NaN;let s=0;for(let j=i-n+1;j<=i;j++)s+=(a[j]-m)**2;return Math.sqrt(s/n)}
+async function candles(sym,days){
+ const limit=Math.min(1000,Math.max(200,days*24)),pair=sym+'USDT';
+ for(const base of API){try{const r=await fetch(base+'/api/v3/klines?symbol='+pair+'&interval=1h&limit='+limit,{cache:'no-store'});if(!r.ok)continue;const j=await r.json();if(Array.isArray(j)&&j.length>100)return j.map(x=>({t:+x[0],o:+x[1],h:+x[2],l:+x[3],c:+x[4],v:+x[5]}))}catch(e){}}
+ throw Error('Candles históricos indisponíveis');
+}
+function indicators(k){
+ const c=k.map(x=>x.c),e9=ema(c,9),e21=ema(c,21),rr=rsi(c),vol=k.map(x=>x.v);
+ return k.map((x,i)=>{const vm=sma(vol,20,i),mid=sma(c,20,i),sd=stdev(c,20,i);return {...x,e9:e9[i],e21:e21[i],rsi:rr[i],vr:vm?x.v/vm:1,bbU:ok(mid)&&ok(sd)?mid+2*sd:NaN,bbL:ok(mid)&&ok(sd)?mid-2*sd:NaN}})
+}
+function classify(a,i){
+ const x=a[i],prev=a[i-1]; if(!x||!prev)return null;
+ const trend=x.e9>x.e21&&x.rsi>=52&&x.rsi<72&&x.vr>=.9;
+ const breakout=i>=20&&x.c>Math.max(...a.slice(i-20,i).map(z=>z.h))&&x.vr>=1.15;
+ const reversal=ok(x.bbL)&&prev.c<prev.bbL&&x.c>x.bbL&&x.rsi>prev.rsi&&x.rsi<55;
+ if(breakout)return {strategy:'Breakout',confidence:Math.min(95,72+(x.vr-1)*15+(x.rsi-50)*.3)};
+ if(trend)return {strategy:'Tendência',confidence:Math.min(92,68+(x.rsi-50)*.45+(x.vr-1)*10)};
+ if(reversal)return {strategy:'Reversão',confidence:Math.min(88,66+(55-x.rsi)*.35+(x.vr-1)*6)};
+ return null;
+}
+function backtest(a,fee,slip){
+ let trades=[],inTrade=null;
+ for(let i=25;i<a.length-1;i++){
+  const x=a[i];
+  if(!inTrade){const s=classify(a,i);if(s){const entry=a[i+1].o*(1+slip),stop=entry*.97,target=entry*1.06;inTrade={...s,entry,stop,target,start:i+1,peak:entry}}}
+  else{
+   inTrade.peak=Math.max(inTrade.peak,x.h);
+   if(x.l<=inTrade.stop){finish(inTrade,inTrade.stop*(1-slip),i,'STOP')}
+   else if(x.h>=inTrade.target){finish(inTrade,inTrade.target*(1-slip),i,'ALVO')}
+   else if(i-inTrade.start>=48){finish(inTrade,a[i+1]?.o*(1-slip)||x.c*(1-slip),i,'TEMPO')}
+  }
+  function finish(t,exit,end,why){const gross=exit/t.entry-1,net=gross-fee*2;trades.push({...t,exit,end,why,ret:net});inTrade=null}
+ }
+ return trades;
+}
+function metrics(ts){
+ const wins=ts.filter(t=>t.ret>0),loss=ts.filter(t=>t.ret<=0),gp=wins.reduce((s,t)=>s+t.ret,0),gl=Math.abs(loss.reduce((s,t)=>s+t.ret,0));
+ let eq=1,peak=1,dd=0;ts.forEach(t=>{eq*=1+t.ret;peak=Math.max(peak,eq);dd=Math.max(dd,(peak-eq)/peak)});
+ return {n:ts.length,win:ts.length?wins.length/ts.length*100:0,pf:gl?gp/gl:(gp?99:0),exp:ts.length?ts.reduce((s,t)=>s+t.ret,0)/ts.length*100:0,total:(eq-1)*100,dd:dd*100}
+}
+function fmt(v,d=2){return ok(v)?N(v).toFixed(d):'—'}
+function tableStrategies(ts){
+ const names=['Tendência','Breakout','Reversão'],rows=names.map(s=>[s,metrics(ts.filter(t=>t.strategy===s))]);
+ q('v8Strategies').innerHTML='<h4>Desempenho por estratégia</h4><table class="v8-table"><tr><th>Estratégia</th><th>Ops</th><th>Acerto</th><th>PF</th><th>Expect.</th><th>Retorno</th></tr>'+rows.map(([s,m])=>'<tr><td>'+s+'</td><td>'+m.n+'</td><td>'+fmt(m.win)+'%</td><td>'+fmt(m.pf)+'</td><td>'+fmt(m.exp)+'%</td><td>'+fmt(m.total)+'%</td></tr>').join('')+'</table>';
+}
+function calibration(ts){
+ const bins=[[60,69],[70,79],[80,89],[90,100]];
+ q('v8Calibration').innerHTML='<h4>Calibração da confiança técnica</h4><table class="v8-table"><tr><th>Faixa</th><th>Sinais</th><th>Acerto observado</th><th>Retorno médio</th></tr>'+bins.map(([a,b])=>{const x=ts.filter(t=>t.confidence>=a&&t.confidence<=b),m=metrics(x);return '<tr><td>'+a+'–'+b+'</td><td>'+m.n+'</td><td>'+(m.n?fmt(m.win)+'%':'—')+'</td><td>'+(m.n?fmt(m.exp)+'%':'—')+'</td></tr>'}).join('')+'</table><div class="small">A confiança é um score técnico. A tabela mostra o desempenho histórico observado de cada faixa, não uma probabilidade garantida.</div>';
+}
+async function run(){
+ const sym=q('v8Symbol').value,days=N(q('v8Days').value),fee=N(q('v8Fee').value)/100,slip=N(q('v8Slip').value)/100;
+ q('v8Status').textContent='Rodando backtest de '+sym+'…';
+ try{
+  const [raw,btcRaw]=await Promise.all([candles(sym,days),sym==='BTC'?Promise.resolve(null):candles('BTC',days)]);
+  const a=indicators(raw),ts=backtest(a,fee,slip),m=metrics(ts);
+  const bh=(raw[raw.length-1].c/raw[0].c-1-(fee*2+slip*2))*100;
+  const br=btcRaw?((btcRaw[btcRaw.length-1].c/btcRaw[0].c-1-(fee*2+slip*2))*100):bh;
+  q('v8Stats').innerHTML=[['Operações',m.n],['Win rate',fmt(m.win)+'%'],['Profit factor',fmt(m.pf)],['Expectancy',fmt(m.exp)+'%'],['Retorno estratégia',fmt(m.total)+'%'],[sym+' buy & hold',fmt(bh)+'%'],['BTC benchmark',fmt(br)+'%'],['Drawdown',fmt(m.dd)+'%']].map(x=>'<div class="v8-box"><span class="small">'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');
+  tableStrategies(ts);calibration(ts);
+  q('v8Status').innerHTML='✓ '+raw.length+' candles de 1h analisados • '+new Date(raw[0].t).toLocaleDateString('pt-BR')+' → '+new Date(raw[raw.length-1].t).toLocaleDateString('pt-BR')+' • custos: '+fmt((fee+slip)*100,2)+'% por lado.';
+  localStorage.setItem('criptoRadarV8Last',JSON.stringify({sym,days,at:Date.now(),metrics:m}));
+ }catch(e){q('v8Status').textContent='Backtest indisponível agora: '+(e.message||'falha de dados')}}
+async function exposure(){
+ try{
+  const syms=[...new Set((window.printWallet||[]).map(x=>String(x.symbol||'').toUpperCase()).filter(s=>s&&!/USD|BRL|EUR/.test(s)))].slice(0,6);
+  if(syms.length<2){q('v8Exposure').textContent='Correlação/exposição: adicione pelo menos 2 criptoativos à carteira.';return}
+  const sets=await Promise.all(syms.map(s=>candles(s,7).then(k=>k.map(x=>x.c))));
+  const rets=sets.map(a=>a.slice(1).map((v,i)=>Math.log(v/a[i])));
+  function corr(a,b){const n=Math.min(a.length,b.length),aa=a.slice(-n),bb=b.slice(-n),ma=aa.reduce((s,v)=>s+v,0)/n,mb=bb.reduce((s,v)=>s+v,0)/n;let num=0,da=0,db=0;for(let i=0;i<n;i++){let x=aa[i]-ma,y=bb[i]-mb;num+=x*y;da+=x*x;db+=y*y}return num/Math.sqrt(da*db)}
+  let pairs=[];for(let i=0;i<syms.length;i++)for(let j=i+1;j<syms.length;j++){let c=corr(rets[i],rets[j]);if(c>.75)pairs.push(syms[i]+'/'+syms[j]+' '+c.toFixed(2))}
+  q('v8Exposure').innerHTML=pairs.length?'⚠️ Alta correlação 7d: <b>'+pairs.join(' • ')+'</b>. Evite tratar posições muito correlacionadas como riscos independentes.':'✓ Nenhum par da carteira passou de correlação 0,75 na amostra de 7 dias.';
+ }catch(e){q('v8Exposure').textContent='Correlação/exposição: dados insuficientes agora.'}
+}
+function health(){
+ const el=q('v8DataHealth');if(!el)return;
+ let total=0,stale=0,missing=0,now=Date.now();
+ try{for(const [s,v] of Object.entries(window.walletMarketData||{})){total++;if(!ok(v.change24h)||!ok(v.volume))missing++;if(v.at&&now-N(v.at)>120000)stale++}}catch(e){}
+ el.innerHTML=(missing||stale?'⚠️':'✓')+' Saúde dos dados: '+total+' ativos • '+missing+' incompletos • '+stale+' possivelmente atrasados. Sinais devem ser ignorados quando a fonte estiver incompleta/atrasada.';
+}
+function init(){q('v8Run')?.addEventListener('click',run);health();exposure();setInterval(health,10000);setInterval(exposure,120000)}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(init,2200));
+window.v8RunBacktest=run;
+})();
 </script>
 
 </body></html>
