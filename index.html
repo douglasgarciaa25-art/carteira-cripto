@@ -173,6 +173,19 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </section>
 
 
+
+<section class="card" id="binanceAccountCard">
+ <div class="coin">🟡 Minha carteira Binance</div>
+ <div class="small">Carrega o saldo Spot pela API segura do servidor. As chaves ficam somente nas variáveis da Vercel.</div>
+ <div class="wallet-actions"><button id="binanceLoad" type="button" class="connect-btn">CONECTAR / ATUALIZAR BINANCE</button></div>
+ <div id="binanceStatus" class="small" style="margin-top:10px">Aguardando conexão.</div>
+ <div id="binanceBalances" style="margin-top:8px"></div>
+ <div style="margin-top:14px;padding-top:12px;border-top:1px solid #29415f"><b>Compra e venda Spot</b><div class="small">Toda ordem exige confirmação manual. Saques não são usados.</div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><input id="tradeSymbol" placeholder="Moeda, ex.: SUI" style="padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69"><select id="tradeSide" style="padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69"><option value="BUY">COMPRAR</option><option value="SELL">VENDER</option></select></div>
+ <input id="tradeAmount" type="number" min="0" step="any" placeholder="Compra: valor em USDT • Venda: quantidade da moeda" style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:#091524;color:#fff;border:1px solid #334b69">
+ <button id="tradePrepare" type="button" style="width:100%;margin-top:8px">REVISAR ORDEM</button><div id="tradeResult" class="small" style="margin-top:8px"></div></div>
+</section>
+
 <section class="card wallet-extra">
   <div class="coin">📸 Atualizar minha carteira por print <span class="small">• EXTRA</span></div>
   <div class="small">Envie um print da sua carteira. O app tenta identificar moeda e quantidade, mostra uma prévia para você conferir e só atualiza depois da sua confirmação. Os preços e o valor aproximado da carteira continuam atualizando automaticamente.</div>
@@ -1130,4 +1143,12 @@ setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
 </script>
 
+\n<script>
+async function binanceCall(action,body){const opt=body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...body})}:{cache:'no-store'};const r=await fetch('/api/binance'+(body?'':'?action='+encodeURIComponent(action)),opt);const d=await r.json().catch(()=>({}));if(!r.ok||!d.ok)throw new Error(d.error||'Falha na Binance');return d;}
+async function loadBinanceWallet(){const st=document.getElementById('binanceStatus'),box=document.getElementById('binanceBalances');st.textContent='Conectando à Binance…';try{const d=await binanceCall('balance');const rows=d.balances||[];st.innerHTML='✓ Binance conectada • negociação '+(d.canTrade?'habilitada':'não habilitada');box.innerHTML=rows.length?rows.map(x=>'<div class="row"><span><b>'+x.asset+'</b></span><span>'+x.total.toLocaleString('pt-BR',{maximumFractionDigits:8})+(x.locked?' <span class="small">('+x.locked+' bloqueado)</span>':'')+'</span></div>').join(''):'<div class="small">Nenhum saldo Spot encontrado.</div>';const wallet=rows.filter(x=>!['BRL','USDT','USDC','FDUSD','TUSD'].includes(x.asset)).map(x=>({symbol:x.asset,qty:x.total}));if(wallet.length){printWallet=wallet;persistWallet();try{await updateWalletPrices()}catch(e){}try{calcAporte();renderSmartAllocation();renderUrgentRadar()}catch(e){}}}catch(e){st.innerHTML='<span class="bad">'+e.message+'</span>';}}
+document.getElementById('binanceLoad')?.addEventListener('click',loadBinanceWallet);
+document.getElementById('tradePrepare')?.addEventListener('click',async()=>{const symbol=document.getElementById('tradeSymbol').value.trim().toUpperCase(),side=document.getElementById('tradeSide').value,amount=Number(document.getElementById('tradeAmount').value),out=document.getElementById('tradeResult');if(!symbol||!Number.isFinite(amount)||amount<=0){out.innerHTML='<span class="bad">Preencha moeda e valor/quantidade.</span>';return;}const text=side==='BUY'?`Comprar ${symbol} a mercado usando ${amount} USDT?`:`Vender ${amount} ${symbol} a mercado?`;if(!confirm(text+'\
+\
+A ordem será enviada de verdade à Binance.')){out.textContent='Ordem cancelada.';return;}out.textContent='Enviando ordem…';try{const payload=side==='BUY'?{side,symbol,quoteOrderQty:amount}:{side,symbol,quantity:amount};const d=await binanceCall('order',payload);out.innerHTML='<span class="ok">✓ Ordem aceita pela Binance • '+(d.order.status||'enviada')+'</span>';setTimeout(loadBinanceWallet,1000);}catch(e){out.innerHTML='<span class="bad">'+e.message+'</span>';}});
+</script>\n
 </body></html>

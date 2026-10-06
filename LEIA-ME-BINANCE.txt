@@ -1,0 +1,11 @@
+CRIPTO RADAR — BINANCE SPOT
+
+1. Envie TODOS os arquivos deste pacote para a RAIZ do repositório. Não crie pasta api.
+2. Na Vercel, configure Environment Variables:
+   BINANCE_API_KEY = sua NOVA API Key
+   BINANCE_SECRET_KEY = sua NOVA Secret Key
+3. Na Binance, habilite leitura e Spot Trading. NÃO habilite saques.
+4. Faça novo deploy na Vercel.
+5. No site, toque em CONECTAR / ATUALIZAR BINANCE.
+
+Segurança: as chaves não ficam no index.html. Cada compra/venda exige confirmação manual no navegador.
