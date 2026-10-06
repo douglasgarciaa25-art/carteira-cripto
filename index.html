@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V10</title>
+<title>Cripto Radar V11 Corrigido</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -152,13 +152,19 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .v10-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.v10-box{padding:10px;border-radius:12px;border:1px solid #294766;background:#091524}.v10-box b{display:block;font-size:15px;margin-top:3px}.v10-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.v10-log{margin-top:10px;padding:10px;border-radius:12px;background:#07111d;border:1px solid #294766;font-size:12px;line-height:1.55}.v10-ok{color:#86efac}.v10-warn{color:#fde68a}.v10-bad{color:#fca5a5}
 @media(max-width:620px){.v10-grid{grid-template-columns:repeat(2,1fr)}}
 
+
+/* ===== V11 LIVE / RANKING / VALIDACAO ===== */
+.v11-card{border:1px solid #a78bfa66!important;background:linear-gradient(145deg,#16132add,#0b1727)!important}
+.v11-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.v11-box{padding:10px;border-radius:12px;border:1px solid #3b3561;background:#0c1424}.v11-box b{display:block;margin-top:3px}.v11-rank{margin-top:10px;display:grid;gap:6px}.v11-row{display:grid;grid-template-columns:1fr .8fr 1.4fr .8fr;gap:7px;padding:8px;border-radius:10px;background:#091321;border:1px solid #29395a;font-size:12px;align-items:center}.v11-good{color:#86efac}.v11-warn{color:#fde68a}.v11-bad{color:#fca5a5}
+@media(max-width:620px){.v11-grid{grid-template-columns:repeat(2,1fr)}.v11-row{grid-template-columns:1fr 1fr}.v11-hide-mobile{display:none}}
+
 </style>
 </head>
 <body><main>
-<div class="top"><div><h1>Cripto Radar V5</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
+<div class="top"><div><h1>Cripto Radar V11</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
-<section class="card v9-card" id="v9Command">
+<section class="card v9-card" id="v9Command" style="display:none">
  <div class="coin">⚡ Radar Pro • Central</div>
  <div class="small">Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.</div>
  <div class="v9-grid">
@@ -182,6 +188,19 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
  </div>
  <div class="v10-actions"><button id="v10TestTrade" type="button">🧪 FORÇAR OPERAÇÃO TESTE BTC</button><button id="v10TestNotif" type="button">🔔 TESTAR NOTIFICAÇÃO</button></div>
  <div class="v10-log" id="v10Diag">Executando diagnóstico…</div>
+</section>
+
+
+<section class="card v11-card" id="v11LiveCard">
+ <div class="coin">🚀 V11 • Live & Validação</div>
+ <div class="small">Preço BTC/ETH via WebSocket quando disponível, ranking das oportunidades, validação automática dos sinais e proteção diária do Paper.</div>
+ <div class="v11-grid">
+  <div class="v11-box"><span class="small">Live</span><b id="v11Ws">Conectando</b></div>
+  <div class="v11-box"><span class="small">Sinais avaliados</span><b id="v11Evaluated">0</b></div>
+  <div class="v11-box"><span class="small">Acertos</span><b id="v11Hits">—</b></div>
+  <div class="v11-box"><span class="small">Proteção diária</span><b id="v11Daily">OK</b></div>
+ </div>
+ <div class="small" style="margin-top:10px">Ranking atual</div><div class="v11-rank" id="v11Ranking"><div class="small">Aguardando sinais…</div></div>
 </section>
 
 <section class="card ai-radar-card" id="aiRadarCard">
@@ -1340,11 +1359,12 @@ function load(){
 let paper=load(), derCache={};
 function save(){try{localStorage.setItem(V7KEY,JSON.stringify(paper))}catch(e){}}
 function px(sym){
- const c=(window.walletMarketData||{})[sym]||{};
- const p=n(c.price||c.last||c.lastPrice);
- if(finite(p)&&p>0)return p;
- const brl=n((window.walletPrices||{})[sym]);
- return finite(brl)&&brl>0?brl:0;
+ sym=String(sym||'').replace(/USDT$/,'').toUpperCase();
+ const c=(window.walletMarketData||{})[sym]||(window.walletMarketData||{})[sym+'USDT']||{};
+ for(const v of [c.price,c.last,c.lastPrice,c.close,c.currentPrice]){const p=n(v);if(finite(p)&&p>0)return p}
+ try{const x=window.CriptoRadarV10?.core?.lastPrice?.[sym]?.price;if(finite(x)&&x>0)return n(x)}catch(e){}
+ try{const x=window.CriptoRadarV11?.state?.live?.[sym]?.p;if(finite(x)&&x>0)return n(x)}catch(e){}
+ return 0;
 }
 async function paperFetchPrice(sym){
  const local=px(sym);if(local>0)return local;
@@ -1386,28 +1406,17 @@ function confirmed(sig){
  return buy && (strong||conf>=70) && conf>=70;
 }
 function candidateSymbols(){
- const set=new Set(['BTC','ETH']);
- try{Object.keys(window.walletMarketData||{}).forEach(s=>set.add(String(s).toUpperCase()))}catch(e){}
- try{(window.printWallet||[]).forEach(x=>set.add(String(x.symbol||'').toUpperCase()))}catch(e){}
- try{(window.latestOpportunities||[]).forEach(x=>set.add(String(x.symbol||'').toUpperCase()))}catch(e){}
- try{(window.radarTechCache?Object.keys(window.radarTechCache):[]).forEach(s=>set.add(String(s).replace(/USDT$/,'').toUpperCase()))}catch(e){}
- return [...set].filter(s=>s&&!/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(s)).slice(0,60);
-}
-function paperStatus(msg){
- const e=document.getElementById('paperEngineStatus'); if(e)e.textContent=msg;
-}
-function levels(sym,sig,entry){
- let stop=n(sig.stop||sig.invalidation), t1=n(sig.target1||sig.t1),t2=n(sig.target2||sig.t2),t3=n(sig.target3||sig.t3);
- let atr=n(sig.atr);
- if(!(atr>0))atr=entry*.025;
- if(!(stop>0&&stop<entry))stop=entry-1.5*atr;
- const risk=Math.max(entry-stop,entry*.006);
- if(!(t1>entry))t1=entry+1.5*risk;
- if(!(t2>t1))t2=entry+2.2*risk;
- if(!(t3>t2))t3=entry+3*risk;
- return {stop,t1,t2,t3,risk};
+ const set=new Set(['BTC','ETH','SOL','BNB','XRP','ADA','DOGE','LINK','SUI','AVAX']);
+ const add=x=>{const s=String(x||'').replace(/USDT$/,'').toUpperCase();if(s&&!/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(s))set.add(s)};
+ try{Object.keys(window.walletMarketData||{}).forEach(add)}catch(e){}
+ try{Object.keys(window.walletPrices||{}).forEach(add)}catch(e){}
+ try{(window.printWallet||[]).forEach(x=>add(x.symbol||x.coin||x.asset))}catch(e){}
+ try{(window.latestOpportunities||[]).forEach(x=>add(x.symbol||x.coin||x.asset))}catch(e){}
+ try{Object.keys(window.CriptoRadarV10?.core?.lastDecision||{}).forEach(add)}catch(e){}
+ return [...set].slice(0,40);
 }
 async function maybeOpen(sym){
+ if(window.v11DailyLocked)return {opened:false,why:'LIMITE DE PERDA DIÁRIA ATINGIDO',symbol:String(sym).replace(/USDT$/,'').toUpperCase(),confidence:0};
  sym=String(sym||'').replace(/USDT$/,'').toUpperCase();
  if(!sym||/^(USDT|USDC|FDUSD|TUSD|DAI|BRL)$/.test(sym))return {opened:false,why:'stable'};
  const sig=technical(sym),txt=signalText(sig),conf=signalConfidence(sig);
@@ -1701,7 +1710,8 @@ window.v8RunBacktest=run;
  }
  function decision(sym){
   let x={};try{if(typeof window.walletBuySignal==='function')x=window.walletBuySignal(sym)||{}}catch(e){}
-  const score=Math.max(0,Math.min(100,N(x.confidence??x.score??x.technicalConfidence??0)||0));
+  try{if((N(x.confidence??x.score??0)||0)<=0&&typeof technical==='function')x=technical(sym)||x}catch(e){}
+  const score=Math.max(0,Math.min(100,N(x.confidence??x.score??x.technicalConfidence??x.confidenceScore??0)||0));
   const label=String(x.label||x.action||x.stage||'OBSERVAR').toUpperCase();
   const buy=/COMPRA|COMPRAR|ENTRADA|BUY|APORTAR/.test(label);
   const confirmed=buy&&score>=70;
@@ -1739,7 +1749,7 @@ window.v8RunBacktest=run;
   const list=syms(),ds=list.map(decision).sort((a,b)=>b.score-a.score),best=ds[0],p=paper(),tr=Array.isArray(p.trades)?p.trades:[],open=tr.filter(x=>x.status==='OPEN');
   const bp=await price(best?.sym||'BTC'),fresh=core.lastPrice[best?.sym||'BTC'];
   const priceOK=bp>0&&fresh&&now()-fresh.at<120000;
-  if(q('v10Engine')){q('v10Engine').textContent=priceOK?'ONLINE':'PROTEGIDO';q('v10Engine').className=priceOK?'v10-ok':'v10-warn'}
+  if(q('v10Engine')){q('v10Engine').textContent=priceOK?'ATIVO':'PROTEGIDO';q('v10Engine').className=priceOK?'v10-ok':'v10-warn'}
   if(q('v10Price')){q('v10Price').textContent=priceOK?'OK':'SEM DADO';q('v10Price').className=priceOK?'v10-ok':'v10-bad'}
   if(q('v10Signal'))q('v10Signal').textContent=best?(best.sym+' '+best.score.toFixed(0)+'/100'):'—';
   if(q('v10Paper'))q('v10Paper').textContent=open.length+' aberta'+(open.length===1?'':'s');
@@ -1750,6 +1760,77 @@ window.v8RunBacktest=run;
  document.addEventListener('DOMContentLoaded',()=>{q('v10TestTrade')?.addEventListener('click',testTrade);q('v10TestNotif')?.addEventListener('click',testNotif);setTimeout(render,2500)});
  setInterval(render,10000);
  window.CriptoRadarV10={price,decision,testTrade,render,core};
+})();
+</script>
+
+
+<script>
+/* ===== V11 • Live, ranking, signal validation, paper guard ===== */
+(function(){
+ const K='criptoRadarV11',q=id=>document.getElementById(id),N=v=>Number(v),fin=v=>Number.isFinite(N(v)),now=()=>Date.now();
+ let st={signals:[],live:{},ws:false};try{st={...st,...JSON.parse(localStorage.getItem(K)||'{}'),live:{}}}catch(e){}
+ const save=()=>{try{localStorage.setItem(K,JSON.stringify({...st,live:{}}))}catch(e){}};
+ function assets(){
+  const z=new Set(['BTC','ETH']);try{Object.keys(window.walletMarketData||{}).forEach(x=>z.add(String(x).replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  try{(window.latestOpportunities||[]).forEach(x=>z.add(String(x.symbol||'').replace(/USDT$/,'').toUpperCase()))}catch(e){}
+  return [...z].filter(Boolean).slice(0,30);
+ }
+ function dec(sym){
+  try{if(window.CriptoRadarV10?.decision)return window.CriptoRadarV10.decision(sym)}catch(e){}
+  let x={};try{x=window.walletBuySignal?.(sym)||{}}catch(e){}
+  return {sym,score:N(x.confidence??x.score??0)||0,label:String(x.label||x.action||'OBSERVAR').toUpperCase(),confirmed:false}
+ }
+ async function px(sym){
+  const x=st.live[sym];if(x&&now()-x.at<30000)return x.p;
+  try{return await window.CriptoRadarV10.price(sym)}catch(e){return 0}
+ }
+ function connect(){
+  try{
+   const ws=new WebSocket('wss://stream.binance.com:9443/stream?streams=btcusdt@miniTicker/ethusdt@miniTicker');
+   ws.onopen=()=>{st.ws=true;render()};
+   ws.onmessage=e=>{try{const j=JSON.parse(e.data),d=j.data,s=String(d.s||'').replace('USDT',''),p=N(d.c);if(s&&fin(p)&&p>0)st.live[s]={p,at:now()}}catch(x){}};
+   ws.onclose=()=>{st.ws=false;render();setTimeout(connect,5000)};ws.onerror=()=>{try{ws.close()}catch(e){}};
+  }catch(e){st.ws=false;setTimeout(connect,8000)}
+ }
+ async function capture(){
+  for(const sym of assets()){
+   const d=dec(sym); if(!(d.score>=70&&/COMPRA|ENTRADA|BUY/.test(d.label)))continue;
+   const bucket=Math.floor(now()/3600000),id=sym+'-'+bucket;if(st.signals.some(x=>x.id===id))continue;
+   const p=await px(sym);if(!p)continue;
+   st.signals.unshift({id,sym,at:now(),entry:p,score:d.score,label:d.label,status:'PENDENTE',result:null,checked:null});
+  }
+  st.signals=st.signals.slice(0,300);save();
+ }
+ async function evaluate(){
+  for(const x of st.signals){
+   if(x.status!=='PENDENTE'||now()-x.at<60*60*1000)continue;
+   const p=await px(x.sym);if(!p)continue;
+   const ret=(p/x.entry-1)*100;x.result=ret;x.checked=now();x.status=ret>0?'ACERTOU':'ERROU';
+  }save();
+ }
+ function paperGuard(){
+  try{
+   const d=JSON.parse(localStorage.getItem('criptoRadarV7Paper')||'{}'),tr=Array.isArray(d.trades)?d.trades:[],start=new Date();start.setHours(0,0,0,0);
+   const pnl=tr.filter(x=>x.status==='CLOSED'&&N(x.closedAt)>=+start).reduce((a,x)=>a+(N(x.pnl)||0),0),cap=N(d.capital)||200,limit=-cap*.03;
+   return {locked:pnl<=limit,pnl,limit};
+  }catch(e){return {locked:false,pnl:0,limit:-6}}
+ }
+ function ranking(){
+  return assets().map(sym=>dec(sym)).sort((a,b)=>b.score-a.score).slice(0,6);
+ }
+ function render(){
+  const ev=st.signals.filter(x=>x.status!=='PENDENTE'),hits=ev.filter(x=>x.status==='ACERTOU').length,g=paperGuard(),r=ranking();
+  if(q('v11Ws')){q('v11Ws').textContent=st.ws?'WEBSOCKET OK':'REST / RECONECTANDO';q('v11Ws').className=st.ws?'v11-good':'v11-warn'}
+  if(q('v11Evaluated'))q('v11Evaluated').textContent=ev.length;
+  if(q('v11Hits'))q('v11Hits').textContent=ev.length?(100*hits/ev.length).toFixed(1)+'%':'—';
+  if(q('v11Daily')){q('v11Daily').textContent=g.locked?'BLOQUEADO':'OK';q('v11Daily').className=g.locked?'v11-bad':'v11-good'}
+  if(q('v11Ranking'))q('v11Ranking').innerHTML=r.map((x,i)=>'<div class="v11-row"><b>#'+(i+1)+' '+x.sym+'</b><span>'+x.score.toFixed(0)+'/100</span><span class="v11-hide-mobile">'+x.label+'</span><span class="'+(x.score>=70?'v11-good':'v11-warn')+'">'+(x.score>=70?'GATILHO':'OBSERVAR')+'</span></div>').join('')||'<div class="small">Aguardando sinais…</div>';
+  window.v11DailyLocked=g.locked;
+ }
+ async function cycle(){await capture();await evaluate();render()}
+ document.addEventListener('DOMContentLoaded',()=>{connect();setTimeout(cycle,3500)});
+ setInterval(cycle,30000);
+ window.CriptoRadarV11={state:st,cycle,paperGuard};
 })();
 </script>
 

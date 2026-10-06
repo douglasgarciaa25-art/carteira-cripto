@@ -29,3 +29,5 @@ V8: backtest histórico em candles 1h, estratégias separadas (tendência/breako
 V9: Central Radar Pro unificada, diagnóstico de dados, resumo do melhor sinal/Paper/notificações e cooldown persistente de notificações. Mantém V8, Paper e backtest.
 
 V10: camada unificada de decisão para Radar/Paper/notificações, circuit breaker de preço, diagnóstico central, teste manual de Paper BTC e teste de notificação. O teste é somente funcional e não é recomendação financeira.
+
+V11: WebSocket BTC/ETH com fallback REST, ranking de oportunidades, validação automática de sinais após 1h e proteção diária do Paper em -3% do capital. Não executa ordens reais.
