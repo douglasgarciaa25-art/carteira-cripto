@@ -1,6 +1,7 @@
 (function(){
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 let chatHistory=[];
+window.aiHybridControl=window.aiHybridControl||{};
 function radarContext(){
  try{
   const wallet=(typeof printWallet!=='undefined'?printWallet:[]).map(w=>{
@@ -19,6 +20,7 @@ async function ask(q=''){
   const j=await r.json();if(!r.ok||!j.ok)throw 0;
   let probs='';
   if(j.probabilities) probs='<div class="ai-top"><span>📈 Alta '+j.probabilities.up+'%</span><span>↔️ Lateral '+j.probabilities.sideways+'%</span><span>📉 Queda '+j.probabilities.down+'%</span><span>Confiança '+j.probabilities.confidence+'/100</span></div>';
+  if(j.control&&typeof j.control==='object'){ window.aiHybridControl=j.control; try{document.dispatchEvent(new CustomEvent('aiHybridControlUpdated',{detail:j.control}));}catch(e){} }
   if(q&&!/^Atualize a análise/i.test(q)&&!/^Analise o mercado e minha carteira agora$/i.test(q)){chatHistory.push({role:'user',content:q},{role:'assistant',content:j.answer});chatHistory=chatHistory.slice(-8);}
   box.innerHTML='<div class="ai-msg"><b>🤖 IA Radar'+(j.mode==='hibrido'?' • Híbrida':'')+'</b><br>'+esc(j.answer).replace(/\n/g,'<br>')+'</div>'+probs+'<div class="ai-top">'+(j.top||[]).slice(0,5).map((x,i)=>'<span>'+(i+1)+'º '+esc(x.symbol)+' • '+x.score+'/100</span>').join('')+'</div>';
   st.textContent='● '+(j.mode==='hibrido'?'IA híbrida':'IA Radar')+' ativa • '+new Date(j.at).toLocaleTimeString('pt-BR')+(j.learning?.enabled?' • memória ativa':' • memória permanente não configurada');

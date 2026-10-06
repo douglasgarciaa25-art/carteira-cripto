@@ -34,7 +34,7 @@ async function openAIHybrid(question,ctx,localAnswer,marketLine,probLine){
  const history=Array.isArray(ctx.chatHistory)?ctx.chatHistory.slice(-8):[];
  const payload={
   model,
-  instructions:'Você é a segunda camada do Cripto Radar. Responda em português do Brasil, de forma curta, clara e prática. Use os cálculos e dados fornecidos pelo Radar como fonte numérica principal. Considere carteira inteira, quantidade, preço em BRL, valor da posição, variação, liquidez, sinal e motivo. Quando perguntarem quanto comprar, vender ou reduzir, informe unidades da moeda e valor em reais quando os dados permitirem, além do saldo estimado restante. Não invente cotações nem diga que uma operação é garantida. Diferencie sinal do Radar de interpretação da IA e nunca afirme que executou uma ordem.',
+  instructions:'Você é a segunda camada do Cripto Radar. Responda SOMENTE em JSON válido, sem markdown, no formato {"answer":"texto curto em pt-BR","control":{"SIMBOLO":{"action":"COMPRAR / APORTAR|MANTER|AGUARDAR|AGUARDAR ENTRADA|REALIZAR PARTE|VENDER / REDUZIR","confidence":0-100,"reason":"motivo curto"}}}. Use os cálculos fornecidos pelo Radar como fonte numérica principal. Não transforme preço esticado em oportunidade de compra. Para mudar um sinal local para compra/venda/redução exija confirmação clara nos dados; em dúvida use AGUARDAR. Considere carteira inteira, quantidade, preço BRL, valor, 24h, liquidez e o sinal/motivo do Radar. Não invente cotações, não garanta retorno e nunca diga que executou uma ordem.',
   input:[...history.map(m=>({role:m.role==='assistant'?'assistant':'user',content:String(m.content||'').slice(0,1600)})),{role:'user',content:'Pergunta atual: '+question+'\n\nLeitura automática do Radar: '+localAnswer+'\n'+marketLine+probLine+'\n\nCarteira/dados atuais: '+JSON.stringify({wallet,opportunities})}],
   max_output_tokens:500
  };
@@ -42,9 +42,10 @@ async function openAIHybrid(question,ctx,localAnswer,marketLine,probLine){
   const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(payload)});
   if(!r.ok)return null;
   const j=await r.json();
-  if(j.output_text)return String(j.output_text).trim();
-  const parts=[];for(const item of (j.output||[]))for(const c of (item.content||[]))if(c.type==='output_text'&&c.text)parts.push(c.text);
-  return parts.join('\n').trim()||null;
+  let txt=j.output_text?String(j.output_text).trim():'';
+  if(!txt){const parts=[];for(const item of (j.output||[]))for(const c of (item.content||[]))if(c.type==='output_text'&&c.text)parts.push(c.text);txt=parts.join('\n').trim();}
+  if(!txt)return null;
+  try{const clean=txt.replace(/^```json\s*/i,'').replace(/```$/,'').trim();const obj=JSON.parse(clean);return {answer:String(obj.answer||'').trim(),control:obj.control&&typeof obj.control==='object'?obj.control:{}};}catch(e){return {answer:txt,control:{}};}
  }catch(e){return null}
 }
 
@@ -72,6 +73,7 @@ module.exports=async(req,res)=>{res.setHeader('Cache-Control','no-store');try{
  if(/aprendeu|aprendizado|acerto|mem[oó]ria/.test(ql))answer=learning.enabled?'Memória ativa. Comparei '+learning.evaluated+' sinais anteriores; '+learning.hits+' estão positivos na leitura atual. Os pesos são ajustados gradualmente, e a última fotografia da carteira também pode ser preservada no banco.':'A análise está ativa, mas a memória permanente não está disponível nesta execução.';
  if(/risco|perigo/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?'Maior cautela entre os destaques: '+x.symbol+', movimento de '+pct(x.change24h)+'% em 24h. ':'')+marketLine+probLine}
  if(/o que (fa[cç]o|fazer)|comprar|vender|aportar/.test(ql))answer=portfolioText(wallet,all)+'\n'+marketLine+probLine+' Use as probabilidades como cenário, não como garantia. Priorize risco, concentração e os sinais do Radar antes de decidir.';
- const hybridAnswer=await openAIHybrid(q,ctx,answer,marketLine,probLine);if(hybridAnswer)answer=hybridAnswer;
- res.status(200).json({ok:true,at,answer,mode:hybridAnswer?'hibrido':'radar',top,weights:w,learning,probabilities:probs,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},contextReceived:{wallet:wallet.length,radar:radar.length}});
+ const hybrid=await openAIHybrid(q,ctx,answer,marketLine,probLine);if(hybrid?.answer)answer=hybrid.answer;
+ const control=hybrid?.control||{};
+ res.status(200).json({ok:true,at,answer,mode:hybrid?.answer?'hibrido':'radar',top,weights:w,learning,probabilities:probs,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},control,contextReceived:{wallet:wallet.length,radar:radar.length}});
 }catch(e){res.status(503).json({ok:false,error:'Mercado indisponível'})}};

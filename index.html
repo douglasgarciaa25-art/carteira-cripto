@@ -114,7 +114,7 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .smart-alloc-row{display:grid;grid-template-columns:minmax(72px,.7fr) minmax(100px,1fr) minmax(90px,1.2fr);gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #293750}
 .smart-alloc-row:last-child{border-bottom:0}
 .smart-alloc-action{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;text-align:center}
-.smart-buy{background:#123d2d;color:#86efac}.smart-hold{background:#172554;color:#93c5fd}.smart-cut{background:#4b2027;color:#fca5a5}.smart-watch{background:#493c16;color:#fde68a}
+.smart-buy{background:#123d2d;color:#86efac}.smart-hold{background:#172554;color:#93c5fd}.smart-profit{background:#5a3212;color:#fdba74}.smart-cut{background:#4b2027;color:#fca5a5}.smart-watch{background:#493c16;color:#fde68a}
 .smart-alloc-meta{font-size:11px;color:var(--muted);line-height:1.35}
 @media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
 </style>
@@ -1140,31 +1140,46 @@ function renderSmartAllocation(){
   const held=(typeof printWallet!=='undefined'&&Array.isArray(printWallet))?printWallet:[];
   const market=(typeof walletMarketData!=='undefined'&&walletMarketData)?walletMarketData:{};
   const opps=(typeof latestOpportunities!=='undefined'&&Array.isArray(latestOpportunities))?latestOpportunities:[];
+  const ai=(window.aiHybridControl&&typeof window.aiHybridControl==='object')?window.aiHybridControl:{};
+  const classFor=a=>/COMPRAR|APORTAR/.test(a)?'smart-buy':/VENDER|REDUZIR/.test(a)?'smart-cut':/REALIZAR|ESTICADO|CORREÇÃO/.test(a)?'smart-profit':/MANTER/.test(a)?'smart-hold':'smart-watch';
+  const safeActions=new Set(['COMPRAR / APORTAR','MANTER','AGUARDAR','AGUARDAR ENTRADA','REALIZAR PARTE','VENDER / REDUZIR']);
 
   const heldRows=held.map(w=>{
     const s=typeof normalizeWalletSymbol==='function'?normalizeWalletSymbol(w.symbol):String(w.symbol||'').toUpperCase();
     const m=market[s]||{};
     let d={action:'ANALISAR',why:'Aguardando confirmação do mercado'};
     try{ if(typeof walletDirection==='function') d=walletDirection(s)||d; }catch(e){}
-    const action=String(d.action||'ANALISAR');
-    const cls=/COMPRAR|APORTAR/.test(action)?'smart-buy':/VENDER|REDUZIR/.test(action)?'smart-cut':/MANTER/.test(action)?'smart-hold':'smart-watch';
+    const localAction=String(d.action||'ANALISAR');
+    const a=ai[s]||ai[String(w.symbol||'').toUpperCase()]||null;
+    let action=localAction, why=d.why||'', hybrid=false;
+    if(a&&safeActions.has(String(a.action||''))){
+      const conf=Math.max(0,Math.min(100,Number(a.confidence)||0));
+      // A IA só altera uma ação forte quando há confiança alta; caso contrário preserva o Radar.
+      const localStrong=/VENDER|REDUZIR|REALIZAR|COMPRAR|APORTAR/.test(localAction);
+      const aiStrong=/VENDER|REDUZIR|REALIZAR|COMPRAR|APORTAR/.test(a.action);
+      if((!localStrong&&conf>=65)||(localStrong&&a.action===localAction)||(localStrong&&aiStrong&&conf>=82)){
+        action=String(a.action); hybrid=true; why=(a.reason||why)+(conf?' • IA '+conf+'%':'');
+      }else if(a.reason){ why=why+' • IA: '+a.reason; hybrid=true; }
+    }
     const ch=Number(m.change24h);
-    return {s,action,why:d.why||'',cls,ch:Number.isFinite(ch)?ch:null,held:true,score:0};
+    return {s,action,why,cls:classFor(action),ch:Number.isFinite(ch)?ch:null,held:true,hybrid};
   });
 
   const owned=new Set(heldRows.map(x=>x.s));
   const extra=opps.filter(x=>x&&x.symbol&&!owned.has(String(x.symbol).toUpperCase())).slice(0,3).map(x=>{
-    const s=String(x.symbol).toUpperCase();
+    const s=String(x.symbol).toUpperCase(), ch=Number(x.change)||0;
     let sig=null; try{ if(typeof walletBuySignal==='function') sig=walletBuySignal(s); }catch(e){}
-    const strong=sig&&sig.label==='ALARME DE COMPRA';
-    return {s,action:strong?'OPORTUNIDADE FORTE':'OPORTUNIDADE',why:(sig&&sig.why)||('Top do Radar • força '+(Number(x.change)||0).toFixed(2)+'% em 24h'),cls:strong?'smart-buy':'smart-watch',ch:Number(x.change)||0,held:false,score:Number(x.score)||0};
+    const stretched=ch>8 || /preço esticado/i.test(String(sig?.why||''));
+    const strong=!stretched&&sig&&sig.label==='ALARME DE COMPRA';
+    const action=stretched?'AGUARDAR CORREÇÃO':strong?'OPORTUNIDADE FORTE':'OBSERVAR';
+    return {s,action,why:(sig&&sig.why)||('Top do Radar • força '+ch.toFixed(2)+'% em 24h'),cls:classFor(action),ch,held:false,score:Number(x.score)||0,hybrid:false};
   });
 
   const rows=[...heldRows,...extra];
   if(!rows.length){box.innerHTML='<div class="small">Adicione sua carteira para a IA comparar suas moedas com as melhores movimentações do mercado.</div>';return;}
-
-  box.innerHTML=rows.map(x=>'<div class="smart-alloc-row"><b>'+x.s+(x.held?'':' ⭐')+'</b><span class="smart-alloc-action '+x.cls+'">'+x.action+'</span><div class="smart-alloc-meta">'+(x.ch===null?'':((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h • '))+(x.why||'Analisando mercado')+'</div></div>').join('');
+  box.innerHTML='<div class="small" style="margin-bottom:8px">🧠 Controle híbrido: Radar técnico + IA. Se a IA estiver indisponível, o Radar continua sozinho.</div>'+rows.map(x=>'<div class="smart-alloc-row"><b>'+x.s+(x.held?'':' ⭐')+'</b><span class="smart-alloc-action '+x.cls+'">'+x.action+'</span><div class="smart-alloc-meta">'+(x.ch===null?'':((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h • '))+(x.why||'Analisando mercado')+(x.hybrid?' • 🤖 híbrido':'')+'</div></div>').join('');
 }
+document.addEventListener('aiHybridControlUpdated',()=>{try{renderSmartAllocation()}catch(e){}});
 setInterval(()=>{try{renderSmartAllocation()}catch(e){}},4000);
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmartAllocation()}catch(e){}},1500)});
 </script>
