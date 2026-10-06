@@ -1,5 +1,7 @@
 (function(){
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let chatHistory=[];
+window.aiHybridControl=window.aiHybridControl||{};
 function radarContext(){
  try{
   const wallet=(typeof printWallet!=='undefined'?printWallet:[]).map(w=>{
@@ -8,7 +10,7 @@ function radarContext(){
    return {symbol:s,qty:Number(w.qty)||0,priceBRL:Number(p)||0,valueBRL:(Number(p)||0)*(Number(w.qty)||0),change24h:Number(m.change24h)||0,volume24h:Number(m.volume)||0,liquidityPct:Number(m.liquidityPct)||0,direction:direction?.action||'',reason:direction?.why||''};
   });
   const opportunities=(typeof latestOpportunities!=='undefined'?latestOpportunities:[]).slice(0,8).map(x=>({symbol:x.symbol,change24h:Number(x.change)||0,volume24h:Number(x.volume)||0,score:Number(x.score)||0}));
-  return {wallet,opportunities,clientAt:new Date().toISOString()};
+  return {wallet,opportunities,chatHistory:chatHistory.slice(-8),clientAt:new Date().toISOString()};
  }catch(e){return {wallet:[],opportunities:[],clientAt:new Date().toISOString()}}
 }
 async function ask(q=''){
@@ -18,8 +20,10 @@ async function ask(q=''){
   const j=await r.json();if(!r.ok||!j.ok)throw 0;
   let probs='';
   if(j.probabilities) probs='<div class="ai-top"><span>📈 Alta '+j.probabilities.up+'%</span><span>↔️ Lateral '+j.probabilities.sideways+'%</span><span>📉 Queda '+j.probabilities.down+'%</span><span>Confiança '+j.probabilities.confidence+'/100</span></div>';
-  box.innerHTML='<div class="ai-msg"><b>🤖 IA Radar</b><br>'+esc(j.answer).replace(/\n/g,'<br>')+'</div>'+probs+'<div class="ai-top">'+(j.top||[]).slice(0,5).map((x,i)=>'<span>'+(i+1)+'º '+esc(x.symbol)+' • '+x.score+'/100</span>').join('')+'</div>';
-  st.textContent='● IA ativa • '+new Date(j.at).toLocaleTimeString('pt-BR')+(j.learning?.enabled?' • memória ativa':' • memória permanente não configurada');
+  if(j.control&&typeof j.control==='object'){ window.aiHybridControl=j.control; try{document.dispatchEvent(new CustomEvent('aiHybridControlUpdated',{detail:j.control}));}catch(e){} }
+  if(q&&!/^Atualize a análise/i.test(q)&&!/^Analise o mercado e minha carteira agora$/i.test(q)){chatHistory.push({role:'user',content:q},{role:'assistant',content:j.answer});chatHistory=chatHistory.slice(-8);}
+  box.innerHTML='<div class="ai-msg"><b>🤖 IA Radar'+(j.mode==='hibrido'?' • Híbrida':'')+'</b><br>'+esc(j.answer).replace(/\n/g,'<br>')+'</div>'+probs+'<div class="ai-top">'+(j.top||[]).slice(0,5).map((x,i)=>'<span>'+(i+1)+'º '+esc(x.symbol)+' • '+x.score+'/100</span>').join('')+'</div>';
+  st.textContent='● '+(j.mode==='hibrido'?'IA híbrida':'IA Radar')+' ativa • '+new Date(j.at).toLocaleTimeString('pt-BR')+(j.learning?.enabled?' • memória ativa':' • memória permanente não configurada');
   if(inp&&q)inp.value='';
   if(q && !/^Atualize a análise/i.test(q) && !/^Analise o mercado e minha carteira agora$/i.test(q)) speak(j.answer);
  }catch(e){if(st)st.textContent='IA temporariamente indisponível.'}
