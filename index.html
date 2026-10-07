@@ -981,8 +981,8 @@ async function getRadarSW(){
 }
 async function showRadarNotification(title,options={}){
  const reg=await getRadarSW();
- if(reg&&reg.showNotification)return reg.showNotification(title,{icon:'./icon-192.png',badge:'./icon-192.png',...options});
- if('Notification' in window)return new Notification(title,{icon:'./icon-192.png',...options});
+ if(reg&&reg.showNotification)return reg.showNotification(title,{icon:'./notification-icon-192.png',badge:'./badge-96.png',...options});
+ if('Notification' in window)return new Notification(title,{icon:'./notification-icon-192.png',badge:'./badge-96.png',...options});
 }
 async function enableRadarNotifications(){
  if(!('Notification' in window)){notifyStatus('Este navegador não oferece notificações web.');return;}
@@ -2314,8 +2314,8 @@ async function paperNotify(key,title,body){
   if(typeof radarNotify==='function'){await radarNotify(key,title,body);return}
   if(!('Notification' in window)||Notification.permission!=='granted')return;
   const reg=('serviceWorker' in navigator)?await navigator.serviceWorker.ready:null;
-  if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./icon-192.png',badge:'./icon-192.png',tag:key,renotify:true,data:{url:'./'}});
-  else new Notification(title,{body,icon:'./icon.svg',tag:key});
+  if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./notification-icon-192.png',badge:'./badge-96.png',tag:key,renotify:true,data:{url:'./'}});
+  else new Notification(title,{body,icon:'./notification-icon-192.png',badge:'./badge-96.png',tag:key});
  }catch(e){}
 }
 function load(){
@@ -2739,8 +2739,8 @@ window.v8RunBacktest=run;
    if(typeof window.radarNotify==='function'){await window.radarNotify(key,title,body);return true}
    if(!('Notification'in window)||Notification.permission!=='granted')return false;
    const reg=('serviceWorker'in navigator)?await navigator.serviceWorker.ready:null;
-   if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./icon-192.png',badge:'./icon-192.png',tag:key,data:{url:'./'}});
-   else new Notification(title,{body,icon:'./icon.svg',tag:key});
+   if(reg?.showNotification)await reg.showNotification(title,{body,icon:'./notification-icon-192.png',badge:'./badge-96.png',tag:key,data:{url:'./'}});
+   else new Notification(title,{body,icon:'./notification-icon-192.png',badge:'./badge-96.png',tag:key});
    return true;
   }catch(e){return false}
  }
