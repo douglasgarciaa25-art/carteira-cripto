@@ -27,6 +27,14 @@
     {
       "src": "icon.svg",
       "use": "@vercel/static"
+    },
+    {
+      "src": "icon-192.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "icon-512.png",
+      "use": "@vercel/static"
     }
   ],
   "routes": [

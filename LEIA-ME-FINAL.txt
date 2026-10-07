@@ -1,0 +1,95 @@
+CRIPTO RADAR V11 — VERSÃO FINAL MELHORADA
+
+COMO PUBLICAR
+Envie TODOS os arquivos deste pacote para a RAIZ do repositório GitHub.
+NÃO crie pasta api.
+No Vercel, as rotas ficam:
+- /api/market -> market.js
+- /api/ai -> ai.js
+
+ARQUIVOS
+- index.html
+- ai-radar.js
+- ai.js
+- market.js
+- vercel.json
+- sw.js
+- manifest.webmanifest
+- icon.svg
+- icon-192.png
+- icon-512.png
+
+MELHORIAS E CORREÇÕES APLICADAS
+1. CARTEIRA
+- Preserva a carteira antiga em localStorage pela chave crWallet.
+- Ponte global sincroniza carteira/preços/dados com V7, V8, V9, V10 e V11.
+- Corrigido caso em que o mercado chegava em USDT, mas o câmbio BRL chegava depois e a carteira permanecia sem valor em reais.
+- Preço, variação 24h, volume, liquidez, fonte e horário da leitura são compartilhados entre os módulos.
+- Dados atrasados não confirmam novos sinais.
+
+2. FEED DE MERCADO
+- Fonte principal via /api/market no Vercel, reduzindo falhas de CORS/bloqueio no celular.
+- Binance com múltiplos hosts e CoinGecko como reserva.
+- Última fotografia pode ser preservada por curto período quando todas as fontes externas falham, marcada como stale.
+- Caches internos limitados para evitar crescimento indefinido de memória.
+- Preço pontual, candles e derivativos usam timeout e validação.
+
+3. BACKTEST / CANDLES
+- Corrigido o backtest de 60/90 dias: antes a Binance limitava a 1000 candles e o período de 90 dias ficava incompleto.
+- Agora os candles são paginados até 3000 registros, permitindo cobrir 90 dias em 1h corretamente.
+- Fallback direto da Binance também pagina quando o endpoint do Vercel não estiver disponível.
+
+4. PAPER TRADING
+- Operações abertas continuam sendo atualizadas mesmo se o snapshot principal ficar velho, usando preço fresco V11/V10/API.
+- Limite de 5 posições e exposição máxima preservados.
+- Atualização de stops/alvos usa preço fresco com fallback.
+- Derivativos aceitam dados parciais: uma falha isolada não derruba funding/OI/long-short restantes.
+- Operação manual de teste V10 respeita o limite de posições abertas.
+
+5. V9 / V10 / V11
+- Saúde dos dados agora considera também idade/timestamp, não apenas existência do preço.
+- Circuit breaker continua bloqueando decisão nova sem preço fresco.
+- Reconexão WebSocket do V11 ganhou trava para evitar conexões/timers duplicados.
+- Ao voltar para o app, o V11 tenta reconectar se necessário.
+
+6. IA RADAR
+- Continua recebendo contexto real da carteira e oportunidades.
+- Requisições têm timeout e proteção contra sobreposição no cliente.
+- Memória KV tem timeout para não prender função serverless.
+- Aprendizado não ajusta pesos a cada 30 segundos: agora exige janela mínima de 15 minutos, reduzindo aprendizado por ruído.
+- Perguntas/contexto são limitados e normalizados antes do processamento.
+
+7. NOTIFICAÇÕES / PWA
+- Service Worker revisado, /api/* nunca é servido por cache antigo.
+- Cache versionado novamente para forçar a atualização desta versão.
+- Ícones PNG 192 e 512 incluídos.
+- Notificações possuem cooldown persistente para reduzir repetição.
+
+VALIDAÇÕES EXECUTADAS
+- Sintaxe de todos os arquivos JavaScript validada com Node.
+- Todos os scripts inline do index.html validados individualmente.
+- vercel.json e manifest.webmanifest validados como JSON.
+- market.js testado com snapshot, preço, candles, derivativos e fallback CoinGecko.
+- Paginação de 2160 candles testada.
+- ai.js testado com carteira e mercado simulados.
+- Runtime do index.html testado em harness com DOM/API simulados em três cenários:
+  a) feed normal;
+  b) /api/market fora, usando fallback;
+  c) todas as fontes fora, entrando em modo protegido sem erro de JavaScript.
+
+IMPORTANTE
+- O Radar é informativo e não envia ordens reais.
+- Percentuais, scores, backtests e sinais não garantem retorno futuro.
+- Depois de publicar, feche e abra o PWA/site. Se a versão antiga persistir, atualize a página uma vez com internet para o novo Service Worker assumir.
+
+=== MELHORIA IA DE CARTEIRA — 06/10/2026 ===
+- Uma única decisão passa a comandar carteira, aporte e oportunidades.
+- Corrigida contradição: um ativo em AGUARDAR ENTRADA não pode aparecer como APORTAR.
+- Corrigida contradição: a IA não manda REDUZIR apenas porque a posição ficou acima de um alvo matemático; redução exige sinal de risco/saída.
+- Se não houver compra confirmada, o aporte fica como RESERVA PROTEGIDA em vez de ser forçado para alguma moeda.
+- Novo aporte só é liberado com dados frescos + sinal técnico confirmado.
+- Proteção de concentração: novo aporte é bloqueado quando uma posição já passa de 40% e distribuição nova respeita limite informativo de 35%.
+- Oportunidades externas agora têm 3 estados: OPORTUNIDADE CONFIRMADA, PRÉ-CANDIDATA e EM ANÁLISE.
+- Moedas sem confluência V5 deixam de aparecer simplesmente como “OPORTUNIDADE”.
+- A IA do servidor recebe ação, confiança, concentração, frescor dos dados e sinais técnicos da carteira e devolve um Plano Unificado da Carteira.
+- O painel IA Radar mostra esse plano e mantém a mesma decisão exibida no gestor de aporte.

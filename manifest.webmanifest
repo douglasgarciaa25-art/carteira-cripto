@@ -2,16 +2,29 @@
   "name": "Cripto Radar",
   "short_name": "Cripto Radar",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#07101d",
   "theme_color": "#0b1220",
-  "description": "Radar de mercado e acompanhamento de carteira cripto.",
+  "description": "Radar de mercado com IA de carteira, aporte protegido e decisões unificadas.",
   "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
