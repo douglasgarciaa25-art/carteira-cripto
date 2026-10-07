@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V11 • Neo Radar</title>
+<title>Cripto Radar V12 • Fullscreen</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -441,6 +441,58 @@ body.security-locked{overflow:hidden}.security-locked>main,.security-locked>.app
 .security-card{border-color:#2b4663!important}.security-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.security-stat{padding:11px;border:1px solid #24394f;border-radius:13px;background:#09141f}.security-stat span{display:block;font-size:9px;color:#73889d}.security-stat b{display:block;margin-top:4px;font-size:12px}.security-controls{display:grid;gap:10px;margin-top:12px}.security-control-box{padding:12px;border:1px solid #23384e;border-radius:14px;background:#09141f}.security-control-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.security-control-head b{font-size:12px}.security-control-head span{font-size:9px;color:#71869b}.security-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.security-inline input,.security-inline select{min-width:0;flex:1;height:40px;border-radius:11px;border:1px solid #29425b;background:#07111a;color:#eef6ff;padding:0 10px}.security-inline button{min-height:40px!important;padding:8px 11px!important;border-radius:11px!important}.security-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;color:#9eb0c2;font-size:10px}.security-toggle input{accent-color:#4f9ce8}.security-lock-now{margin-top:10px}
 @media(max-width:620px){.security-gate{padding:10px}.security-shell{padding:18px;border-radius:23px;max-height:calc(100vh - 18px)}.security-title{font-size:23px}.security-row{grid-template-columns:1fr}.security-card-grid{grid-template-columns:1fr}.security-inline{align-items:stretch}.security-inline button{width:100%}}
 
+
+
+/* ===== Cripto Radar • Fullscreen UI V12 ===== */
+:root{
+  --v12-bg:#030812;--v12-panel:#081422;--v12-panel2:#0b1929;--v12-line:#1f3a57;
+  --v12-blue:#4b9cff;--v12-cyan:#48d6ff;--v12-green:#34e6a1;--v12-text:#f5f9ff;--v12-muted:#88a0bc;
+}
+html,body{width:100%;max-width:100%;overflow-x:hidden;background:#030812}
+body{
+  min-height:100dvh;
+  background:
+    radial-gradient(circle at 88% -3%,rgba(46,123,255,.22),transparent 28%),
+    radial-gradient(circle at 4% 26%,rgba(0,195,255,.08),transparent 30%),
+    linear-gradient(180deg,#020711 0%,#06101c 38%,#030811 100%)!important;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(91,151,215,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(91,151,215,.028) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px clamp(10px,2.4vw,24px) calc(104px + env(safe-area-inset-bottom))!important}
+.card{border-color:rgba(60,106,150,.44)!important;background:linear-gradient(155deg,rgba(10,24,40,.96),rgba(5,14,24,.97))!important;box-shadow:0 15px 45px rgba(0,0,0,.30),inset 0 1px rgba(255,255,255,.035)!important}
+
+/* full-width premium header */
+.neo-hero{position:relative;margin:0 calc(clamp(10px,2.4vw,24px) * -1) 10px!important;padding:calc(12px + env(safe-area-inset-top)) clamp(14px,3.2vw,28px) 13px!important;border-bottom:1px solid rgba(63,108,153,.32)!important;background:linear-gradient(180deg,rgba(5,15,28,.98),rgba(4,12,21,.94))!important;box-shadow:0 14px 38px rgba(0,0,0,.28)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+.neo-hero:before{content:"";position:absolute;right:-12%;top:-80%;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(40,111,255,.18),transparent 66%);pointer-events:none}
+.neo-hero-row{position:relative;gap:14px}.neo-brand{gap:11px}.neo-avatar{width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,#112a46,#071625);border:1px solid #285b91;box-shadow:0 0 0 1px rgba(64,138,217,.12),0 8px 24px rgba(0,0,0,.25)}.neo-avatar img{width:32px;height:32px}.neo-brand-copy b{font-size:20px;letter-spacing:-.5px}.neo-brand-copy span{font-size:8px;color:#7189a3}.neo-live{padding:8px 11px;border-color:#167046;background:linear-gradient(145deg,#0b271d,#081a15);color:#9ff1c8;box-shadow:0 0 0 1px rgba(52,230,161,.05),0 0 25px rgba(52,230,161,.07)}.neo-live i{width:7px;height:7px}
+.neo-route-tabs{position:relative;margin-top:13px;padding:4px;gap:4px;border-radius:15px;border-color:#203650;background:rgba(5,14,24,.8)}.neo-route-tabs button{min-height:40px;border-radius:11px;font-size:11px;font-weight:850}.neo-route-tabs button.active{background:linear-gradient(145deg,#1c57a2,#183863);box-shadow:0 7px 18px rgba(31,104,196,.22),inset 0 1px rgba(255,255,255,.09)}
+
+/* connection tiles */
+.status-strip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;margin:0 0 10px!important;overflow:visible!important}.status-strip .pill{width:100%;min-height:48px!important;justify-content:flex-start!important;padding:10px 12px!important;border-radius:14px!important;border:1px solid #1f3d5b!important;background:linear-gradient(145deg,#071522,#091827)!important;color:#9eb2c9!important;font-size:10px!important;box-shadow:inset 0 1px rgba(255,255,255,.03)}.status-strip .pill:before{width:9px!important;height:9px!important;margin-right:9px!important;box-shadow:0 0 14px rgba(52,230,161,.8)!important}
+
+/* current area toolbar */
+.app-toolbar{top:7px!important;margin:0 0 10px!important;min-height:58px;padding:8px 9px!important;border-radius:18px!important;border:1px solid #23425f!important;background:rgba(5,14,23,.88)!important;box-shadow:0 10px 32px rgba(0,0,0,.28)!important}.app-menu-button{width:42px!important;height:42px!important;min-height:42px!important;border-radius:13px!important;font-size:22px!important;background:#0b1b2c!important;border-color:#274b6e!important}.app-view-title{font-size:16px!important;letter-spacing:-.15px}.experience-switch{padding:3px!important;border-radius:13px!important;background:#071522!important;border-color:#223d58!important}.experience-switch button{min-height:36px!important;border-radius:10px!important;font-size:9px!important}.experience-switch button.active[data-mode="professional"]{background:linear-gradient(145deg,#253b63,#17263f)!important;color:#e6efff!important}.experience-switch button.active[data-mode="amateur"]{background:linear-gradient(145deg,#123f31,#0c2a22)!important;color:#b5f8d8!important}
+.mode-guide{margin:0 0 11px!important;padding:14px!important;border-radius:19px!important;border:1px solid #234663!important;background:linear-gradient(145deg,#0a1a2a,#08131f)!important;box-shadow:inset 0 1px rgba(255,255,255,.035)!important}.mode-guide-icon{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#1b3b61,#0e2035);border-color:#315b87}.mode-guide b{font-size:16px}.mode-guide .small{font-size:11px;line-height:1.5}.mode-guide .mode-chip{padding:5px 8px;font-size:8px}
+
+/* security screen */
+.security-card-v2{position:relative;overflow:hidden;padding:0!important;border-radius:24px!important;border-color:#2c5d89!important}.security-card-v2:before{content:"";position:absolute;right:-80px;top:-100px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(43,114,255,.16),transparent 68%);pointer-events:none}.security-section-head{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:17px 16px 14px;border-bottom:1px solid rgba(57,96,135,.35);background:linear-gradient(145deg,rgba(16,39,66,.55),rgba(6,18,31,.2))}.security-head-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(145deg,#183e6a,#0b2440);border:1px solid #2d6ea8;font-size:23px;box-shadow:0 8px 24px rgba(0,0,0,.22)}.security-head-copy .coin{font-size:20px!important;letter-spacing:-.35px}.security-head-copy .small{margin-top:4px;color:#8ca4bf!important;line-height:1.4}.security-head-badge{padding:6px 8px;border-radius:999px;background:#0a2a20;border:1px solid #176743;color:#92efbd;font-size:7px;font-weight:950;letter-spacing:.8px}
+.security-card-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin:0!important;padding:12px!important}.security-stat{min-width:0;display:grid!important;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:9px;min-height:66px;padding:10px!important;border-radius:16px!important;border:1px solid #234765!important;background:linear-gradient(145deg,#071725,#091c2d)!important}.security-stat-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#102944;border:1px solid #204e78;color:#8dc9ff;font-size:18px}.security-stat-bio .security-stat-icon{background:#0b2c25;border-color:#17694e;color:#65efb2}.security-stat-lock .security-stat-icon{background:#102a48;color:#78baff}.security-stat-copy{min-width:0}.security-stat-copy>span{display:block!important;font-size:8px!important;color:#738ca8!important;text-transform:uppercase;letter-spacing:.6px}.security-stat-copy>b{display:block!important;margin-top:3px!important;font-size:12px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f1f6fc}.security-stat-chevron{color:#5b7c9d;font-size:22px;line-height:1}
+.security-controls-v2{margin:0!important;padding:0 12px 12px!important;gap:8px!important}.security-control-box{padding:13px!important;border-radius:17px!important;border:1px solid #23435f!important;background:linear-gradient(145deg,#071725,#07121d)!important}.security-control-head{margin-bottom:10px!important}.security-control-head>div{display:flex;align-items:center;gap:8px}.security-control-head b{font-size:13px!important}.security-control-head>span{font-size:8px!important;color:#6e86a0!important}.security-control-icon{width:29px;height:29px;display:grid!important;place-items:center;border-radius:9px;background:#0d2944;color:#7fc3ff;font-size:14px!important;font-weight:900}.security-bio-box{border-color:#245e68!important;background:radial-gradient(circle at 100% 0,rgba(56,214,176,.08),transparent 35%),linear-gradient(145deg,#071d24,#07131e)!important}.security-bio-box .security-control-icon{background:#0b3029;color:#55e9b1}.security-bio-actions{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:stretch!important}.security-bio-actions .security-btn.bio{position:relative;min-height:52px!important;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:15px!important;background:linear-gradient(120deg,#16a878,#1477b7 68%,#215cd6)!important;border:1px solid #3be0b4!important;color:#fff!important;box-shadow:0 10px 24px rgba(19,126,159,.18)!important}.security-bio-actions .security-btn.bio i{position:absolute;right:13px;font-style:normal;font-size:20px}.security-bio-actions .security-btn.ghost{width:auto!important;min-width:105px!important}.security-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.security-password-card{grid-column:1/-1}.security-inline input,.security-inline select,.security-field select{border-color:#264966!important;background:#06111b!important;color:#edf6ff!important}.security-inline input:focus,.security-field select:focus{border-color:#4b9cff!important;box-shadow:0 0 0 3px rgba(75,156,255,.10)!important;outline:none}.security-toggle{padding:11px 0 2px!important}.security-toggle input{width:20px;height:20px}.security-btn{transition:transform .15s ease,filter .15s ease}.security-btn:active{transform:scale(.985)}.security-lock-now{width:calc(100% - 24px)!important;margin:0 12px 12px!important;min-height:46px!important;border-radius:14px!important;background:#1b1018!important;border-color:#5d2b39!important}.security-note{margin:0 12px 14px!important;padding:10px 12px!important;border-radius:13px!important;background:#08121d!important;border-color:#1e354a!important;color:#6f879f!important}
+
+/* bottom navigation fills phone width */
+.quick-dock.neo-dock{left:0!important;right:0!important;bottom:0!important;transform:none!important;width:100%!important;max-width:none!important;height:calc(74px + env(safe-area-inset-bottom))!important;padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;border-left:0!important;border-right:0!important;border-bottom:0!important;border-radius:23px 23px 0 0!important;border-color:#1f3a55!important;background:rgba(3,10,18,.96)!important;box-shadow:0 -12px 36px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.04)!important}.neo-dock button{border-radius:14px!important}.neo-dock button.active{background:linear-gradient(180deg,#102541,#0a1a2d)!important}.neo-dock button.active .dock-glyph{background:transparent!important;color:#65b6ff!important}.neo-dock button.dock-main{width:auto!important;height:auto!important;margin:0 2px!important;border-radius:14px!important;border:1px solid #397dde!important;background:linear-gradient(145deg,#2569c8,#244aa5)!important;box-shadow:0 8px 24px rgba(28,89,181,.28)!important}.neo-dock button.dock-main .dock-glyph{font-size:19px!important}.neo-dock button b{font-size:8px!important}
+
+@media(max-width:760px){
+  main{max-width:none!important;padding:0 8px calc(98px + env(safe-area-inset-bottom))!important}
+  .neo-hero{margin:0 -8px 9px!important;padding-left:12px!important;padding-right:12px!important}
+  .neo-brand-copy b{font-size:18px}.neo-brand-copy span{display:none!important}.neo-avatar{width:44px;height:44px}.neo-avatar img{width:29px;height:29px}.neo-live{font-size:8px;padding:7px 9px}
+  .status-strip{gap:6px!important}.status-strip .pill{min-height:46px!important;padding:9px 10px!important;font-size:9px!important}
+  .app-toolbar{margin:0 0 8px!important;border-radius:16px!important}.mode-guide{margin-bottom:8px!important}
+  .security-section-head{grid-template-columns:auto minmax(0,1fr);padding:15px 13px 13px}.security-head-badge{display:none}.security-head-icon{width:46px;height:46px;border-radius:15px}.security-head-copy .coin{font-size:19px!important}.security-card-grid{grid-template-columns:1fr!important;padding:10px!important;gap:7px!important}.security-stat{min-height:62px}.security-controls-v2{padding:0 10px 10px!important}.security-settings-grid{grid-template-columns:1fr}.security-password-card{grid-column:auto}.security-bio-actions{grid-template-columns:1fr!important}.security-bio-actions .security-btn.ghost{width:100%!important;min-width:0!important}.security-lock-now{width:calc(100% - 20px)!important;margin:0 10px 10px!important}.security-note{margin:0 10px 12px!important}
+}
+@media(max-width:430px){
+  .neo-route-tabs button{min-height:38px;font-size:10px!important}.status-strip{grid-template-columns:1fr 1fr!important}.status-strip .pill{font-size:8px!important;white-space:normal;line-height:1.25}.app-toolbar{grid-template-columns:auto minmax(0,1fr) auto!important}.app-toolbar>.experience-switch{grid-column:auto!important;min-width:72px!important}.app-toolbar>.experience-switch .mode-word{display:none!important}.experience-switch button{padding:6px 8px!important}.mode-guide{padding:12px!important}.mode-guide-icon{width:42px;height:42px}.mode-guide b{font-size:15px}.security-control-head{align-items:flex-start}.security-control-head>span{text-align:right;max-width:42%}.security-inline{align-items:stretch!important}.security-inline button{width:100%!important}.security-password-fields{display:grid!important;grid-template-columns:1fr!important}.security-stat-copy>b{font-size:11px!important}.neo-dock button b{font-size:7px!important}
+}
+
 </style>
 </head>
 <body>
@@ -545,38 +597,70 @@ body.security-locked{overflow:hidden}.security-locked>main,.security-locked>.app
 </div>
 
 
-<section class="card security-card" id="securityCard">
-  <div class="coin">🔐 Segurança do acesso</div>
-  <div class="small">Gerencie a proteção local do Cripto Radar neste aparelho.</div>
-  <div class="security-card-grid">
-    <div class="security-stat"><span>Conta</span><b id="securityAccountStatus">—</b></div>
-    <div class="security-stat"><span>Biometria</span><b id="securityBioStatus">—</b></div>
-    <div class="security-stat"><span>Bloqueio</span><b id="securityLockStatus">—</b></div>
+<section class="card security-card security-card-v2" id="securityCard">
+  <div class="security-section-head">
+    <div class="security-head-icon" aria-hidden="true">🔐</div>
+    <div class="security-head-copy">
+      <div class="coin">Segurança do acesso</div>
+      <div class="small">Gerencie a proteção local do Cripto Radar neste aparelho.</div>
+    </div>
+    <div class="security-head-badge">PROTEGIDO</div>
   </div>
-  <div class="security-controls">
-    <div class="security-control-box">
-      <div class="security-control-head"><b>Biometria do aparelho</b><span>WebAuthn / Passkey</span></div>
-      <div class="security-inline"><button class="security-btn bio" id="securityManageBio" type="button">Ativar / atualizar biometria</button><button class="security-btn ghost" id="securityRemoveBio" type="button">Remover</button></div>
+
+  <div class="security-card-grid">
+    <div class="security-stat security-stat-account">
+      <span class="security-stat-icon" aria-hidden="true">♙</span>
+      <div class="security-stat-copy"><span>Conta</span><b id="securityAccountStatus">—</b></div>
+      <span class="security-stat-chevron" aria-hidden="true">›</span>
+    </div>
+    <div class="security-stat security-stat-bio">
+      <span class="security-stat-icon" aria-hidden="true">◉</span>
+      <div class="security-stat-copy"><span>Biometria</span><b id="securityBioStatus">—</b></div>
+      <span class="security-stat-chevron" aria-hidden="true">›</span>
+    </div>
+    <div class="security-stat security-stat-lock">
+      <span class="security-stat-icon" aria-hidden="true">◷</span>
+      <div class="security-stat-copy"><span>Bloqueio</span><b id="securityLockStatus">—</b></div>
+      <span class="security-stat-chevron" aria-hidden="true">›</span>
+    </div>
+  </div>
+
+  <div class="security-controls security-controls-v2">
+    <div class="security-control-box security-bio-box">
+      <div class="security-control-head">
+        <div><span class="security-control-icon" aria-hidden="true">◉</span><b>Biometria do aparelho</b></div>
+        <span>WebAuthn / Passkey</span>
+      </div>
+      <div class="security-inline security-bio-actions">
+        <button class="security-btn bio" id="securityManageBio" type="button"><span aria-hidden="true">◉</span> Ativar / atualizar biometria <i aria-hidden="true">›</i></button>
+        <button class="security-btn ghost" id="securityRemoveBio" type="button"><span aria-hidden="true">⌫</span> Remover</button>
+      </div>
       <div class="security-msg" id="securityBioMsg"></div>
     </div>
-    <div class="security-control-box">
-      <div class="security-control-head"><b>PIN rápido</b><span>4 a 6 números</span></div>
-      <div class="security-inline"><input id="securityNewPin" type="password" inputmode="numeric" maxlength="6" placeholder="Novo PIN"><button class="security-btn" id="securitySavePin" type="button">Salvar PIN</button><button class="security-btn ghost" id="securityClearPin" type="button">Remover PIN</button></div>
-      <div class="security-msg" id="securityPinMsg"></div>
-    </div>
-    <div class="security-control-box">
-      <div class="security-control-head"><b>Bloqueio automático</b><span>Proteção de sessão</span></div>
-      <label class="security-field"><span>Bloquear após inatividade</span><select id="securityAutoLock"><option value="1">1 minuto</option><option value="5">5 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option></select></label>
-      <label class="security-toggle"><span>Bloquear ao ficar em segundo plano por 30 segundos</span><input id="securityBackgroundLock" type="checkbox"></label>
-    </div>
-    <div class="security-control-box">
-      <div class="security-control-head"><b>Trocar senha</b><span>Exige a senha atual</span></div>
-      <div class="security-inline"><input id="securityCurrentPassword" type="password" autocomplete="current-password" placeholder="Senha atual"><input id="securityNewPassword" type="password" autocomplete="new-password" placeholder="Nova senha"><input id="securityConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirmar nova senha"><button class="security-btn" id="securityChangePassword" type="button">Alterar senha</button></div>
-      <div class="security-msg" id="securityPasswordMsg"></div>
+
+    <div class="security-settings-grid">
+      <div class="security-control-box security-pin-card">
+        <div class="security-control-head"><div><span class="security-control-icon">#</span><b>PIN rápido</b></div><span>4 a 6 números</span></div>
+        <div class="security-inline"><input id="securityNewPin" type="password" inputmode="numeric" maxlength="6" placeholder="Novo PIN"><button class="security-btn" id="securitySavePin" type="button">Salvar</button><button class="security-btn ghost" id="securityClearPin" type="button">Remover</button></div>
+        <div class="security-msg" id="securityPinMsg"></div>
+      </div>
+
+      <div class="security-control-box security-lock-card">
+        <div class="security-control-head"><div><span class="security-control-icon">◷</span><b>Bloqueio automático</b></div><span>Proteção de sessão</span></div>
+        <label class="security-field"><span>Bloquear após inatividade</span><select id="securityAutoLock"><option value="1">1 minuto</option><option value="5">5 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option></select></label>
+        <label class="security-toggle"><span>Bloquear em segundo plano após 30 segundos</span><input id="securityBackgroundLock" type="checkbox"></label>
+      </div>
+
+      <div class="security-control-box security-password-card">
+        <div class="security-control-head"><div><span class="security-control-icon">✦</span><b>Trocar senha</b></div><span>Exige a senha atual</span></div>
+        <div class="security-inline security-password-fields"><input id="securityCurrentPassword" type="password" autocomplete="current-password" placeholder="Senha atual"><input id="securityNewPassword" type="password" autocomplete="new-password" placeholder="Nova senha"><input id="securityConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirmar nova senha"><button class="security-btn" id="securityChangePassword" type="button">Alterar senha</button></div>
+        <div class="security-msg" id="securityPasswordMsg"></div>
+      </div>
     </div>
   </div>
-  <button class="security-btn danger security-lock-now" id="securityLockNow" type="button">Bloquear aplicativo agora</button>
-  <div class="security-note">A biometria exige HTTPS e suporte do navegador. Em aparelhos sem suporte, usuário + senha e PIN continuam disponíveis.</div>
+
+  <button class="security-btn danger security-lock-now" id="securityLockNow" type="button"><span aria-hidden="true">⌁</span> Bloquear aplicativo agora</button>
+  <div class="security-note">A biometria exige HTTPS e suporte do navegador. Usuário + senha e PIN continuam disponíveis como alternativas.</div>
 </section>
 
 <section class="card home-dashboard neo-overview" id="homeDashboardCard">

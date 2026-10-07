@@ -1,29 +1,14 @@
-CRIPTO RADAR V11 — LAYOUT ORIGINAL
+CRIPTO RADAR V12 — LAYOUT FULLSCREEN
 
-Atualização focada no visual e na navegação.
+O que mudou:
+- Interface ocupando melhor toda a largura da tela do celular.
+- Cabeçalho redesenhado com identidade própria do Cripto Radar.
+- Status de conexão em cartões mais claros.
+- Barra da área atual e seletor Amador/Profissional refinados.
+- Tela de Segurança redesenhada: conta, biometria e bloqueio mais legíveis.
+- Botão de biometria destacado e controles de PIN/senha reorganizados.
+- Barra inferior agora cobre toda a largura da tela e respeita a área segura do Android/iPhone.
+- Melhor adaptação para telas pequenas.
 
-Arquivos devem ficar todos na mesma pasta:
-- index.html
-- ai-radar.js
-- manifest.webmanifest
-- sw.js
-- icon.svg
-- icon-192.png
-- icon-512.png
-
-Principais mudanças:
-- Tela inicial mais parecida com app nativo, sem copiar a Binance.
-- Patrimônio monitorado em destaque.
-- Cartões compactos para alarme, oportunidade e IA.
-- Navegação rápida Visão geral / Carteira / Mercado.
-- Feed de boatos/notícias com filtros Minha carteira / Mercado / Confirmados.
-- Barra inferior redesenhada.
-- Modo Amador/Profissional preservado.
-- Funções e IDs do projeto anterior preservados.
-
-SEGURANÇA (atualização):
-- Usuário + senha no primeiro acesso.
-- Biometria/passkey do aparelho via WebAuthn.
-- PIN opcional.
-- Bloqueio automático e ao retornar do segundo plano.
-- Menu Segurança com gerenciamento do acesso.
+Arquivos ficam todos juntos na pasta principal.
+Use HTTPS para WebAuthn/Passkey (biometria).
