@@ -37,6 +37,7 @@ function radarContext(){
   return {wallet,opportunities,portfolio,clientAt:new Date().toISOString()};
  }catch(e){return {wallet:[],opportunities:[],portfolio:{totalBRL:0,confirmedBuys:0,reductions:0,waiting:0},clientAt:new Date().toISOString()}}
 }
+window.radarContextSnapshot=radarContext;
 let asking=false,lastManualAt=0;
 async function ask(q='',auto=false){
  if(auto&&(asking||Date.now()-lastManualAt<12000))return;

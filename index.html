@@ -183,6 +183,7 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 <div class="top"><div><h1>Cripto Radar V11 • IA de Carteira</h1><div class="sub">Carteira, mercado e aportes com decisão unificada • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
+<div id="backgroundState" class="pill">Segundo plano: iniciando…</div>
 <section class="card v9-card" id="v9Command" style="display:none">
  <div class="coin">⚡ Radar Pro • Central</div>
  <div class="small">Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.</div>
@@ -231,7 +232,7 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </section>
 <section class="card notify-card">
  <div class="coin">🔔 Notificações do Radar</div>
- <div class="small">Receba avisos enquanto o site estiver aberto quando surgir um novo sinal de compra, venda/redução ou realização parcial. Instale o Radar na tela inicial para usar como aplicativo.</div>
+ <div class="small">Receba avisos de compra, venda/redução e realização parcial. O modo de segundo plano usa Worker + Service Worker e sincronização periódica quando o Android/navegador permitir. Instale o Radar na tela inicial para obter o melhor funcionamento.</div>
  <div class="notify-row"><button id="enableNotifications" type="button">🔔 ATIVAR NOTIFICAÇÕES</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
 </section>
@@ -339,7 +340,7 @@ BTC 0,00015"></textarea>
  <div class="v7-head"><div class="coin">🧪 Paper Trading & Validação</div><div class="v7-badge">SEM ORDENS REAIS</div></div>
  <div class="small">Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.</div>
  <div class="v7-controls"><label class="small">Capital simulado (US$)<br><input id="paperCapital" type="number" min="100" step="100" value="10000"></label><label class="small">Risco/operação (%)<br><input id="paperRisk" type="number" min="0.1" max="5" step="0.1" value="1"></label><button id="paperReset" type="button">ZERAR PAPER</button></div>
- <div id="paperRiskWarning" class="small" style="margin-top:8px"></div><div id="paperEngineStatus" class="small" style="margin-top:8px">Motor do Paper: iniciando…</div><div class="small" style="margin-top:6px">🔔 Ative “Notificações do Radar” para receber alertas do Paper enquanto o navegador/PWA puder executar o site.</div><div class="v7-grid" id="paperStats"></div>
+ <div id="paperRiskWarning" class="small" style="margin-top:8px"></div><div id="paperEngineStatus" class="small" style="margin-top:8px">Motor do Paper: iniciando…</div><div class="small" style="margin-top:6px">🔔 Ative “Notificações do Radar”. O modo de segundo plano tentará manter o Paper e os alertas atualizados mesmo com o PWA minimizado, conforme os limites do Android/navegador.</div><div class="v7-grid" id="paperStats"></div>
  <div id="paperOpen" style="margin-top:10px"></div>
  <details style="margin-top:10px"><summary><b>📓 Diário automático</b></summary><div id="paperJournal"></div></details>
  <div id="derivativesHealth" class="small" style="margin-top:10px">Derivativos: aguardando ativos elegíveis.</div>
@@ -2139,6 +2140,113 @@ window.v8RunBacktest=run;
  document.addEventListener('DOMContentLoaded',()=>{connect();setTimeout(cycle,3500)});
  setInterval(cycle,30000);
  window.CriptoRadarV11={state:st,cycle,paperGuard};
+})();
+</script>
+
+
+<script>
+/* ===== Cripto Radar V11 • Gerenciador de Segundo Plano =====
+   Estratégia em camadas:
+   1) timers normais no app visível;
+   2) Web Worker como heartbeat quando minimizado;
+   3) Service Worker + Background Sync/Periodic Sync quando suportados;
+   4) atualização imediata ao voltar ao app ou recuperar internet.
+*/
+(function(){
+ const BG_TAG='radar-periodic',SYNC_TAG='radar-sync';
+ let worker=null,lastPulse=0,lastConfig=0,pulseBusy=false,periodicReady=false;
+ const status=msg=>{const e=document.getElementById('backgroundState');if(e)e.textContent='Segundo plano: '+msg};
+ function walletFallback(){
+  try{
+   const raw=(typeof printWallet!=='undefined'&&Array.isArray(printWallet))?printWallet:[];
+   const prices=(typeof walletPrices!=='undefined'&&walletPrices)||{};
+   const market=(typeof walletMarketData!=='undefined'&&walletMarketData)||{};
+   const vals=raw.map(w=>{const symbol=String(w.symbol||'').toUpperCase(),price=Number(prices[symbol]||0),qty=Number(w.qty||0);return {symbol,qty,priceBRL:price,valueBRL:price*qty};});
+   const total=vals.reduce((a,x)=>a+x.valueBRL,0);
+   return {wallet:vals.map(x=>{const m=market[x.symbol]||{};return {...x,positionPct:total?100*x.valueBRL/total:0,change24h:Number(m.change24h)||0,volume24h:Number(m.volume)||0,liquidityPct:Number(m.liquidityPct)||0,dataFresh:true}}),opportunities:[],portfolio:{totalBRL:total},clientAt:new Date().toISOString()};
+  }catch(e){return {wallet:[],opportunities:[],portfolio:{totalBRL:0},clientAt:new Date().toISOString()}}
+ }
+ function context(){
+  try{if(typeof window.radarContextSnapshot==='function')return window.radarContextSnapshot()}catch(e){}
+  return walletFallback();
+ }
+ async function swReg(){
+  try{return typeof getRadarSW==='function'?await getRadarSW():('serviceWorker'in navigator?await navigator.serviceWorker.ready:null)}catch(e){return null}
+ }
+ async function sendConfig(force=false){
+  const now=Date.now();if(!force&&now-lastConfig<15000)return;lastConfig=now;
+  try{
+   const reg=await swReg();if(!reg)return;
+   const target=navigator.serviceWorker.controller||reg.active||reg.waiting;
+   target?.postMessage({type:'RADAR_CONFIG',payload:{enabled:true,notifications:localStorage.getItem('radarNotifications')==='on',context:context(),updatedAt:new Date().toISOString()}});
+  }catch(e){}
+ }
+ async function registerBackground(){
+  const reg=await swReg();if(!reg){status('SW indisponível');return}
+  let pieces=['SW ativo'];
+  try{
+   if('periodicSync' in reg){
+    await reg.periodicSync.register(BG_TAG,{minInterval:15*60*1000});
+    periodicReady=true;pieces.push('sync periódico');
+   }
+  }catch(e){pieces.push('sync sob demanda')}
+  try{if(navigator.storage?.persist)await navigator.storage.persist()}catch(e){}
+  await sendConfig(true);
+  status(pieces.join(' • '));
+ }
+ async function queueSync(){
+  try{const reg=await swReg();if(reg?.sync)await reg.sync.register(SYNC_TAG)}catch(e){}
+ }
+ async function pulse(reason='worker'){
+  const now=Date.now();if(pulseBusy||now-lastPulse<3500)return;lastPulse=now;pulseBusy=true;
+  try{
+   // Enquanto minimizado, tenta executar o mesmo motor principal sem criar um segundo conjunto de regras.
+   if(typeof updateWalletPrices==='function')await updateWalletPrices().catch(()=>{});
+   if(typeof opportunities==='function')await opportunities().catch(()=>{});
+   try{checkPortfolioNotifications()}catch(e){}
+   try{checkMarketBuyNotifications()}catch(e){}
+   try{renderUrgentRadar()}catch(e){}
+   try{await window.CriptoRadarV11?.cycle?.()}catch(e){}
+   try{await window.CriptoRadarV10?.render?.()}catch(e){}
+   await sendConfig();
+   if(document.visibilityState==='hidden')status('ativo • '+new Date().toLocaleTimeString('pt-BR'));
+  }finally{pulseBusy=false}
+ }
+ function startWorker(){
+  if(worker||!('Worker'in window))return;
+  try{
+   worker=new Worker('./radar-worker.js');
+   worker.onmessage=e=>{
+    const t=e.data?.type;
+    if(t==='RADAR_WORKER_READY')status(periodicReady?'Worker + SW ativos':'Worker ativo • SW preparado');
+    if(t==='RADAR_TICK'&&document.visibilityState==='hidden')pulse('worker');
+   };
+   worker.onerror=()=>{status('SW ativo • Worker limitado');worker=null};
+  }catch(e){status('SW ativo • Worker limitado')}
+ }
+ async function runNow(reason='manual'){
+  await sendConfig(true);
+  try{const reg=await swReg();(navigator.serviceWorker.controller||reg?.active)?.postMessage({type:'RADAR_RUN_NOW',reason})}catch(e){}
+  await pulse(reason);
+ }
+ document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState==='hidden'){
+   await sendConfig(true);await queueSync();status('minimizado • proteção ativa');
+  }else{
+   status('retomando…');await runNow('visible');
+  }
+ });
+ window.addEventListener('focus',()=>runNow('focus'));
+ window.addEventListener('pageshow',()=>runNow('pageshow'));
+ window.addEventListener('online',()=>runNow('online'));
+ document.addEventListener('freeze',()=>{sendConfig(true);queueSync()});
+ document.addEventListener('resume',()=>runNow('resume'));
+ navigator.serviceWorker?.addEventListener?.('message',e=>{
+  if(e.data?.type==='RADAR_BG_STATUS')status(e.data.message||'SW ativo');
+ });
+ async function init(){startWorker();await registerBackground();setInterval(()=>sendConfig(),30000);setTimeout(()=>runNow('init'),2500)}
+ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+ window.CriptoRadarBackground={runNow,sendConfig,queueSync};
 })();
 </script>
 

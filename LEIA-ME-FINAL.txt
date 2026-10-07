@@ -102,3 +102,12 @@ IMPORTANTE
 - Ativos em AGUARDAR, REDUZIR, VENDER ou REALIZAR recebem R$ 0 de novo aporte.
 - Aporte só é distribuído para ativos liberados pela decisão unificada da IA, respeitando o limite de concentração.
 - Se nenhuma entrada estiver confirmada, 100% do aporte aparece como reserva protegida.
+
+=== MODO DE SEGUNDO PLANO — 07/10/2026 ===
+- Adicionado radar-worker.js: heartbeat separado da interface para ajudar o Radar a continuar atualizando quando o PWA estiver minimizado.
+- Service Worker ganhou Background Sync e Periodic Background Sync quando o navegador/Android disponibilizar essas APIs.
+- A carteira e o contexto da IA são enviados ao Service Worker para leituras de mercado em segundo plano.
+- Ao minimizar, o app agenda uma sincronização; ao voltar, recuperar internet ou focar a tela, faz atualização imediata.
+- O Service Worker pode consultar /api/market e /api/ai e emitir alertas locais de risco/movimento/decisão, com cooldown anti-repetição.
+- O status “Segundo plano” aparece logo abaixo de “Radar conectado”.
+- IMPORTANTE: Android pode suspender qualquer PWA por economia de bateria. Para melhor resultado, instale o PWA, permita notificações e, no Android/Samsung, deixe o app/navegador sem restrição de bateria. Execução 24h com o app totalmente encerrado só é garantida com monitoramento server-side + Web Push.
