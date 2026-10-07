@@ -424,9 +424,59 @@ main{max-width:860px;padding:12px 12px 96px}
   main{padding:8px 9px 92px!important}.neo-brand-copy span{display:none}.neo-hero{padding-top:10px!important}.neo-balance{font-size:31px}.neo-balance-head{padding:17px 14px 14px}.neo-wallet-open{padding:8px 10px!important}.neo-status-grid{grid-template-columns:1fr;padding:0 12px 12px}.neo-status-card{grid-template-columns:30px minmax(0,1fr) auto;padding:9px}.neo-advice{margin:0 12px 12px}.neo-shortcuts{grid-template-columns:1fr 1fr!important;padding:0 12px 12px!important}.home-pro-tools{padding-left:12px!important;padding-right:12px!important}.neo-feed-head{padding-left:13px;padding-right:13px}.neo-feed-item{padding-left:13px!important;padding-right:13px!important}.status-strip{margin-left:1px;margin-right:1px}.app-toolbar{grid-template-columns:auto minmax(0,1fr) auto!important}.app-view-copy{min-width:0}.app-toolbar>.experience-switch .mode-word{display:none}.app-toolbar>.experience-switch{min-width:78px}.neo-dock{width:calc(100% - 12px)!important}
 }
 @media(max-width:390px){.neo-route-tabs button{font-size:10px}.neo-balance{font-size:29px}.neo-wallet-open{font-size:9px!important}.neo-shortcuts .home-shortcut{padding:9px!important}.neo-feed-item{grid-template-columns:30px minmax(0,1fr);gap:8px}.neo-feed-avatar{width:30px;height:30px;border-radius:10px}.neo-dock button b{font-size:7px!important}}
+
+
+/* ===== Cripto Radar • Segurança local V1 ===== */
+:root{--sec-bg:#070c13;--sec-panel:#0d1621;--sec-line:#24384d;--sec-accent:#5aa9ff;--sec-ok:#4bd38b;--sec-warn:#f0b94c;--sec-bad:#ff707c}
+body.security-locked{overflow:hidden}.security-locked>main,.security-locked>.app-drawer,.security-locked>.app-menu-backdrop,.security-locked>.quick-dock{pointer-events:none;user-select:none}
+.security-gate{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 50% -10%,rgba(70,128,203,.16),transparent 38%),rgba(4,8,13,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.security-gate.open{display:flex}
+.security-shell{width:min(430px,100%);max-height:min(760px,calc(100vh - 28px));overflow:auto;padding:22px;border:1px solid #263a4f;border-radius:27px;background:linear-gradient(155deg,#0f1925,#080e15 72%);box-shadow:0 28px 90px #000c,inset 0 1px rgba(255,255,255,.05)}
+.security-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}.security-brand img{width:46px;height:46px;border-radius:15px;background:#101c2a;padding:5px;border:1px solid #27415c}.security-brand b{display:block;font-size:18px}.security-brand span{font-size:10px;color:#7f94aa;text-transform:uppercase;letter-spacing:1.25px}
+.security-kicker{font-size:9px;font-weight:950;color:#75baff;letter-spacing:1.7px;text-transform:uppercase}.security-title{font-size:25px;line-height:1.05;margin:7px 0 7px;letter-spacing:-.55px}.security-desc{font-size:12px;line-height:1.5;color:#8295a9;margin-bottom:15px}
+.security-panel[hidden]{display:none!important}.security-field{display:block;margin:10px 0}.security-field span{display:block;margin:0 0 6px;font-size:10px;color:#9bb0c5;font-weight:850}.security-field input,.security-field select{width:100%;height:46px;padding:0 13px;border:1px solid #263b51;border-radius:13px;background:#08111b;color:#edf6ff;outline:none;font:inherit}.security-field input:focus,.security-field select:focus{border-color:#4f91d7;box-shadow:0 0 0 3px rgba(79,145,215,.12)}
+.security-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.security-btn{width:100%;min-height:46px;border-radius:14px!important;border:1px solid #2c4763!important;background:#162536!important;color:#eef7ff!important;font-weight:900!important;box-shadow:none!important}.security-btn.primary{border-color:#3978bb!important;background:linear-gradient(135deg,#245d9a,#405fd0)!important}.security-btn.bio{background:linear-gradient(135deg,#164b3d,#173350)!important;border-color:#28664d!important}.security-btn.ghost{background:#0b131d!important;color:#a9bbcd!important}.security-btn.danger{background:#261318!important;border-color:#6f3039!important;color:#ff9da5!important}
+.security-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:#596c80;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px}.security-divider:before,.security-divider:after{content:"";height:1px;flex:1;background:#1f3142}.security-msg{min-height:18px;margin-top:9px;font-size:10px;line-height:1.45;color:#7f93a8}.security-msg.ok{color:#79dda9}.security-msg.bad{color:#ff929b}.security-msg.warn{color:#efc875}
+.security-check{display:flex;align-items:flex-start;gap:9px;padding:10px 11px;border:1px solid #213548;border-radius:12px;background:#09131d;color:#9eb0c1;font-size:10px;line-height:1.4}.security-check input{margin-top:1px;accent-color:#4c96e7}.security-user{display:flex;align-items:center;gap:10px;padding:10px 11px;margin:4px 0 12px;border:1px solid #203447;border-radius:14px;background:#09131d}.security-user-avatar{width:37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#17304a;color:#a7d2ff;font-weight:950}.security-user b{display:block;font-size:12px}.security-user span{display:block;font-size:9px;color:#6f8398;margin-top:2px}
+.security-pinbox{display:none;margin-top:9px}.security-pinbox.open{display:block}.security-note{padding:10px 11px;border-radius:12px;background:#111821;border:1px solid #273341;color:#798a9d;font-size:9px;line-height:1.45;margin-top:12px}
+.security-card{border-color:#2b4663!important}.security-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.security-stat{padding:11px;border:1px solid #24394f;border-radius:13px;background:#09141f}.security-stat span{display:block;font-size:9px;color:#73889d}.security-stat b{display:block;margin-top:4px;font-size:12px}.security-controls{display:grid;gap:10px;margin-top:12px}.security-control-box{padding:12px;border:1px solid #23384e;border-radius:14px;background:#09141f}.security-control-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.security-control-head b{font-size:12px}.security-control-head span{font-size:9px;color:#71869b}.security-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.security-inline input,.security-inline select{min-width:0;flex:1;height:40px;border-radius:11px;border:1px solid #29425b;background:#07111a;color:#eef6ff;padding:0 10px}.security-inline button{min-height:40px!important;padding:8px 11px!important;border-radius:11px!important}.security-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;color:#9eb0c2;font-size:10px}.security-toggle input{accent-color:#4f9ce8}.security-lock-now{margin-top:10px}
+@media(max-width:620px){.security-gate{padding:10px}.security-shell{padding:18px;border-radius:23px;max-height:calc(100vh - 18px)}.security-title{font-size:23px}.security-row{grid-template-columns:1fr}.security-card-grid{grid-template-columns:1fr}.security-inline{align-items:stretch}.security-inline button{width:100%}}
+
 </style>
 </head>
 <body>
+
+<div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
+  <div class="security-shell">
+    <div class="security-brand"><img src="./icon.svg" alt=""><div><b>Cripto Radar</b><span>acesso protegido</span></div></div>
+
+    <div class="security-panel" id="securitySetupPanel" hidden>
+      <div class="security-kicker">Primeira configuração</div>
+      <h2 class="security-title">Crie seu acesso</h2>
+      <div class="security-desc">Seu usuário e sua senha ficam protegidos neste aparelho. Se o celular permitir, você também pode ativar digital ou reconhecimento facial.</div>
+      <label class="security-field"><span>Usuário ou e-mail</span><input id="securitySetupUser" autocomplete="username" maxlength="80" placeholder="Seu usuário"></label>
+      <label class="security-field"><span>Senha</span><input id="securitySetupPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo de 8 caracteres"></label>
+      <label class="security-field"><span>Confirmar senha</span><input id="securitySetupConfirm" type="password" autocomplete="new-password" minlength="8" placeholder="Digite novamente"></label>
+      <label class="security-check"><input id="securitySetupBio" type="checkbox" checked><span><b>Ativar biometria neste aparelho</b><br>Quando disponível, o Android usará digital, rosto ou o bloqueio seguro do aparelho.</span></label>
+      <button class="security-btn primary" id="securityCreateBtn" type="button">Criar acesso protegido</button>
+      <div class="security-msg" id="securitySetupMsg"></div>
+      <div class="security-note">Esta versão usa segurança local do aparelho. Não envia sua senha para o Cripto Radar e não possui recuperação por e-mail sem um serviço de conta na nuvem.</div>
+    </div>
+
+    <div class="security-panel" id="securityLoginPanel" hidden>
+      <div class="security-kicker">Área protegida</div>
+      <h2 class="security-title">Desbloquear Radar</h2>
+      <div class="security-user"><div class="security-user-avatar">CR</div><div><b id="securitySavedUser">Usuário</b><span>Conta local deste aparelho</span></div></div>
+      <button class="security-btn bio" id="securityBiometricBtn" type="button">◉ Entrar com biometria</button>
+      <div class="security-divider">ou use sua senha</div>
+      <label class="security-field"><span>Usuário</span><input id="securityLoginUser" autocomplete="username" maxlength="80"></label>
+      <label class="security-field"><span>Senha</span><input id="securityLoginPassword" type="password" autocomplete="current-password" placeholder="Sua senha"></label>
+      <button class="security-btn primary" id="securityPasswordBtn" type="button">Entrar</button>
+      <button class="security-btn ghost" id="securityPinToggle" type="button">Usar PIN</button>
+      <div class="security-pinbox" id="securityPinBox"><label class="security-field"><span>PIN de 4 a 6 números</span><input id="securityLoginPin" type="password" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••"></label><button class="security-btn" id="securityPinBtn" type="button">Desbloquear com PIN</button></div>
+      <div class="security-msg" id="securityLoginMsg"></div>
+    </div>
+  </div>
+</div>
 <div class="app-menu-backdrop" id="appMenuBackdrop"></div>
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
@@ -441,6 +491,7 @@ main{max-width:860px;padding:12px 12px 96px}
     <button class="app-nav-btn" data-route="market" type="button"><span class="app-nav-icon">📈</span><span><span class="app-nav-label">Mercado</span><span class="app-nav-meta">Ranking, notícias e tendências</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="alerts" type="button"><span class="app-nav-icon">🚨</span><span><span class="app-nav-label">Alertas</span><span class="app-nav-meta">Alarmes e notificações</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="ai" type="button"><span class="app-nav-icon">🤖</span><span><span class="app-nav-label">IA Radar</span><span class="app-nav-meta">Análise da carteira</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="security" type="button"><span class="app-nav-icon">🔐</span><span><span class="app-nav-label">Segurança</span><span class="app-nav-meta">Senha, PIN e biometria</span></span><span class="app-nav-chevron">›</span></button>
   </nav>
   <div class="app-nav-section pro-menu">Profissional</div>
   <nav class="app-nav-list pro-menu">
@@ -492,6 +543,41 @@ main{max-width:860px;padding:12px 12px 96px}
  <div class="mode-guide-icon" id="modeGuideIcon">🙂</div>
  <div><b id="modeGuideTitle">Modo Amador</b><div class="small" id="modeGuideText">Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.</div><span class="mode-chip" id="modeGuideChip">INTERFACE SIMPLIFICADA</span></div>
 </div>
+
+
+<section class="card security-card" id="securityCard">
+  <div class="coin">🔐 Segurança do acesso</div>
+  <div class="small">Gerencie a proteção local do Cripto Radar neste aparelho.</div>
+  <div class="security-card-grid">
+    <div class="security-stat"><span>Conta</span><b id="securityAccountStatus">—</b></div>
+    <div class="security-stat"><span>Biometria</span><b id="securityBioStatus">—</b></div>
+    <div class="security-stat"><span>Bloqueio</span><b id="securityLockStatus">—</b></div>
+  </div>
+  <div class="security-controls">
+    <div class="security-control-box">
+      <div class="security-control-head"><b>Biometria do aparelho</b><span>WebAuthn / Passkey</span></div>
+      <div class="security-inline"><button class="security-btn bio" id="securityManageBio" type="button">Ativar / atualizar biometria</button><button class="security-btn ghost" id="securityRemoveBio" type="button">Remover</button></div>
+      <div class="security-msg" id="securityBioMsg"></div>
+    </div>
+    <div class="security-control-box">
+      <div class="security-control-head"><b>PIN rápido</b><span>4 a 6 números</span></div>
+      <div class="security-inline"><input id="securityNewPin" type="password" inputmode="numeric" maxlength="6" placeholder="Novo PIN"><button class="security-btn" id="securitySavePin" type="button">Salvar PIN</button><button class="security-btn ghost" id="securityClearPin" type="button">Remover PIN</button></div>
+      <div class="security-msg" id="securityPinMsg"></div>
+    </div>
+    <div class="security-control-box">
+      <div class="security-control-head"><b>Bloqueio automático</b><span>Proteção de sessão</span></div>
+      <label class="security-field"><span>Bloquear após inatividade</span><select id="securityAutoLock"><option value="1">1 minuto</option><option value="5">5 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option></select></label>
+      <label class="security-toggle"><span>Bloquear ao ficar em segundo plano por 30 segundos</span><input id="securityBackgroundLock" type="checkbox"></label>
+    </div>
+    <div class="security-control-box">
+      <div class="security-control-head"><b>Trocar senha</b><span>Exige a senha atual</span></div>
+      <div class="security-inline"><input id="securityCurrentPassword" type="password" autocomplete="current-password" placeholder="Senha atual"><input id="securityNewPassword" type="password" autocomplete="new-password" placeholder="Nova senha"><input id="securityConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirmar nova senha"><button class="security-btn" id="securityChangePassword" type="button">Alterar senha</button></div>
+      <div class="security-msg" id="securityPasswordMsg"></div>
+    </div>
+  </div>
+  <button class="security-btn danger security-lock-now" id="securityLockNow" type="button">Bloquear aplicativo agora</button>
+  <div class="security-note">A biometria exige HTTPS e suporte do navegador. Em aparelhos sem suporte, usuário + senha e PIN continuam disponíveis.</div>
+</section>
 
 <section class="card home-dashboard neo-overview" id="homeDashboardCard">
   <div class="neo-balance-head">
@@ -2808,6 +2894,121 @@ window.v8RunBacktest=run;
 </script>
 
 <script>
+/* ===== Cripto Radar • Segurança local V1 ===== */
+(function(){
+ const KEY='crRadarSecurityV1', SESSION='crRadarUnlockedV1';
+ const $=id=>document.getElementById(id);
+ const enc=new TextEncoder();
+ let idleTimer=null, hiddenAt=0, failCount=0, blockedUntil=0;
+
+ function b64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)))}
+ function b64url(buf){return b64(buf).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+ function fromB64(s){const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer}
+ function fromB64url(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return fromB64(s)}
+ function random(n=16){return crypto.getRandomValues(new Uint8Array(n))}
+ function read(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
+ function write(c){localStorage.setItem(KEY,JSON.stringify(c));syncSettings()}
+ function msg(id,t='',kind=''){const e=$(id);if(!e)return;e.textContent=t;e.className='security-msg'+(kind?' '+kind:'')}
+ function same(a,b){if(a.length!==b.length)return false;let x=0;for(let i=0;i<a.length;i++)x|=a.charCodeAt(i)^b.charCodeAt(i);return x===0}
+ async function hashSecret(secret,saltB64,iterations=210000){
+  const key=await crypto.subtle.importKey('raw',enc.encode(secret),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:new Uint8Array(fromB64(saltB64)),iterations},key,256);
+  return b64(bits);
+ }
+ async function makeSecret(secret,iterations=210000){const salt=b64(random(16));return {salt,iterations,hash:await hashSecret(secret,salt,iterations)}}
+ async function checkSecret(secret,obj){if(!obj?.salt||!obj?.hash)return false;return same(await hashSecret(secret,obj.salt,obj.iterations||210000),obj.hash)}
+ function biometricAvailable(){return !!(window.PublicKeyCredential&&navigator.credentials&&window.isSecureContext)}
+ function lock(reason=''){
+  sessionStorage.removeItem(SESSION);document.body.classList.add('security-locked');$('securityGate')?.classList.add('open');
+  document.querySelector('main')?.setAttribute('inert','');$('appDrawer')?.setAttribute('inert','');
+  const c=read();showLogin(c);if(reason)msg('securityLoginMsg',reason,'warn');
+ }
+ function unlock(){
+  sessionStorage.setItem(SESSION,'1');document.body.classList.remove('security-locked');$('securityGate')?.classList.remove('open');
+  document.querySelector('main')?.removeAttribute('inert');$('appDrawer')?.removeAttribute('inert');
+  failCount=0;blockedUntil=0;startIdle();
+ }
+ function startIdle(){clearTimeout(idleTimer);const c=read();if(!c)return;const min=Math.max(1,Number(c.autoLockMinutes||5));idleTimer=setTimeout(()=>lock('Bloqueado por inatividade.'),min*60000)}
+ function activity(){if(sessionStorage.getItem(SESSION)==='1'&&!document.hidden)startIdle()}
+ function isBlocked(){if(Date.now()<blockedUntil){msg('securityLoginMsg','Muitas tentativas. Aguarde alguns segundos.','bad');return true}return false}
+ function failed(){failCount++;if(failCount>=5){blockedUntil=Date.now()+30000;failCount=0;msg('securityLoginMsg','Muitas tentativas. Bloqueado por 30 segundos.','bad')}else msg('securityLoginMsg','Dados incorretos. Tente novamente.','bad')}
+ function showSetup(){
+  document.body.classList.add('security-locked');$('securityGate')?.classList.add('open');$('securitySetupPanel').hidden=false;$('securityLoginPanel').hidden=true;
+  $('securitySetupBio').disabled=!biometricAvailable();if(!biometricAvailable())$('securitySetupBio').checked=false;
+  setTimeout(()=>$('securitySetupUser')?.focus(),100);
+ }
+ function showLogin(c=read()){
+  if(!c){showSetup();return}$('securitySetupPanel').hidden=true;$('securityLoginPanel').hidden=false;
+  $('securitySavedUser').textContent=c.username||'Usuário';$('securityLoginUser').value=c.username||'';
+  const bioBtn=$('securityBiometricBtn');if(bioBtn){bioBtn.style.display=(c.biometric&&biometricAvailable())?'block':'none'}
+  const pinToggle=$('securityPinToggle');if(pinToggle)pinToggle.style.display=c.pin?'block':'none';$('securityPinBox')?.classList.remove('open');
+  $('securityLoginPassword').value='';$('securityLoginPin').value='';
+ }
+ function syncSettings(){
+  const c=read();if(!c)return;
+  if($('securityAccountStatus'))$('securityAccountStatus').textContent=c.username||'Local';
+  if($('securityBioStatus'))$('securityBioStatus').textContent=c.biometric?'Ativa':(biometricAvailable()?'Desativada':'Indisponível');
+  if($('securityLockStatus'))$('securityLockStatus').textContent=(c.autoLockMinutes||5)+' min';
+  if($('securityAutoLock'))$('securityAutoLock').value=String(c.autoLockMinutes||5);
+  if($('securityBackgroundLock'))$('securityBackgroundLock').checked=c.lockOnBackground!==false;
+  if($('securityRemoveBio'))$('securityRemoveBio').disabled=!c.biometric;
+ }
+ async function registerBiometric(c){
+  if(!biometricAvailable())throw new Error('Biometria indisponível neste navegador. Abra o app em HTTPS e use um navegador compatível.');
+  const challenge=random(32),userId=random(16);
+  const cred=await navigator.credentials.create({publicKey:{challenge,rp:{name:'Cripto Radar'},user:{id:userId,name:c.username,displayName:c.username},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',residentKey:'preferred',userVerification:'required'},timeout:60000,attestation:'none'}});
+  if(!cred)throw new Error('Cadastro biométrico cancelado.');
+  const res=cred.response,pk=res.getPublicKey?.(),alg=res.getPublicKeyAlgorithm?.();
+  c.biometric={credentialId:b64url(cred.rawId),publicKey:pk?b64(pk):null,alg:typeof alg==='number'?alg:null,createdAt:Date.now()};write(c);return true;
+ }
+ function concat(a,b){const x=new Uint8Array(a.byteLength+b.byteLength);x.set(new Uint8Array(a),0);x.set(new Uint8Array(b),a.byteLength);return x.buffer}
+ function derToRaw(sig){
+  const u=new Uint8Array(sig);if(u.length===64)return u.buffer;if(u[0]!==0x30)return sig;let p=1;let len=u[p++];if(len&0x80){const n=len&0x7f;p+=n}if(u[p++]!==0x02)return sig;let rl=u[p++];let r=u.slice(p,p+rl);p+=rl;if(u[p++]!==0x02)return sig;let sl=u[p++];let s=u.slice(p,p+sl);while(r.length>32&&r[0]===0)r=r.slice(1);while(s.length>32&&s[0]===0)s=s.slice(1);const out=new Uint8Array(64);out.set(r.slice(-32),32-Math.min(32,r.length));out.set(s.slice(-32),64-Math.min(32,s.length));return out.buffer
+ }
+ async function verifyAssertion(assertion,stored,challenge){
+  if(!stored.publicKey)return true;
+  if(b64url(assertion.rawId)!==stored.credentialId)return false;
+  const cd=JSON.parse(new TextDecoder().decode(assertion.response.clientDataJSON));
+  if(cd.type!=='webauthn.get'||cd.challenge!==b64url(challenge))return false;
+  const flags=new Uint8Array(assertion.response.authenticatorData)[32]||0;if((flags&0x04)===0)return false;
+  const cdHash=await crypto.subtle.digest('SHA-256',assertion.response.clientDataJSON);const signed=concat(assertion.response.authenticatorData,cdHash);const spki=fromB64(stored.publicKey);
+  if(stored.alg===-257){const key=await crypto.subtle.importKey('spki',spki,{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['verify']);return crypto.subtle.verify({name:'RSASSA-PKCS1-v1_5'},key,assertion.response.signature,signed)}
+  const key=await crypto.subtle.importKey('spki',spki,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);return crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},key,derToRaw(assertion.response.signature),signed)
+ }
+ async function biometricLogin(){
+  if(isBlocked())return;const c=read();if(!c?.biometric)return;
+  try{msg('securityLoginMsg','Aguardando confirmação do aparelho…','warn');const challenge=random(32);const allowCredentials=[{type:'public-key',id:fromB64url(c.biometric.credentialId)}];const assertion=await navigator.credentials.get({publicKey:{challenge,allowCredentials,userVerification:'required',timeout:60000}});if(assertion&&await verifyAssertion(assertion,c.biometric,challenge)){msg('securityLoginMsg','Biometria confirmada.','ok');unlock()}else failed()}catch(e){msg('securityLoginMsg',e?.name==='NotAllowedError'?'Biometria cancelada ou não reconhecida.':(e?.message||'Não foi possível usar a biometria.'),'bad')}
+ }
+ async function createAccount(){
+  const user=$('securitySetupUser').value.trim(),pw=$('securitySetupPassword').value,cf=$('securitySetupConfirm').value;if(user.length<3){msg('securitySetupMsg','Digite um usuário válido.','bad');return}if(pw.length<8){msg('securitySetupMsg','A senha precisa ter pelo menos 8 caracteres.','bad');return}if(pw!==cf){msg('securitySetupMsg','As senhas não coincidem.','bad');return}
+  const btn=$('securityCreateBtn');btn.disabled=true;msg('securitySetupMsg','Protegendo sua senha…','warn');try{const c={version:1,username:user,password:await makeSecret(pw),pin:null,biometric:null,autoLockMinutes:5,lockOnBackground:true,createdAt:Date.now()};write(c);if($('securitySetupBio').checked){try{msg('securitySetupMsg','Confirme a biometria no aparelho…','warn');await registerBiometric(c);msg('securitySetupMsg','Acesso criado com biometria.','ok')}catch(e){msg('securitySetupMsg','Acesso criado. Biometria não foi ativada: '+(e?.message||'cancelada.'),'warn')}}unlock()}catch(e){msg('securitySetupMsg','Não foi possível criar o acesso: '+(e?.message||'erro desconhecido'),'bad')}finally{btn.disabled=false}
+ }
+ async function passwordLogin(){
+  if(isBlocked())return;const c=read(),user=$('securityLoginUser').value.trim(),pw=$('securityLoginPassword').value;if(!c)return;if(user!==c.username||!await checkSecret(pw,c.password)){failed();return}msg('securityLoginMsg','Acesso liberado.','ok');unlock()
+ }
+ async function pinLogin(){if(isBlocked())return;const c=read(),pin=$('securityLoginPin').value;if(!c?.pin||!await checkSecret(pin,c.pin)){failed();return}msg('securityLoginMsg','PIN confirmado.','ok');unlock()}
+
+ $('securityCreateBtn')?.addEventListener('click',createAccount);$('securityPasswordBtn')?.addEventListener('click',passwordLogin);$('securityBiometricBtn')?.addEventListener('click',biometricLogin);$('securityPinToggle')?.addEventListener('click',()=>{$('securityPinBox')?.classList.toggle('open');setTimeout(()=>$('securityLoginPin')?.focus(),60)});$('securityPinBtn')?.addEventListener('click',pinLogin);
+ $('securityLoginPassword')?.addEventListener('keydown',e=>{if(e.key==='Enter')passwordLogin()});$('securityLoginPin')?.addEventListener('keydown',e=>{if(e.key==='Enter')pinLogin()});$('securitySetupConfirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')createAccount()});
+ $('securityManageBio')?.addEventListener('click',async()=>{const c=read();if(!c)return;try{msg('securityBioMsg','Confirme no aparelho…','warn');await registerBiometric(c);msg('securityBioMsg','Biometria ativada neste aparelho.','ok')}catch(e){msg('securityBioMsg',e?.message||'Não foi possível ativar.','bad')}});
+ $('securityRemoveBio')?.addEventListener('click',()=>{const c=read();if(!c)return;c.biometric=null;write(c);msg('securityBioMsg','Biometria removida do Cripto Radar.','ok')});
+ $('securitySavePin')?.addEventListener('click',async()=>{const pin=$('securityNewPin').value.trim();if(!/^\d{4,6}$/.test(pin)){msg('securityPinMsg','Use somente 4 a 6 números.','bad');return}const c=read();if(!c)return;msg('securityPinMsg','Protegendo PIN…','warn');c.pin=await makeSecret(pin,160000);write(c);$('securityNewPin').value='';msg('securityPinMsg','PIN salvo.','ok')});
+ $('securityClearPin')?.addEventListener('click',()=>{const c=read();if(!c)return;c.pin=null;write(c);$('securityNewPin').value='';msg('securityPinMsg','PIN removido.','ok')});
+ $('securityAutoLock')?.addEventListener('change',()=>{const c=read();if(!c)return;c.autoLockMinutes=Number($('securityAutoLock').value)||5;write(c);startIdle()});
+ $('securityBackgroundLock')?.addEventListener('change',()=>{const c=read();if(!c)return;c.lockOnBackground=$('securityBackgroundLock').checked;write(c)});
+ $('securityChangePassword')?.addEventListener('click',async()=>{const c=read();if(!c)return;const cur=$('securityCurrentPassword').value,nw=$('securityNewPassword').value,cf=$('securityConfirmPassword').value;if(!await checkSecret(cur,c.password)){msg('securityPasswordMsg','Senha atual incorreta.','bad');return}if(nw.length<8){msg('securityPasswordMsg','A nova senha precisa ter pelo menos 8 caracteres.','bad');return}if(nw!==cf){msg('securityPasswordMsg','As novas senhas não coincidem.','bad');return}c.password=await makeSecret(nw);write(c);['securityCurrentPassword','securityNewPassword','securityConfirmPassword'].forEach(id=>$(id).value='');msg('securityPasswordMsg','Senha alterada com sucesso.','ok')});
+ $('securityLockNow')?.addEventListener('click',()=>lock('Aplicativo bloqueado.'));
+
+ ['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,activity,{passive:true}));
+ document.addEventListener('visibilitychange',()=>{const c=read();if(document.hidden){hiddenAt=Date.now();clearTimeout(idleTimer)}else{if(sessionStorage.getItem(SESSION)==='1'&&c?.lockOnBackground!==false&&hiddenAt&&Date.now()-hiddenAt>=30000)lock('Bloqueado ao retornar do segundo plano.');else activity();hiddenAt=0}});
+ window.addEventListener('pagehide',()=>{clearTimeout(idleTimer)});
+ window.CriptoRadarSecurity={lock,unlock,biometricAvailable};
+
+ const c=read();syncSettings();if(!c)showSetup();else if(sessionStorage.getItem(SESSION)==='1')unlock();else lock();
+})();
+</script>
+
+<script>
 /* ===== Cripto Radar Adaptive Navigation ===== */
 (function(){
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
@@ -2817,6 +3018,7 @@ window.v8RunBacktest=run;
   market:{title:'Mercado',ids:['opportunitiesCard','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['urgentRadarCard','notifyCard']},
   ai:{title:'IA Radar',ids:['aiRadarCard']},
+  security:{title:'Segurança',ids:['securityCard']},
   engine:{title:'Motor profissional',pro:true,ids:['v10CoreCard','v11LiveCard']},
   backtest:{title:'Backtest & Calibração',pro:true,ids:['v8BacktestCard']},
   paper:{title:'Paper Trading',pro:true,ids:['v7ValidationCard']},

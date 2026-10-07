@@ -20,3 +20,10 @@ Principais mudanças:
 - Barra inferior redesenhada.
 - Modo Amador/Profissional preservado.
 - Funções e IDs do projeto anterior preservados.
+
+SEGURANÇA (atualização):
+- Usuário + senha no primeiro acesso.
+- Biometria/passkey do aparelho via WebAuthn.
+- PIN opcional.
+- Bloqueio automático e ao retornar do segundo plano.
+- Menu Segurança com gerenciamento do acesso.

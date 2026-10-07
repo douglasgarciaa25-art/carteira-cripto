@@ -1,0 +1,30 @@
+CRIPTO RADAR V11 — ACESSO PROTEGIDO
+
+Arquivos devem ficar TODOS juntos na pasta base do site:
+- index.html
+- ai-radar.js
+- manifest.webmanifest
+- sw.js
+- icon.svg
+- icon-192.png
+- icon-512.png
+
+SEGURANÇA ADICIONADA
+- Primeiro acesso: cria usuário e senha.
+- Senha não é salva em texto puro: é derivada com PBKDF2 + SHA-256 e salt aleatório.
+- Biometria/passkey do aparelho usando WebAuthn quando o navegador suporta.
+- PIN opcional de 4 a 6 números.
+- Bloqueio automático configurável em 1, 5, 15 ou 30 minutos.
+- Opção para bloquear após 30 segundos em segundo plano.
+- Tela Segurança no menu para ativar/remover biometria, criar PIN, trocar senha e bloquear o app agora.
+- 5 tentativas erradas geram bloqueio temporário de 30 segundos.
+
+IMPORTANTE SOBRE BIOMETRIA
+- Precisa de HTTPS e navegador compatível.
+- Em Android, pode usar digital, rosto ou o método seguro configurado no aparelho.
+- Em arquivo local (file://), a biometria pode não funcionar. Hospedado na Vercel/GitHub Pages com HTTPS, o suporte é melhor.
+
+LIMITAÇÃO DESTA VERSÃO
+- O login é LOCAL neste aparelho/navegador. Não existe conta na nuvem nem recuperação por e-mail.
+- Se apagar os dados do site/navegador, o acesso local e outros dados salvos pelo aplicativo também podem ser apagados.
+- Para login sincronizado entre celulares e recuperação por e-mail, use um backend de autenticação como Supabase/Firebase.
