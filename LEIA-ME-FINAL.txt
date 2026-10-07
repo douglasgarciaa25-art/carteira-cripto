@@ -111,3 +111,15 @@ IMPORTANTE
 - O Service Worker pode consultar /api/market e /api/ai e emitir alertas locais de risco/movimento/decisão, com cooldown anti-repetição.
 - O status “Segundo plano” aparece logo abaixo de “Radar conectado”.
 - IMPORTANTE: Android pode suspender qualquer PWA por economia de bateria. Para melhor resultado, instale o PWA, permita notificações e, no Android/Samsung, deixe o app/navegador sem restrição de bateria. Execução 24h com o app totalmente encerrado só é garantida com monitoramento server-side + Web Push.
+
+=== ALARME INTELIGENTE V2 — 07/10/2026 ===
+- Novo status geral: NORMAL, ATENÇÃO, ALERTA FORTE e CRÍTICO.
+- Separa risco da carteira de oportunidade de mercado.
+- Cruza movimentos de 1 min, 5 min, 15 min e 24h.
+- Usa confirmação de volume e liquidez e considera o peso do ativo na carteira.
+- Quando disponível, incorpora funding, open interest e relação long/short da Binance Futures.
+- Alertas fortes exigem 2 confirmações consecutivas para reduzir falso disparo.
+- Exibe preço, variações por janela, volume relativo, volume 24h, liquidez, score e ação sugerida.
+- Cooldown persistente evita repetição excessiva de sirene/notificação.
+- Service Worker atualizado para usar a mesma lógica V2 em execuções de segundo plano, com confirmação persistente entre leituras.
+- Cache do PWA atualizado para forçar a entrada da nova versão.

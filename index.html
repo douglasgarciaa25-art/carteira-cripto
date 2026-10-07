@@ -107,8 +107,9 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 
-/* Alarme de urgência */
-.urgent-card{border:1px solid #ef444488!important;background:linear-gradient(135deg,#2a1018cc,#17102acc)!important}.urgent-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.urgent-badge{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;background:#3b1b23;color:#fca5a5}.urgent-list{margin-top:9px}.urgent-item{padding:9px 10px;margin-top:7px;border-radius:12px;background:#0b1727;border:1px solid #293b55;font-size:12px}.urgent-item.risk{border-color:#ef444477;background:#3a151c88}.urgent-item.rocket{border-color:#22c55e77;background:#123b2488}.urgent-title{font-weight:900}.urgent-meta{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.4}
+/* Alarme Inteligente V2 */
+.urgent-card{border:1px solid #334b69!important;background:linear-gradient(135deg,#101a2dcc,#17102acc)!important;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}.urgent-card.urgent-state-normal{border-color:#22c55e66!important;background:linear-gradient(135deg,#0b2b22cc,#0b1727)!important}.urgent-card.urgent-state-attention{border-color:#f59e0b88!important;background:linear-gradient(135deg,#33270dcc,#17102acc)!important}.urgent-card.urgent-state-strong{border-color:#f97316aa!important;background:linear-gradient(135deg,#3a1d0dcc,#23101acc)!important}.urgent-card.urgent-state-critical{border-color:#ef4444cc!important;background:linear-gradient(135deg,#43131bcc,#24101bcc)!important;box-shadow:0 0 0 1px #ef444433,0 14px 38px #0006!important}.urgent-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.urgent-badge{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;background:#3b1b23;color:#fca5a5}.urgent-list{margin-top:9px}.urgent-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}.urgent-summary-box{padding:10px;border-radius:12px;background:#091524;border:1px solid #2a405e}.urgent-summary-box b{display:block;margin-top:3px;font-size:14px}.urgent-section{margin-top:11px;padding-top:9px;border-top:1px solid #2a3d58}.urgent-section-title{font-size:11px;font-weight:900;letter-spacing:.25px;color:#cbd5e1}.urgent-item{padding:11px;margin-top:8px;border-radius:13px;background:#0b1727;border:1px solid #293b55;font-size:12px}.urgent-item.attention{border-color:#f59e0b77;background:#382d1266}.urgent-item.strong{border-color:#f9731688;background:#3c210f77}.urgent-item.critical{border-color:#ef4444aa;background:#45161f99}.urgent-item.opportunity{border-color:#22c55e88;background:#123b2477}.urgent-item.watch{border-color:#3b82f688;background:#10213c88}.urgent-title{font-weight:900;font-size:13px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}.urgent-meta{color:var(--muted);font-size:11px;margin-top:5px;line-height:1.5}.urgent-tag{display:inline-block;padding:3px 6px;border-radius:999px;font-size:9px;font-weight:900;background:#1f2b3b;color:#dbeafe}.urgent-tag.ok{background:#123d2d;color:#86efac}.urgent-tag.warn{background:#493c16;color:#fde68a}.urgent-tag.bad{background:#4b2027;color:#fca5a5}.urgent-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.urgent-metric{padding:7px;border-radius:9px;background:#07111d;border:1px solid #243750}.urgent-metric span{display:block;color:var(--muted);font-size:9px}.urgent-metric b{display:block;margin-top:2px;font-size:11px}.urgent-action{margin-top:8px;padding:8px 9px;border-radius:10px;background:#091524;border:1px solid #2a405e;font-weight:900}.urgent-empty{padding:11px;border-radius:12px;background:#091524;border:1px solid #29415f}.urgent-confirm{margin-left:auto}.urgent-deriv{margin-top:6px;font-size:10px;color:#9fb1c9}
+@media(max-width:620px){.urgent-summary{grid-template-columns:1fr}.urgent-metrics{grid-template-columns:repeat(2,1fr)}.urgent-confirm{margin-left:0}}
 
 .smart-allocation{margin-top:14px;padding:13px;border:1px solid #7c3aed66;border-radius:14px;background:linear-gradient(135deg,#17102a99,#0b1727)}
 .smart-allocation-title{font-weight:900;font-size:16px;margin-bottom:5px}
@@ -238,9 +239,9 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </section>
 
 <section class="card urgent-card" id="urgentRadarCard">
- <div class="urgent-head"><div class="coin">🚨 Alarme de urgência</div><div class="urgent-badge">CARTEIRA + MERCADO</div></div>
- <div class="small">Procura risco forte nas moedas da sua carteira e oportunidades de alta com confirmação de movimento, volume e liquidez. O percentual é um score heurístico do Radar, não uma previsão garantida.</div>
- <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais…</div></div>
+ <div class="urgent-head"><div class="coin">🚨 Alarme Inteligente V2</div><div class="urgent-badge">CARTEIRA + MERCADO</div></div>
+ <div class="small">Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Alertas fortes exigem 2 confirmações consecutivas para reduzir falso disparo.</div>
+ <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais e buscando confirmações…</div></div>
 </section>
 
 <section class="card" style="margin-bottom:12px">
@@ -439,54 +440,103 @@ if('Notification' in window){
 }
 
 let urgentAudioCtx=null,urgentLast={};
-function urgentSiren(kind='risk'){
+const URGENT_COOLDOWN_KEY='radarUrgentCooldownV2';
+const urgentMoveHistory={},urgentTechCache={},urgentConfirmState={};
+let urgentTechBusy=false,urgentTechLastRun=0;
+function urgentSiren(kind='attention'){
  try{
-  if(navigator.vibrate)navigator.vibrate(kind==='risk'?[220,100,220,100,420]:[120,80,120]);
+  const danger=kind==='critical'||kind==='strong'||kind==='risk';
+  if(navigator.vibrate)navigator.vibrate(kind==='critical'?[260,90,260,90,520]:danger?[210,90,210]:[120,70,120]);
   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
   urgentAudioCtx=urgentAudioCtx||new AC(); if(urgentAudioCtx.state==='suspended')urgentAudioCtx.resume();
-  const now=urgentAudioCtx.currentTime;
-  [0,.18,.36].forEach((d,i)=>{const o=urgentAudioCtx.createOscillator(),g=urgentAudioCtx.createGain();o.type='sine';o.frequency.value=kind==='risk'?(i%2?620:880):(i%2?880:1120);g.gain.setValueAtTime(.0001,now+d);g.gain.exponentialRampToValueAtTime(.16,now+d+.02);g.gain.exponentialRampToValueAtTime(.0001,now+d+.14);o.connect(g);g.connect(urgentAudioCtx.destination);o.start(now+d);o.stop(now+d+.16)});
+  const now=urgentAudioCtx.currentTime,steps=kind==='critical'?[0,.16,.32,.48]:[0,.19,.38];
+  steps.forEach((d,i)=>{const o=urgentAudioCtx.createOscillator(),g=urgentAudioCtx.createGain();o.type='sine';o.frequency.value=danger?(i%2?620:900):(i%2?900:1120);g.gain.setValueAtTime(.0001,now+d);g.gain.exponentialRampToValueAtTime(kind==='critical'?.20:.14,now+d+.02);g.gain.exponentialRampToValueAtTime(.0001,now+d+.13);o.connect(g);g.connect(urgentAudioCtx.destination);o.start(now+d);o.stop(now+d+.16)});
  }catch(e){}
 }
-const urgentMoveHistory={};
-function urgentShortMove(symbol,price){
+function urgentShortMove(symbol,price,minutes=1){
  const t=Date.now(),h=urgentMoveHistory[symbol]||(urgentMoveHistory[symbol]=[]);
- if(Number.isFinite(price)&&price>0)h.push({t,p:price});
- while(h.length&&t-h[0].t>10*60*1000)h.shift();
+ if(Number.isFinite(price)&&price>0){const last=h[h.length-1];if(!last||last.p!==price||t-last.t>2500)h.push({t,p:price})}
+ while(h.length&&t-h[0].t>20*60*1000)h.shift();
  if(h.length<2)return null;
- const base=h.find(x=>t-x.t>=60*1000)||h[0];
- const pct=base?.p>0?(price/base.p-1)*100:null;
- return Number.isFinite(pct)?pct:null;
+ const target=t-minutes*60*1000;let base=h[0];for(const x of h){if(x.t<=target)base=x;else break}
+ const pct=base?.p>0?(price/base.p-1)*100:null;return Number.isFinite(pct)?pct:null;
+}
+function urgentFmtPct(n){return Number.isFinite(n)?`${n>=0?'+':''}${n.toFixed(2)}%`:'—'}
+function urgentFmtPrice(n){if(!Number.isFinite(n)||n<=0)return '—';return 'US$ '+n.toLocaleString('en-US',{maximumFractionDigits:n<1?6:4})}
+function urgentFmtLarge(n){if(!Number.isFinite(n)||n<=0)return '—';if(n>=1e9)return (n/1e9).toFixed(1)+' bi';if(n>=1e6)return (n/1e6).toFixed(1)+' mi';if(n>=1e3)return (n/1e3).toFixed(0)+' mil';return n.toFixed(0)}
+function urgentWalletShare(symbol){
+ try{const vals=(printWallet||[]).map(w=>{const s=normalizeWalletSymbol(w.symbol),v=(Number(walletPrices[s])||0)*(Number(w.qty)||0);return {s,v}}),tot=vals.reduce((a,x)=>a+x.v,0),v=vals.find(x=>x.s===symbol)?.v||0;return tot>0?100*v/tot:0}catch(e){return 0}
+}
+async function urgentFetchJson(url,ms=7500){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{cache:'no-store',signal:c.signal,headers:{Accept:'application/json'}});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+function urgentKlineMetrics(rows){
+ if(!Array.isArray(rows)||rows.length<3)return null;const last=rows[rows.length-1],close=Number(last?.[4]);if(!(close>0))return null;
+ const ret=m=>{const i=Math.max(0,rows.length-1-m),b=Number(rows[i]?.[4]);return b>0?(close/b-1)*100:null};
+ const vols=rows.slice(Math.max(0,rows.length-11),-1).map(x=>Number(x?.[7]??x?.[5])).filter(x=>Number.isFinite(x)&&x>=0),lastVol=Number(last?.[7]??last?.[5]),avg=vols.length?vols.reduce((a,b)=>a+b,0)/vols.length:0;
+ return {r1:ret(1),r5:ret(5),r15:ret(15),volumeRatio:avg>0&&Number.isFinite(lastVol)?lastVol/avg:null,price:close};
+}
+async function urgentLoadTech(symbol,withDerivatives=false){
+ symbol=normalizeWalletSymbol(symbol);if(!symbol||walletStable.has(symbol))return;
+ const prev=urgentTechCache[symbol]||{},now=Date.now();if(prev.at&&now-prev.at<20000&&(!withDerivatives||prev.derivativesAt&&now-prev.derivativesAt<60000))return;
+ let base=prev;
+ try{const j=await urgentFetchJson('/api/market?kind=klines&pair='+encodeURIComponent(symbol+'USDT')+'&interval=1m&limit=20',8000);const m=urgentKlineMetrics(j?.rows);if(m)base={...base,...m,at:Date.now(),source:j?.source||'candles'}}catch(e){}
+ if(withDerivatives){
+  try{const d=await urgentFetchJson('/api/market?kind=derivatives&symbol='+encodeURIComponent(symbol),7000);base={...base,derivatives:{funding:Number(d?.funding),openInterest:Number(d?.openInterest),longShort:Number(d?.longShort),partial:!!d?.partial},derivativesAt:Date.now()}}catch(e){base={...base,derivativesAt:Date.now()}}
+ }
+ urgentTechCache[symbol]=base;
+}
+async function refreshAlarmTechnical(force=false){
+ const now=Date.now();if(urgentTechBusy||(!force&&now-urgentTechLastRun<20000))return;urgentTechBusy=true;urgentTechLastRun=now;
+ try{
+  const held=[...new Set((printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol)).filter(Boolean))];
+  const tops=(typeof latestOpportunities!=='undefined'&&Array.isArray(latestOpportunities)?latestOpportunities:[]).slice(0,5).map(x=>normalizeWalletSymbol(x.symbol));
+  const syms=[...new Set([...held,...tops])].filter(s=>s&&!walletStable.has(s)).slice(0,8),deriv=new Set([...held,...tops.slice(0,3)]);
+  await Promise.allSettled(syms.map(s=>urgentLoadTech(s,deriv.has(s))));
+ }finally{urgentTechBusy=false}
+}
+function urgentConfirm(candidate,sampleKey){
+ if(!candidate)return null;const key=(candidate.kind==='risk'?'risk:':'opp:')+candidate.symbol,st=urgentConfirmState[key]||{count:0,lastSample:'',lastSeen:0};
+ if(st.lastSample!==sampleKey){st.count=(Date.now()-st.lastSeen<45000)?Math.min(2,st.count+1):1;st.lastSample=sampleKey;st.lastSeen=Date.now()}
+ urgentConfirmState[key]=st;candidate.confirmations=st.count;candidate.confirmed=st.count>=2;return candidate;
+}
+function urgentCooldownAllowed(candidate){
+ try{const all=JSON.parse(localStorage.getItem(URGENT_COOLDOWN_KEY)||'{}'),key=candidate.kind+':'+candidate.level+':'+candidate.symbol,now=Date.now(),ms=candidate.level==='critical'?4*60*1000:candidate.kind==='risk'?8*60*1000:10*60*1000;if(now-Number(all[key]||0)<ms)return false;all[key]=now;for(const [k,v] of Object.entries(all))if(now-Number(v)>24*60*60*1000)delete all[k];localStorage.setItem(URGENT_COOLDOWN_KEY,JSON.stringify(all));return true}catch(e){return true}
 }
 function urgentSignal(rawSymbol,held=false){
- const symbol=normalizeWalletSymbol(rawSymbol),c=walletMarketData[symbol];
- if(!c||!marketDataFresh(c)||walletStable.has(symbol))return null;
- const ch=Number(c.change24h),vol=Number(c.volume||0),liq=relativeLiquidityInfo(symbol);
- const livePrice=Number(c.price||c.last||c.lastPrice||c.close||0),short=urgentShortMove(symbol,livePrice);
- if(Number.isFinite(short)&&Math.abs(short)>=2.5){
-   return {kind:short<0?'risk':'rocket',symbol,score:Math.min(99,Math.round(75+Math.min(24,Math.abs(short)*4))),title:short<0?'QUEDA BRUSCA':'SUBIDA BRUSCA',why:`${short>=0?'+':''}${short.toFixed(2)}% em poucos minutos • liquidez ${liq.level}`};
- }
- if(!Number.isFinite(ch))return null;
- // Risco: queda relevante + liquidez/volume confirmando o movimento.
- let risk=0;if(ch<=-3)risk+=25;if(ch<=-5)risk+=25;if(ch<=-8)risk+=20;risk+=Math.min(25,liq.score*8);if(held)risk+=5;risk=Math.min(99,risk);
- // Alta forte: momentum positivo sem estar excessivamente esticado + liquidez alta.
- let up=0;if(ch>=1&&ch<=3)up+=25;if(ch>3&&ch<=6)up+=38;if(ch>6&&ch<=9)up+=28;if(ch>9)up+=12;up+=Math.min(36,liq.score*12);if(vol>=1e8)up+=8;up=Math.min(96,up);
- if(held&&risk>=70)return {kind:'risk',symbol,score:risk,title:'RISCO FORTE DE QUEDA',why:`${ch.toFixed(2)}% em 24h • liquidez ${liq.level}`};
- if(up>=78)return {kind:'rocket',symbol,score:up,title:'POSSÍVEL ALTA FORTE',why:`${ch>=0?'+':''}${ch.toFixed(2)}% em 24h • liquidez ${liq.level}`};
- return null;
+ const symbol=normalizeWalletSymbol(rawSymbol),c=walletMarketData[symbol];if(!c||!marketDataFresh(c)||walletStable.has(symbol))return null;
+ const ch=Number(c.change24h),vol=Number(c.volume||0),liq=relativeLiquidityInfo(symbol),livePrice=Number(c.price||c.last||c.lastPrice||c.close||0),tech=urgentTechCache[symbol]||{};
+ const r1=Number.isFinite(tech.r1)?tech.r1:urgentShortMove(symbol,livePrice,1),r5=Number.isFinite(tech.r5)?tech.r5:urgentShortMove(symbol,livePrice,5),r15=Number.isFinite(tech.r15)?tech.r15:urgentShortMove(symbol,livePrice,15),vr=Number(tech.volumeRatio),share=held?urgentWalletShare(symbol):0,d=tech.derivatives||{};
+ let risk=0;if(Number.isFinite(r1)&&r1<=-.7)risk+=14;if(Number.isFinite(r1)&&r1<=-1.5)risk+=10;if(Number.isFinite(r5)&&r5<=-1.6)risk+=18;if(Number.isFinite(r5)&&r5<=-3)risk+=10;if(Number.isFinite(r15)&&r15<=-2.5)risk+=18;if(Number.isFinite(ch)&&ch<=-4)risk+=9;if(Number.isFinite(ch)&&ch<=-8)risk+=7;if(Number.isFinite(vr)&&vr>=1.5)risk+=10;if(Number.isFinite(vr)&&vr>=2.5)risk+=7;risk+=Math.min(12,liq.score*4);if(held)risk+=5;if(share>=20)risk+=6;if(share>=35)risk+=5;if(Number.isFinite(d.longShort)&&d.longShort>1.8&&((r5||0)<0))risk+=5;if(Number.isFinite(d.funding)&&d.funding>.05&&((r5||0)<0))risk+=4;risk=Math.min(99,risk);
+ let up=0;if(Number.isFinite(r1)&&r1>=.5)up+=12;if(Number.isFinite(r1)&&r1>=1.2)up+=8;if(Number.isFinite(r5)&&r5>=1.3)up+=18;if(Number.isFinite(r5)&&r5>=2.5)up+=8;if(Number.isFinite(r15)&&r15>=2.2)up+=17;if(Number.isFinite(ch)&&ch>=.5&&ch<=12)up+=10;if(Number.isFinite(vr)&&vr>=1.5)up+=13;if(Number.isFinite(vr)&&vr>=2.5)up+=7;up+=Math.min(12,liq.score*4);if(vol>=1e8)up+=4;if(Number.isFinite(d.longShort)&&d.longShort>=.7&&d.longShort<=1.6)up+=3;if(Number.isFinite(ch)&&ch>15)up-=12;if(Number.isFinite(r5)&&r5>7)up-=14;up=Math.max(0,Math.min(99,up));
+ const metrics={r1,r5,r15,ch,vr,liq,livePrice,share,vol,derivatives:d,brl:Number(walletPrices[symbol])||0};
+ let cand=null;
+ if(held&&risk>=55){const level=risk>=84?'critical':risk>=70?'strong':'attention';cand={kind:'risk',level,symbol,score:risk,title:level==='critical'?'RISCO CRÍTICO':level==='strong'?'ALERTA FORTE DE QUEDA':'ATENÇÃO',action:level==='critical'?'PROTEGER • REVISAR REDUÇÃO':level==='strong'?'EVITAR NOVO APORTE • MONITORAR':'OBSERVAR • AGUARDAR CONFIRMAÇÃO',metrics}}
+ else if(up>=64){const level=up>=82?'opportunity':'watch';cand={kind:'opportunity',level,symbol,score:up,title:level==='opportunity'?'OPORTUNIDADE FORTE':'EM OBSERVAÇÃO',action:level==='opportunity'?'AVALIAR ENTRADA • NÃO PERSEGUIR PREÇO':'AGUARDAR NOVA CONFIRMAÇÃO',metrics}}
+ if(!cand)return null;const sampleKey=String(c.at||0)+'|'+String(tech.at||0)+'|'+String(tech.derivativesAt||0);return urgentConfirm(cand,sampleKey);
+}
+function urgentCandidateSymbols(){
+ const held=(printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol));const tops=(typeof latestOpportunities!=='undefined'&&Array.isArray(latestOpportunities)?latestOpportunities:[]).slice(0,8).map(x=>normalizeWalletSymbol(x.symbol));return [...new Set([...held,...tops])].filter(s=>s&&!walletStable.has(s));
+}
+function urgentRenderItem(x){
+ const m=x.metrics||{},levelIcon=x.level==='critical'?'🔴':x.level==='strong'?'🟠':x.level==='attention'?'🟡':x.level==='opportunity'?'🚀':'🔵',confirm=x.confirmed?'<span class="urgent-tag ok urgent-confirm">✓ 2/2 CONFIRMADO</span>':'<span class="urgent-tag warn urgent-confirm">1/2 CONFIRMAÇÕES</span>',vr=Number.isFinite(m.vr)?'x'+m.vr.toFixed(2):'—',liq=Math.round((m.liq?.pct||0)*100)+'%',share=m.share>0?m.share.toFixed(0)+'%':'—';
+ const d=m.derivatives||{},deriv=[];if(Number.isFinite(d.funding))deriv.push('funding '+d.funding.toFixed(3)+'%');if(Number.isFinite(d.longShort))deriv.push('long/short '+d.longShort.toFixed(2));if(Number.isFinite(d.openInterest))deriv.push('OI '+urgentFmtLarge(d.openInterest));
+ return `<div class="urgent-item ${x.level}"><div class="urgent-title"><span>${levelIcon} ${x.symbol} — ${x.title}</span><span class="urgent-tag ${x.kind==='risk'?'bad':'ok'}">SCORE ${x.score}/100</span>${confirm}</div><div class="urgent-meta">Preço ${urgentFmtPrice(m.livePrice)}${m.brl>0?' • R$ '+m.brl.toLocaleString('pt-BR',{maximumFractionDigits:4}):''} • liquidez ${m.liq?.level||'—'} (${liq}) • peso na carteira ${share}</div><div class="urgent-metrics"><div class="urgent-metric"><span>1 min</span><b>${urgentFmtPct(m.r1)}</b></div><div class="urgent-metric"><span>5 min</span><b>${urgentFmtPct(m.r5)}</b></div><div class="urgent-metric"><span>15 min</span><b>${urgentFmtPct(m.r15)}</b></div><div class="urgent-metric"><span>24h</span><b>${urgentFmtPct(m.ch)}</b></div><div class="urgent-metric"><span>Volume agora</span><b>${vr}</b></div><div class="urgent-metric"><span>Volume 24h</span><b>US$ ${urgentFmtLarge(m.vol)}</b></div></div>${deriv.length?'<div class="urgent-deriv">Derivativos: '+deriv.join(' • ')+'</div>':''}<div class="urgent-action">Ação do Radar: ${x.action}</div></div>`;
 }
 function renderUrgentRadar(){
- const box=document.getElementById('urgentRadarList');if(!box)return;
- const held=new Set((printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol)));
- const risks=[...held].map(s=>urgentSignal(s,true)).filter(x=>x?.kind==='risk');
- const rockets=Object.keys(walletMarketData||{}).map(s=>urgentSignal(s,held.has(s))).filter(x=>x?.kind==='rocket').sort((a,b)=>b.score-a.score).slice(0,3);
- const items=[...risks,...rockets];
- box.innerHTML=items.length?items.map(x=>`<div class="urgent-item ${x.kind}"><div class="urgent-title">${x.kind==='risk'?'🚨':'🚀'} ${x.symbol} — ${x.title} • score ${x.score}%</div><div class="urgent-meta">${x.why}</div></div>`).join(''):'<div class="urgent-item"><div class="urgent-title">🟢 Nenhum sinal urgente agora</div><div class="urgent-meta">O Radar continua verificando automaticamente.</div></div>';
- for(const x of items){const key=x.kind+'-'+x.symbol,stamp=x.title+'-'+Math.floor(x.score/5);if(urgentLast[key]===stamp)continue;urgentLast[key]=stamp;urgentSiren(x.kind);radarNotify('urgent-'+key,(x.kind==='risk'?'🚨 URGENTE: ':'🚀 OPORTUNIDADE: ')+x.symbol,`${x.title} • score ${x.score}% • ${x.why}`)}
+ const box=document.getElementById('urgentRadarList'),card=document.getElementById('urgentRadarCard');if(!box||!card)return;const held=new Set((printWallet||[]).map(w=>normalizeWalletSymbol(w.symbol))),symbols=urgentCandidateSymbols();
+ const all=symbols.map(s=>urgentSignal(s,held.has(s))).filter(Boolean),risks=all.filter(x=>x.kind==='risk').sort((a,b)=>b.score-a.score),opps=all.filter(x=>x.kind==='opportunity').sort((a,b)=>b.score-a.score).slice(0,4),confirmedRisks=risks.filter(x=>x.confirmed&&['critical','strong'].includes(x.level)),confirmedOpps=opps.filter(x=>x.confirmed&&x.level==='opportunity');
+ let state='normal',stateText='🟢 NORMAL';if(risks.some(x=>x.level==='critical'&&x.confirmed)){state='critical';stateText='🔴 CRÍTICO'}else if(risks.some(x=>x.level==='strong'&&x.confirmed)){state='strong';stateText='🟠 ALERTA FORTE'}else if(risks.length||opps.some(x=>!x.confirmed)){state='attention';stateText='🟡 ATENÇÃO'}else if(confirmedOpps.length){state='normal';stateText='🟢 OPORTUNIDADE CONFIRMADA'}
+ card.classList.remove('urgent-state-normal','urgent-state-attention','urgent-state-strong','urgent-state-critical');card.classList.add('urgent-state-'+state);
+ const summary=`<div class="urgent-summary"><div class="urgent-summary-box"><span class="small">Status geral</span><b>${stateText}</b></div><div class="urgent-summary-box"><span class="small">Carteira</span><b>${confirmedRisks.length?confirmedRisks.length+' alerta(s) forte(s)':'sem risco forte confirmado'}</b></div><div class="urgent-summary-box"><span class="small">Mercado</span><b>${confirmedOpps.length?confirmedOpps.length+' oportunidade(s)':'sem oportunidade forte confirmada'}</b></div></div>`;
+ let body=summary;if(risks.length)body+=`<div class="urgent-section"><div class="urgent-section-title">🛡️ RISCO NA SUA CARTEIRA</div>${risks.slice(0,4).map(urgentRenderItem).join('')}</div>`;else body+=`<div class="urgent-section"><div class="urgent-empty"><div class="urgent-title">🟢 Carteira sem risco forte agora</div><div class="urgent-meta">O Radar continua cruzando movimento, volume, liquidez e concentração.</div></div></div>`;
+ if(opps.length)body+=`<div class="urgent-section"><div class="urgent-section-title">🚀 OPORTUNIDADES / OBSERVAÇÃO</div>${opps.map(urgentRenderItem).join('')}</div>`;else body+=`<div class="urgent-section"><div class="urgent-empty"><div class="urgent-title">🔵 Nenhuma oportunidade forte confirmada agora</div><div class="urgent-meta">O Radar continua verificando automaticamente.</div></div></div>`;
+ body+=`<div class="urgent-meta" style="margin-top:9px">Última análise: ${new Date().toLocaleTimeString('pt-BR')} • score = heurística do Radar, não probabilidade garantida.</div>`;box.innerHTML=body;
+ for(const x of [...confirmedRisks,...confirmedOpps]){if(!urgentCooldownAllowed(x))continue;const title=x.kind==='risk'?(x.level==='critical'?'🚨 CRÍTICO: ':'🟠 ALERTA: ')+x.symbol:'🚀 OPORTUNIDADE: '+x.symbol,bodyTxt=`${x.title} • score ${x.score}/100 • 1m ${urgentFmtPct(x.metrics.r1)} • 5m ${urgentFmtPct(x.metrics.r5)} • 15m ${urgentFmtPct(x.metrics.r15)} • ${x.action}`;urgentSiren(x.level);radarNotify('urgent-v2-'+x.kind+'-'+x.level+'-'+x.symbol,title,bodyTxt)}
 }
 
 setInterval(()=>{try{checkPortfolioNotifications();checkMarketBuyNotifications();}catch(e){}},4000);
 setInterval(()=>{try{renderUrgentRadar();}catch(e){}},4000);
+setInterval(()=>{refreshAlarmTechnical(false).then(()=>{try{renderUrgentRadar()}catch(e){}})},30000);
+setTimeout(()=>{refreshAlarmTechnical(true).then(()=>{try{renderUrgentRadar()}catch(e){}})},1200);
 
 </script>
 <script>
@@ -2205,6 +2255,7 @@ window.v8RunBacktest=run;
    if(typeof opportunities==='function')await opportunities().catch(()=>{});
    try{checkPortfolioNotifications()}catch(e){}
    try{checkMarketBuyNotifications()}catch(e){}
+   try{if(typeof refreshAlarmTechnical==='function')await refreshAlarmTechnical(false)}catch(e){}
    try{renderUrgentRadar()}catch(e){}
    try{await window.CriptoRadarV11?.cycle?.()}catch(e){}
    try{await window.CriptoRadarV10?.render?.()}catch(e){}

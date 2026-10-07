@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v11-background-20261007-v1';
+const CACHE='cripto-radar-v11-alarm-v2-20261007-v2';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./ai-radar.js','./radar-worker.js'];
 const DB='cripto-radar-background',STORE='kv';
 
@@ -34,17 +34,33 @@ function normalizeContext(cfg,snap){
  const total=wallet.reduce((a,x)=>a+(Number(x.valueBRL)||0),0);wallet.forEach(w=>w.positionPct=total?100*w.valueBRL/total:0);
  return {...ctx,wallet,portfolio:{...(ctx.portfolio||{}),totalBRL:total},clientAt:new Date().toISOString()};
 }
+
+function bgKlineMetrics(rows){
+ if(!Array.isArray(rows)||rows.length<3)return null;const last=rows[rows.length-1],close=Number(last?.[4]);if(!(close>0))return null;
+ const ret=m=>{const i=Math.max(0,rows.length-1-m),b=Number(rows[i]?.[4]);return b>0?(close/b-1)*100:null};
+ const vols=rows.slice(Math.max(0,rows.length-11),-1).map(x=>Number(x?.[7]??x?.[5])).filter(x=>Number.isFinite(x)&&x>=0),lv=Number(last?.[7]??last?.[5]),avg=vols.length?vols.reduce((a,b)=>a+b,0)/vols.length:0;
+ return {r1:ret(1),r5:ret(5),r15:ret(15),vr:avg>0&&Number.isFinite(lv)?lv/avg:null,price:close};
+}
+async function bgTech(symbol){try{const r=await fetch('./api/market?kind=klines&pair='+encodeURIComponent(symbol+'USDT')+'&interval=1m&limit=20',{cache:'no-store',headers:{Accept:'application/json'}});if(!r.ok)throw Error('klines '+r.status);const j=await r.json();return bgKlineMetrics(j?.rows)}catch(e){return null}}
+async function bgConfirm(key,active,score){
+ const k='alarmv2:confirm:'+key,now=Date.now(),st=await dbGet(k)||{count:0,last:0};if(!active){await dbSet(k,{count:0,last:now});return false}
+ const count=now-Number(st.last||0)<2*60*60*1000?Math.min(2,Number(st.count||0)+1):1;await dbSet(k,{count,last:now,score});return count>=2;
+}
+function bgRiskScore(w,t){let s=0,ch=Number(w.change24h)||0,liq=Number(w.liquidityPct)||0,share=Number(w.positionPct)||0;if(t){if(Number.isFinite(t.r1)&&t.r1<=-.7)s+=14;if(Number.isFinite(t.r1)&&t.r1<=-1.5)s+=10;if(Number.isFinite(t.r5)&&t.r5<=-1.6)s+=18;if(Number.isFinite(t.r5)&&t.r5<=-3)s+=10;if(Number.isFinite(t.r15)&&t.r15<=-2.5)s+=18;if(Number.isFinite(t.vr)&&t.vr>=1.5)s+=10;if(Number.isFinite(t.vr)&&t.vr>=2.5)s+=7}if(ch<=-4)s+=9;if(ch<=-8)s+=7;if(liq>=80)s+=12;else if(liq>=55)s+=8;else if(liq>=25)s+=4;s+=5;if(share>=20)s+=6;if(share>=35)s+=5;return Math.min(99,s)}
+function bgOppScore(a,t){let s=0,ch=Number(a.change24h)||0,liq=Number(a.liquidityPct)||0,vol=Number(a.volume)||0;if(t){if(Number.isFinite(t.r1)&&t.r1>=.5)s+=12;if(Number.isFinite(t.r1)&&t.r1>=1.2)s+=8;if(Number.isFinite(t.r5)&&t.r5>=1.3)s+=18;if(Number.isFinite(t.r5)&&t.r5>=2.5)s+=8;if(Number.isFinite(t.r15)&&t.r15>=2.2)s+=17;if(Number.isFinite(t.vr)&&t.vr>=1.5)s+=13;if(Number.isFinite(t.vr)&&t.vr>=2.5)s+=7}if(ch>=.5&&ch<=12)s+=10;if(liq>=80)s+=12;else if(liq>=55)s+=8;if(vol>=1e8)s+=4;if(ch>15)s-=12;if(t&&Number.isFinite(t.r5)&&t.r5>7)s-=14;return Math.max(0,Math.min(99,s))}
 async function runBackground(reason='sync'){
  const cfg=await dbGet('config');if(!cfg?.enabled)return;
  try{
   const r=await fetch('./api/market?kind=snapshot&bg=1',{cache:'no-store',headers:{Accept:'application/json'}});if(!r.ok)throw Error('market '+r.status);const snap=await r.json();
-  const ctx=normalizeContext(cfg,snap),prev=await dbGet('last-market')||{},nowState={at:Date.now(),prices:{}};
-  for(const w of ctx.wallet||[]){
-   const a=(snap.assets||[]).find(x=>String(x.symbol).toUpperCase()===w.symbol);if(!a)continue;const p=Number(a.last)||0,ch=Number(a.change24h)||0;nowState.prices[w.symbol]=p;
-   const old=Number(prev?.prices?.[w.symbol])||0,move=old>0?(p/old-1)*100:null;
-   if(cfg.notifications&&ch<=-6)await notify('bg-risk-'+w.symbol,'🚨 '+w.symbol+' — risco forte',ch.toFixed(2)+'% em 24h. Radar verificou em segundo plano.',10*60*1000);
-   if(cfg.notifications&&Number.isFinite(move)&&Math.abs(move)>=2.5)await notify('bg-move-'+w.symbol,(move<0?'🔴 ':'🚀 ')+w.symbol+' — movimento rápido',(move>=0?'+':'')+move.toFixed(2)+'% desde a última leitura em segundo plano.',5*60*1000);
+  const ctx=normalizeContext(cfg,snap),nowState={at:Date.now(),prices:{}};
+  const walletTech=await Promise.all((ctx.wallet||[]).slice(0,8).map(async w=>({w,t:await bgTech(w.symbol)})));
+  for(const {w,t} of walletTech){
+   const a=(snap.assets||[]).find(x=>String(x.symbol).toUpperCase()===w.symbol);if(!a)continue;const p=Number(a.last)||0;nowState.prices[w.symbol]=p;const score=bgRiskScore(w,t),confirmed=await bgConfirm('risk:'+w.symbol,score>=70,score);
+   if(cfg.notifications&&confirmed&&score>=70){const critical=score>=84,title=(critical?'🚨 CRÍTICO: ':'🟠 ALERTA: ')+w.symbol,body='Score '+score+'/100 • 1m '+(Number.isFinite(t?.r1)?t.r1.toFixed(2)+'%':'—')+' • 5m '+(Number.isFinite(t?.r5)?t.r5.toFixed(2)+'%':'—')+' • 15m '+(Number.isFinite(t?.r15)?t.r15.toFixed(2)+'%':'—')+' • revisar proteção da posição.';await notify('bg-alarm-v2-risk-'+(critical?'critical-':'strong-')+w.symbol,title,body,critical?4*60*1000:8*60*1000)}
   }
+  const marketCandidates=(snap.assets||[]).filter(x=>Number(x.liquidityPct)>=55&&Number(x.change24h)>=.5&&Number(x.change24h)<=15).sort((a,b)=>(Number(b.change24h)||0)-(Number(a.change24h)||0)).slice(0,4);
+  const marketTech=await Promise.all(marketCandidates.map(async a=>({a,t:await bgTech(String(a.symbol).toUpperCase())})));
+  for(const {a,t} of marketTech){const symbol=String(a.symbol).toUpperCase(),score=bgOppScore(a,t),confirmed=await bgConfirm('opp:'+symbol,score>=82,score);if(cfg.notifications&&confirmed&&score>=82){const body='Score '+score+'/100 • 1m '+(Number.isFinite(t?.r1)?t.r1.toFixed(2)+'%':'—')+' • 5m '+(Number.isFinite(t?.r5)?t.r5.toFixed(2)+'%':'—')+' • 15m '+(Number.isFinite(t?.r15)?t.r15.toFixed(2)+'%':'—')+' • oportunidade confirmada pelo Radar.';await notify('bg-alarm-v2-opp-'+symbol,'🚀 OPORTUNIDADE: '+symbol,body,10*60*1000)}}
   await dbSet('last-market',nowState);
   try{
    const aiRes=await fetch('./api/ai',{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:'Atualize a análise da minha carteira em segundo plano',context:ctx})});
