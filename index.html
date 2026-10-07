@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V11 • Junção Corrigida</title>
+<title>Cripto Radar V11 • Feed Corrigido</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -161,7 +161,7 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </style>
 </head>
 <body><main>
-<div class="top"><div><h1>Cripto Radar V11 • Junção Corrigida</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
+<div class="top"><div><h1>Cripto Radar V11 • Feed Corrigido</h1><div class="sub">Melhores oportunidades do mercado • atualização automática</div></div></div>
 
 <div id="state" class="pill">Iniciando…</div>
 <section class="card v9-card" id="v9Command" style="display:none">
@@ -496,6 +496,17 @@ function calcAporte(){
  }).join('')+'<div class="small" style="margin-top:8px">O alvo varia com mercado, liquidez e sinais do Radar. Apoio à decisão; não garante lucro e não executa ordens.</div>';
 }
 let latestOpportunities=[];
+async function trendsFromServer(){
+ const j=await getJSON('/api/market',8000);
+ if(!j?.ok||!Array.isArray(j.assets)||!j.assets.length)throw Error('proxy sem dados');
+ const stable=new Set(["USDC","FDUSD","TUSD","USDP","DAI","EUR","BRL","TRY","BUSD"]);
+ const rows=j.assets.filter(x=>!stable.has(x.symbol)&&valid(x.last)&&Number.isFinite(+x.change24h)&&+x.volume>10000000&&+x.change24h>.5&&+x.change24h<20)
+  .map(x=>({symbol:x.symbol,name:x.symbol,change:+x.change24h,volume:+x.volume,last:+x.last,score:Math.log10(Math.max(+x.volume,1))*2+Math.min(+x.change24h,10)}))
+  .sort((a,b)=>b.score-a.score).slice(0,7);
+ if(!rows.length)throw Error('proxy sem candidatos');
+ mark("Radar tendências",true,"Servidor/Vercel");
+ return rows;
+}
 async function trendsFromBinance(){
  const bases=["https://data-api.binance.vision","https://api1.binance.com","https://api2.binance.com","https://api3.binance.com","https://api4.binance.com","https://api.binance.com"];
  for(const base of bases){
@@ -527,7 +538,9 @@ async function trendsFromCoinGecko(){
 async function opportunities(){
  const el=document.getElementById("opportunities");
  try{
-  try{latestOpportunities=await trendsFromBinance()}catch(e){latestOpportunities=await trendsFromCoinGecko()}
+  try{latestOpportunities=await trendsFromServer()}catch(e){
+   try{latestOpportunities=await trendsFromBinance()}catch(e2){latestOpportunities=await trendsFromCoinGecko()}
+  }
   const previous=JSON.parse(sessionStorage.getItem("trendTop5")||"[]");
   const prevPos=new Map(previous.map((s,i)=>[s,i]));
   const current=latestOpportunities.slice(0,5);
@@ -911,8 +924,26 @@ async function loadWalletSparklines(){
 let validWalletSymbols=new Set();
 async function updateWalletPrices(){
  let usdbrl=0, got=false;
+ // Fonte principal: endpoint do próprio site. Evita bloqueio/CORS no navegador móvel/PWA.
+ if(location.protocol==='https:'||location.protocol==='http:'){
+  try{
+   const snap=await getJSON('/api/market',8000);
+   if(snap?.ok&&Array.isArray(snap.assets)&&snap.assets.length){
+    usdbrl=Number(snap.usdbrl)||0;
+    validWalletSymbols=new Set();
+    for(const x of snap.assets){
+     const sym=String(x.symbol||'').toUpperCase(); if(!sym||sym.length>15)continue;
+     validWalletSymbols.add(sym);
+     const last=Number(x.last),change24h=Number(x.change24h),volume=Number(x.volume),liq=Number(x.liquidityPct);
+     walletMarketData[sym]={change24h,volume,liquidityPct:Number.isFinite(liq)?liq:0,last,price:last,at:Date.now(),source:'Servidor/Vercel'};
+     if(usdbrl&&Number.isFinite(last)&&last>0)walletPrices[sym]=last*usdbrl;
+    }
+    got=true;
+   }
+  }catch(e){}
+ }
  const bases=['https://data-api.binance.vision','https://api.binance.com','https://api1.binance.com','https://api2.binance.com','https://api3.binance.com'];
- for(const base of bases){
+ if(!got) for(const base of bases){
   try{
    const [tick,fx]=await Promise.all([
     fetch(base+'/api/v3/ticker/24hr').then(r=>{if(!r.ok)throw Error();return r.json()}),
@@ -925,7 +956,7 @@ async function updateWalletPrices(){
      if(x.symbol&&x.symbol.endsWith('USDT')){
       const sym=x.symbol.slice(0,-4); if(!sym||sym.length>15)continue;
       validWalletSymbols.add(sym);
-      walletMarketData[sym]={change24h:+x.priceChangePercent,volume:+x.quoteVolume,source:'Binance'};
+      walletMarketData[sym]={change24h:+x.priceChangePercent,volume:+x.quoteVolume,last:+x.lastPrice,price:+x.lastPrice,at:Date.now(),source:'Binance'};
       if(usdbrl&&Number.isFinite(+x.lastPrice))walletPrices[sym]=(+x.lastPrice)*usdbrl;
      }
     }
@@ -944,12 +975,12 @@ async function updateWalletPrices(){
    if(Array.isArray(markets)) for(const x of markets){
     const sym=String(x.symbol||'').toUpperCase(); if(!need.includes(sym))continue;
     if(Number.isFinite(+x.current_price))walletPrices[sym]=+x.current_price;
-    walletMarketData[sym]={change24h:+x.price_change_percentage_24h,volume:+x.total_volume,source:'CoinGecko'};
+    walletMarketData[sym]={change24h:+x.price_change_percentage_24h,volume:+x.total_volume,priceBRL:+x.current_price,at:Date.now(),source:'CoinGecko'};
     validWalletSymbols.add(sym);
    }
   }
  }catch(e){}
- if(usdbrl){walletPrices.USDT=usdbrl;walletMarketData.USDT={change24h:0,volume:999999999,source:'Binance/CoinGecko'};validWalletSymbols.add('USDT');}
+ if(usdbrl){walletPrices.USDT=usdbrl;walletMarketData.USDT={change24h:0,volume:999999999,price:1,last:1,at:Date.now(),source:'Binance/CoinGecko'};validWalletSymbols.add('USDT');}
  renderPrintWallet();
  renderWalletBuyAlerts();
 }
@@ -1137,7 +1168,7 @@ function startRealtimeMarket(){
          const pair=String(x.s||''); if(!pair.endsWith('USDT'))continue;
          const sym=pair.slice(0,-4),price=Number(x.c),change=Number(x.P),volume=Number(x.q);
          validWalletSymbols.add(sym);
-         walletMarketData[sym]={change24h:change,volume,source:'Binance WebSocket'};
+         walletMarketData[sym]={change24h:change,volume,last:price,price,at:Date.now(),source:'Binance WebSocket'};
          if(walletPrices.USDT&&Number.isFinite(price))walletPrices[sym]=price*walletPrices.USDT;
          if(printWallet.some(w=>normalizeWalletSymbol(w.symbol)===sym))changed=true;
        }
@@ -1222,6 +1253,7 @@ setInterval(updateMarketRumors,60000);
 <script>
 /* Radar Pro v3 — multi-timeframe + MACD + ATR + suporte/resistência + BTC + histórico. */
 const radarTechCache=new Map(), radarSignalLogKey='criptoRadarSignalHistoryV3';
+try{Object.defineProperty(window,'radarTechCache',{configurable:true,get:()=>radarTechCache})}catch(e){}
 function radarEMA(v,n){if(!v.length)return 0;const k=2/(n+1);let e=v[0];for(const x of v.slice(1))e=x*k+e*(1-k);return e}
 function radarEMAseries(v,n){if(!v.length)return[];const k=2/(n+1);let e=v[0];return v.map((x,i)=>i?(e=x*k+e*(1-k)):e)}
 function radarRSI(v,n=14){if(v.length<n+1)return 50;let g=0,l=0;for(let i=v.length-n;i<v.length;i++){const d=v[i]-v[i-1];if(d>0)g+=d;else l-=d}if(!l)return 100;const rs=(g/n)/(l/n);return 100-100/(1+rs)}
@@ -1666,7 +1698,7 @@ window.v8RunBacktest=run;
   let count=0,bad=0;
   try{for(const v of Object.values(window.walletMarketData||{})){count++;const p=num(v.price??v.last??v.lastPrice);if(!(fin(p)&&p>0))bad++}}catch(e){}
   // Technical cache also counts as a healthy market source.
-  let tech=0;try{tech=Object.keys(window.radarTechCache||{}).length}catch(e){}
+  let tech=0;try{const c=window.radarTechCache;tech=c instanceof Map?c.size:Object.keys(c||{}).length}catch(e){}
   return {count,tech,bad,healthy:(count-bad)+tech};
  }
  function render(){

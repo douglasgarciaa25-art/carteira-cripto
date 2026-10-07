@@ -1,14 +1,13 @@
-CRIPTO RADAR V11 — JUNÇÃO CORRIGIDA
+CRIPTO RADAR V11 — FEED CORRIGIDO
 
-Esta versão mantém os recursos novos da V11 e preserva a base funcional da carteira/notificações.
+Nesta versão:
+- Mantém a carteira salva em crWallet.
+- Mantém a ponte entre a carteira original e V7/V8/V9/V10/V11.
+- Adiciona market.js na RAIZ e o endpoint /api/market no Vercel.
+- O site busca o mercado primeiro pelo próprio servidor/Vercel, evitando bloqueios/CORS do navegador móvel.
+- Binance e CoinGecko continuam como fallback direto.
+- walletMarketData recebe preço, variação 24h, volume, liquidez e horário da leitura.
+- WebSocket também grava preço e horário para o Motor V10.
+- Cache do PWA foi alterado para forçar a atualização.
 
-Correções principais:
-- ponte de compatibilidade entre a carteira original e os módulos V7–V11;
-- carteira local crWallet preservada;
-- atualização de mercado rápida mantida em 4 segundos quando necessário;
-- notificações e alarme de urgência mantidos;
-- Service Worker com cache novo e limpeza automática de versões antigas;
-- campo Acertos da V11 agora mostra 'Aguardando 1h' até existir validação real, em vez de parecer quebrado;
-- simulador/aporte e Paper Trading mantidos.
-
-Para publicar na Vercel/GitHub, envie todos os arquivos da pasta/ZIP para a raiz do projeto.
+SUBA TODOS OS ARQUIVOS PARA A RAIZ DO REPOSITÓRIO. NÃO CRIE PASTA api.
