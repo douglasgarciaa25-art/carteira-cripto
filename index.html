@@ -178,6 +178,53 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .v11-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.v11-box{padding:10px;border-radius:12px;border:1px solid #3b3561;background:#0c1424}.v11-box b{display:block;margin-top:3px}.v11-rank{margin-top:10px;display:grid;gap:6px}.v11-row{display:grid;grid-template-columns:1fr .8fr 1.4fr .8fr;gap:7px;padding:8px;border-radius:10px;background:#091321;border:1px solid #29395a;font-size:12px;align-items:center}.v11-good{color:#86efac}.v11-warn{color:#fde68a}.v11-bad{color:#fca5a5}
 @media(max-width:620px){.v11-grid{grid-template-columns:repeat(2,1fr)}.v11-row{grid-template-columns:1fr 1fr}.v11-hide-mobile{display:none}}
 
+
+
+/* ===== Carteira por Print V2 • captura guiada ===== */
+.wallet-extra.wallet-capture-v2{position:relative;overflow:hidden;border:2px solid #2f7cff!important;background:radial-gradient(circle at 85% 8%,#153a6a66 0,#0b1c34 28%,#091522 72%)!important;box-shadow:0 0 0 1px #2f7cff22,0 18px 45px #0006!important}
+.wallet-extra.wallet-capture-v2:before{display:none!important;content:none!important}
+.wallet-capture-v2 .wallet-feature-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.wallet-capture-v2 .wallet-feature-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:linear-gradient(135deg,#2f7cff,#2563eb);color:#fff;font-size:11px;font-weight:900;letter-spacing:.3px;box-shadow:0 8px 22px #2f7cff33}
+.wallet-capture-v2 .wallet-extra-badge{font-size:10px;font-weight:900;padding:6px 9px;border:1px solid #35577f;border-radius:999px;background:#102039;color:#9dc3ff}
+.wallet-capture-v2 .wallet-capture-head{display:grid;grid-template-columns:1fr 118px;gap:14px;align-items:center}
+.wallet-capture-v2 .wallet-capture-title{font-size:25px;font-weight:900;line-height:1.08;letter-spacing:-.55px;margin:0 0 8px}
+.wallet-capture-v2 .wallet-capture-desc{font-size:13px;color:var(--muted);line-height:1.48;max-width:560px}
+.wallet-capture-v2 .wallet-scan-visual{height:112px;border-radius:20px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#10294a,#0a1728);border:1px solid #2f6fbe66;overflow:hidden}
+.wallet-capture-v2 .wallet-scan-visual:before,.wallet-capture-v2 .wallet-scan-visual:after{content:"";position:absolute;width:28px;height:28px;border-color:#7ab6ff;border-style:solid;opacity:.95}
+.wallet-capture-v2 .wallet-scan-visual:before{left:10px;top:10px;border-width:3px 0 0 3px;border-radius:8px 0 0 0}
+.wallet-capture-v2 .wallet-scan-visual:after{right:10px;bottom:10px;border-width:0 3px 3px 0;border-radius:0 0 8px 0}
+.wallet-capture-v2 .wallet-scan-main{font-size:42px;filter:drop-shadow(0 8px 14px #0007)}
+.wallet-capture-v2 .wallet-float-coin{position:absolute;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:13px;box-shadow:0 5px 14px #0006}
+.wallet-capture-v2 .wallet-float-coin.c1{right:8px;top:8px;background:#f59e0b;color:#fff}.wallet-capture-v2 .wallet-float-coin.c2{right:7px;bottom:14px;background:#22c55e;color:#062}.wallet-capture-v2 .wallet-float-coin.c3{left:8px;bottom:9px;background:#6366f1;color:#fff}
+.wallet-capture-v2 .wallet-stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0 13px}
+.wallet-capture-v2 .wallet-step{display:grid;grid-template-columns:32px 1fr;gap:8px;align-items:center;padding:9px;border:1px solid #294a71;border-radius:13px;background:#0b192b}
+.wallet-capture-v2 .wallet-step-num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#123f87;border:1px solid #3f8cff;color:#ddebff;font-weight:900}
+.wallet-capture-v2 .wallet-step b{display:block;font-size:12px}.wallet-capture-v2 .wallet-step span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.wallet-capture-v2 .wallet-upload-zone{display:block;border:1.5px dashed #3f8cff;border-radius:18px;padding:14px;background:linear-gradient(145deg,#10284a99,#0b192bbb);cursor:pointer;transition:.18s ease;box-shadow:inset 0 1px #ffffff08}
+.wallet-capture-v2 .wallet-upload-zone:hover{border-color:#73aaff;background:#12315a99}
+.wallet-capture-v2 .wallet-upload-main{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center}
+.wallet-capture-v2 .wallet-upload-icon{width:68px;height:68px;border-radius:18px;background:#123a73;display:grid;place-items:center;font-size:31px;border:1px solid #347ff077}
+.wallet-capture-v2 .wallet-upload-copy b{display:block;font-size:16px}.wallet-capture-v2 .wallet-upload-copy span{display:block;color:var(--muted);font-size:12px;line-height:1.4;margin-top:3px}
+.wallet-capture-v2 .wallet-file-types{display:flex;gap:5px;margin-top:6px}.wallet-capture-v2 .wallet-file-types i{font-style:normal;font-size:9px;padding:3px 6px;border-radius:999px;background:#1b3353;color:#9eb8d8}
+.wallet-capture-v2 .wallet-upload-arrow{font-size:24px;color:#b9d4ff}
+.wallet-capture-v2 .wallet-upload-preview{display:none;align-items:center;gap:10px;margin:12px 0 0;padding:9px;border-radius:12px;background:#091524;border:1px solid #294a71}
+.wallet-capture-v2 .wallet-upload-preview.on{display:flex}.wallet-capture-v2 .wallet-upload-preview img{width:48px;height:48px;object-fit:cover;border-radius:10px;border:1px solid #3a5e89}.wallet-capture-v2 .wallet-upload-preview .meta{min-width:0;flex:1}.wallet-capture-v2 .wallet-upload-preview .meta b{font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wallet-capture-v2 .wallet-upload-preview .meta span{font-size:10px;color:var(--muted)}
+.wallet-capture-v2 .wallet-upload-button{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;min-height:50px;border-radius:14px;background:linear-gradient(135deg,#287cff,#2363ef);color:#fff;font-weight:900;font-size:15px;box-shadow:0 10px 24px #1d4ed844}
+.wallet-capture-v2 .wallet-secondary-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.wallet-capture-v2 .wallet-secondary-action{width:100%;min-height:72px;display:grid;grid-template-columns:38px 1fr 20px;gap:8px;align-items:center;text-align:left;padding:11px;border:1px solid #294a71;background:#0b192b;color:#eef5ff;border-radius:15px;box-shadow:none}
+.wallet-capture-v2 .wallet-secondary-action:hover{background:#10233a}.wallet-capture-v2 .wallet-secondary-icon{width:38px;height:38px;border-radius:12px;background:#122f54;display:grid;place-items:center;font-size:20px}.wallet-capture-v2 .wallet-secondary-text b{display:block;font-size:12px}.wallet-capture-v2 .wallet-secondary-text span{display:block;color:var(--muted);font-size:10px;line-height:1.35;margin-top:2px}.wallet-capture-v2 .wallet-secondary-chevron{font-size:20px;color:#8fb2df}
+.wallet-capture-v2 .status{position:relative;padding:11px 12px 11px 42px!important;border:1px solid #294a71;border-radius:13px!important;background:#0b192b!important;color:#c7d7eb!important;line-height:1.4;margin-top:10px!important;min-height:44px;display:flex;align-items:center}
+.wallet-capture-v2 .status:before{content:"i";position:absolute;left:12px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1b3353;color:#9fc4f5;font-weight:900}
+.wallet-capture-v2 .status.status-success{border-color:#22c55e88!important;background:#0f352688!important;color:#bbf7d0!important}.wallet-capture-v2 .status.status-success:before{content:"✓";background:#22c55e;color:#052e16}
+.wallet-capture-v2 .status.status-error{border-color:#ef444488!important;background:#3d161c88!important;color:#fecaca!important}.wallet-capture-v2 .status.status-error:before{content:"!";background:#ef4444;color:#fff}
+.wallet-capture-v2 .status.status-working{border-color:#3b82f688!important;background:#102b5288!important;color:#bfdbfe!important}.wallet-capture-v2 .status.status-working:before{content:"↻";background:#2563eb;color:#fff}
+.wallet-capture-v2 .ocr-progress{display:none;margin-top:8px;padding:9px 10px;border-radius:12px;background:#091524;border:1px solid #294a71}.wallet-capture-v2 .ocr-progress.on{display:block}.wallet-capture-v2 .ocr-progress-head{display:flex;justify-content:space-between;gap:8px;font-size:10px;color:#a8bbd4;margin-bottom:6px}.wallet-capture-v2 .ocr-progress-track{height:7px;border-radius:999px;background:#16263c;overflow:hidden}.wallet-capture-v2 .ocr-progress-bar{width:0;height:100%;border-radius:999px;background:linear-gradient(90deg,#2f7cff,#54a2ff);transition:width .18s ease}
+.wallet-capture-v2 .wallet-chat-panel{display:none;margin-top:10px;padding:12px;border:1px solid #294a71;border-radius:15px;background:#091524}.wallet-capture-v2 .wallet-chat-panel.on{display:block}.wallet-capture-v2 .wallet-chat-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}.wallet-capture-v2 .wallet-chat-head b{font-size:13px}.wallet-capture-v2 .wallet-chat-panel textarea{width:100%;box-sizing:border-box;border-radius:12px;padding:11px;background:#07111d;color:#eef5ff;border:1px solid #29415f;resize:vertical;min-height:100px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.45}.wallet-capture-v2 .wallet-chat-panel textarea:focus{border-color:#4c8fff!important}
+.wallet-capture-v2 .wallet-chat-panel #importChatWallet{width:100%;margin-top:8px}
+.wallet-capture-v2 #walletPreview{margin-top:12px;padding:12px;border-radius:15px;border:1px solid #3b82f677;background:#0a1b31}.wallet-capture-v2 #walletPreview>div:first-child{font-size:15px!important;margin:0 0 4px!important}.wallet-capture-v2 #walletPreview:before{content:"2 • REVISE OS ATIVOS";display:inline-block;margin-bottom:9px;padding:4px 7px;border-radius:999px;background:#123f87;color:#bfdbfe;font-size:9px;font-weight:900;letter-spacing:.25px}
+.wallet-capture-v2 .wallet-value-card{margin-top:14px;padding:13px;border-radius:16px;border:1px solid #294a71;background:linear-gradient(145deg,#0c1c30,#091522)}
+.wallet-capture-v2 .wallet-value-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.wallet-capture-v2 .wallet-value-head .small{margin:0}.wallet-capture-v2 .wallet-total{font-size:34px;margin:4px 0 7px;letter-spacing:-1px}
+@media(max-width:620px){.wallet-capture-v2 .wallet-capture-head{grid-template-columns:1fr 86px}.wallet-capture-v2 .wallet-scan-visual{height:90px}.wallet-capture-v2 .wallet-capture-title{font-size:23px}.wallet-capture-v2 .wallet-stepper{gap:5px}.wallet-capture-v2 .wallet-step{grid-template-columns:27px 1fr;padding:7px 6px}.wallet-capture-v2 .wallet-step-num{width:27px;height:27px;font-size:12px}.wallet-capture-v2 .wallet-step b{font-size:10px}.wallet-capture-v2 .wallet-step span{font-size:9px}.wallet-capture-v2 .wallet-upload-main{grid-template-columns:54px 1fr 16px}.wallet-capture-v2 .wallet-upload-icon{width:54px;height:54px;border-radius:15px;font-size:26px}.wallet-capture-v2 .wallet-secondary-grid{grid-template-columns:1fr 1fr}.wallet-capture-v2 .wallet-secondary-action{grid-template-columns:34px 1fr 16px;padding:9px}.wallet-capture-v2 .wallet-secondary-icon{width:34px;height:34px}.wallet-capture-v2 .wallet-upload-button{font-size:13px}.wallet-capture-v2 .wallet-scan-main{font-size:34px}}
 </style>
 </head>
 <body><main>
@@ -274,22 +321,90 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 </section>
 
 
-<section class="card wallet-extra">
-  <div class="coin">📸 Atualizar minha carteira por print <span class="small">• EXTRA</span></div>
-  <div class="small">Envie um print da sua carteira. O app tenta identificar moeda e quantidade, mostra uma prévia para você conferir e só atualiza depois da sua confirmação. Os preços e o valor aproximado da carteira continuam atualizando automaticamente.</div>
-  <div class="wallet-tools"><label class="btn-print">📤 CARREGAR PRINT DA CARTEIRA<input id="shot" type="file" accept="image/*,.png,.jpg,.jpeg,.webp" class="hide"></label><button id="manualWallet" type="button">✏️ Adicionar manualmente</button></div>
-  <div id="ocrStatus" class="status small">Toque em “CARREGAR PRINT DA CARTEIRA” para selecionar uma imagem da galeria.</div>
-<div style="margin-top:14px;padding-top:12px;border-top:1px solid #29415f">
-  <div class="small"><b>🤖 Segunda opção — lista analisada pelo ChatGPT</b></div>
-  <div class="small" style="margin:5px 0 8px">Se a leitura automática errar, envie o print no ChatGPT e cole aqui a lista recebida.</div>
-  <textarea id="chatImport" rows="4" style="width:100%;box-sizing:border-box;border-radius:10px;padding:10px;background:#0d1724;color:#eef5ff;border:1px solid #29415f" placeholder="Exemplo:
-SUI 11,1981
-LINK 0,4021
-BTC 0,00015"></textarea>
-  <button id="importChatWallet" type="button" style="margin-top:8px">🤖 IMPORTAR LISTA DO CHATGPT</button>
-</div>
-  <div id="walletPreview" class="hide"><div style="font-weight:800;margin-top:12px">Confira antes de salvar</div><div id="walletEditRows"></div><div class="wallet-tools"><button id="addWalletRow" type="button">+ Linha</button><button id="saveWallet" type="button">✓ Adicionar / atualizar carteira</button></div></div>
-  <div style="margin-top:14px"><div class="small">Valor aproximado da carteira</div><div id="walletTotal" class="wallet-total">Carregando…</div><div id="liveFeed" class="live-feed">⚡ Conectando tempo real…</div><div id="walletMarketInfo" class="market-info"></div><div id="walletTips" class="wallet-tips"></div><div id="walletGuidance" class="wallet-guide"></div><div id="walletBuyAlerts" class="buy-alert-box"></div><div id="walletOpportunities" class="wallet-opps"></div><div id="walletTable"></div></div>
+
+<section class="card wallet-extra wallet-capture-v2" id="walletCaptureCard">
+  <div class="wallet-feature-row">
+    <div class="wallet-feature-badge">✨ NOVO • CARTEIRA POR PRINT</div>
+    <div class="wallet-extra-badge">EXTRA</div>
+  </div>
+
+  <div class="wallet-capture-head">
+    <div>
+      <div class="wallet-capture-title">📸 Atualizar minha carteira por print</div>
+      <div class="wallet-capture-desc">Envie um print da corretora. O Radar identifica moedas e quantidades, cria uma prévia para conferência e só altera sua carteira depois da sua confirmação.</div>
+    </div>
+    <div class="wallet-scan-visual" aria-hidden="true">
+      <div class="wallet-scan-main">👛</div>
+      <div class="wallet-float-coin c1">₿</div>
+      <div class="wallet-float-coin c2">₮</div>
+      <div class="wallet-float-coin c3">Ξ</div>
+    </div>
+  </div>
+
+  <div class="wallet-stepper" aria-label="Etapas para atualizar a carteira">
+    <div class="wallet-step"><div class="wallet-step-num">1</div><div><b>Envie o print</b><span>da sua carteira</span></div></div>
+    <div class="wallet-step"><div class="wallet-step-num">2</div><div><b>Revise os ativos</b><span>confira moedas e quantidades</span></div></div>
+    <div class="wallet-step"><div class="wallet-step-num">3</div><div><b>Confirmar</b><span>e atualizar</span></div></div>
+  </div>
+
+  <label class="wallet-upload-zone" for="shot">
+    <div class="wallet-upload-main">
+      <div class="wallet-upload-icon">⬆️</div>
+      <div class="wallet-upload-copy">
+        <b>Carregar print da carteira</b>
+        <span>Selecione uma imagem com as moedas e as quantidades visíveis.</span>
+        <div class="wallet-file-types"><i>JPG</i><i>PNG</i><i>WEBP</i></div>
+      </div>
+      <div class="wallet-upload-arrow">›</div>
+    </div>
+    <div id="shotPreviewWrap" class="wallet-upload-preview">
+      <img id="shotPreview" alt="Prévia do print selecionado">
+      <div class="meta"><b id="shotFileName">Imagem selecionada</b><span id="shotFileMeta">Pronta para leitura</span></div>
+    </div>
+    <div class="wallet-upload-button">📤 CARREGAR PRINT DA CARTEIRA</div>
+    <input id="shot" type="file" accept="image/*,.png,.jpg,.jpeg,.webp" class="hide">
+  </label>
+
+  <div class="wallet-secondary-grid">
+    <button id="manualWallet" class="wallet-secondary-action" type="button">
+      <span class="wallet-secondary-icon">✏️</span><span class="wallet-secondary-text"><b>Adicionar manualmente</b><span>Inserir moedas e quantidades</span></span><span class="wallet-secondary-chevron">›</span>
+    </button>
+    <button id="chatImportToggle" class="wallet-secondary-action" type="button">
+      <span class="wallet-secondary-icon">🤖</span><span class="wallet-secondary-text"><b>Importar lista do ChatGPT</b><span>Cole a lista recebida</span></span><span class="wallet-secondary-chevron">›</span>
+    </button>
+  </div>
+
+  <div id="ocrStatus" class="status small">Pronto para receber um print da sua carteira.</div>
+  <div id="ocrProgress" class="ocr-progress">
+    <div class="ocr-progress-head"><span id="ocrProgressText">Preparando leitura…</span><b id="ocrProgressPct">0%</b></div>
+    <div class="ocr-progress-track"><div id="ocrProgressBar" class="ocr-progress-bar"></div></div>
+  </div>
+
+  <div id="chatImportPanel" class="wallet-chat-panel">
+    <div class="wallet-chat-head"><b>🤖 Colar lista analisada pelo ChatGPT</b><button id="chatImportClose" type="button" style="min-height:34px;padding:5px 9px;background:#17263d">Fechar</button></div>
+    <div class="small" style="margin-bottom:8px">Use esta opção quando o OCR não reconhecer o print corretamente. Cole uma moeda por linha.</div>
+    <textarea id="chatImport" rows="4" placeholder="Exemplo:\nSUI 11,1981\nLINK 0,4021\nBTC 0,00015"></textarea>
+    <button id="importChatWallet" type="button">🤖 IMPORTAR LISTA DO CHATGPT</button>
+  </div>
+
+  <div id="walletPreview" class="hide">
+    <div style="font-weight:800">Confira antes de salvar</div>
+    <div class="small" style="margin-bottom:8px">Corrija qualquer moeda ou quantidade antes de confirmar.</div>
+    <div id="walletEditRows"></div>
+    <div class="wallet-tools"><button id="addWalletRow" type="button">+ Adicionar linha</button><button id="saveWallet" type="button">✓ CONFIRMAR E ATUALIZAR</button></div>
+  </div>
+
+  <div class="wallet-value-card">
+    <div class="wallet-value-head"><div class="small">Valor aproximado da carteira</div><div class="small">Atualização automática</div></div>
+    <div id="walletTotal" class="wallet-total">Carregando…</div>
+    <div id="liveFeed" class="live-feed">⚡ Conectando tempo real…</div>
+  </div>
+  <div id="walletMarketInfo" class="market-info"></div>
+  <div id="walletTips" class="wallet-tips"></div>
+  <div id="walletGuidance" class="wallet-guide"></div>
+  <div id="walletBuyAlerts" class="buy-alert-box"></div>
+  <div id="walletOpportunities" class="wallet-opps"></div>
+  <div id="walletTable"></div>
 </section>
 
 
@@ -1325,22 +1440,38 @@ function extractWalletItems(text){
  }
  return [...best.values()].sort((x,y)=>y.confidence-x.confidence);
 }
+let walletShotUrl='';
+function setOcrProgress(show,pct=0,label='Preparando leitura…'){
+ const wrap=document.getElementById('ocrProgress'),bar=document.getElementById('ocrProgressBar'),tx=document.getElementById('ocrProgressText'),pc=document.getElementById('ocrProgressPct');
+ if(!wrap)return;
+ wrap.classList.toggle('on',!!show);
+ const n=Math.max(0,Math.min(100,Math.round(Number(pct)||0)));
+ if(bar)bar.style.width=n+'%';if(tx)tx.textContent=label;if(pc)pc.textContent=n+'%';
+}
 document.getElementById('shot').onchange=async e=>{
  const f=e.target.files[0];if(!f)return;
- const st=document.getElementById('ocrStatus');
- st.textContent='🔎 Lendo o print e filtrando somente moedas válidas…';
+ const st=document.getElementById('ocrStatus'),prev=document.getElementById('shotPreview'),wrap=document.getElementById('shotPreviewWrap');
+ const fn=document.getElementById('shotFileName'),fm=document.getElementById('shotFileMeta');
+ try{if(walletShotUrl)URL.revokeObjectURL(walletShotUrl);walletShotUrl=URL.createObjectURL(f);if(prev)prev.src=walletShotUrl;if(wrap)wrap.classList.add('on');if(fn)fn.textContent=f.name||'Imagem selecionada';if(fm)fm.textContent=Math.max(1,Math.round((f.size||0)/1024))+' KB • iniciando leitura';}catch(e){}
+ st.textContent='🔎 Lendo o print e filtrando somente moedas válidas…';setOcrProgress(true,6,'Preparando imagem…');
  try{
   if(typeof Tesseract==='undefined')throw new Error('OCR indisponível');
   if(!validWalletSymbols.size) await updateWalletPrices();
   await refreshWalletNameIndex();
+  setOcrProgress(true,18,'Aprimorando imagem…');
   const prepared=await prepareWalletImage(f);
-  const r=await Tesseract.recognize(prepared,'eng');
+  setOcrProgress(true,28,'Reconhecendo moedas e quantidades…');
+  const r=await Tesseract.recognize(prepared,'eng',{logger:m=>{if(m?.status==='recognizing text'&&Number.isFinite(m.progress))setOcrProgress(true,28+m.progress*64,'Reconhecendo moedas e quantidades…')}});
   const uniq=extractWalletItems(r.data.text).slice(0,30);
+  setOcrProgress(true,100,'Leitura concluída');
   showWalletEditor(uniq,'add',-1);
-  st.textContent=uniq.length?`✓ Leitura refinada: ${uniq.length} moeda(s) identificada(s). Confira antes de salvar. Confira as quantidades antes de salvar.`:'Não encontrei moedas válidas com segurança. Você pode corrigir/adicionar manualmente.';
+  st.textContent=uniq.length?`✓ ${uniq.length} moeda(s) identificada(s). Revise as quantidades e confirme para atualizar.`:'Não encontrei moedas válidas com segurança. Você pode corrigir ou adicionar manualmente.';
+  if(fm)fm.textContent=uniq.length?uniq.length+' moeda(s) detectada(s) • confira a prévia':'Leitura concluída • revisão manual necessária';
+  setTimeout(()=>setOcrProgress(false,0),1200);
  }catch(err){
-  showWalletEditor();
-  st.textContent='A leitura automática não funcionou neste navegador. Você pode preencher manualmente.';
+  showWalletEditor();setOcrProgress(false,0);
+  st.textContent='A leitura automática não funcionou neste navegador. Você pode preencher manualmente ou importar a lista do ChatGPT.';
+  if(fm)fm.textContent='Leitura automática indisponível • use uma opção alternativa';
  }
 };
 
@@ -1368,6 +1499,16 @@ if(importChatBtn) importChatBtn.onclick=()=>{
  showWalletEditor(items,'add',-1);
  document.getElementById('ocrStatus').textContent=items.length?`✓ ${items.length} moeda(s) importada(s). Confira e toque em Atualizar carteira.`:'Não encontrei uma lista válida. Use, por exemplo: SUI 11,1981';
 };
+
+// UI da captura V2: painel ChatGPT recolhível + status contextual.
+const chatImportToggle=document.getElementById('chatImportToggle'),chatImportPanel=document.getElementById('chatImportPanel'),chatImportClose=document.getElementById('chatImportClose');
+function toggleChatImport(force){if(!chatImportPanel)return;const on=typeof force==='boolean'?force:!chatImportPanel.classList.contains('on');chatImportPanel.classList.toggle('on',on);if(on)setTimeout(()=>document.getElementById('chatImport')?.focus(),80)}
+if(chatImportToggle)chatImportToggle.onclick=()=>toggleChatImport();
+if(chatImportClose)chatImportClose.onclick=()=>toggleChatImport(false);
+const walletStatus=document.getElementById('ocrStatus');
+function styleWalletStatus(){if(!walletStatus)return;const t=(walletStatus.textContent||'').toLowerCase();walletStatus.classList.remove('status-success','status-error','status-working');if(/lendo|carregando|buscando|processando|reconhecendo/.test(t))walletStatus.classList.add('status-working');else if(/✓|sucesso|identificada|importada|adicionada|concluída/.test(t))walletStatus.classList.add('status-success');else if(/não |erro|indisponível|inválida|falhou|não encontrei/.test(t))walletStatus.classList.add('status-error')}
+if(walletStatus){styleWalletStatus();new MutationObserver(styleWalletStatus).observe(walletStatus,{childList:true,characterData:true,subtree:true});}
+
 
 renderPrintWallet();
 (async()=>{

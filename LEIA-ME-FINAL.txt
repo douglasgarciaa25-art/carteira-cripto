@@ -123,3 +123,14 @@ IMPORTANTE
 - Cooldown persistente evita repetição excessiva de sirene/notificação.
 - Service Worker atualizado para usar a mesma lógica V2 em execuções de segundo plano, com confirmação persistente entre leituras.
 - Cache do PWA atualizado para forçar a entrada da nova versão.
+
+=== CARTEIRA POR PRINT V2 — 07/10/2026 ===
+- Área de captura redesenhada com fluxo guiado em 3 etapas: enviar print, revisar ativos e confirmar.
+- Upload principal ficou mais destacado e mostra prévia da imagem selecionada.
+- Leitura OCR agora exibe barra de progresso e status visual durante o processamento.
+- Status da captura ganhou estados visuais: processamento, sucesso e erro.
+- Entrada manual e importação por lista do ChatGPT foram reorganizadas como opções secundárias.
+- Painel de importação do ChatGPT pode ser aberto e fechado para reduzir poluição visual.
+- Prévia de moedas/quantidades continua obrigatória antes de salvar a carteira.
+- Valor aproximado, preços e demais módulos do Radar foram preservados.
+- Cache do Service Worker foi versionado novamente para entregar a nova interface após a publicação.
