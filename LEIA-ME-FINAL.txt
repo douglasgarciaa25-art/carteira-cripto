@@ -154,3 +154,13 @@ IMPORTANTE
 - Barra inferior adaptativa para navegação rápida no celular.
 - Menu lateral com ferramentas extras e troca de modo a qualquer momento.
 - Cada área agora funciona como uma tela própria, reduzindo o excesso de rolagem.
+
+
+=== ADAPTIVE PLUS — HOME + LAYOUT — 07/10/2026 ===
+- Página inicial ganhou painel Visão Rápida com carteira, alarme, top oportunidade e status da IA.
+- Boatos/notícias agora aparecem também na página inicial, com visual compacto no Início.
+- Menu lateral refinado e mais simples no modo Amador; modo Profissional mantém descrições técnicas.
+- Atalhos grandes para Carteira, Mercado, Alertas e IA; ferramentas PRO aparecem na home apenas no modo Profissional.
+- Layout responsivo melhorado para telas pequenas e grandes.
+- O bloco O que merece sua atenção se adapta aos sinais atuais.
+- Mantidas IA, Alarme V2, segundo plano, Carteira por Print, backtest e Paper Trading.

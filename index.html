@@ -343,6 +343,42 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 @media(max-width:620px){.app-toolbar{top:6px;margin:0 0 10px;border-radius:16px;grid-template-columns:auto minmax(0,1fr) auto}.app-view-title{font-size:14px}.experience-switch button{padding:7px 8px;font-size:9px}.experience-switch button .mode-word{display:none}.mode-guide{margin-bottom:10px}.mode-choice-grid{grid-template-columns:1fr}.mode-choice-card{min-height:auto}.quick-dock button span{font-size:18px}.quick-dock button.dock-main{height:64px;margin-top:-16px}.quick-dock button.dock-main span{font-size:23px}}
 @media(max-width:390px){.app-toolbar{grid-template-columns:auto 1fr}.app-toolbar>.experience-switch{grid-column:1/-1;justify-self:stretch}.app-toolbar>.experience-switch button{flex:1}.mode-guide{padding:10px}.mode-guide-icon{width:34px;height:34px}.quick-dock button b{font-size:8px}}
 
+
+/* ===== Adaptive Plus • home intuitiva + refinamento visual ===== */
+:root{--surface-0:#06101c;--surface-1:#0a1726;--surface-2:#0f2136;--stroke-soft:#203a59;--stroke-strong:#315f91;--accent:#3b82f6;--accent-soft:#60a5fa;--glass:rgba(9,23,39,.84)}
+body{background:radial-gradient(circle at 16% -8%,rgba(47,124,255,.18),transparent 31%),radial-gradient(circle at 88% 8%,rgba(124,58,237,.11),transparent 28%),linear-gradient(180deg,#040a12,#07111d 46%,#040a12);}
+main{position:relative}.card{border-color:rgba(54,86,124,.62);box-shadow:0 16px 44px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.025)}
+.card>.coin:first-child{font-size:18px;letter-spacing:-.25px}.card>.small:nth-child(2){max-width:820px}
+.app-hero{border-color:rgba(73,123,183,.66);background:linear-gradient(135deg,rgba(15,39,69,.98),rgba(7,18,31,.98));}
+.app-toolbar{border-color:rgba(64,101,145,.78);background:rgba(6,16,28,.9)}
+.mode-guide{position:relative;overflow:hidden}.mode-guide:after{content:"";position:absolute;right:-35px;top:-48px;width:120px;height:120px;border-radius:50%;background:rgba(59,130,246,.08);pointer-events:none}
+
+.home-dashboard{padding:0!important;overflow:hidden;border-color:#376ca4aa!important;background:linear-gradient(145deg,#0c2036,#071522)!important}
+.home-dashboard-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:17px 17px 12px;background:linear-gradient(135deg,rgba(37,99,235,.14),rgba(124,58,237,.07),transparent)}
+.home-dashboard-kicker{font-size:9px;font-weight:950;letter-spacing:1.45px;color:#79aef2;text-transform:uppercase}.home-dashboard-title{font-size:23px;font-weight:950;letter-spacing:-.65px;margin-top:4px}.home-dashboard-copy{font-size:11px;color:#8fa6c1;margin-top:4px;line-height:1.45}
+.home-mode-pill{flex:0 0 auto;padding:6px 9px;border:1px solid #31567d;border-radius:999px;font-size:9px;font-weight:950;color:#a8c8ef;background:#0a1a2d}.mode-amateur .home-mode-pill{border-color:#256c4a;color:#a7f3d0;background:#0d2c20}.mode-professional .home-mode-pill{border-color:#6246a1;color:#d8ccff;background:#24183d}
+.home-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px 14px}.home-metric{min-width:0;padding:11px 10px;border:1px solid #24415f;border-radius:14px;background:rgba(5,16,29,.78)}.home-metric-label{font-size:9px;color:#6f88a7;font-weight:800}.home-metric-value{margin-top:5px;font-size:13px;font-weight:950;color:#edf6ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.home-metric-value.ok{color:#86efac}.home-metric-value.warn{color:#fde68a}.home-metric-value.risk{color:#fca5a5}.home-metric-value.info{color:#93c5fd}
+.home-action-box{margin:0 14px 14px;padding:11px 12px;border:1px solid #2d4d70;border-radius:14px;background:linear-gradient(145deg,#091a2c,#081522)}.home-action-box b{font-size:11px;color:#bdd8fa}.home-action-text{margin-top:4px;font-size:12px;line-height:1.45;color:#f1f6fc}
+.home-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 14px 14px}.home-shortcut{min-height:76px!important;padding:9px 7px!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;text-align:left;border:1px solid #284766!important;border-radius:14px!important;background:#0a1a2b!important;box-shadow:none!important;color:#e7f1ff!important}.home-shortcut:hover{border-color:#4381c2!important;background:#10253d!important}.home-shortcut-icon{font-size:20px}.home-shortcut b{font-size:10px}.home-shortcut span:last-child{font-size:8px;color:#7189a8;line-height:1.2}
+.home-pro-tools{display:none;grid-template-columns:repeat(3,1fr);gap:7px;padding:0 14px 14px}.mode-professional .home-pro-tools{display:grid}.home-pro-tool{min-height:46px!important;padding:8px 10px!important;background:#17152d!important;border:1px solid #483d75!important;box-shadow:none!important;font-size:10px!important;color:#ddd6fe!important}
+.home-section-label{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:15px 2px 7px;padding:0 2px}.home-section-label b{font-size:11px;color:#bfd4ec}.home-section-label span{font-size:9px;color:#6d86a5}
+
+#marketRumorsCard{position:relative;overflow:hidden}#marketRumorsCard:before{content:"";position:absolute;right:-50px;top:-70px;width:145px;height:145px;border-radius:50%;background:rgba(245,158,11,.065);pointer-events:none}#marketRumorsCard .coin{display:flex!important;justify-content:space-between;gap:10px;align-items:center}#marketRumorsCard .coin:after{content:"SENTIMENTO";font-size:8px;letter-spacing:.8px;color:#f5d58c;padding:4px 7px;border-radius:999px;background:#3a2d12;border:1px solid #6b5426}.route-home #marketRumorsCard{border-color:#795f2f!important}.route-home #marketRumors .market-rumor-item:nth-child(n+4){display:none}.route-home #marketRumorsCard>.small:last-child{display:none}
+
+/* menus mais claros */
+.app-drawer{background:linear-gradient(180deg,#09192c,#050c15)}.app-nav-btn{position:relative}.app-nav-btn.active:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:4px;background:#60a5fa}.app-nav-btn.active .app-nav-icon{filter:drop-shadow(0 0 8px rgba(96,165,250,.45))}.app-nav-section{margin-top:15px}.app-drawer-mode{box-shadow:inset 0 1px rgba(255,255,255,.035)}
+.mode-amateur .app-nav-meta{display:none}.mode-amateur .app-nav-btn{min-height:46px}.mode-professional .app-nav-meta{display:block}
+
+/* cartões em cada rota */
+.route-wallet #walletCaptureCard,.route-market #opportunitiesCard,.route-alerts #urgentRadarCard,.route-ai #aiRadarCard,.route-engine #v10CoreCard,.route-backtest #v8BacktestCard,.route-paper #v7ValidationCard{border-color:#396d9eaa!important}
+.route-wallet #walletCaptureCard:before,.route-market #opportunitiesCard:before,.route-alerts #urgentRadarCard:before,.route-ai #aiRadarCard:before{box-shadow:0 0 26px rgba(59,130,246,.18)}
+
+/* amador: mais espaço e texto simplificado; profissional: maior densidade */
+.mode-amateur .home-dashboard-title{font-size:24px}.mode-amateur .home-dashboard-copy{font-size:12px}.mode-amateur .card{padding:15px}.mode-amateur #coins{gap:10px}.mode-professional .home-dashboard{border-color:#5a4b8aaa!important}.mode-professional .home-dashboard-top{background:linear-gradient(135deg,rgba(59,130,246,.10),rgba(124,58,237,.14),transparent)}
+
+@media(max-width:720px){.home-metrics{grid-template-columns:1fr 1fr}.home-shortcuts{grid-template-columns:1fr 1fr}.home-pro-tools{grid-template-columns:1fr}.home-metric{padding:10px}.home-dashboard-title{font-size:21px}}
+@media(max-width:420px){.home-dashboard-top{padding:14px 13px 10px}.home-metrics,.home-shortcuts,.home-pro-tools{padding-left:11px;padding-right:11px}.home-action-box{margin-left:11px;margin-right:11px}.home-dashboard-copy{max-width:245px}.home-mode-pill{font-size:8px;padding:5px 7px}}
+
 </style>
 </head>
 <body>
@@ -408,6 +444,36 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
  <div class="mode-guide-icon" id="modeGuideIcon">🙂</div>
  <div><b id="modeGuideTitle">Modo Amador</b><div class="small" id="modeGuideText">Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.</div><span class="mode-chip" id="modeGuideChip">INTERFACE SIMPLIFICADA</span></div>
 </div>
+
+<section class="card home-dashboard" id="homeDashboardCard">
+  <div class="home-dashboard-top">
+    <div>
+      <div class="home-dashboard-kicker">VISÃO RÁPIDA</div>
+      <div class="home-dashboard-title">Seu Radar agora</div>
+      <div class="home-dashboard-copy">O essencial da carteira, alertas, mercado e IA em uma tela. Toque em uma área para aprofundar.</div>
+    </div>
+    <div class="home-mode-pill" id="homeModePill">MODO AMADOR</div>
+  </div>
+  <div class="home-metrics">
+    <div class="home-metric"><div class="home-metric-label">Carteira</div><div class="home-metric-value info" id="homeWalletValue">Carregando…</div></div>
+    <div class="home-metric"><div class="home-metric-label">Alarme</div><div class="home-metric-value ok" id="homeAlarmState">Analisando…</div></div>
+    <div class="home-metric"><div class="home-metric-label">Top oportunidade</div><div class="home-metric-value info" id="homeTopOpportunity">Buscando…</div></div>
+    <div class="home-metric"><div class="home-metric-label">IA Radar</div><div class="home-metric-value info" id="homeAiState">Iniciando…</div></div>
+  </div>
+  <div class="home-action-box"><b>💡 O que merece sua atenção</b><div class="home-action-text" id="homeActionText">O Radar está reunindo as primeiras leituras do mercado.</div></div>
+  <div class="home-shortcuts">
+    <button class="home-shortcut" data-route="wallet" type="button"><span class="home-shortcut-icon">👛</span><b>Minha carteira</b><span>Posições e aporte</span></button>
+    <button class="home-shortcut" data-route="market" type="button"><span class="home-shortcut-icon">📈</span><b>Mercado</b><span>Ranking e boatos</span></button>
+    <button class="home-shortcut" data-route="alerts" type="button"><span class="home-shortcut-icon">🚨</span><b>Alertas</b><span>Risco e oportunidades</span></button>
+    <button class="home-shortcut" data-route="ai" type="button"><span class="home-shortcut-icon">🤖</span><b>IA Radar</b><span>Análise orientada</span></button>
+  </div>
+  <div class="home-pro-tools">
+    <button class="home-pro-tool" data-route="engine" type="button">🧠 Motor V10/V11</button>
+    <button class="home-pro-tool" data-route="backtest" type="button">📊 Backtest</button>
+    <button class="home-pro-tool" data-route="paper" type="button">🧪 Paper Trading</button>
+  </div>
+</section>
+
 <section class="card v9-card" id="v9Command" style="display:none">
  <div class="coin">⚡ Radar Pro • Central</div>
  <div class="small">Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.</div>
@@ -585,7 +651,7 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 
 
 <section class="card" id="marketRumorsCard">
-  <div class="coin">🗣️ Boatos e notícias do mercado</div>
+  <div class="coin" id="marketRumorsTitle">🗣️ Boatos e notícias do mercado</div>
   <div class="small">Área separada dos sinais técnicos. Mostra assuntos que podem mexer com as moedas da sua carteira. Rumor não confirmado nunca vira sinal de compra ou venda sozinho.</div>
   <div id="marketRumors" style="margin-top:10px"><div class="small">Buscando informações públicas do mercado…</div></div>
   <div class="small" style="margin-top:10px">🟢 possível impacto positivo • 🟡 incerto/boato • 🔴 possível impacto negativo • ✅ informação confirmada por fonte oficial quando disponível.</div>
@@ -2627,12 +2693,32 @@ window.v8RunBacktest=run;
 </script>
 
 
+
+<script>
+/* ===== Home Dashboard Sync ===== */
+(function(){
+ const $=id=>document.getElementById(id);
+ function firstText(root,sel){const e=root?.querySelector?.(sel);return String(e?.textContent||'').replace(/\s+/g,' ').trim()}
+ function cleanOpportunity(t){if(!t)return 'Buscando…';return t.replace(/^[🏆⭐\s]*/,'').replace(/\s+/g,' ').trim().slice(0,28)}
+ function syncHome(){
+  const wallet=String($('walletTotal')?.textContent||'').trim();if(wallet&&wallet!=='Carregando…')$('homeWalletValue').textContent=wallet;
+  const urgent=$('urgentRadarList'),u=firstText(urgent,'.urgent-title')||String(urgent?.textContent||'').trim();
+  const alarm=$('homeAlarmState');if(alarm&&u){alarm.textContent=/CRÍTICO|RISCO|ALERTA/i.test(u)?u.replace(/^[^A-ZÀ-Ú0-9]*/,'').slice(0,24):/Nenhum sinal|NORMAL/i.test(u)?'Normal':'Monitorando';alarm.className='home-metric-value '+(/CRÍTICO|RISCO/i.test(u)?'risk':/ALERTA|ATENÇÃO/i.test(u)?'warn':'ok')}
+  const opp=firstText($('opportunities'),'.row b')||firstText($('coins'),'.coin');if(opp&&$('homeTopOpportunity'))$('homeTopOpportunity').textContent=cleanOpportunity(opp);
+  const ai=String($('aiStatus')?.textContent||'').replace(/^●\s*/,'').trim();if(ai&&$('homeAiState'))$('homeAiState').textContent=ai.replace(/\s*•.*/,'').slice(0,22);
+  const action=$('homeActionText');if(action){if(/CRÍTICO|RISCO/i.test(u))action.textContent='Há sinal de risco na carteira. Abra Alertas e revise a posição antes de pensar em novo aporte.';else if(/ALERTA|ATENÇÃO/i.test(u))action.textContent='Existe movimento em observação. Aguarde confirmação do Radar antes de agir.';else if(opp)action.textContent='Sem risco urgente na carteira. Acompanhe '+cleanOpportunity(opp)+' e os boatos abaixo antes de qualquer decisão.';else action.textContent='Sem risco urgente detectado. O Radar continua atualizando mercado, carteira e IA.'}
+ }
+ function observe(id){const e=$(id);if(!e)return;new MutationObserver(syncHome).observe(e,{subtree:true,childList:true,characterData:true,attributes:true})}
+ ['walletTotal','urgentRadarList','opportunities','coins','aiStatus'].forEach(observe);setInterval(syncHome,5000);setTimeout(syncHome,800);
+})();
+</script>
+
 <script>
 /* ===== Cripto Radar Adaptive Navigation ===== */
 (function(){
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
-  home:{title:'Início',ids:['urgentRadarCard','highlightsCard','coins']},
+  home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
   wallet:{title:'Carteira',ids:['walletCaptureCard','aporteCard']},
   market:{title:'Mercado',ids:['opportunitiesCard','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['urgentRadarCard','notifyCard']},
@@ -2662,12 +2748,15 @@ window.v8RunBacktest=run;
   document.body.classList.toggle('mode-professional',mode==='professional');
   if(save)localStorage.setItem(MODE_KEY,mode);
   syncModeButtons(mode);updateGuide(mode);
+  if($('homeModePill'))$('homeModePill').textContent=mode==='amateur'?'MODO AMADOR':'MODO PROFISSIONAL';
   const current=localStorage.getItem(ROUTE_KEY)||'home';
   if(mode==='amateur'&&routes[current]?.pro) setRoute('home'); else setRoute(current,false);
  }
  function setRoute(route,save=true){
   const mode=getMode();
   if(!routes[route]||(routes[route].pro&&mode!=='professional'))route='home';
+  [...document.body.classList].filter(x=>x.startsWith('route-')).forEach(x=>document.body.classList.remove(x));document.body.classList.add('route-'+route);
+  if($('marketRumorsTitle'))$('marketRumorsTitle').textContent=route==='home'?'🗣️ Boatos que podem mexer com sua carteira':'🗣️ Boatos e notícias do mercado';
   allIds.forEach(id=>{const el=$(id);if(el){el.classList.add('app-view-section','route-hidden');el.classList.remove('route-visible')}});
   (routes[route].ids||[]).forEach(id=>{const el=$(id);if(el){el.classList.remove('route-hidden');el.classList.add('route-visible')}});
   document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route));

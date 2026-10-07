@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v11-adaptive-20261007-v1';
+const CACHE='cripto-radar-v11-adaptive-plus-20261007-v2';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./ai-radar.js','./radar-worker.js'];
 const DB='cripto-radar-background',STORE='kv';
 
