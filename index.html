@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V11 • Adaptive</title>
+<title>Cripto Radar V11 • Neo Radar</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -379,6 +379,51 @@ main{position:relative}.card{border-color:rgba(54,86,124,.62);box-shadow:0 16px 
 @media(max-width:720px){.home-metrics{grid-template-columns:1fr 1fr}.home-shortcuts{grid-template-columns:1fr 1fr}.home-pro-tools{grid-template-columns:1fr}.home-metric{padding:10px}.home-dashboard-title{font-size:21px}}
 @media(max-width:420px){.home-dashboard-top{padding:14px 13px 10px}.home-metrics,.home-shortcuts,.home-pro-tools{padding-left:11px;padding-right:11px}.home-action-box{margin-left:11px;margin-right:11px}.home-dashboard-copy{max-width:245px}.home-mode-pill{font-size:8px;padding:5px 7px}}
 
+
+/* ===== Neo Radar UI • original exchange-inspired layout ===== */
+:root{
+  --neo-bg:#070b10;--neo-panel:#0d131b;--neo-panel2:#121a24;--neo-stroke:#202c3a;
+  --neo-text:#f4f7fb;--neo-muted:#8190a4;--neo-accent:#4ea8ff;--neo-accent2:#7c6cff;
+  --neo-green:#40d58a;--neo-red:#ff667b;--neo-amber:#ffbf4b;
+}
+body{background:radial-gradient(circle at 50% -12%,rgba(68,133,206,.18),transparent 30%),linear-gradient(180deg,#070b10 0,#090e14 54%,#06090d 100%);color:var(--neo-text)}
+main{max-width:860px;padding:12px 12px 96px}
+.card{background:linear-gradient(180deg,rgba(18,26,36,.98),rgba(12,18,26,.98));border:1px solid var(--neo-stroke);border-radius:20px;box-shadow:0 12px 34px rgba(0,0,0,.24)}
+
+/* top app header */
+.neo-hero{padding:12px 4px 8px!important;margin:0 0 8px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.neo-hero:after{display:none!important}.neo-hero-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.neo-brand{display:flex;align-items:center;gap:10px;min-width:0}.neo-avatar{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#1a2f49,#102033);border:1px solid #2f4b68;box-shadow:inset 0 1px rgba(255,255,255,.06)}.neo-avatar img{width:25px;height:25px;object-fit:contain}.neo-brand-copy{display:flex;flex-direction:column;min-width:0}.neo-brand-copy b{font-size:16px;letter-spacing:-.2px}.neo-brand-copy span{font-size:9px;color:#71839a;margin-top:2px;text-transform:uppercase;letter-spacing:.8px}.neo-live{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#0d2018;border:1px solid #1f5a3c;color:#9ce9bf;font-size:9px;font-weight:900;letter-spacing:.6px}.neo-live i{width:6px;height:6px;border-radius:50%;background:var(--neo-green);box-shadow:0 0 10px var(--neo-green)}
+.neo-route-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:12px;padding:4px;border-radius:14px;background:#0b1118;border:1px solid #182431}.neo-route-tabs button{min-height:34px;padding:7px 8px;border:0;border-radius:10px;background:transparent;box-shadow:none;color:#7d8da1;font-size:11px}.neo-route-tabs button.active{background:linear-gradient(180deg,#172638,#122033);color:#fff;box-shadow:inset 0 1px rgba(255,255,255,.05)}
+
+/* compact status / toolbar */
+.status-strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 0 7px}.status-strip::-webkit-scrollbar{display:none}.status-strip .pill{flex:0 0 auto;margin:0;padding:6px 8px;border-radius:9px;border:1px solid #1d2a38;background:#0b121a;color:#74869c;font-size:9px}
+.app-toolbar{top:6px;margin:0 0 9px;padding:7px;border-radius:14px;border-color:#223245;background:rgba(8,13,19,.9);box-shadow:0 10px 26px rgba(0,0,0,.26);backdrop-filter:blur(16px)}.app-menu-button{width:38px!important;height:38px!important;min-height:38px!important;border-radius:11px!important;background:#111923!important;border:1px solid #243444!important;box-shadow:none!important}.app-view-kicker{display:none}.app-view-title{font-size:13px}.experience-switch{background:#0c131c!important;border-color:#1d2b3a!important}.experience-switch button{min-height:34px!important;padding:7px 9px!important;font-size:9px!important}.experience-switch button.active{background:#182638!important;border-color:#2f4c6b!important}
+.route-home .mode-guide{display:none}.mode-guide{margin:8px 0!important;padding:10px!important;border-radius:14px!important;background:#0d151f!important;border-color:#223346!important}
+
+/* home balance */
+.neo-overview{padding:0!important;overflow:hidden!important;border-color:#263748!important;background:linear-gradient(180deg,#111923,#0a1017)!important}.neo-balance-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding:19px 17px 15px;background:radial-gradient(circle at 100% 0,rgba(78,168,255,.11),transparent 34%)}.neo-eyebrow{font-size:9px;letter-spacing:1.25px;font-weight:950;color:#6c8098}.neo-balance{margin-top:5px;font-size:34px;font-weight:950;letter-spacing:-1.35px;color:#f7fbff;line-height:1.08}.neo-balance-sub{margin-top:6px;font-size:10px;color:#718399}.neo-dot{display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:var(--neo-green);box-shadow:0 0 8px rgba(64,213,138,.7)}.neo-wallet-open{flex:0 0 auto;min-height:38px!important;padding:9px 12px!important;border-radius:12px!important;background:linear-gradient(135deg,#3287da,#4b74df)!important;border:1px solid #5a95e2!important;font-size:10px!important;box-shadow:0 10px 20px rgba(43,115,202,.16)!important}
+.neo-status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:0 14px 14px}.neo-status-card{min-width:0;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;text-align:left;padding:10px;border-radius:14px!important;background:#0c141d!important;border:1px solid #1e2e3e!important;box-shadow:none!important;color:#edf4fb!important}.neo-status-card small{display:block;color:#64768a;font-size:8px;font-weight:800}.neo-status-card b{display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}.neo-status-card em{font-style:normal;color:#4f657c}.neo-status-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;font-size:15px;font-weight:950}.neo-status-icon.alert{color:#ff9aa8;background:#311823}.neo-status-icon.trend{color:#9ce9bf;background:#10281e}.neo-status-icon.ai{color:#c4b5fd;background:#211b38}
+.neo-advice{margin:0 14px 13px;padding:12px 13px;border-radius:14px;border:1px solid #263748;background:linear-gradient(145deg,#0b151f,#101722)}.neo-advice-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.neo-advice-top>span{font-size:9px;font-weight:950;letter-spacing:1px;color:#71869e}.neo-advice-text{margin-top:8px;font-size:12px;line-height:1.5;color:#dbe6f3}.home-mode-pill{padding:4px 7px!important;font-size:8px!important;border-radius:999px!important}.neo-quick-title{display:flex;justify-content:space-between;gap:10px;padding:1px 15px 8px}.neo-quick-title b{font-size:11px}.neo-quick-title span{font-size:9px;color:#5f7288}.neo-shortcuts{padding:0 14px 14px!important;gap:7px!important}.neo-shortcuts .home-shortcut{padding:10px!important;border-radius:14px!important;background:#0b131b!important;border-color:#1c2b39!important}.neo-shortcuts .home-shortcut-icon{width:30px!important;height:30px!important;border-radius:10px!important;background:#122337!important;color:#84bfff!important;font-size:16px!important}.neo-shortcuts .home-shortcut b{font-size:11px!important}.neo-shortcuts .home-shortcut span:last-child{font-size:8px!important;color:#607286!important}.home-pro-tools{border-top:1px solid #172430!important;padding:10px 14px 13px!important;gap:6px!important}.home-pro-tool{min-height:34px!important;border-radius:10px!important;background:#151427!important;border-color:#322d4c!important;font-size:9px!important;box-shadow:none!important}
+
+/* cards on home feel like compact market tiles */
+.route-home #urgentRadarCard,.route-home #highlightsCard,.route-home #coins,.route-home #marketRumorsCard{margin-top:9px!important}.route-home #urgentRadarCard{border-color:#40303b!important}.route-home #coins{gap:8px!important}.route-home #coins>.card,.route-home #coins .card{border-radius:16px!important;background:#0c131b!important;border-color:#1d2b39!important;box-shadow:none!important}.route-home #coins .price{font-size:20px!important}.route-home #coins .coin{font-size:14px!important}
+
+/* original feed layout */
+.neo-feed{padding:0!important;overflow:hidden!important}.neo-feed-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 15px 10px}.neo-feed-head .coin{font-size:17px!important;margin-top:3px}.neo-feed-pulse{display:flex;align-items:center;gap:5px;padding:5px 7px;border-radius:999px;background:#0f2018;border:1px solid #1e5038;color:#8fe3b3;font-size:8px;font-weight:900;text-transform:uppercase}.neo-feed-pulse i{width:5px;height:5px;border-radius:50%;background:var(--neo-green)}.rumor-tabs{display:flex;gap:5px;padding:0 13px 10px;overflow-x:auto;scrollbar-width:none}.rumor-tabs::-webkit-scrollbar{display:none}.rumor-tab{flex:0 0 auto;min-height:32px!important;padding:6px 10px!important;border-radius:10px!important;background:#0b1219!important;border:1px solid #1d2a37!important;color:#77899f!important;font-size:9px!important;box-shadow:none!important}.rumor-tab.active{background:#152337!important;border-color:#2f4e6e!important;color:#fff!important}.neo-feed-note{padding:0 15px 10px!important;margin:0!important;color:#65788e!important}.neo-feed-list{margin:0!important}.neo-feed-item{display:grid!important;grid-template-columns:34px minmax(0,1fr);gap:10px;padding:12px 15px!important;border-top:1px solid #172430!important;border-bottom:0!important}.neo-feed-avatar{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#183049,#101b27);border:1px solid #27415c;color:#a8d2ff;font-size:10px;font-weight:950}.neo-feed-body{min-width:0}.neo-feed-item .rumor-head{gap:7px}.neo-feed-item .rumor-head b{font-size:11px;line-height:1.45;font-weight:800}.neo-feed-item .rumor-source{font-size:9px;margin-top:5px;color:#5f7288}.neo-feed-item .rumor-tag{font-size:7px!important;padding:3px 5px!important;border-radius:7px!important}.neo-feed-legend{padding:10px 15px 13px!important;margin:0!important;border-top:1px solid #172430;color:#5e7187!important}.neo-feed-empty{padding:18px 15px;color:#718399;font-size:11px;text-align:center;border-top:1px solid #172430}
+
+/* bottom dock, visually distinct from reference apps */
+.neo-dock{left:50%!important;right:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%);width:min(520px,calc(100% - 18px));height:64px!important;padding:6px 8px!important;border-radius:20px!important;border:1px solid #223140!important;background:rgba(8,13,19,.94)!important;box-shadow:0 18px 50px rgba(0,0,0,.5)!important;backdrop-filter:blur(18px)}.neo-dock button{gap:3px!important}.neo-dock .dock-glyph{font-size:17px!important;line-height:1!important;width:26px;height:26px;display:grid;place-items:center;border-radius:9px}.neo-dock button.active{color:#dcecff!important}.neo-dock button.active .dock-glyph{background:#15273a;color:#63b3ff}.neo-dock button b{font-size:8px!important}.neo-dock button.dock-main{width:58px!important;height:58px!important;margin-top:-16px!important;border-radius:18px!important;background:linear-gradient(145deg,#287acb,#5567dd)!important;border:4px solid #080d13!important;box-shadow:0 10px 25px rgba(46,115,205,.32)!important;color:#fff!important}.neo-dock button.dock-main .dock-glyph{background:transparent!important;color:#fff!important;font-size:20px!important}.neo-dock button.dock-main b{font-size:8px!important}
+
+/* drawer */
+.app-drawer{background:linear-gradient(180deg,#0c1219,#070b10)!important;border-color:#253444!important}.app-drawer-logo{background:#142235!important;border-color:#2f4d6d!important}.app-nav-btn{border-radius:12px!important}.app-nav-btn.active{background:#132135!important;border-color:#2b4866!important}.app-nav-btn.active:before{background:#4ea8ff!important}.app-drawer-mode{background:#0b1219!important;border-color:#233445!important}
+
+/* keep alert colors semantic */
+.urgent-card.urgent-state-critical{border-color:#7a3140!important;background:linear-gradient(135deg,#281118,#141016)!important}.urgent-card.urgent-state-strong{border-color:#744126!important;background:linear-gradient(135deg,#25170e,#151014)!important}.urgent-card.urgent-state-normal{border-color:#24563e!important;background:linear-gradient(135deg,#0d1f18,#0c1418)!important}
+
+@media(max-width:620px){
+  main{padding:8px 9px 92px!important}.neo-brand-copy span{display:none}.neo-hero{padding-top:10px!important}.neo-balance{font-size:31px}.neo-balance-head{padding:17px 14px 14px}.neo-wallet-open{padding:8px 10px!important}.neo-status-grid{grid-template-columns:1fr;padding:0 12px 12px}.neo-status-card{grid-template-columns:30px minmax(0,1fr) auto;padding:9px}.neo-advice{margin:0 12px 12px}.neo-shortcuts{grid-template-columns:1fr 1fr!important;padding:0 12px 12px!important}.home-pro-tools{padding-left:12px!important;padding-right:12px!important}.neo-feed-head{padding-left:13px;padding-right:13px}.neo-feed-item{padding-left:13px!important;padding-right:13px!important}.status-strip{margin-left:1px;margin-right:1px}.app-toolbar{grid-template-columns:auto minmax(0,1fr) auto!important}.app-view-copy{min-width:0}.app-toolbar>.experience-switch .mode-word{display:none}.app-toolbar>.experience-switch{min-width:78px}.neo-dock{width:calc(100% - 12px)!important}
+}
+@media(max-width:390px){.neo-route-tabs button{font-size:10px}.neo-balance{font-size:29px}.neo-wallet-open{font-size:9px!important}.neo-shortcuts .home-shortcut{padding:9px!important}.neo-feed-item{grid-template-columns:30px minmax(0,1fr);gap:8px}.neo-feed-avatar{width:30px;height:30px;border-radius:10px}.neo-dock button b{font-size:7px!important}}
 </style>
 </head>
 <body>
@@ -419,16 +464,19 @@ main{position:relative}.card{border-color:rgba(54,86,124,.62);box-shadow:0 16px 
  </div>
 </div>
 <main>
-<header class="top app-hero">
-  <div class="hero-brand">
-    <div class="hero-logo"><img src="./icon.svg" alt="Cripto Radar"></div>
-    <div class="hero-copy">
-      <div class="hero-kicker">RADAR • IA • CARTEIRA</div>
-      <h1>Cripto Radar <span>V11</span></h1>
-      <div class="sub">Mercado, carteira, alertas e aportes em uma única leitura.</div>
+<header class="top app-hero neo-hero">
+  <div class="neo-hero-row">
+    <div class="neo-brand">
+      <div class="neo-avatar"><img src="./icon.svg" alt="Cripto Radar"></div>
+      <div class="neo-brand-copy"><b>Cripto Radar</b><span>painel inteligente de mercado</span></div>
     </div>
+    <div class="neo-live"><i></i><span>RADAR ATIVO</span></div>
   </div>
-  <div class="hero-live"><i></i> AO VIVO</div>
+  <div class="neo-route-tabs" aria-label="Navegação rápida">
+    <button type="button" data-route="home">Visão geral</button>
+    <button type="button" data-route="wallet">Carteira</button>
+    <button type="button" data-route="market">Mercado</button>
+  </div>
 </header>
 
 <div class="status-strip" aria-label="Status do aplicativo">
@@ -445,32 +493,50 @@ main{position:relative}.card{border-color:rgba(54,86,124,.62);box-shadow:0 16px 
  <div><b id="modeGuideTitle">Modo Amador</b><div class="small" id="modeGuideText">Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.</div><span class="mode-chip" id="modeGuideChip">INTERFACE SIMPLIFICADA</span></div>
 </div>
 
-<section class="card home-dashboard" id="homeDashboardCard">
-  <div class="home-dashboard-top">
+<section class="card home-dashboard neo-overview" id="homeDashboardCard">
+  <div class="neo-balance-head">
     <div>
-      <div class="home-dashboard-kicker">VISÃO RÁPIDA</div>
-      <div class="home-dashboard-title">Seu Radar agora</div>
-      <div class="home-dashboard-copy">O essencial da carteira, alertas, mercado e IA em uma tela. Toque em uma área para aprofundar.</div>
+      <div class="neo-eyebrow">PATRIMÔNIO MONITORADO</div>
+      <div class="neo-balance" id="homeWalletValue">Carregando…</div>
+      <div class="neo-balance-sub"><span class="neo-dot"></span> atualização automática pela carteira</div>
     </div>
-    <div class="home-mode-pill" id="homeModePill">MODO AMADOR</div>
+    <button class="neo-wallet-open" data-route="wallet" type="button">Abrir carteira</button>
   </div>
-  <div class="home-metrics">
-    <div class="home-metric"><div class="home-metric-label">Carteira</div><div class="home-metric-value info" id="homeWalletValue">Carregando…</div></div>
-    <div class="home-metric"><div class="home-metric-label">Alarme</div><div class="home-metric-value ok" id="homeAlarmState">Analisando…</div></div>
-    <div class="home-metric"><div class="home-metric-label">Top oportunidade</div><div class="home-metric-value info" id="homeTopOpportunity">Buscando…</div></div>
-    <div class="home-metric"><div class="home-metric-label">IA Radar</div><div class="home-metric-value info" id="homeAiState">Iniciando…</div></div>
+
+  <div class="neo-status-grid">
+    <button class="neo-status-card" data-route="alerts" type="button">
+      <span class="neo-status-icon alert">!</span>
+      <span><small>Alarme</small><b id="homeAlarmState">Analisando…</b></span>
+      <em>›</em>
+    </button>
+    <button class="neo-status-card" data-route="market" type="button">
+      <span class="neo-status-icon trend">↗</span>
+      <span><small>Top oportunidade</small><b id="homeTopOpportunity">Buscando…</b></span>
+      <em>›</em>
+    </button>
+    <button class="neo-status-card" data-route="ai" type="button">
+      <span class="neo-status-icon ai">✦</span>
+      <span><small>IA Radar</small><b id="homeAiState">Iniciando…</b></span>
+      <em>›</em>
+    </button>
   </div>
-  <div class="home-action-box"><b>💡 O que merece sua atenção</b><div class="home-action-text" id="homeActionText">O Radar está reunindo as primeiras leituras do mercado.</div></div>
-  <div class="home-shortcuts">
-    <button class="home-shortcut" data-route="wallet" type="button"><span class="home-shortcut-icon">👛</span><b>Minha carteira</b><span>Posições e aporte</span></button>
-    <button class="home-shortcut" data-route="market" type="button"><span class="home-shortcut-icon">📈</span><b>Mercado</b><span>Ranking e boatos</span></button>
-    <button class="home-shortcut" data-route="alerts" type="button"><span class="home-shortcut-icon">🚨</span><b>Alertas</b><span>Risco e oportunidades</span></button>
-    <button class="home-shortcut" data-route="ai" type="button"><span class="home-shortcut-icon">🤖</span><b>IA Radar</b><span>Análise orientada</span></button>
+
+  <div class="neo-advice">
+    <div class="neo-advice-top"><span>LEITURA DO RADAR</span><div class="home-mode-pill" id="homeModePill">MODO AMADOR</div></div>
+    <div class="neo-advice-text" id="homeActionText">O Radar está reunindo as primeiras leituras do mercado.</div>
+  </div>
+
+  <div class="neo-quick-title"><b>Acesso rápido</b><span>toque para abrir</span></div>
+  <div class="home-shortcuts neo-shortcuts">
+    <button class="home-shortcut" data-route="wallet" type="button"><span class="home-shortcut-icon">◫</span><b>Carteira</b><span>Posições e aporte</span></button>
+    <button class="home-shortcut" data-route="market" type="button"><span class="home-shortcut-icon">⌁</span><b>Mercado</b><span>Ranking e tendências</span></button>
+    <button class="home-shortcut" data-route="alerts" type="button"><span class="home-shortcut-icon">⌁</span><b>Alertas</b><span>Risco e oportunidade</span></button>
+    <button class="home-shortcut" data-route="ai" type="button"><span class="home-shortcut-icon">✦</span><b>IA Radar</b><span>Leitura orientada</span></button>
   </div>
   <div class="home-pro-tools">
-    <button class="home-pro-tool" data-route="engine" type="button">🧠 Motor V10/V11</button>
-    <button class="home-pro-tool" data-route="backtest" type="button">📊 Backtest</button>
-    <button class="home-pro-tool" data-route="paper" type="button">🧪 Paper Trading</button>
+    <button class="home-pro-tool" data-route="engine" type="button">Motor V10/V11</button>
+    <button class="home-pro-tool" data-route="backtest" type="button">Backtest</button>
+    <button class="home-pro-tool" data-route="paper" type="button">Paper Trading</button>
   </div>
 </section>
 
@@ -650,11 +716,19 @@ main{position:relative}.card{border-color:rgba(54,86,124,.62);box-shadow:0 16px 
 </section>
 
 
-<section class="card" id="marketRumorsCard">
-  <div class="coin" id="marketRumorsTitle">🗣️ Boatos e notícias do mercado</div>
-  <div class="small">Área separada dos sinais técnicos. Mostra assuntos que podem mexer com as moedas da sua carteira. Rumor não confirmado nunca vira sinal de compra ou venda sozinho.</div>
-  <div id="marketRumors" style="margin-top:10px"><div class="small">Buscando informações públicas do mercado…</div></div>
-  <div class="small" style="margin-top:10px">🟢 possível impacto positivo • 🟡 incerto/boato • 🔴 possível impacto negativo • ✅ informação confirmada por fonte oficial quando disponível.</div>
+<section class="card neo-feed" id="marketRumorsCard">
+  <div class="neo-feed-head">
+    <div><div class="neo-eyebrow">RADAR SOCIAL</div><div class="coin" id="marketRumorsTitle">Boatos e notícias do mercado</div></div>
+    <div class="neo-feed-pulse"><i></i> ao vivo</div>
+  </div>
+  <div class="rumor-tabs" role="tablist" aria-label="Filtro do feed">
+    <button class="rumor-tab active" type="button" data-rumor-filter="wallet">Minha carteira</button>
+    <button class="rumor-tab" type="button" data-rumor-filter="market">Mercado</button>
+    <button class="rumor-tab" type="button" data-rumor-filter="confirmed">Confirmados</button>
+  </div>
+  <div class="small neo-feed-note">Notícias e rumores ficam separados do sinal técnico. Nada aqui vira compra ou venda sozinho.</div>
+  <div id="marketRumors" class="neo-feed-list"><div class="small">Buscando informações públicas do mercado…</div></div>
+  <div class="small neo-feed-legend">🟢 possível impacto positivo • 🟡 incerto • 🔴 possível impacto negativo • ✅ confirmado</div>
 </section>
 
 <section class="card" id="sourcesCard">
@@ -1856,22 +1930,42 @@ function rumorStatus(x){
 function walletSymbolsNow(){
  return new Set(printWallet.map(x=>normalizeWalletSymbol(x.symbol)));
 }
+let marketRumorFilter='wallet',marketRumorItems=[];
 function renderMarketRumors(items){
  const el=document.getElementById("marketRumors"); if(!el)return;
+ marketRumorItems=Array.isArray(items)?items:marketRumorItems;
  const held=walletSymbolsNow();
- let relevant=items.filter(x=>!x.symbols?.length||x.symbols.some(s=>held.has(s)));
- if(!relevant.length) relevant=items.slice(0,5);
+ let relevant=[...marketRumorItems];
+ if(marketRumorFilter==='wallet') relevant=relevant.filter(x=>!x.symbols?.length||x.symbols.some(s=>held.has(s)));
+ else if(marketRumorFilter==='confirmed') relevant=relevant.filter(x=>x.status==='confirmed');
+ if(!relevant.length){
+   if(marketRumorFilter==='confirmed'){
+     el.innerHTML='<div class="neo-feed-empty">Nenhuma informação confirmada disponível agora.</div>';
+     return;
+   }
+   relevant=marketRumorItems.slice(0,5);
+ }
  el.innerHTML=relevant.slice(0,8).map(x=>{
    const [label,cls]=rumorStatus(x.status);
    const syms=(x.symbols||[]).join(", ");
    const safeTitle=String(x.title||"").replace(/[<>]/g,"");
    const safeSource=String(x.source||"Fonte pública").replace(/[<>]/g,"");
-   return `<div class="market-rumor-item">
-     <div class="rumor-head"><div><b>${rumorImpactIcon(x.impact)} ${syms?syms+" • ":""}${safeTitle}</b></div><span class="rumor-tag ${cls}">${label}</span></div>
-     <div class="rumor-source">${safeSource}</div>
+   const avatar=(x.symbols&&x.symbols[0])?String(x.symbols[0]).slice(0,2):'R';
+   return `<div class="market-rumor-item neo-feed-item">
+     <div class="neo-feed-avatar">${avatar}</div>
+     <div class="neo-feed-body">
+       <div class="rumor-head"><div><b>${rumorImpactIcon(x.impact)} ${syms?syms+" • ":""}${safeTitle}</b></div><span class="rumor-tag ${cls}">${label}</span></div>
+       <div class="rumor-source">${safeSource}</div>
+     </div>
    </div>`;
  }).join("");
 }
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-rumor-filter]');if(!b)return;
+ marketRumorFilter=b.dataset.rumorFilter||'wallet';
+ document.querySelectorAll('[data-rumor-filter]').forEach(x=>x.classList.toggle('active',x===b));
+ renderMarketRumors(marketRumorItems);
+});
 async function updateMarketRumors(){
  // O navegador pode bloquear feeds externos por CORS; por isso há fallback seguro.
  // Esta área NÃO altera walletSignal(), venda, realização ou ranking.
@@ -1898,12 +1992,12 @@ setInterval(updateMarketRumors,60000);
 
 
 </script>
-<nav class="quick-dock" aria-label="Atalhos do Radar">
-  <button data-route="home" type="button" aria-label="Início"><span>🏠</span><b>Início</b></button>
-  <button data-route="alerts" type="button" aria-label="Alertas"><span>🚨</span><b>Alertas</b></button>
-  <button data-route="wallet" class="dock-main" type="button" aria-label="Carteira"><span>👛</span><b>Carteira</b></button>
-  <button data-route="market" type="button" aria-label="Mercado"><span>📈</span><b>Mercado</b></button>
-  <button id="dockMenuButton" type="button" aria-label="Mais opções"><span>☰</span><b>Menu</b></button>
+<nav class="quick-dock neo-dock" aria-label="Atalhos do Radar">
+  <button data-route="home" type="button" aria-label="Início"><span class="dock-glyph">⌂</span><b>Início</b></button>
+  <button data-route="market" type="button" aria-label="Mercado"><span class="dock-glyph">↗</span><b>Mercado</b></button>
+  <button data-route="wallet" class="dock-main" type="button" aria-label="Carteira"><span class="dock-glyph">◫</span><b>Carteira</b></button>
+  <button data-route="alerts" type="button" aria-label="Alertas"><span class="dock-glyph">!</span><b>Alertas</b></button>
+  <button id="dockMenuButton" type="button" aria-label="Mais opções"><span class="dock-glyph">☰</span><b>Menu</b></button>
 </nav>
 </main>
 <script>

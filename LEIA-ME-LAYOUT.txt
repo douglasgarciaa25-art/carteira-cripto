@@ -1,0 +1,22 @@
+CRIPTO RADAR V11 — LAYOUT ORIGINAL
+
+Atualização focada no visual e na navegação.
+
+Arquivos devem ficar todos na mesma pasta:
+- index.html
+- ai-radar.js
+- manifest.webmanifest
+- sw.js
+- icon.svg
+- icon-192.png
+- icon-512.png
+
+Principais mudanças:
+- Tela inicial mais parecida com app nativo, sem copiar a Binance.
+- Patrimônio monitorado em destaque.
+- Cartões compactos para alarme, oportunidade e IA.
+- Navegação rápida Visão geral / Carteira / Mercado.
+- Feed de boatos/notícias com filtros Minha carteira / Mercado / Confirmados.
+- Barra inferior redesenhada.
+- Modo Amador/Profissional preservado.
+- Funções e IDs do projeto anterior preservados.
