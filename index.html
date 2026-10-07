@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V11 • Visual Pro</title>
+<title>Cripto Radar V11 • Adaptive</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -309,9 +309,80 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 @media(max-width:390px){.hero-live{display:none}.status-strip{grid-template-columns:1fr}.top.app-hero h1{font-size:23px}.hero-logo{width:46px;height:46px}.hero-logo img{width:40px;height:40px}.quick-dock a b{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
+
+
+/* ===== Cripto Radar Adaptive • menus + modo Amador/Profissional ===== */
+:root{--nav-bg:rgba(6,15,27,.96);--nav-line:#294867;--nav-active:#173a66;--mode-am:#16a34a;--mode-pro:#7c3aed}
+.app-toolbar{position:sticky;top:8px;z-index:760;margin:0 0 12px;padding:9px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid rgba(61,91,127,.72);border-radius:18px;background:rgba(7,17,29,.88);box-shadow:0 12px 34px #0008,inset 0 1px rgba(255,255,255,.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.app-menu-button{width:44px;height:44px;min-height:44px;padding:0;display:grid;place-items:center;border-radius:13px;font-size:20px;background:#10233a;border-color:#315579;box-shadow:none}
+.app-view-copy{min-width:0}.app-view-kicker{font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:1.2px;color:#6f87a6;font-weight:900}.app-view-title{margin-top:4px;font-size:16px;line-height:1.1;font-weight:900;color:#eef6ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.experience-switch{display:flex;gap:3px;padding:3px;border-radius:13px;border:1px solid #294865;background:#071421}
+.experience-switch button{min-height:36px;padding:7px 10px;border:0;border-radius:10px;background:transparent;box-shadow:none;color:#7890ad;font-size:10px;font-weight:900;white-space:nowrap}.experience-switch button.active[data-mode="amateur"]{background:#123c2a;color:#9af0bd}.experience-switch button.active[data-mode="professional"]{background:#2a1b4b;color:#c4b5fd}
+.mode-guide{display:flex;gap:11px;align-items:flex-start;margin:0 0 13px;padding:12px 13px;border:1px solid #2a4969;border-radius:16px;background:linear-gradient(145deg,#0b1b2e,#081522);box-shadow:inset 0 1px rgba(255,255,255,.04)}.mode-guide-icon{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border-radius:12px;background:#102744;border:1px solid #2e5683;font-size:19px}.mode-guide b{display:block;font-size:13px}.mode-guide .small{margin-top:2px}.mode-guide .mode-chip{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:.4px}.mode-amateur .mode-guide .mode-chip{background:#123c2a;color:#9af0bd}.mode-professional .mode-guide .mode-chip{background:#2a1b4b;color:#c4b5fd}
+
+.app-menu-backdrop{position:fixed;inset:0;z-index:1090;background:rgba(0,0,0,.62);opacity:0;pointer-events:none;transition:.18s ease;backdrop-filter:blur(4px)}
+.app-drawer{position:fixed;z-index:1100;left:0;top:0;bottom:0;width:min(330px,88vw);padding:18px 14px calc(18px + env(safe-area-inset-bottom));overflow:auto;background:linear-gradient(180deg,#09192b,#050d17);border-right:1px solid #2a4969;box-shadow:24px 0 70px #000b;transform:translateX(-104%);transition:transform .22s ease}.menu-open .app-drawer{transform:translateX(0)}.menu-open .app-menu-backdrop{opacity:1;pointer-events:auto}.app-drawer-head{display:flex;align-items:center;gap:10px;padding:4px 4px 16px}.app-drawer-logo{width:44px;height:44px;border-radius:13px;background:#10233a;border:1px solid #315579;display:grid;place-items:center}.app-drawer-logo img{width:38px;height:38px;border-radius:11px}.app-drawer-title{font-size:16px;font-weight:950}.app-drawer-sub{font-size:10px;color:#7890ad;margin-top:2px}.app-drawer-close{margin-left:auto;width:38px;height:38px;min-height:38px;padding:0;box-shadow:none;background:#111f31;border-color:#294865}
+.app-nav-section{margin:10px 4px 7px;font-size:9px;text-transform:uppercase;letter-spacing:1.25px;color:#607795;font-weight:950}.app-nav-list{display:grid;gap:5px}.app-nav-btn{width:100%;min-height:48px;padding:9px 11px;display:grid;grid-template-columns:30px 1fr auto;gap:9px;align-items:center;text-align:left;border:1px solid transparent;border-radius:14px;background:transparent;box-shadow:none;color:#b8c9dc}.app-nav-btn:hover,.app-nav-btn.active{background:#10233a;border-color:#2b527d;box-shadow:none}.app-nav-btn.active{color:#fff}.app-nav-icon{font-size:19px;text-align:center}.app-nav-label{font-size:12px;font-weight:900}.app-nav-meta{font-size:9px;color:#68809f;margin-top:2px}.app-nav-chevron{color:#4d6b8d}.app-pro-lock{display:inline-block;margin-left:6px;padding:2px 5px;border-radius:999px;background:#2a1b4b;color:#c4b5fd;font-size:8px;font-weight:900;vertical-align:1px}.mode-amateur .pro-menu{display:none!important}
+.app-drawer-mode{margin-top:16px;padding:12px;border:1px solid #2a4969;border-radius:15px;background:#071421}.app-drawer-mode-title{font-size:11px;font-weight:900;margin-bottom:7px}.app-drawer-mode .experience-switch{width:100%}.app-drawer-mode .experience-switch button{flex:1}
+
+.app-view-section.route-hidden{display:none!important}.app-view-section.route-visible{animation:routeIn .16s ease both}@keyframes routeIn{from{opacity:.45;transform:translateY(5px)}to{opacity:1;transform:none}}
+.pro-only-card{position:relative}.mode-amateur .pro-only-card{display:none!important}
+.mode-amateur .professional-copy{display:none!important}.mode-professional .amateur-copy{display:none!important}
+
+.mode-choice{position:fixed;z-index:1300;inset:0;display:none;place-items:center;padding:18px;background:radial-gradient(circle at 50% 20%,rgba(47,124,255,.18),transparent 36%),rgba(2,7,13,.94);backdrop-filter:blur(8px)}.mode-choice.show{display:grid}.mode-choice-box{width:min(520px,100%);padding:20px;border:1px solid #31587f;border-radius:26px;background:linear-gradient(145deg,#0e2239,#071320);box-shadow:0 28px 90px #000c}.mode-choice-kicker{font-size:10px;color:#7fa9dd;font-weight:950;letter-spacing:1.5px}.mode-choice h2{margin:7px 0 7px;font-size:25px;letter-spacing:-.7px}.mode-choice-desc{font-size:12px;color:#91a7c1;line-height:1.5}.mode-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.mode-choice-card{min-height:156px;padding:15px;border-radius:18px;border:1px solid #294867;background:#091827;cursor:pointer}.mode-choice-card.amateur{background:linear-gradient(145deg,#0b2b20,#091827)}.mode-choice-card.professional{background:linear-gradient(145deg,#24193d,#091827)}.mode-choice-card strong{display:block;font-size:17px;margin:8px 0 5px}.mode-choice-card .small{font-size:11px}.mode-choice-card .pick{display:inline-block;margin-top:12px;padding:6px 9px;border-radius:10px;background:#16375b;color:#fff;font-size:10px;font-weight:900}
+
+/* bottom navigation adapts to current mode */
+.quick-dock{grid-template-columns:repeat(5,1fr)}.quick-dock button{min-height:0;padding:0;background:transparent;border:0;box-shadow:none;color:#8095af;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800}.quick-dock button span{font-size:19px;line-height:1}.quick-dock button b{font-size:9px}.quick-dock button.active{background:#142844;color:#e6f1ff}.quick-dock button.dock-main{margin:-17px 2px 0;height:67px;border:1px solid #4a8fff;background:linear-gradient(145deg,#1b5ac9,#173f82);color:#fff;box-shadow:0 8px 26px #2563eb55}.quick-dock button.dock-main span{font-size:25px}
+
+/* Amateur: less density, clearer actions */
+.mode-amateur .card{border-radius:21px}.mode-amateur .section-intro-card .small,.mode-amateur #opportunitiesCard>.small,.mode-amateur #urgentRadarCard>.small{font-size:12px}.mode-amateur #sourcesCard,.mode-amateur #trendsCard,.mode-amateur #v8BacktestCard,.mode-amateur #v7ValidationCard,.mode-amateur #v10CoreCard,.mode-amateur #v11LiveCard{display:none!important}
+.mode-amateur .wallet-extra.wallet-capture-v2{border-color:#3b82f6aa!important}.mode-amateur .v10-grid,.mode-amateur .v11-grid{grid-template-columns:1fr 1fr}
+.mode-professional main{max-width:980px}.mode-professional .status-strip{grid-template-columns:1fr 1fr}
+
+@media(min-width:900px){.app-toolbar{top:12px}.mode-choice-grid{gap:12px}.quick-dock{width:min(650px,calc(100% - 28px))}}
+@media(max-width:620px){.app-toolbar{top:6px;margin:0 0 10px;border-radius:16px;grid-template-columns:auto minmax(0,1fr) auto}.app-view-title{font-size:14px}.experience-switch button{padding:7px 8px;font-size:9px}.experience-switch button .mode-word{display:none}.mode-guide{margin-bottom:10px}.mode-choice-grid{grid-template-columns:1fr}.mode-choice-card{min-height:auto}.quick-dock button span{font-size:18px}.quick-dock button.dock-main{height:64px;margin-top:-16px}.quick-dock button.dock-main span{font-size:23px}}
+@media(max-width:390px){.app-toolbar{grid-template-columns:auto 1fr}.app-toolbar>.experience-switch{grid-column:1/-1;justify-self:stretch}.app-toolbar>.experience-switch button{flex:1}.mode-guide{padding:10px}.mode-guide-icon{width:34px;height:34px}.quick-dock button b{font-size:8px}}
+
 </style>
 </head>
-<body><main>
+<body>
+<div class="app-menu-backdrop" id="appMenuBackdrop"></div>
+<aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
+  <div class="app-drawer-head">
+    <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Navegação adaptativa</div></div>
+    <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
+  </div>
+  <div class="app-nav-section">Principal</div>
+  <nav class="app-nav-list">
+    <button class="app-nav-btn" data-route="home" type="button"><span class="app-nav-icon">🏠</span><span><span class="app-nav-label">Início</span><span class="app-nav-meta">Resumo e destaques</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="wallet" type="button"><span class="app-nav-icon">👛</span><span><span class="app-nav-label">Carteira</span><span class="app-nav-meta">Print, aporte e posições</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="market" type="button"><span class="app-nav-icon">📈</span><span><span class="app-nav-label">Mercado</span><span class="app-nav-meta">Ranking, notícias e tendências</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="alerts" type="button"><span class="app-nav-icon">🚨</span><span><span class="app-nav-label">Alertas</span><span class="app-nav-meta">Alarmes e notificações</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="ai" type="button"><span class="app-nav-icon">🤖</span><span><span class="app-nav-label">IA Radar</span><span class="app-nav-meta">Análise da carteira</span></span><span class="app-nav-chevron">›</span></button>
+  </nav>
+  <div class="app-nav-section pro-menu">Profissional</div>
+  <nav class="app-nav-list pro-menu">
+    <button class="app-nav-btn pro-menu" data-route="engine" type="button"><span class="app-nav-icon">🧠</span><span><span class="app-nav-label">Motor <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">V10/V11 e diagnóstico</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn pro-menu" data-route="backtest" type="button"><span class="app-nav-icon">📊</span><span><span class="app-nav-label">Backtest <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Histórico e calibração</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn pro-menu" data-route="paper" type="button"><span class="app-nav-icon">🧪</span><span><span class="app-nav-label">Paper Trading <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Validação sem ordens reais</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn pro-menu" data-route="system" type="button"><span class="app-nav-icon">⚙️</span><span><span class="app-nav-label">Sistema <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Fontes, proteção e saúde</span></span><span class="app-nav-chevron">›</span></button>
+  </nav>
+  <div class="app-drawer-mode"><div class="app-drawer-mode-title">Nível da interface</div><div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 Amador</button><button data-mode="professional" type="button">⚙️ Profissional</button></div></div>
+</aside>
+
+<div class="mode-choice" id="modeChoice" aria-modal="true" role="dialog">
+ <div class="mode-choice-box">
+  <div class="mode-choice-kicker">PRIMEIRO ACESSO</div>
+  <h2>Como você quer usar o Radar?</h2>
+  <div class="mode-choice-desc">Você pode trocar depois a qualquer momento. O mercado e a IA continuam os mesmos; muda apenas a quantidade de ferramentas e detalhes exibidos.</div>
+  <div class="mode-choice-grid">
+   <div class="mode-choice-card amateur" data-pick-mode="amateur"><div style="font-size:28px">🙂</div><strong>Modo Amador</strong><div class="small">Interface mais simples, focada em carteira, alertas, mercado e IA. Esconde ferramentas técnicas avançadas.</div><span class="pick">USAR MODO AMADOR</span></div>
+   <div class="mode-choice-card professional" data-pick-mode="professional"><div style="font-size:28px">⚙️</div><strong>Modo Profissional</strong><div class="small">Libera motor V10/V11, backtest, Paper Trading, diagnóstico de fontes e controles avançados.</div><span class="pick">USAR MODO PROFISSIONAL</span></div>
+  </div>
+ </div>
+</div>
+<main>
 <header class="top app-hero">
   <div class="hero-brand">
     <div class="hero-logo"><img src="./icon.svg" alt="Cripto Radar"></div>
@@ -327,6 +398,15 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 <div class="status-strip" aria-label="Status do aplicativo">
   <div id="state" class="pill">Iniciando…</div>
   <div id="backgroundState" class="pill">Segundo plano: iniciando…</div>
+</div>
+<div class="app-toolbar" id="appToolbar">
+ <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL</div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
+</div>
+<div class="mode-guide" id="modeGuide">
+ <div class="mode-guide-icon" id="modeGuideIcon">🙂</div>
+ <div><b id="modeGuideTitle">Modo Amador</b><div class="small" id="modeGuideText">Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.</div><span class="mode-chip" id="modeGuideChip">INTERFACE SIMPLIFICADA</span></div>
 </div>
 <section class="card v9-card" id="v9Command" style="display:none">
  <div class="coin">⚡ Radar Pro • Central</div>
@@ -374,7 +454,7 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 <div class="ai-input"><input id="aiQuestion" placeholder="Ex.: o que você aprendeu hoje?"><button id="aiAsk" type="button">PERGUNTAR</button></div>
 <div class="ai-note">Informativo: não executa compras ou vendas e não garante retorno.</div>
 </section>
-<section class="card notify-card">
+<section class="card notify-card" id="notifyCard">
  <div class="coin">🔔 Notificações do Radar</div>
  <div class="small">Receba avisos de compra, venda/redução e realização parcial. O modo de segundo plano usa Worker + Service Worker e sincronização periódica quando o Android/navegador permitir. Instale o Radar na tela inicial para obter o melhor funcionamento.</div>
  <div class="notify-row"><button id="enableNotifications" type="button">🔔 ATIVAR NOTIFICAÇÕES</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
@@ -511,7 +591,7 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
   <div class="small" style="margin-top:10px">🟢 possível impacto positivo • 🟡 incerto/boato • 🔴 possível impacto negativo • ✅ informação confirmada por fonte oficial quando disponível.</div>
 </section>
 
-<section class="card">
+<section class="card" id="sourcesCard">
   <div class="coin">Diagnóstico das fontes</div>
   <div class="small">O app tenta as fontes em sequência. A primeira que responder com dados válidos é usada.</div>
   <div id="sources"></div>
@@ -520,7 +600,7 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
 
 
 
-<section class="card">
+<section class="card" id="trendsCard">
   <div class="coin">🌐 Radar geral de tendências</div>
   <div class="small">Usa primeiro a Binance data-api que já funciona neste navegador e mantém fontes alternativas como reserva. Antes de considerar uma moeda, confira liquidez, volume, motivo da alta e risco de entrar após uma valorização excessiva.</div>
   <div class="row"><span>Fonte automática</span><b>Binance / CoinGecko</b></div>
@@ -558,12 +638,12 @@ input,textarea,select{font-family:inherit;background:#071422!important;color:#f3
  <div id="derivativesHealth" class="small" style="margin-top:10px">Derivativos: aguardando ativos elegíveis.</div>
 </section>
 
-<section class="card">
+<section class="card" id="protectionCard">
   <div class="coin">Proteção</div>
   <div class="small">Somente dados públicos de mercado. Não solicita login, senha, 2FA ou chave API e não envia ordens. O Radar apenas acompanha preços, volume e variação para montar os destaques.</div>
 </section>
 
-<section class="card">
+<section class="card" id="importantCard">
   <div class="coin">Importante</div>
   <div class="small">Os preços podem variar entre corretoras. O painel é informativo; “tempo real” depende da disponibilidade da fonte e da conexão do aparelho.</div>
 </section>
@@ -1753,11 +1833,11 @@ setInterval(updateMarketRumors,60000);
 
 </script>
 <nav class="quick-dock" aria-label="Atalhos do Radar">
-  <a href="#v10CoreCard" aria-label="Motor"><span>🧠</span><b>Motor</b></a>
-  <a href="#urgentRadarCard" aria-label="Alertas"><span>🚨</span><b>Alertas</b></a>
-  <a href="#walletCaptureCard" class="dock-main" aria-label="Carteira"><span>👛</span><b>Carteira</b></a>
-  <a href="#opportunitiesCard" aria-label="Mercado"><span>⭐</span><b>Mercado</b></a>
-  <a href="#aiRadarCard" aria-label="IA"><span>🤖</span><b>IA</b></a>
+  <button data-route="home" type="button" aria-label="Início"><span>🏠</span><b>Início</b></button>
+  <button data-route="alerts" type="button" aria-label="Alertas"><span>🚨</span><b>Alertas</b></button>
+  <button data-route="wallet" class="dock-main" type="button" aria-label="Carteira"><span>👛</span><b>Carteira</b></button>
+  <button data-route="market" type="button" aria-label="Mercado"><span>📈</span><b>Mercado</b></button>
+  <button id="dockMenuButton" type="button" aria-label="Mais opções"><span>☰</span><b>Menu</b></button>
 </nav>
 </main>
 <script>
@@ -2543,6 +2623,72 @@ window.v8RunBacktest=run;
  async function init(){startWorker();await registerBackground();setInterval(()=>sendConfig(),30000);setTimeout(()=>runNow('init'),2500)}
  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
  window.CriptoRadarBackground={runNow,sendConfig,queueSync};
+})();
+</script>
+
+
+<script>
+/* ===== Cripto Radar Adaptive Navigation ===== */
+(function(){
+ const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
+ const routes={
+  home:{title:'Início',ids:['urgentRadarCard','highlightsCard','coins']},
+  wallet:{title:'Carteira',ids:['walletCaptureCard','aporteCard']},
+  market:{title:'Mercado',ids:['opportunitiesCard','marketRumorsCard','trendsCard']},
+  alerts:{title:'Alertas',ids:['urgentRadarCard','notifyCard']},
+  ai:{title:'IA Radar',ids:['aiRadarCard']},
+  engine:{title:'Motor profissional',pro:true,ids:['v10CoreCard','v11LiveCard']},
+  backtest:{title:'Backtest & Calibração',pro:true,ids:['v8BacktestCard']},
+  paper:{title:'Paper Trading',pro:true,ids:['v7ValidationCard']},
+  system:{title:'Sistema & Fontes',pro:true,ids:['sourcesCard','protectionCard','importantCard']}
+ };
+ const allIds=[...new Set(Object.values(routes).flatMap(r=>r.ids))];
+ const $=id=>document.getElementById(id);
+ const drawer=$('appDrawer'),backdrop=$('appMenuBackdrop'),choice=$('modeChoice');
+ function getMode(){return localStorage.getItem(MODE_KEY)||'amateur'}
+ function openMenu(){document.body.classList.add('menu-open')}
+ function closeMenu(){document.body.classList.remove('menu-open')}
+ function syncModeButtons(mode){document.querySelectorAll('[data-mode-switch] button[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode))}
+ function updateGuide(mode){
+  const amateur=mode==='amateur';
+  if($('modeGuideIcon'))$('modeGuideIcon').textContent=amateur?'🙂':'⚙️';
+  if($('modeGuideTitle'))$('modeGuideTitle').textContent=amateur?'Modo Amador':'Modo Profissional';
+  if($('modeGuideText'))$('modeGuideText').textContent=amateur?'Mostrando só o essencial: carteira, alertas, mercado e IA. As ferramentas técnicas continuam trabalhando por trás, mas sem poluir a tela.':'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.';
+  if($('modeGuideChip'))$('modeGuideChip').textContent=amateur?'INTERFACE SIMPLIFICADA':'PAINEL COMPLETO';
+ }
+ function setMode(mode,save=true){
+  mode=mode==='professional'?'professional':'amateur';
+  document.body.classList.toggle('mode-amateur',mode==='amateur');
+  document.body.classList.toggle('mode-professional',mode==='professional');
+  if(save)localStorage.setItem(MODE_KEY,mode);
+  syncModeButtons(mode);updateGuide(mode);
+  const current=localStorage.getItem(ROUTE_KEY)||'home';
+  if(mode==='amateur'&&routes[current]?.pro) setRoute('home'); else setRoute(current,false);
+ }
+ function setRoute(route,save=true){
+  const mode=getMode();
+  if(!routes[route]||(routes[route].pro&&mode!=='professional'))route='home';
+  allIds.forEach(id=>{const el=$(id);if(el){el.classList.add('app-view-section','route-hidden');el.classList.remove('route-visible')}});
+  (routes[route].ids||[]).forEach(id=>{const el=$(id);if(el){el.classList.remove('route-hidden');el.classList.add('route-visible')}});
+  document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route));
+  if($('appViewTitle'))$('appViewTitle').textContent=routes[route].title;
+  if(save)localStorage.setItem(ROUTE_KEY,route);
+  closeMenu();
+  setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),10);
+ }
+ // Sections only visible through routes
+ allIds.forEach(id=>{const el=$(id);if(el)el.classList.add('app-view-section')});
+ ['v10CoreCard','v11LiveCard','v8BacktestCard','v7ValidationCard','sourcesCard'].forEach(id=>{const el=$(id);if(el)el.classList.add('pro-only-card')});
+ document.addEventListener('click',e=>{
+  const r=e.target.closest('[data-route]');if(r){setRoute(r.dataset.route);return}
+  const m=e.target.closest('[data-mode]');if(m&&m.closest('[data-mode-switch]')){setMode(m.dataset.mode);return}
+  const p=e.target.closest('[data-pick-mode]');if(p){setMode(p.dataset.pickMode);choice?.classList.remove('show');return}
+ });
+ $('appMenuToggle')?.addEventListener('click',openMenu);$('dockMenuButton')?.addEventListener('click',openMenu);$('appMenuClose')?.addEventListener('click',closeMenu);backdrop?.addEventListener('click',closeMenu);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+ const stored=localStorage.getItem(MODE_KEY);if(!stored)choice?.classList.add('show');
+ setMode(stored||'amateur',false);setRoute(localStorage.getItem(ROUTE_KEY)||'home',false);
+ window.crRadarSetMode=setMode;window.crRadarOpenView=setRoute;
 })();
 </script>
 

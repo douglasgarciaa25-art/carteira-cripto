@@ -144,3 +144,13 @@ IMPORTANTE
 - Nova barra inferior fixa com atalhos para Motor, Alertas, Carteira, Mercado e IA.
 - Melhorias de contraste, espaçamento, tipografia, estados de toque, safe-area e telas pequenas.
 - Tema do PWA e cache do Service Worker atualizados para forçar a nova versão visual.
+
+
+=== LAYOUT ADAPTATIVO — 07/10/2026 ===
+- Novo menu principal por áreas: Início, Carteira, Mercado, Alertas e IA.
+- Modo Amador: interface simplificada com foco no essencial.
+- Modo Profissional: libera Motor V10/V11, Backtest, Paper Trading e Diagnóstico.
+- Escolha inicial do nível e preferência salva no aparelho.
+- Barra inferior adaptativa para navegação rápida no celular.
+- Menu lateral com ferramentas extras e troca de modo a qualquer momento.
+- Cada área agora funciona como uma tela própria, reduzindo o excesso de rolagem.

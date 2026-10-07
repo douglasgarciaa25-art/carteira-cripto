@@ -1,6 +1,6 @@
 {
-  "name": "Cripto Radar",
-  "short_name": "Cripto Radar",
+  "name": "Cripto Radar V11 Adaptive",
+  "short_name": "Radar V11",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
