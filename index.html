@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#06101d">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V11 • IA de Carteira Melhorada</title>
+<title>Cripto Radar V11 • Visual Pro</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -225,13 +225,109 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .wallet-capture-v2 .wallet-value-card{margin-top:14px;padding:13px;border-radius:16px;border:1px solid #294a71;background:linear-gradient(145deg,#0c1c30,#091522)}
 .wallet-capture-v2 .wallet-value-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.wallet-capture-v2 .wallet-value-head .small{margin:0}.wallet-capture-v2 .wallet-total{font-size:34px;margin:4px 0 7px;letter-spacing:-1px}
 @media(max-width:620px){.wallet-capture-v2 .wallet-capture-head{grid-template-columns:1fr 86px}.wallet-capture-v2 .wallet-scan-visual{height:90px}.wallet-capture-v2 .wallet-capture-title{font-size:23px}.wallet-capture-v2 .wallet-stepper{gap:5px}.wallet-capture-v2 .wallet-step{grid-template-columns:27px 1fr;padding:7px 6px}.wallet-capture-v2 .wallet-step-num{width:27px;height:27px;font-size:12px}.wallet-capture-v2 .wallet-step b{font-size:10px}.wallet-capture-v2 .wallet-step span{font-size:9px}.wallet-capture-v2 .wallet-upload-main{grid-template-columns:54px 1fr 16px}.wallet-capture-v2 .wallet-upload-icon{width:54px;height:54px;border-radius:15px;font-size:26px}.wallet-capture-v2 .wallet-secondary-grid{grid-template-columns:1fr 1fr}.wallet-capture-v2 .wallet-secondary-action{grid-template-columns:34px 1fr 16px;padding:9px}.wallet-capture-v2 .wallet-secondary-icon{width:34px;height:34px}.wallet-capture-v2 .wallet-upload-button{font-size:13px}.wallet-capture-v2 .wallet-scan-main{font-size:34px}}
+
+
+/* ===== VISUAL PRO • camada geral 2026-10 ===== */
+:root{
+  --bg:#040a13;--bg2:#071322;--surface:#0b1626;--surface2:#0f1e31;
+  --line:#203856;--line2:#2b4e74;--blue:#2f7cff;--blueSoft:#7db4ff;
+  --cyan:#38bdf8;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185;
+  --text:#f7faff;--muted:#8fa6c3;--radius:22px;--shadow:0 18px 50px rgba(0,0,0,.34)
+}
+html{background:var(--bg);scroll-padding-top:18px}
+body{
+  min-height:100vh;color:var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  background:
+    radial-gradient(700px 360px at 50% -120px,rgba(47,124,255,.24),transparent 72%),
+    radial-gradient(520px 360px at 110% 20%,rgba(56,189,248,.07),transparent 70%),
+    linear-gradient(180deg,#06101d 0%,#040a13 56%,#030811 100%);
+  background-attachment:fixed;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,#000,transparent 70%)}
+main{max-width:920px;padding:18px 16px 116px;margin:auto}
+
+/* Hero */
+.top.app-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;margin:4px 0 12px;padding:20px;border:1px solid rgba(91,156,255,.34);border-radius:28px;background:linear-gradient(145deg,rgba(17,42,76,.94),rgba(7,20,35,.96));box-shadow:0 22px 60px #0007,inset 0 1px rgba(255,255,255,.05);overflow:hidden}
+.top.app-hero:before{content:"";position:absolute;width:250px;height:250px;border-radius:50%;right:-80px;top:-145px;background:radial-gradient(circle,rgba(47,124,255,.30),rgba(47,124,255,0) 70%)}
+.top.app-hero:after{content:"";position:absolute;height:2px;left:28px;right:28px;bottom:0;background:linear-gradient(90deg,transparent,#4091ff,transparent);opacity:.7}
+.hero-brand{display:flex;align-items:center;gap:14px;min-width:0;position:relative;z-index:1}
+.hero-logo{width:58px;height:58px;flex:0 0 auto;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#102c50,#07182a);border:1px solid #315f91;box-shadow:0 12px 28px #0006,inset 0 1px rgba(255,255,255,.06)}
+.hero-logo img{width:50px;height:50px;border-radius:15px;display:block}
+.hero-copy{min-width:0}.hero-kicker{font-size:10px;font-weight:900;letter-spacing:1.7px;color:#8ebfff;margin-bottom:5px}
+.top.app-hero h1{font-size:30px;line-height:1.04;margin:0;letter-spacing:-1px}.top.app-hero h1 span{display:inline-block;font-size:13px;letter-spacing:.4px;vertical-align:middle;margin-left:4px;padding:5px 7px;border-radius:8px;background:#2f7cff24;border:1px solid #3f8cff66;color:#9bc4ff}
+.top.app-hero .sub{margin:7px 0 0;font-size:13px;line-height:1.45;max-width:590px;color:#9bb0ca}
+.hero-live{position:relative;z-index:1;flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #28513f;border-radius:999px;background:#0e2d23;color:#92f4c5;font-size:10px;font-weight:900;letter-spacing:.5px}.hero-live i{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.12),0 0 14px #34d399}
+
+/* Status superior */
+.status-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 14px}.status-strip .pill{margin:0;min-height:42px;display:flex;align-items:center;justify-content:center;padding:9px 12px;border:1px solid #27415f;border-radius:14px;background:linear-gradient(145deg,#0c192a,#09131f);color:#b7c7da;font-size:11px;font-weight:800;box-shadow:inset 0 1px rgba(255,255,255,.035)}
+.status-strip .pill:before{content:"";width:7px;height:7px;margin-right:7px;border-radius:50%;background:#34d399;box-shadow:0 0 9px #34d39988}
+
+/* Cartões e seções */
+.card{position:relative;border:1px solid rgba(61,91,127,.56);border-radius:var(--radius);padding:17px;background:linear-gradient(145deg,rgba(15,30,49,.94),rgba(8,18,31,.97));box-shadow:0 12px 34px rgba(0,0,0,.26),inset 0 1px rgba(255,255,255,.03);overflow:hidden}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(142,191,255,.24),transparent);pointer-events:none}
+section.card{margin-top:14px}.coin{font-size:18px;font-weight:900;letter-spacing:-.3px;line-height:1.2}.small{font-size:12px;line-height:1.52;color:#8fa6c3}.coin+.small,.v7-head+.small,.ai-head+.small,.urgent-head+.small{margin-top:6px}
+.section-intro-card{padding:15px 17px;background:linear-gradient(145deg,#0c1d32,#091522);border-color:#2a486b}.section-intro-card .coin{font-size:20px}.section-intro-card .small{max-width:700px}
+
+/* Destaques do mercado */
+.grid{gap:11px}.market-card{min-height:166px;border-radius:22px!important}.market-card .coin{font-size:21px}.market-card .price{font-size:27px;font-weight:800;letter-spacing:-.7px}.best-card{border:1px solid #2fd07c!important;background:linear-gradient(145deg,#0d3a29,#071d19)!important;box-shadow:0 0 0 1px #22c55e22,0 16px 38px #0005!important}.opp-card{border:1px solid #3b82f6aa!important;background:linear-gradient(145deg,#0e2749,#081728)!important}.badge-op{border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+
+/* Stat grids */
+.v10-grid,.v11-grid,.v9-grid,.v8-grid,.v7-grid{gap:9px}.v10-box,.v11-box,.v9-box,.v8-box,.v7-stat{min-height:74px;padding:11px 12px!important;border-radius:14px!important;background:linear-gradient(145deg,#0b1828,#08131f)!important;border:1px solid #27415f!important;box-shadow:inset 0 1px rgba(255,255,255,.035)}
+.v10-box b,.v11-box b,.v9-box b,.v8-box b,.v7-stat b{font-size:16px;letter-spacing:-.25px}.v10-box .small,.v11-box .small,.v9-box .small{font-size:10px;text-transform:uppercase;letter-spacing:.45px;color:#7289a5}
+.v10-card{border-color:#238b5b88!important;background:linear-gradient(145deg,#0c281f,#081923)!important}.v11-card{border-color:#7865d488!important;background:linear-gradient(145deg,#181732,#0a1625)!important}.ai-radar-card{border-color:#745ed199!important;background:linear-gradient(145deg,#171733,#0a1728)!important}.notify-card{border-color:#3b82f688!important;background:linear-gradient(145deg,#111d3a,#091726)!important}.v8-card{border-color:#7c3aed66!important}.v7-card{border-color:#14b8a666!important}
+
+/* Botões e formulários */
+button,.btn-print{font-family:inherit;min-height:46px;border-radius:14px;padding:11px 15px;border:1px solid rgba(125,180,255,.18);background:linear-gradient(135deg,#2f7cff,#2563eb);color:#fff;font-weight:850;letter-spacing:.05px;box-shadow:0 9px 22px rgba(22,74,170,.28),inset 0 1px rgba(255,255,255,.14);cursor:pointer;transition:transform .12s ease,filter .12s ease,box-shadow .12s ease}
+button:hover,.btn-print:hover{filter:brightness(1.07);box-shadow:0 12px 28px rgba(22,74,170,.35),inset 0 1px rgba(255,255,255,.16)}button:active,.btn-print:active{transform:scale(.985)}button:disabled{opacity:.55;filter:saturate(.5);cursor:not-allowed}
+input,textarea,select{font-family:inherit;background:#071422!important;color:#f3f8ff!important;border:1px solid #294665!important;border-radius:13px!important;box-shadow:inset 0 1px rgba(255,255,255,.025);transition:.15s ease}input:focus,textarea:focus,select:focus{border-color:#4f93ff!important;box-shadow:0 0 0 3px rgba(47,124,255,.14)!important;outline:none}.ai-input input{min-height:46px;padding:0 13px}
+
+/* Blocos e linhas internas */
+.row{padding:11px 3px;border-bottom:1px solid rgba(43,68,97,.62)}.market-info,.wallet-guide,.wallet-opps,.buy-alert-box,.wallet-tips,.smart-allocation,.v10-log,.v9-feed,.v8-health{border-radius:15px!important;border-color:#284563!important;background:linear-gradient(145deg,#0a1726,#08131f)!important}.market-info-item{border:1px solid #203b59;border-radius:12px;background:#091625}.top-opportunity{border:1px solid #2fb87555!important;background:linear-gradient(90deg,#0d302444,#0b1b2a44)!important}
+
+/* IA */
+.ai-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.ai-status{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid #29593f;border-radius:999px;background:#0d2c22;color:#8df0bd;font-size:10px;font-weight:800}.ai-status:before{content:"";width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 10px #34d399}.ai-msg{background:linear-gradient(145deg,#0a1728,#08131f)!important;border:1px solid #2d4262!important;border-radius:15px!important}.ai-top span{border:1px solid #2d4164;background:#13213a!important}
+
+/* Alarme V2 */
+.urgent-card{border:1px solid #e05b6e88!important;background:radial-gradient(circle at 90% 0,rgba(244,63,94,.10),transparent 34%),linear-gradient(145deg,#25121b,#110f20)!important}.urgent-head{align-items:center}.urgent-badge{border:1px solid #ef6b7b44;padding:6px 9px;background:#451e29;color:#ffc0c7;box-shadow:inset 0 1px rgba(255,255,255,.04)}.urgent-item{padding:11px 12px;border-radius:14px}.urgent-item.risk{box-shadow:inset 3px 0 #ef4444}.urgent-item.rocket{box-shadow:inset 3px 0 #22c55e}
+
+/* Wallet card integrates with global visual */
+.wallet-extra.wallet-capture-v2{border-radius:26px!important;box-shadow:0 18px 48px rgba(0,0,0,.34),0 0 0 1px rgba(47,124,255,.08)!important}.wallet-capture-v2 .wallet-feature-badge{box-shadow:0 8px 20px rgba(47,124,255,.25)}.wallet-capture-v2 .wallet-upload-zone{box-shadow:inset 0 1px rgba(255,255,255,.04),0 8px 22px rgba(0,0,0,.18)}.wallet-capture-v2 .wallet-value-card{background:linear-gradient(145deg,#0d2036,#091522);box-shadow:inset 0 1px rgba(255,255,255,.035)}
+
+/* Rumores, fontes e detalhes */
+#marketRumorsCard{border-color:#7b612f88;background:linear-gradient(145deg,#241f13,#0c1724)}details{border:1px solid #284563;border-radius:13px;padding:9px 10px;background:#091522}details summary{cursor:pointer;color:#dce9f8}
+
+/* Barra de atalhos inferior */
+.quick-dock{position:fixed;z-index:950;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(600px,calc(100% - 24px));height:66px;padding:7px 8px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;border:1px solid rgba(72,107,149,.72);border-radius:22px;background:rgba(7,17,29,.92);box-shadow:0 18px 55px #000b,inset 0 1px rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.quick-dock a{min-width:0;text-decoration:none;color:#8095af;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:800;transition:.15s ease}.quick-dock a span{font-size:19px;line-height:1}.quick-dock a b{font-size:9px}.quick-dock a:active{background:#142844;color:#dcecff;transform:scale(.97)}.quick-dock .dock-main{margin:-17px 2px 0;height:67px;border:1px solid #4a8fff;background:linear-gradient(145deg,#1b5ac9,#173f82);color:#fff;box-shadow:0 8px 26px #2563eb55}.quick-dock .dock-main span{font-size:25px}
+
+/* Scrollbar */
+*{scrollbar-width:thin;scrollbar-color:#2c5078 #07111d}::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#07111d}::-webkit-scrollbar-thumb{background:#2c5078;border-radius:999px}
+
+@media(max-width:620px){
+  main{padding:10px 10px 108px}.top.app-hero{padding:15px 14px;border-radius:23px;gap:10px}.hero-logo{width:50px;height:50px;border-radius:15px}.hero-logo img{width:43px;height:43px}.top.app-hero h1{font-size:25px}.hero-kicker{font-size:8px;letter-spacing:1.3px}.top.app-hero .sub{font-size:11px}.hero-live{font-size:8px;padding:6px 7px}.status-strip{gap:6px}.status-strip .pill{font-size:9px;min-height:38px;padding:8px}.card{padding:14px;border-radius:19px}.coin{font-size:17px}.small{font-size:11px}.market-card{min-height:150px}.market-card .price{font-size:25px}.v10-box,.v11-box,.v9-box,.v8-box,.v7-stat{min-height:69px;padding:10px!important}.quick-dock{width:calc(100% - 16px);height:62px;border-radius:20px;bottom:max(7px,env(safe-area-inset-bottom))}.quick-dock a span{font-size:18px}.quick-dock .dock-main{height:64px;margin-top:-16px}.quick-dock .dock-main span{font-size:23px}.wallet-capture-v2 .wallet-capture-title{font-size:22px}
+}
+@media(max-width:390px){.hero-live{display:none}.status-strip{grid-template-columns:1fr}.top.app-hero h1{font-size:23px}.hero-logo{width:46px;height:46px}.hero-logo img{width:40px;height:40px}.quick-dock a b{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body><main>
-<div class="top"><div><h1>Cripto Radar V11 • IA de Carteira</h1><div class="sub">Carteira, mercado e aportes com decisão unificada • atualização automática</div></div></div>
+<header class="top app-hero">
+  <div class="hero-brand">
+    <div class="hero-logo"><img src="./icon.svg" alt="Cripto Radar"></div>
+    <div class="hero-copy">
+      <div class="hero-kicker">RADAR • IA • CARTEIRA</div>
+      <h1>Cripto Radar <span>V11</span></h1>
+      <div class="sub">Mercado, carteira, alertas e aportes em uma única leitura.</div>
+    </div>
+  </div>
+  <div class="hero-live"><i></i> AO VIVO</div>
+</header>
 
-<div id="state" class="pill">Iniciando…</div>
-<div id="backgroundState" class="pill">Segundo plano: iniciando…</div>
+<div class="status-strip" aria-label="Status do aplicativo">
+  <div id="state" class="pill">Iniciando…</div>
+  <div id="backgroundState" class="pill">Segundo plano: iniciando…</div>
+</div>
 <section class="card v9-card" id="v9Command" style="display:none">
  <div class="coin">⚡ Radar Pro • Central</div>
  <div class="small">Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.</div>
@@ -291,14 +387,14 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
  <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais e buscando confirmações…</div></div>
 </section>
 
-<section class="card" style="margin-bottom:12px">
+<section class="card section-intro-card" id="highlightsCard" style="margin-bottom:12px">
   <div class="coin">⭐ Destaques agora</div>
   <div class="small">As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.</div>
 </section>
 <section class="grid" id="coins"><div class="card"><div class="small">Buscando os melhores destaques…</div></div></section>
 
 
-<section class="card">
+<section class="card" id="aporteCard">
   <div class="coin">💰 Quanto investir</div>
   <div class="small">Digite quanto pretende aportar. O gestor compara todas as moedas da sua carteira, o valor real de cada posição e o mercado para sugerir uma distribuição-alvo dinâmica.</div>
   <div style="display:flex;gap:8px;margin-top:12px">
@@ -313,7 +409,7 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
   </div>
 </section>
 
-<section class="card">
+<section class="card" id="opportunitiesCard">
   <div class="coin">🏆 Melhores oportunidades agora</div>
   <div class="small">Top 5 dinâmico do mercado analisado. As moedas entram, saem e mudam de posição automaticamente conforme força de 24h, liquidez e volume.</div>
   <div id="opportunities" style="margin-top:10px">Buscando oportunidades…</div>
@@ -1655,7 +1751,15 @@ updateMarketRumors();
 setInterval(updateMarketRumors,60000);
 
 
-</script></main>
+</script>
+<nav class="quick-dock" aria-label="Atalhos do Radar">
+  <a href="#v10CoreCard" aria-label="Motor"><span>🧠</span><b>Motor</b></a>
+  <a href="#urgentRadarCard" aria-label="Alertas"><span>🚨</span><b>Alertas</b></a>
+  <a href="#walletCaptureCard" class="dock-main" aria-label="Carteira"><span>👛</span><b>Carteira</b></a>
+  <a href="#opportunitiesCard" aria-label="Mercado"><span>⭐</span><b>Mercado</b></a>
+  <a href="#aiRadarCard" aria-label="IA"><span>🤖</span><b>IA</b></a>
+</nav>
+</main>
 <script>
 /* Radar Pro v3 — multi-timeframe + MACD + ATR + suporte/resistência + BTC + histórico. */
 const radarTechCache=new Map(), radarSignalLogKey='criptoRadarSignalHistoryV3';

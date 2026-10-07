@@ -134,3 +134,13 @@ IMPORTANTE
 - Prévia de moedas/quantidades continua obrigatória antes de salvar a carteira.
 - Valor aproximado, preços e demais módulos do Radar foram preservados.
 - Cache do Service Worker foi versionado novamente para entregar a nova interface após a publicação.
+
+
+=== VISUAL PRO — 07/10/2026 ===
+- Interface geral redesenhada mantendo toda a lógica e os recursos do V11.
+- Novo cabeçalho com identidade do Radar, status ao vivo e leitura mais limpa no celular.
+- Cartões, botões, inputs, indicadores e grids ganharam hierarquia visual consistente.
+- Destaques, IA, Motor V10/V11, Alarme V2, Paper e Carteira receberam estilos específicos sem alterar a lógica.
+- Nova barra inferior fixa com atalhos para Motor, Alertas, Carteira, Mercado e IA.
+- Melhorias de contraste, espaçamento, tipografia, estados de toque, safe-area e telas pequenas.
+- Tema do PWA e cache do Service Worker atualizados para forçar a nova versão visual.
