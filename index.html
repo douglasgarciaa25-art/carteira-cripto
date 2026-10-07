@@ -123,6 +123,19 @@ section.card>.coin:first-child{display:flex;align-items:center;gap:7px}.source .
 .ai-confidence{display:inline-block;margin-left:5px;padding:3px 6px;border-radius:999px;background:#172554;color:#bfdbfe;font-size:10px;font-weight:800}
 .smart-confirmed{background:#123d2d;color:#86efac}.smart-pre{background:#493c16;color:#fde68a}.smart-analysis{background:#24344b;color:#cbd5e1}
 @media(max-width:620px){.smart-alloc-row{grid-template-columns:72px 1fr}.smart-alloc-meta{grid-column:1/-1}}
+.aporte-sim{margin:12px 0;padding:13px;border:1px solid #2f7cff66;border-radius:14px;background:linear-gradient(145deg,#0b1c34,#0a1626)}
+.aporte-sim-title{font-weight:900;font-size:16px;margin-bottom:4px}
+.aporte-sim-grid{display:grid;gap:7px;margin-top:9px}
+.aporte-sim-row{display:grid;grid-template-columns:minmax(85px,.8fr) 1fr auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #243750}
+.aporte-sim-row:last-child{border-bottom:0}
+.aporte-sim-bar{height:7px;background:#13243a;border-radius:999px;overflow:hidden}
+.aporte-sim-fill{height:100%;background:#2f7cff;border-radius:999px}
+.aporte-sim-money{font-weight:900;white-space:nowrap}
+.aporte-sim-zero{opacity:.62}
+.aporte-sim-reserve{margin-top:9px;padding:10px;border-radius:11px;background:#493c1633;border:1px solid #fdb02255}
+.aporte-sim-total{margin-top:8px;padding-top:8px;border-top:1px solid #29415f;font-size:12px}
+@media(max-width:620px){.aporte-sim-row{grid-template-columns:82px 1fr}.aporte-sim-money{grid-column:2;text-align:left}}
+
 
 /* ===== Cripto Radar V7 • validação + paper trading ===== */
 .v7-card{border:1px solid #14b8a666!important;background:linear-gradient(145deg,#0b2427cc,#0b1727)!important}
@@ -557,55 +570,111 @@ function calcAporte(){
   const priority=Math.max(1,ai.confidence)*liquidityFactor*concentrationPenalty;
   return {...x,ch,liq,ai,priority,suggestedAdd:0};
  });
+
  const eligible=rows.filter(x=>x.ai.canAdd&&x.price>0);
  let remaining=aporte;
+
+ // Distribuição do novo aporte: somente ativos liberados pela IA.
  if(eligible.length&&aporte>0){
   const totalPriority=eligible.reduce((a,x)=>a+x.priority,0)||1;
   for(const x of eligible){
    const raw=aporte*x.priority/totalPriority;
    const maxAdd=Math.max(0,futureTotal*.35-x.value);
    x.suggestedAdd=Math.max(0,Math.min(raw,maxAdd));
-   remaining-=x.suggestedAdd;
   }
-  if(remaining>1){
-   const open=eligible.filter(x=>x.value+x.suggestedAdd<futureTotal*.35-1);
-   const w=open.reduce((a,x)=>a+x.priority,0)||0;
-   if(w>0)for(const x of open){
+
+  // Redistribui o que sobrar sem violar o limite de concentração.
+  for(let pass=0;pass<4;pass++){
+   const used=rows.reduce((a,x)=>a+x.suggestedAdd,0);
+   const left=Math.max(0,aporte-used);
+   if(left<.005)break;
+   const open=eligible.filter(x=>x.value+x.suggestedAdd<futureTotal*.35-.005);
+   const weight=open.reduce((a,x)=>a+x.priority,0)||0;
+   if(!weight)break;
+   let moved=0;
+   for(const x of open){
     const room=Math.max(0,futureTotal*.35-(x.value+x.suggestedAdd));
-    const add=Math.min(room,remaining*x.priority/w);
-    x.suggestedAdd+=add;
+    const add=Math.min(room,left*x.priority/weight);
+    if(add>0){x.suggestedAdd+=add;moved+=add}
    }
-   remaining=Math.max(0,aporte-rows.reduce((a,x)=>a+x.suggestedAdd,0));
+   if(moved<.005)break;
+  }
+
+  // Arredonda em centavos e corrige eventual diferença para a soma fechar exatamente.
+  for(const x of rows)x.suggestedAdd=Math.max(0,Math.round((x.suggestedAdd+Number.EPSILON)*100)/100);
+  let used=rows.reduce((a,x)=>a+x.suggestedAdd,0);
+  let cents=Math.round((aporte-used)*100);
+  if(cents!==0){
+   const candidates=[...eligible].sort((a,b)=>b.priority-a.priority);
+   const step=cents>0?.01:-.01;
+   let guard=0;
+   while(cents!==0&&candidates.length&&guard<20000){
+    let changed=false;
+    for(const x of candidates){
+     if(cents===0)break;
+     const next=Math.round((x.suggestedAdd+step)*100)/100;
+     const cap=Math.max(0,futureTotal*.35-x.value);
+     if(next>=0&&next<=cap+.001){
+      x.suggestedAdd=next;
+      cents+=cents>0?-1:1;
+      changed=true;
+     }
+    }
+    if(!changed)break;
+    guard++;
+   }
   }
  }
- const buys=rows.filter(x=>x.suggestedAdd>=1),reductions=rows.filter(x=>x.ai.canReduce),waiting=rows.filter(x=>!x.ai.canAdd&&!x.ai.canReduce);
+ remaining=Math.max(0,Math.round((aporte-rows.reduce((a,x)=>a+x.suggestedAdd,0))*100)/100);
+
+ const buys=rows.filter(x=>x.suggestedAdd>=.01),reductions=rows.filter(x=>x.ai.canReduce);
  const summaryCls=reductions.length?'risk':buys.length?'good':'warn';
  const summary=reductions.length
-  ?`⚠️ IA prioriza proteção: ${reductions.length} posição(ões) pedem revisão/redução antes de novo risco.`
+  ?`⚠️ IA prioriza proteção: ${reductions.length} posição(ões) pedem revisão/redução. O simulador não direciona aporte novo para elas.`
   :buys.length
-    ?`🧠 IA liberou aporte somente em ${buys.length} ativo(s) com confirmação técnica.`
+    ?`🧠 Simulação pronta: ${buys.length} ativo(s) receberam parte do aporte de ${WALLET_BRL.format(aporte)}.`
     :eligible.length
-      ?`🛡️ Há sinal confirmado, mas o limite de concentração bloqueou novo aporte agora. O valor fica reservado.`
-      :`🛡️ IA não encontrou entrada confirmada agora. O aporte fica protegido em caixa até aparecer confluência.`;
+      ?`🛡️ Há sinal confirmado, mas os limites de concentração impediram novo aporte agora.`
+      :`🛡️ Nenhuma entrada está confirmada agora. A simulação mantém o aporte em reserva até surgir confluência.`;
+
+ // Dados do simulador: mostra exatamente para onde cada real do aporte vai.
+ const simRows=[...rows].sort((a,b)=>b.suggestedAdd-a.suggestedAdd||b.ai.confidence-a.ai.confidence||b.value-a.value);
+ const allocated=simRows.reduce((a,x)=>a+x.suggestedAdd,0);
+ const simHtml='<div class="aporte-sim">'+
+  '<div class="aporte-sim-title">🧮 Simulação do novo aporte</div>'+
+  '<div class="small">Distribuição calculada pela mesma decisão da IA. Ativos em aguardar/reduzir recebem R$ 0 de aporte novo.</div>'+
+  '<div class="aporte-sim-grid">'+simRows.map(x=>{
+    const pct=aporte>0?Math.max(0,100*x.suggestedAdd/aporte):0;
+    const projected=x.value+x.suggestedAdd;
+    const projectedPct=(currentTotal+allocated)>0?100*projected/(currentTotal+allocated):0;
+    const zero=x.suggestedAdd<.01?' aporte-sim-zero':'';
+    return `<div class="aporte-sim-row${zero}"><b>${x.symbol}</b><div><div class="aporte-sim-bar"><div class="aporte-sim-fill" style="width:${Math.min(100,pct).toFixed(1)}%"></div></div><div class="small">${pct.toFixed(1)}% do aporte • carteira projetada ${projectedPct.toFixed(1)}%</div></div><div class="aporte-sim-money">${WALLET_BRL.format(x.suggestedAdd)}</div></div>`;
+  }).join('')+'</div>'+
+  (remaining>=.01?'<div class="aporte-sim-reserve">💵 Reserva protegida: <b>'+WALLET_BRL.format(remaining)+'</b> • não foi forçada para nenhuma moeda sem confirmação.</div>':'')+
+  '<div class="aporte-sim-total"><b>Total do aporte:</b> '+WALLET_BRL.format(aporte)+' • <b>Distribuído:</b> '+WALLET_BRL.format(allocated)+' • <b>Reserva:</b> '+WALLET_BRL.format(remaining)+'</div>'+
+  '</div>';
+
  rows.sort((a,b)=>{
   const pa=a.ai.canReduce?3:a.ai.canAdd?2:/MANTER/.test(a.ai.action)?1:0,pb=b.ai.canReduce?3:b.ai.canAdd?2:/MANTER/.test(b.ai.action)?1:0;
   return pb-pa||b.ai.confidence-a.ai.confidence||b.value-a.value;
  });
+
  el.innerHTML=
   '<div class="small" style="margin-bottom:8px"><b>🤖 Gestor IA da carteira</b> • valor atual '+WALLET_BRL.format(currentTotal)+' • novo aporte '+WALLET_BRL.format(aporte)+'</div>'+
   '<div class="ai-portfolio-summary '+summaryCls+'">'+summary+'</div>'+
+  simHtml+
   rows.map(x=>{
    let action=x.ai.action,cls=/APORTAR/.test(action)?'ok':/VENDER|REDUZIR|REALIZAR/.test(action)?'bad':/MANTER/.test(action)?'ok':'warn',amt='';
-   if(x.suggestedAdd>=1){action='APORTAR';amt='+'+WALLET_BRL.format(x.suggestedAdd)}
-   else if(x.ai.canReduce){amt='revisar posição'}
+   if(x.suggestedAdd>=.01){action='APORTAR';amt='+'+WALLET_BRL.format(x.suggestedAdd)}
+   else if(x.ai.canReduce){amt='R$ 0 de aporte • revisar posição'}
    else if(x.ai.canAdd){action='MANTER • LIMITE DE CONCENTRAÇÃO';cls='warn';amt='R$ 0 agora'}
    else if(/AGUARDAR/.test(action)){amt='R$ 0 agora'}
    else amt='sem novo aporte';
    return `<div class="row"><span><b>${x.symbol}</b><div class="small">Atual ${WALLET_BRL.format(x.value)} • posição ${x.ai.positionPct.toFixed(1)}% • ${Number.isFinite(x.ch)?((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h'):'mercado aguardando'} • confiança ${x.ai.confidence.toFixed(0)}/100</div><div class="small">${x.ai.why}</div></span><span style="text-align:right"><b class="${cls}">${action}</b><div class="small">${amt}</div></span></div>`;
   }).join('')+
-  (aporte>0&&remaining>=1?'<div class="ai-cash-reserve">💵 Reserva protegida: '+WALLET_BRL.format(remaining)+' aguardando uma entrada confirmada.</div>':'')+
-  '<div class="small" style="margin-top:8px">Regra da IA: não aporta só porque um ativo está abaixo de um “alvo”. Compra exige dados frescos + confirmação do Radar; redução exige sinal de risco/saída. Apoio à decisão, sem execução automática.</div>';
+  '<div class="small" style="margin-top:8px">A simulação muda junto com preço, liquidez, concentração e confirmação técnica. Não executa ordens automaticamente.</div>';
 }
+
 let latestOpportunities=[];
 async function trendsFromServer(){
  const j=await getJSON('/api/market',8000);

@@ -93,3 +93,12 @@ IMPORTANTE
 - Moedas sem confluência V5 deixam de aparecer simplesmente como “OPORTUNIDADE”.
 - A IA do servidor recebe ação, confiança, concentração, frescor dos dados e sinais técnicos da carteira e devolve um Plano Unificado da Carteira.
 - O painel IA Radar mostra esse plano e mantém a mesma decisão exibida no gestor de aporte.
+
+
+=== SIMULADOR DE APORTE — 06/10/2026 ===
+- O campo “Quanto investir” agora mostra uma simulação explícita de distribuição por moeda.
+- Exibe R$ por ativo, percentual do aporte, participação projetada na carteira e reserva protegida.
+- A soma fecha em centavos: distribuído + reserva = valor digitado.
+- Ativos em AGUARDAR, REDUZIR, VENDER ou REALIZAR recebem R$ 0 de novo aporte.
+- Aporte só é distribuído para ativos liberados pela decisão unificada da IA, respeitando o limite de concentração.
+- Se nenhuma entrada estiver confirmada, 100% do aporte aparece como reserva protegida.
