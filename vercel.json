@@ -1,22 +1,126 @@
 {
   "builds": [
-    { "src": "ai.js", "use": "@vercel/node" },
-    { "src": "market.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "ai-radar.js", "use": "@vercel/static" },
-    { "src": "radar-worker.js", "use": "@vercel/static" },
-    { "src": "sw.js", "use": "@vercel/static" },
-    { "src": "manifest.webmanifest", "use": "@vercel/static" },
-    { "src": "icon.svg", "use": "@vercel/static" },
-    { "src": "icon-192.png", "use": "@vercel/static" },
-    { "src": "icon-512.png", "use": "@vercel/static" },
-    { "src": "notification-icon-192.png", "use": "@vercel/static" },
-    { "src": "notification-icon-512.png", "use": "@vercel/static" },
-    { "src": "badge-96.png", "use": "@vercel/static" }
+    {
+      "src": "ai.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "market.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-cron.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-schedule-test.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-test.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-unsubscribe.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-subscribe.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-config.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "push-status.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "ai-radar.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "radar-worker.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "sw.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "manifest.webmanifest",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "icon.svg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "icon-192.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "icon-512.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "notification-icon-192.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "notification-icon-512.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "badge-96.png",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/api/ai", "dest": "/ai.js" },
-    { "src": "/api/market", "dest": "/market.js" },
-    { "src": "/(.*)", "dest": "/$1" }
+    {
+      "src": "/api/ai",
+      "dest": "/ai.js"
+    },
+    {
+      "src": "/api/market",
+      "dest": "/market.js"
+    },
+    {
+      "src": "/api/push-config",
+      "dest": "/push-config.js"
+    },
+    {
+      "src": "/api/push-status",
+      "dest": "/push-status.js"
+    },
+    {
+      "src": "/api/push-subscribe",
+      "dest": "/push-subscribe.js"
+    },
+    {
+      "src": "/api/push-unsubscribe",
+      "dest": "/push-unsubscribe.js"
+    },
+    {
+      "src": "/api/push-test",
+      "dest": "/push-test.js"
+    },
+    {
+      "src": "/api/push-schedule-test",
+      "dest": "/push-schedule-test.js"
+    },
+    {
+      "src": "/api/push-cron",
+      "dest": "/push-cron.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }

@@ -1,0 +1,21 @@
+CRIPTO RADAR — AGENDADOR EXTERNO (SEM SUBPASTAS)
+
+Use qualquer serviço de cron/monitor HTTP que aceite uma URL pública.
+
+URL para chamar:
+https://carteira-cripto-pi.vercel.app/api/push-cron
+
+Configuração:
+- Método: GET
+- Frequência: a cada 5 minutos
+- Timeout: 60 s
+- Considerar sucesso: HTTP 200
+
+Exemplos de serviços compatíveis: cron-job.org, UptimeRobot ou Better Stack.
+
+Depois de configurar, abra:
+https://carteira-cripto-pi.vercel.app/api/push-status
+
+O campo lastRunISO/ageSeconds confirma se a varredura está realmente sendo executada.
+
+IMPORTANTE: nenhum arquivo deste pacote precisa ficar em .github/workflows.

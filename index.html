@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V12 • Fullscreen</title>
+<title>Cripto Radar V15 • Push 24h</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -786,10 +786,12 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 <section class="card notify-card" id="notifyCard">
  <div class="coin">🔔 Notificações do Radar</div>
- <div class="small">Receba avisos da sua carteira e também do mercado. O Radar mantém um Worker ativo enquanto o Android permitir e o Service Worker faz novas checagens em eventos de sincronização.</div>
- <div class="notify-row"><button id="enableNotifications" type="button">🔔 ATIVAR NOTIFICAÇÕES</button><button id="testBackgroundNotifications" type="button">🧪 TESTAR AGORA</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
+ <div class="small">Agora o Radar usa <b>Push 24h pelo servidor</b>. O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.</div>
+ <div class="notify-row"><button id="enableNotifications" type="button">📡 ATIVAR PUSH 24H</button><button id="testServerPush" type="button">🛰️ TESTAR PUSH</button><button id="testLockedPush" type="button">🔒 TESTAR BLOQUEADO</button><button id="testBackgroundNotifications" type="button">🧪 TESTAR LOCAL</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
- <div id="notifyBgStatus" class="notify-status" style="margin-top:6px">Segundo plano: preparando…</div>
+ <div id="notifyServerStatus" class="notify-status" style="margin-top:6px">Push servidor: verificando…</div>
+ <div class="small" style="margin-top:5px">Agendador externo: <b>/api/push-cron</b> • recomendado a cada 5 min para alertas com o app fechado.</div>
+ <div id="notifyBgStatus" class="notify-status" style="margin-top:6px">Segundo plano local: preparando…</div>
 </section>
 
 <section class="card urgent-card" id="urgentRadarCard">
@@ -989,8 +991,8 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
-// PWA + notificações locais do Radar.
-// Observação: notificações com o site totalmente fechado exigem push por servidor.
+// PWA + notificações locais e Push 24h do Radar.
+// O Push 24h usa o servidor + Web Push; o Worker local continua como redundância quando o app estiver aberto/minimizado.
 let deferredInstallPrompt=null;
 const lastNotifiedSignals={};
 
@@ -1013,14 +1015,61 @@ async function showRadarNotification(title,options={}){
  if(reg&&reg.showNotification)return reg.showNotification(title,{icon:'./icon-192.png',badge:'./badge-96.png',...options});
  if('Notification' in window)return new Notification(title,{icon:'./icon-192.png',badge:'./badge-96.png',...options});
 }
+function notifyServerStatus(msg){const e=document.getElementById('notifyServerStatus');if(e)e.textContent=msg;}
+function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64String.length%4)%4),base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/'),raw=atob(base64),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out;}
+function serverPushContext(){
+ let wallet=[];try{wallet=(printWallet||[]).map(x=>({symbol:normalizeWalletSymbol(x.symbol),qty:Number(x.qty)||0})).filter(x=>x.symbol&&x.qty>0)}catch(e){}
+ let totalBRL=0;try{totalBRL=Number(document.getElementById('walletTotalBRL')?.dataset?.value)||0}catch(e){}
+ if(!totalBRL){try{for(const x of wallet){const m=walletMarketData?.[x.symbol],p=Number(m?.brl||m?.priceBRL||0);if(p>0)totalBRL+=p*x.qty}}catch(e){}}
+ let opp=[];try{opp=(latestOpportunities||[]).slice(0,12).map(x=>({symbol:normalizeWalletSymbol(x.symbol),signalState:x.signalState||x.signal||'',reason:x.reason||''}))}catch(e){}
+ let mirror={};try{mirror=JSON.parse(localStorage.getItem('crRadarCopyMirrorV14')||'{}')||{}}catch(e){}
+ return {context:{wallet,portfolio:{totalBRL},opportunities:opp},mirror,prefs:{market:true,pullback:true,portfolio:true}};
+}
+async function serverPushSubscription({create=true,silent=false}={}){
+ if(!('serviceWorker'in navigator)||!('PushManager'in window)){if(!silent)notifyServerStatus('Push 24h indisponível neste navegador.');return null;}
+ try{
+  const cfgR=await fetch('./api/push-config',{cache:'no-store'}),cfg=await cfgR.json();
+  if(!cfg?.ready||!cfg?.publicKey){if(!silent)notifyServerStatus('Push servidor ainda não está pronto.');return null;}
+  const reg=await getRadarSW();if(!reg)return null;
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub&&create){sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(cfg.publicKey)});}
+  if(!sub){if(!silent)notifyServerStatus('Push servidor disponível • toque em ATIVAR PUSH 24H.');return null;}
+  const payload={subscription:sub.toJSON(),...serverPushContext()};
+  const r=await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}),j=await r.json();
+  if(!r.ok||!j?.ok)throw Error(j?.error||'Falha ao registrar push');
+  localStorage.setItem('radarServerPush','on');localStorage.setItem('radarServerPushId',j.id||'');
+  notifyServerStatus('✓ Push 24h conectado ao servidor • app fechado/tela bloqueada');return sub;
+ }catch(e){if(!silent)notifyServerStatus('Push 24h: '+String(e?.message||e).slice(0,120));return null;}
+}
+async function syncServerPushContext(){if(localStorage.getItem('radarServerPush')!=='on')return;const reg=await getRadarSW();const sub=await reg?.pushManager?.getSubscription?.();if(!sub)return;try{await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),...serverPushContext()})})}catch(e){}}
+async function testServerPush(){
+ if(!('Notification'in window)||Notification.permission!=='granted'){notifyStatus('Ative as notificações primeiro.');return;}
+ notifyServerStatus('Enviando teste pelo servidor…');const sub=await serverPushSubscription({create:true});if(!sub)return;
+ try{const r=await fetch('./api/push-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),...serverPushContext()})}),j=await r.json();if(!r.ok||!j?.ok)throw Error(j?.error||'Falha no push');notifyServerStatus('✓ Push do servidor enviado. Verifique a notificação.');}catch(e){notifyServerStatus('Falha no teste do servidor: '+String(e?.message||e).slice(0,100));}
+}
+async function scheduleLockedPushTest(){
+ if(!('Notification'in window)||Notification.permission!=='granted'){notifyStatus('Ative as notificações primeiro.');return;}
+ const sub=await serverPushSubscription({create:true});if(!sub)return;
+ try{const r=await fetch('./api/push-schedule-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),...serverPushContext()})}),j=await r.json();if(!r.ok||!j?.ok)throw Error(j?.error||'Falha ao agendar');notifyServerStatus('🔒 Teste agendado. Feche o app e bloqueie o celular; ele será enviado na próxima chamada do agendador externo (~5 min).');}catch(e){notifyServerStatus('Falha ao agendar teste: '+String(e?.message||e).slice(0,100));}
+}
+async function refreshServerPushStatus(){
+ try{
+  const [cfgR,stR]=await Promise.all([fetch('./api/push-config',{cache:'no-store'}),fetch('./api/push-status',{cache:'no-store'}).catch(()=>null)]),j=await cfgR.json(),st=stR?await stR.json().catch(()=>({})):{};
+  if(!j?.ready){notifyServerStatus('Push servidor indisponível.');return;}
+  const reg=await getRadarSW(),sub=await reg?.pushManager?.getSubscription?.();
+  let scan='';if(st?.lastRunAt){const mins=Math.max(0,Math.round((Date.now()-Number(st.lastRunAt))/60000));scan=` • última varredura ${mins<1?'agora':mins+' min atrás'}`;}else scan=' • aguardando agendador externo';
+  notifyServerStatus(sub?'✓ Push 24h registrado neste aparelho'+scan:'Push servidor pronto • toque em ATIVAR PUSH 24H'+scan+'.');
+ }catch(e){notifyServerStatus('Push servidor: aguardando conexão.');}
+}
 async function enableRadarNotifications(){
  if(!('Notification' in window)){notifyStatus('Este navegador não oferece notificações web.');return;}
  try{
   const perm=await Notification.requestPermission();
   if(perm==='granted'){
    localStorage.setItem('radarNotifications','on');
-   notifyStatus('✓ Notificações ativas neste aparelho.');
-   await showRadarNotification('Cripto Radar',{body:'Alertas ativados com sucesso.',tag:'radar-test',data:{url:'./'}});
+   notifyStatus('✓ Permissão do Android concedida. Conectando Push 24h…');
+   await showRadarNotification('Cripto Radar',{body:'Alertas locais ativados. Agora conectando o Push 24h do servidor.',tag:'radar-test',data:{url:'./'}});
+   await serverPushSubscription({create:true});
    setTimeout(()=>window.CriptoRadarBackground?.runNow?.('notifications-enabled'),300);
   }else{
    localStorage.removeItem('radarNotifications');
@@ -1058,6 +1107,8 @@ function checkMarketBuyNotifications(){
  for(const x of picks)radarNotify('marketbuy-'+x.symbol,'🚨 Oportunidade no mercado: '+x.symbol,x.why);
 }
 document.getElementById('enableNotifications')?.addEventListener('click',enableRadarNotifications);
+document.getElementById('testServerPush')?.addEventListener('click',testServerPush);
+document.getElementById('testLockedPush')?.addEventListener('click',scheduleLockedPushTest);
 document.getElementById('testBackgroundNotifications')?.addEventListener('click',async()=>{
  if(!('Notification' in window)||Notification.permission!=='granted'){notifyStatus('Ative as notificações primeiro.');return;}
  notifyStatus('Testando mercado e segundo plano…');
@@ -1065,7 +1116,7 @@ document.getElementById('testBackgroundNotifications')?.addEventListener('click'
 });
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installApp');if(b)b.style.display='inline-block';});
 document.getElementById('installApp')?.addEventListener('click',async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;});
-if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) getRadarSW();
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){getRadarSW();setTimeout(refreshServerPushStatus,1200);setInterval(syncServerPushContext,5*60*1000);}
 if('Notification' in window){
  if(Notification.permission==='granted'){
   localStorage.setItem('radarNotifications','on');

@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v14-espelhamento-20261007-v1';
+const CACHE='cripto-radar-v15-webpush-20261008-v1';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
@@ -140,6 +140,14 @@ self.addEventListener('sync',e=>{if(e.tag===SYNC_TAG)e.waitUntil(runMarketScan('
 self.addEventListener('periodicsync',e=>{if(e.tag===BG_TAG)e.waitUntil(runMarketScan('periodic-sync'))});
 self.addEventListener('push',e=>e.waitUntil((async()=>{
   let d={};try{d=e.data?.json?.()||{}}catch(_){d={body:e.data?.text?.()||''}}
-  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||'Novo alerta do mercado.',icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,data:{url:d.url||'./'}});
+  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||'Novo alerta do mercado.',icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,requireInteraction:!!d.requireInteraction,vibrate:[180,80,180],data:{url:d.url||'./',kind:d.kind||'market',symbol:d.symbol||null},actions:[{action:'open',title:'Abrir Radar'}]});
 })()));
-self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(ws=>ws[0]?ws[0].focus():clients.openWindow(e.notification.data?.url||'./')))});
+self.addEventListener('pushsubscriptionchange',e=>e.waitUntil((async()=>{
+  try{
+    const cfg=await fetch('./api/push-config',{cache:'no-store'}).then(r=>r.json());if(!cfg?.publicKey)return;
+    const pad='='.repeat((4-cfg.publicKey.length%4)%4),b64=(cfg.publicKey+pad).replace(/-/g,'+').replace(/_/g,'/'),raw=atob(b64),key=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)key[i]=raw.charCodeAt(i);
+    const sub=await self.registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
+    await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
+  }catch(_){ }
+})()));
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(async ws=>{const url=e.notification.data?.url||'./';if(ws[0]){await ws[0].focus();try{ws[0].navigate(url)}catch(_){ }return}return clients.openWindow(url)}))});
