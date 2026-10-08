@@ -1,14 +1,21 @@
-CRIPTO RADAR V12 — CORREÇÃO DE NOTIFICAÇÕES EM SEGUNDO PLANO
+CRIPTO RADAR V13 — SEGUNDO PLANO + FALHA DE PULLBACK
 
-O que foi corrigido:
-- radar-worker.js agora existe no pacote e mantém heartbeat enquanto o Android permitir.
-- sw.js agora recebe RADAR_CONFIG e RADAR_RUN_NOW.
-- Service Worker trata sync e periodicSync e faz uma checagem própria de mercado.
-- O SW guarda configuração, preços anteriores e cooldowns em IndexedDB.
-- O SW busca /api/market e possui fallback direto para Binance.
-- market.js e ai.js voltaram ao pacote.
-- vercel.json publica /api/market e /api/ai sem pasta api.
-- A tela de notificações ganhou TESTAR AGORA e status do segundo plano.
+Novidade desta versão:
+- Detector de falha de pullback no gráfico de 15 minutos.
+- Cruza rompimento, reteste do nível, rejeição, EMA 20/50 e volume do rompimento.
+- Detecta continuação de alta e continuação de baixa.
+- Mostra o sinal dentro do Alarme Inteligente V2.
+- Exige 2 confirmações em candles diferentes antes de disparar o alerta forte.
+- Usa score técnico de 0 a 100 (heurística, não probabilidade de lucro).
+- O Service Worker também verifica falha de pullback em segundo plano.
+- Cooldown evita repetição excessiva da mesma notificação.
+
+Mantido da V12:
+- radar-worker.js mantém heartbeat enquanto o Android permitir.
+- sw.js recebe RADAR_CONFIG e RADAR_RUN_NOW.
+- sync e periodicSync fazem checagens de mercado quando o Android/navegador permitem.
+- fallback direto para Binance quando /api/market não responde.
+- TESTAR AGORA na tela de notificações.
 
 IMPORTANTE:
 Workers e Periodic Background Sync são controlados pelo Android/navegador. Eles melhoram o funcionamento com o PWA minimizado, mas não garantem execução contínua quando o Android encerra totalmente o app. Para alertas garantidos com o app fechado por horas, é necessário Web Push enviado por servidor.
@@ -17,4 +24,14 @@ Após publicar na Vercel:
 1) atualize/reinstale o PWA para carregar o novo Service Worker;
 2) abra Notificações do Radar e toque ATIVAR NOTIFICAÇÕES;
 3) toque TESTAR AGORA;
-4) minimize o app e deixe a bateria sem restrição para o navegador/PWA, se o Android oferecer essa opção.
+4) abra Alertas > Alarme Inteligente V2 para acompanhar a seção FALHA DE PULLBACK • 15 MIN;
+5) minimize o app e deixe a bateria sem restrição para o navegador/PWA, se o Android oferecer essa opção.
+
+
+=== V14 • ESPELHAMENTO INTELIGENTE ===
+- Nova área Espelhamento Inteligente em Carteira e Alertas.
+- Usa apenas sinais técnicos do próprio Radar (Pullback 15m e Confluência V5).
+- Dois modos: Simulação e Só alertas.
+- Dimensionamento proporcional por capital, stop e risco configurado.
+- Mostra entrada, stop, alvo, risco:retorno, alocação e projeções.
+- Não executa ordens reais nem copia contas de terceiros.

@@ -756,6 +756,34 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <div class="ai-input"><input id="aiQuestion" placeholder="Ex.: o que você aprendeu hoje?"><button id="aiAsk" type="button">PERGUNTAR</button></div>
 <div class="ai-note">Informativo: não executa compras ou vendas e não garante retorno.</div>
 </section>
+
+<section class="card copy-mirror-card" id="copyMirrorCard">
+  <div class="copy-head">
+    <div>
+      <div class="coin">🪞 Espelhamento Inteligente</div>
+      <div class="small">Transforma sinais confirmados do Radar em uma simulação proporcional à sua carteira. Não copia terceiros e não envia ordens reais.</div>
+    </div>
+    <div class="copy-badge" id="copyMirrorBadge">SIMULAÇÃO</div>
+  </div>
+  <div class="copy-controls">
+    <div class="copy-mode" role="group" aria-label="Modo do espelhamento">
+      <button type="button" data-copy-mode="sim" class="active">🧪 Simulação</button>
+      <button type="button" data-copy-mode="alerts">🔔 Só alertas</button>
+    </div>
+    <label class="copy-field"><span>Capital de referência</span><input id="copyReferenceCapital" type="number" min="50" step="50" value="1000"></label>
+    <label class="copy-field"><span>Risco por sinal</span><select id="copyRiskPct"><option value="0.5">0,5%</option><option value="1" selected>1%</option><option value="1.5">1,5%</option><option value="2">2%</option></select></label>
+  </div>
+  <div id="copyMirrorStatus" class="copy-status">Aguardando um sinal técnico confirmado…</div>
+  <div class="copy-compare" id="copyMirrorCompare">
+    <div class="copy-account copy-reference"><div class="copy-account-title">📊 Estratégia Radar</div><div class="small">Aguardando sinal…</div></div>
+    <div class="copy-link" aria-hidden="true">⇄</div>
+    <div class="copy-account copy-user"><div class="copy-account-title">👤 Sua carteira</div><div class="small">Aguardando sinal…</div></div>
+  </div>
+  <div class="copy-plan" id="copyMirrorPlan"></div>
+  <div class="copy-actions"><button type="button" id="copyRefreshSignal">↻ Atualizar análise</button><span class="small" id="copyMirrorUpdated">—</span></div>
+  <div class="small copy-note">A simulação usa stop, alvo e risco proporcional. Resultados projetados não são promessa de retorno. Revise o sinal antes de operar.</div>
+</section>
+
 <section class="card notify-card" id="notifyCard">
  <div class="coin">🔔 Notificações do Radar</div>
  <div class="small">Receba avisos da sua carteira e também do mercado. O Radar mantém um Worker ativo enquanto o Android permitir e o Service Worker faz novas checagens em eventos de sincronização.</div>
@@ -766,7 +794,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 <section class="card urgent-card" id="urgentRadarCard">
  <div class="urgent-head"><div class="coin">🚨 Alarme Inteligente V2</div><div class="urgent-badge">CARTEIRA + MERCADO</div></div>
- <div class="small">Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Alertas fortes exigem 2 confirmações consecutivas para reduzir falso disparo.</div>
+ <div class="small">Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Também procura falha de pullback após rompimentos e exige 2 confirmações consecutivas nos sinais fortes para reduzir falso disparo.</div>
  <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais e buscando confirmações…</div></div>
 </section>
 
@@ -2253,7 +2281,27 @@ function radarTF(k){const x=radarCalc(k),vwap=radarVWAP(k),structure=radarStruct
 function radarTFVote(x){if(!x)return 0;let v=x.trend*2+x.structure.score*2+(x.macd.hist>=0?1:-1)+(x.last>=x.vwap?1:-1);if(x.divergence.key==='bull')v+=2;if(x.divergence.key==='bear')v-=2;return v}
 function radarRelativeStrength(d,b){if(!d||!b)return 0;const a=(d.h1.last/d.h1.e21-1)*100+(d.h4.last/d.h4.e21-1)*100;const z=(b.h1.last/b.h1.e21-1)*100+(b.h4.last/b.h4.e21-1)*100;return a-z}
 function radarConfluence(d,symbol){const cfg=radarModeCfg(),tf=[d.m5,d.m15,d.h1,d.h4,d.d1],weights=[.5,1,1.5,2,2.5];let raw=0,max=0;tf.forEach((x,i)=>{raw+=radarTFVote(x)*weights[i];max+=6*weights[i]});let score=50+(raw/max)*38;const btc=radarV5Cache.get('BTC')?.data,rs=symbol==='BTC'?0:radarRelativeStrength(d,btc);score+=Math.max(-8,Math.min(8,rs*1.5));if(d.m15.vr>=cfg.vol)score+=4;if(d.m15.breakout.up)score+=6;if(d.m15.breakout.down)score-=8;if(d.m15.divergence.key==='bull')score+=5;if(d.m15.divergence.key==='bear')score-=6;if(d.m15.rsi>74)score-=8;if(d.m15.toRes<.7)score-=6;return{score:Math.max(0,Math.min(100,Math.round(score))),rs:+rs.toFixed(2)}}
-async function radarTechnicalV5(symbol){symbol=normalizeWalletSymbol(symbol);if(walletStable.has(symbol))return null;const old=radarV5Cache.get(symbol),now=Date.now();if(old&&now-old.at<90000)return old.data;const ks=await Promise.all(['5m','15m','1h','4h','1d'].map(i=>radarKlines(symbol,i,120)));if(ks.some(x=>!x))return old?.data||radarTechCache.get(symbol)?.data||null;const [m5,m15,h1,h4,d1]=ks.map(radarTF),base={m5,m15,h1,h4,d1,at:now};const cf=radarConfluence(base,symbol);const bull=[m15,h1,h4,d1].filter(x=>radarTFVote(x)>0).length>=3&&h4.structure.key!=='bear'&&d1.trend>=0;const bear=[m15,h1,h4,d1].filter(x=>radarTFVote(x)<0).length>=3&&h4.structure.key!=='bull';const data={...base,score:cf.score,relativeStrength:cf.rs,bull,bear,reasons:[],regime:radarMarketRegime()};data.risk=radarRisk(data);data.plan=radarTradePlanV5(data);radarV5Cache.set(symbol,{at:now,data});radarTechCache.set(symbol,{at:now,data});return data}
+function radarDetectPullback(rows){
+ if(!Array.isArray(rows)||rows.length<55)return null;
+ const now=Date.now();let k=rows.filter(x=>{const ct=Number(x?.[6]);return !Number.isFinite(ct)||ct<=now+1500});if(k.length<50)return null;k=k.slice(-90);
+ const close=k.map(x=>Number(x?.[4])),vol=k.map(x=>Number(x?.[5])||0),last=k.at(-1),lastClose=Number(last?.[4]),lastOpen=Number(last?.[1]);if(!(lastClose>0))return null;
+ const e20=radarEMA(close.slice(-70),20),e50=radarEMA(close.slice(-90),50),lookback=8,prior=k.slice(Math.max(0,k.length-40),k.length-lookback);if(prior.length<20)return null;
+ const resistance=Math.max(...prior.map(x=>Number(x?.[2])||0)),support=Math.min(...prior.map(x=>Number(x?.[3])||Infinity));
+ const avgVol=vol.slice(-28,-8).filter(x=>x>0);const avg=avgVol.length?avgVol.reduce((a,b)=>a+b,0)/avgVol.length:0;
+ function build(side,level,breakIndex){
+  if(breakIndex<0||breakIndex>=k.length-2||!(level>0))return null;const after=k.slice(breakIndex+1),breakC=k[breakIndex],breakClose=Number(breakC?.[4]),breakVol=Number(breakC?.[5])||0;
+  let retest=null;for(const c of after){const lo=Number(c?.[3]),hi=Number(c?.[2]),cl=Number(c?.[4]);if(side==='bull'){if(lo<=level*1.0045&&lo>=level*.994&&cl>=level*.997){retest=c;break}}else{if(hi>=level*.9955&&hi<=level*1.006&&cl<=level*1.003){retest=c;break}}}
+  if(!retest)return null;const retestClose=Number(retest?.[4]),retestOpen=Number(retest?.[1]),retestHigh=Number(retest?.[2]),retestLow=Number(retest?.[3]);
+  const invalid=side==='bull'?after.some(c=>Number(c?.[4])<level*.992):after.some(c=>Number(c?.[4])>level*1.008);if(invalid)return null;
+  const continuation=side==='bull'?lastClose>level*1.0015:lastClose<level*.9985;if(!continuation)return null;
+  const trendOk=side==='bull'?e20>e50:e20<e50,body=Math.abs(retestClose-retestOpen)||level*.0001,wick=side==='bull'?(Math.min(retestOpen,retestClose)-retestLow):(retestHigh-Math.max(retestOpen,retestClose)),wickRatio=Math.max(0,wick/body),volRatio=avg>0?breakVol/avg:1;
+  let score=48;if(trendOk)score+=12;if(volRatio>=1)score+=7;if(volRatio>=1.5)score+=5;if(wickRatio>=.8)score+=7;if(wickRatio>=1.5)score+=4;const dist=Math.abs((Number(retest?.[4])-level)/level)*100;if(dist<=.25)score+=7;if(side==='bull'&&lastClose>lastOpen)score+=5;if(side==='bear'&&lastClose<lastOpen)score+=5;score=Math.max(0,Math.min(96,Math.round(score)));
+  if(score<68)return null;return{side,score,level,price:lastClose,volumeRatio:volRatio,retestDistance:dist,candleTime:Number(last?.[0])||now,breakTime:Number(breakC?.[0])||0,label:side==='bull'?'ALTA':'BAIXA'};
+ }
+ let bullBreak=-1,bearBreak=-1;for(let i=k.length-lookback;i<k.length-2;i++){const cl=Number(k[i]?.[4]);if(bullBreak<0&&cl>resistance*1.0012)bullBreak=i;if(bearBreak<0&&cl<support*.9988)bearBreak=i}
+ const bull=build('bull',resistance,bullBreak),bear=build('bear',support,bearBreak);if(bull&&bear)return bull.score>=bear.score?bull:bear;return bull||bear||null;
+}
+async function radarTechnicalV5(symbol){symbol=normalizeWalletSymbol(symbol);if(walletStable.has(symbol))return null;const old=radarV5Cache.get(symbol),now=Date.now();if(old&&now-old.at<90000)return old.data;const ks=await Promise.all(['5m','15m','1h','4h','1d'].map(i=>radarKlines(symbol,i,120)));if(ks.some(x=>!x))return old?.data||radarTechCache.get(symbol)?.data||null;const [m5,m15,h1,h4,d1]=ks.map(radarTF),pullback=radarDetectPullback(ks[1]),base={m5,m15,h1,h4,d1,pullback,at:now};const cf=radarConfluence(base,symbol);const bull=[m15,h1,h4,d1].filter(x=>radarTFVote(x)>0).length>=3&&h4.structure.key!=='bear'&&d1.trend>=0;const bear=[m15,h1,h4,d1].filter(x=>radarTFVote(x)<0).length>=3&&h4.structure.key!=='bull';const data={...base,score:cf.score,relativeStrength:cf.rs,bull,bear,reasons:[],regime:radarMarketRegime()};data.risk=radarRisk(data);data.plan=radarTradePlanV5(data);radarV5Cache.set(symbol,{at:now,data});radarTechCache.set(symbol,{at:now,data});return data}
 function radarTradePlanV5(t){if(!t?.m15?.last)return null;const p=t.m15.last,a=Math.max(t.m15.atr||0,p*.003),support=Math.max(t.m15.sup||0,t.h1.sup||0),stop=Math.min(p-a*.8,Math.max(support,p-a*1.8));const risk=Math.max(p-stop,a*.6),r1=p+risk*1.5,r2=p+risk*2,r3=p+risk*3;return{entry:p,stop,target:r2,targets:[r1,r2,r3],invalidation:stop,rr:2}}
 radarTechnical=radarTechnicalV5;
 function radarMarketRegimeV5(){const b=radarV5Cache.get('BTC')?.data,e=radarV5Cache.get('ETH')?.data;if(!radarTechFresh(b)||!radarTechFresh(e))return{key:'wait',label:'AGUARDANDO',factor:0};const long=(radarTFVote(b.h4)+radarTFVote(b.d1)+radarTFVote(e.h4)+radarTFVote(e.d1));if(long>=12)return{key:'bull',label:'BULL',factor:7};if(long<=-10)return{key:'bear',label:'BEAR',factor:-18};return{key:'neutral',label:'NEUTRO',factor:0}}
@@ -2264,6 +2312,13 @@ const walletDirectionV4=walletDirection;walletDirection=function(rawSymbol){cons
 function radarV5Stats(){const h=radarHistory(),done=h.filter(x=>x.checks?.h24!=null);if(!done.length)return{n:h.length,win:'—',avg:'—',expect:'—'};const ret=done.map(x=>x.kind==='buy'?x.checks.h24:-x.checks.h24),wins=ret.filter(x=>x>0),loss=ret.filter(x=>x<=0),avg=ret.reduce((a,b)=>a+b,0)/ret.length,wr=wins.length/ret.length,aw=wins.length?wins.reduce((a,b)=>a+b,0)/wins.length:0,al=loss.length?Math.abs(loss.reduce((a,b)=>a+b,0)/loss.length):0,ex=wr*aw-(1-wr)*al;return{n:h.length,win:Math.round(wr*100)+'%',avg:(avg>=0?'+':'')+avg.toFixed(2)+'%',expect:(ex>=0?'+':'')+ex.toFixed(2)+'%'}}
 function renderRadarV5(){const box=document.getElementById('radarV5Panel');if(!box)return;const reg=radarMarketRegimeV5(),st=radarV5Stats(),b=radarV5Cache.get('BTC')?.data;box.innerHTML=`<div class="coin">🧠 Radar Pro V5</div><div class="small">Confluência 5m • 15m • 1h • 4h • 1D + estrutura de mercado + VWAP + divergências + força relativa ao BTC.</div><div class="radar-v5-grid"><div class="radar-v5-box"><span class="small">Regime</span><b>${reg.label}</b></div><div class="radar-v5-box"><span class="small">BTC 4h</span><b>${b?.h4?.structure?.label||'—'}</b></div><div class="radar-v5-box"><span class="small">Acerto 24h</span><b>${st.win}</b></div><div class="radar-v5-box"><span class="small">Expectancy 24h</span><b>${st.expect}</b></div></div><div class="small" style="margin-top:8px">${st.n} sinais registrados • retorno médio ${st.avg}. Confiança técnica não é probabilidade nem garantia de retorno.</div>`}
 let radarV5RefreshBusy=false;refreshRadarTechnicals=async function(){if(radarV5RefreshBusy)return;radarV5RefreshBusy=true;try{await radarTechnicalV5('BTC');await radarTechnicalV5('ETH');const held=(printWallet||[]).map(x=>normalizeWalletSymbol(x.symbol)),opp=(latestOpportunities||[]).slice(0,12).map(x=>x.symbol),syms=[...new Set([...held,...opp])].filter(x=>!walletStable.has(x)&&x!=='BTC'&&x!=='ETH').slice(0,16);await Promise.allSettled(syms.map(radarTechnicalV5));await radarEvaluateHistory();try{renderPrintWallet();renderUrgentRadar();renderSmartAllocation();renderRadarV4();renderRadarV5()}catch(e){}}finally{radarV5RefreshBusy=false}}
+const PULLBACK_UI_KEY='criptoRadarPullbackConfirmV1',PULLBACK_COOLDOWN_KEY='criptoRadarPullbackNotifyV1';
+function pullbackUiState(){try{return JSON.parse(localStorage.getItem(PULLBACK_UI_KEY)||'{}')}catch(e){return{}}}
+function pullbackConfirmUi(symbol,p){const all=pullbackUiState(),key=symbol+':'+p.side,old=all[key]||{count:0,sample:0,seen:0};if(Number(old.sample)!==Number(p.candleTime)){old.count=(Date.now()-Number(old.seen||0)<55*60*1000)?Math.min(2,Number(old.count||0)+1):1;old.sample=Number(p.candleTime)||Date.now();old.seen=Date.now();all[key]=old;for(const [k,v] of Object.entries(all))if(Date.now()-Number(v.seen||0)>6*60*60*1000)delete all[k];try{localStorage.setItem(PULLBACK_UI_KEY,JSON.stringify(all))}catch(e){}}return{...p,confirmations:Number(old.count||1),confirmed:Number(old.count||1)>=2}}
+function pullbackNotifyAllowed(symbol,p){try{const all=JSON.parse(localStorage.getItem(PULLBACK_COOLDOWN_KEY)||'{}'),key=symbol+':'+p.side,now=Date.now();if(now-Number(all[key]||0)<75*60*1000)return false;all[key]=now;localStorage.setItem(PULLBACK_COOLDOWN_KEY,JSON.stringify(all));return true}catch(e){return true}}
+function currentPullbackSignals(){const held=(printWallet||[]).map(x=>normalizeWalletSymbol(x.symbol)),opp=(latestOpportunities||[]).slice(0,10).map(x=>normalizeWalletSymbol(x.symbol)),syms=[...new Set(['BTC','ETH',...held,...opp])].filter(s=>s&&!walletStable.has(s)).slice(0,14),out=[];for(const s of syms){const t=radarV5Cache.get(s)?.data,p=t?.pullback;if(!p||Date.now()-Number(t?.at||0)>4*60*1000)continue;out.push({symbol:s,...pullbackConfirmUi(s,p)})}return out.sort((a,b)=>b.score-a.score)}
+function pullbackRenderItem(x){const bull=x.side==='bull',icon=bull?'↗️':'↘️',cls=bull?'opportunity':'attention',conf=x.confirmed?'<span class="urgent-tag ok urgent-confirm">✓ 2/2 CONFIRMADO</span>':'<span class="urgent-tag warn urgent-confirm">1/2 CONFIRMAÇÕES</span>',action=bull?'OBSERVAR CONTINUAÇÃO • EVITAR ENTRAR ESTICADO':'PROTEGER POSIÇÃO • AGUARDAR NOVA ESTRUTURA';return `<div class="urgent-item ${cls}"><div class="urgent-title"><span>${icon} ${x.symbol} — FALHA DE PULLBACK ${x.label}</span><span class="urgent-tag ${bull?'ok':'bad'}">SCORE ${x.score}/100</span>${conf}</div><div class="urgent-meta">O contra-movimento perdeu força após o rompimento. Nível testado ${urgentFmtPrice(x.level)} • preço ${urgentFmtPrice(x.price)} • volume do rompimento ${Number(x.volumeRatio||1).toFixed(2)}x.</div><div class="urgent-action">Ação do Radar: ${action}</div></div>`}
+const renderUrgentRadarBeforePullback=renderUrgentRadar;renderUrgentRadar=function(){renderUrgentRadarBeforePullback();const box=document.getElementById('urgentRadarList');if(!box)return;const pulls=currentPullbackSignals();box.insertAdjacentHTML('beforeend',`<div class="urgent-section"><div class="urgent-section-title">↩️ FALHA DE PULLBACK • 15 MIN</div>${pulls.length?pulls.slice(0,4).map(pullbackRenderItem).join(''):'<div class="urgent-empty"><div class="urgent-title">Nenhuma falha de pullback confirmada agora</div><div class="urgent-meta">O Radar procura rompimento, reteste do nível, rejeição e retomada com tendência/volume alinhados.</div></div>'}</div>`);for(const x of pulls.filter(p=>p.confirmed&&p.score>=72)){if(!pullbackNotifyAllowed(x.symbol,x))continue;const bull=x.side==='bull',title=(bull?'↗️':'↘️')+' Falha de pullback: '+x.symbol,body=`${x.label} • score técnico ${x.score}/100 • nível ${urgentFmtPrice(x.level)} • preço ${urgentFmtPrice(x.price)} • ${bull?'possível continuação da alta':'possível continuação da baixa'}`;radarNotify('pullback-'+x.side+'-'+x.symbol,title,body)}};
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{refreshRadarTechnicals()},1800)}); // V5 UI ocultada na V8 limpa
 </script>
 
@@ -2890,7 +2945,7 @@ window.v8RunBacktest=run;
   try{
    const reg=await swReg();if(!reg)return;
    const target=navigator.serviceWorker.controller||reg.active||reg.waiting;
-   target?.postMessage({type:'RADAR_CONFIG',payload:{enabled:true,notifications:localStorage.getItem('radarNotifications')==='on',context:context(),updatedAt:new Date().toISOString()}});
+   target?.postMessage({type:'RADAR_CONFIG',payload:{enabled:true,notifications:localStorage.getItem('radarNotifications')==='on',context:context(),mirror:(()=>{try{return JSON.parse(localStorage.getItem('crRadarCopyMirrorV14')||'{}')}catch(e){return{}}})(),updatedAt:new Date().toISOString()}});
   }catch(e){}
  }
  async function registerBackground(){
@@ -3099,15 +3154,84 @@ window.v8RunBacktest=run;
 })();
 </script>
 
+
+<style>
+/* ===== Espelhamento Inteligente V14 ===== */
+.copy-mirror-card{position:relative;overflow:hidden;border-color:#23527b;background:linear-gradient(145deg,rgba(7,18,31,.98),rgba(7,25,39,.98));box-shadow:0 16px 45px rgba(0,0,0,.24)}
+.copy-mirror-card:after{content:"";position:absolute;right:-80px;top:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(35,121,255,.18),transparent 68%);pointer-events:none}
+.copy-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.copy-head .coin{font-size:21px}.copy-badge{flex:0 0 auto;padding:7px 10px;border-radius:999px;border:1px solid #1f8f68;background:rgba(0,214,143,.10);color:#67f5bf;font-size:11px;font-weight:900;letter-spacing:.5px}
+.copy-controls{display:grid;grid-template-columns:1.25fr 1fr .75fr;gap:8px;margin-top:13px}.copy-mode{display:flex;padding:3px;border:1px solid var(--line);border-radius:13px;background:#091421}.copy-mode button{flex:1;border:0;background:transparent;color:#8ea1bd;border-radius:10px;padding:10px 8px;font-weight:800}.copy-mode button.active{background:linear-gradient(135deg,#1264d9,#244eb6);color:#fff;box-shadow:0 5px 15px rgba(16,91,216,.25)}
+.copy-field{display:flex;flex-direction:column;gap:4px}.copy-field span{font-size:11px;color:#7f91aa}.copy-field input,.copy-field select{width:100%;min-height:42px;border:1px solid var(--line);background:#0a1624;color:#fff;border-radius:12px;padding:8px 10px;font-weight:800}
+.copy-status{margin-top:11px;padding:10px 12px;border-radius:12px;background:#0a1624;border:1px solid rgba(94,140,190,.28);color:#b7c7db;font-size:13px}.copy-status.good{border-color:rgba(34,197,94,.45);background:rgba(20,83,45,.18);color:#b7f7cd}.copy-status.bad{border-color:rgba(244,63,94,.42);background:rgba(127,29,29,.15);color:#fecdd3}
+.copy-compare{display:grid;grid-template-columns:1fr 34px 1fr;gap:8px;align-items:stretch;margin-top:12px}.copy-account{border:1px solid var(--line);background:#091523;border-radius:16px;padding:13px;min-width:0}.copy-account-title{font-weight:900;margin-bottom:8px}.copy-link{display:flex;align-items:center;justify-content:center;color:#65a8ff;font-weight:900;font-size:22px}.copy-money{font-size:22px;font-weight:950;margin:4px 0}.copy-positive{color:#67f5bf}.copy-negative{color:#ff8fa3}.copy-detail{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.copy-mini{background:#07111d;border-radius:10px;padding:8px}.copy-mini span{display:block;color:#7890ad;font-size:10px}.copy-mini b{display:block;margin-top:2px;font-size:13px}
+.copy-plan{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.copy-plan-box{border:1px solid var(--line);background:#08131f;border-radius:11px;padding:9px}.copy-plan-box span{display:block;font-size:10px;color:#7890ad}.copy-plan-box b{display:block;margin-top:3px;font-size:13px}.copy-actions{display:flex;align-items:center;gap:10px;margin-top:11px}.copy-actions button{border:1px solid #275e92;background:#0c2440;color:#d9ecff;border-radius:11px;padding:9px 12px;font-weight:850}.copy-note{margin-top:9px}
+@media(max-width:650px){.copy-controls{grid-template-columns:1fr 1fr}.copy-mode{grid-column:1/-1}.copy-compare{grid-template-columns:1fr}.copy-link{height:22px;transform:rotate(90deg)}.copy-plan{grid-template-columns:1fr 1fr}.copy-head{align-items:center}}
+</style>
+
+
+<script>
+/* ===== Espelhamento Inteligente V14 ===== */
+(function(){
+ const KEY='crRadarCopyMirrorV14', NOTIFY_KEY='crRadarCopyMirrorNotifyV14';
+ const $=id=>document.getElementById(id);
+ const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2}).format(Number(n)||0);
+ const pct=n=>(Number(n)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+ const fmtPrice=n=>{n=Number(n)||0;if(!n)return '—';return n>=1000?'US$ '+n.toLocaleString('pt-BR',{maximumFractionDigits:2}):n>=1?'US$ '+n.toLocaleString('pt-BR',{maximumFractionDigits:4}):'US$ '+n.toLocaleString('pt-BR',{maximumFractionDigits:8})};
+ function read(){try{return {...{mode:'sim',referenceCapital:1000,riskPct:1,userCapital:100},...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return{mode:'sim',referenceCapital:1000,riskPct:1,userCapital:100}}}
+ function save(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
+ function walletCapital(){try{return (printWallet||[]).reduce((a,w)=>{const s=normalizeWalletSymbol(w.symbol),p=Number(walletPrices[s])||0;return a+p*(Number(w.qty)||0)},0)}catch(e){return 0}}
+ function topTechnical(){
+   const rows=[];
+   try{for(const [symbol,box] of radarV5Cache.entries()){const t=box?.data;if(!t||Date.now()-Number(t.at||0)>6*60*1000)continue;const side=t.bull?'bull':t.bear?'bear':null;if(!side)continue;rows.push({symbol,t,side,score:Number(t.score)||0,confirmed:(Number(t.score)||0)>=70,source:'Confluência V5'})}}catch(e){}
+   return rows.sort((a,b)=>b.score-a.score)[0]||null;
+ }
+ function bestSignal(){
+   try{const pulls=currentPullbackSignals().filter(x=>x.confirmed).sort((a,b)=>b.score-a.score);if(pulls.length){const p=pulls[0],t=radarV5Cache.get(p.symbol)?.data;return{symbol:p.symbol,t,side:p.side,score:Number(p.score)||0,confirmed:true,source:'Falha de pullback 15m',sample:p.candleTime||0}}}catch(e){}
+   return topTechnical();
+ }
+ function planFor(sig,riskPct){
+   if(!sig?.t?.m15?.last)return null;const t=sig.t,entry=Number(t.m15.last),atr=Math.max(Number(t.m15.atr)||0,entry*.003),side=sig.side;let stop,target;
+   if(side==='bear'){stop=entry+Math.max(atr*1.25,entry*.008);const d=stop-entry;target=Math.max(.00000001,entry-d*2)}
+   else{stop=Number(t.plan?.stop)||entry-Math.max(atr*1.25,entry*.008);if(stop>=entry)stop=entry-Math.max(atr*1.25,entry*.008);const d=entry-stop;target=Number(t.plan?.target)||entry+d*2}
+   const stopPct=Math.max(.15,Math.abs(entry-stop)/entry*100),targetPct=Math.abs(target-entry)/entry*100;
+   const rawAllocPct=(Number(riskPct)||1)/stopPct*100,allocPct=Math.max(2,Math.min(25,rawAllocPct));
+   return{entry,stop,target,stopPct,targetPct,allocPct,rr:targetPct/stopPct};
+ }
+ function projection(capital,plan,riskPct){const allocation=capital*plan.allocPct/100,loss=allocation*plan.stopPct/100,gain=allocation*plan.targetPct/100;return{capital,allocation,loss,gain,effectiveRisk:capital?loss/capital*100:0}}
+ function notify(sig,plan,user){const st=read();if(st.mode!=='alerts'||!sig?.confirmed)return;const key=[sig.symbol,sig.side,sig.sample||Math.round(plan.entry*1e5)].join(':');let old={};try{old=JSON.parse(localStorage.getItem(NOTIFY_KEY)||'{}')}catch(e){};if(Date.now()-Number(old[key]||0)<90*60*1000)return;old[key]=Date.now();for(const k in old)if(Date.now()-Number(old[k]||0)>24*60*60*1000)delete old[k];try{localStorage.setItem(NOTIFY_KEY,JSON.stringify(old))}catch(e){};const dir=sig.side==='bull'?'ALTA':'BAIXA',body=`${sig.source} • ${sig.symbol} • ${dir} • score ${sig.score}/100 • simulação ${money(user.allocation)} • stop ${pct(plan.stopPct)} • alvo ${pct(plan.targetPct)}`;try{if(typeof radarNotify==='function')radarNotify('mirror-'+key,'🪞 Espelhamento: '+sig.symbol,body);else if(typeof showRadarNotification==='function')showRadarNotification('🪞 Espelhamento: '+sig.symbol,{body,tag:'mirror-'+key,data:{url:'./'}})}catch(e){}}
+ function render(){
+   const card=$('copyMirrorCard');if(!card)return;const st=read(),wallet=walletCapital(),userCapital=wallet>0?wallet:Number(st.userCapital)||100;
+   if($('copyReferenceCapital'))$('copyReferenceCapital').value=Number(st.referenceCapital)||1000;if($('copyRiskPct'))$('copyRiskPct').value=String(st.riskPct||1);
+   document.querySelectorAll('[data-copy-mode]').forEach(b=>b.classList.toggle('active',b.dataset.copyMode===st.mode));
+   if($('copyMirrorBadge'))$('copyMirrorBadge').textContent=st.mode==='alerts'?'SÓ ALERTAS':'SIMULAÇÃO';
+   const sig=bestSignal(),status=$('copyMirrorStatus'),cmp=$('copyMirrorCompare'),planBox=$('copyMirrorPlan');
+   if(!sig){if(status){status.className='copy-status';status.textContent='Aguardando confluência técnica ou falha de pullback confirmada…'}if(cmp)cmp.innerHTML='<div class="copy-account copy-reference"><div class="copy-account-title">📊 Estratégia Radar</div><div class="small">Nenhum sinal confirmado agora.</div></div><div class="copy-link">⇄</div><div class="copy-account copy-user"><div class="copy-account-title">👤 Sua carteira</div><div class="copy-money">'+money(userCapital)+'</div><div class="small">Capital detectado para simulação.</div></div>';if(planBox)planBox.innerHTML='';return}
+   const plan=planFor(sig,st.riskPct);if(!plan)return;const ref=projection(Number(st.referenceCapital)||1000,plan,st.riskPct),usr=projection(userCapital,plan,st.riskPct),bull=sig.side==='bull';
+   if(status){status.className='copy-status '+(bull?'good':'bad');status.innerHTML=`${bull?'↗️':'↘️'} <b>${sig.symbol}</b> • ${sig.source} • ${bull?'continuação de alta':'continuação de baixa'} • confiança técnica ${sig.score}/100`}
+   if(cmp)cmp.innerHTML=`<div class="copy-account copy-reference"><div class="copy-account-title">📊 Estratégia Radar</div><div class="small">Capital referência</div><div class="copy-money">${money(ref.capital)}</div><div class="copy-detail"><div class="copy-mini"><span>Alocação simulada</span><b>${money(ref.allocation)}</b></div><div class="copy-mini"><span>Risco no stop</span><b class="copy-negative">-${money(ref.loss)}</b></div><div class="copy-mini"><span>Projeção no alvo</span><b class="copy-positive">+${money(ref.gain)}</b></div><div class="copy-mini"><span>Exposição</span><b>${pct(plan.allocPct)}</b></div></div></div><div class="copy-link">⇄</div><div class="copy-account copy-user"><div class="copy-account-title">👤 Sua carteira</div><div class="small">Capital ${wallet>0?'detectado':'de simulação'}</div><div class="copy-money">${money(usr.capital)}</div><div class="copy-detail"><div class="copy-mini"><span>Valor proporcional</span><b>${money(usr.allocation)}</b></div><div class="copy-mini"><span>Risco no stop</span><b class="copy-negative">-${money(usr.loss)}</b></div><div class="copy-mini"><span>Projeção no alvo</span><b class="copy-positive">+${money(usr.gain)}</b></div><div class="copy-mini"><span>Risco efetivo</span><b>${pct(usr.effectiveRisk)}</b></div></div></div>`;
+   if(planBox)planBox.innerHTML=`<div class="copy-plan-box"><span>Entrada</span><b>${fmtPrice(plan.entry)}</b></div><div class="copy-plan-box"><span>Stop</span><b class="copy-negative">${fmtPrice(plan.stop)}</b></div><div class="copy-plan-box"><span>Alvo</span><b class="copy-positive">${fmtPrice(plan.target)}</b></div><div class="copy-plan-box"><span>Risco : retorno</span><b>1 : ${plan.rr.toFixed(2)}</b></div>`;
+   if($('copyMirrorUpdated'))$('copyMirrorUpdated').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});notify(sig,plan,usr);
+ }
+ function bind(){
+   document.querySelectorAll('[data-copy-mode]').forEach(b=>b.addEventListener('click',()=>{const st=read();st.mode=b.dataset.copyMode;save(st);render()}));
+   $('copyReferenceCapital')?.addEventListener('change',e=>{const st=read();st.referenceCapital=Math.max(50,Number(e.target.value)||1000);save(st);try{window.CriptoRadarBackground?.sendConfig?.(true)}catch(e){};render()});
+   $('copyRiskPct')?.addEventListener('change',e=>{const st=read();st.riskPct=Math.max(.25,Math.min(2,Number(e.target.value)||1));save(st);try{window.CriptoRadarBackground?.sendConfig?.(true)}catch(e){};render()});
+   $('copyRefreshSignal')?.addEventListener('click',async()=>{const b=$('copyRefreshSignal');if(b){b.disabled=true;b.textContent='Atualizando…'}try{if(typeof refreshMarketNow==='function')await refreshMarketNow();if(typeof refreshRadarTechnicals==='function')await refreshRadarTechnicals()}catch(e){}finally{if(b){b.disabled=false;b.textContent='↻ Atualizar análise'}render()}});
+ }
+ bind();setTimeout(render,1200);setInterval(render,12000);window.renderCopyMirror=render;
+ try{const base=refreshRadarTechnicals;refreshRadarTechnicals=async function(){const r=await base.apply(this,arguments);try{render()}catch(e){}return r}}catch(e){}
+})();
+</script>
+
 <script>
 /* ===== Cripto Radar Adaptive Navigation ===== */
 (function(){
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
   home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
-  wallet:{title:'Carteira',ids:['walletCaptureCard','aporteCard']},
+  wallet:{title:'Carteira',ids:['copyMirrorCard','walletCaptureCard','aporteCard']},
   market:{title:'Mercado',ids:['opportunitiesCard','marketRumorsCard','trendsCard']},
-  alerts:{title:'Alertas',ids:['urgentRadarCard','notifyCard']},
+  alerts:{title:'Alertas',ids:['copyMirrorCard','urgentRadarCard','notifyCard']},
   ai:{title:'IA Radar',ids:['aiRadarCard']},
   security:{title:'Segurança',ids:['securityCard']},
   engine:{title:'Motor profissional',pro:true,ids:['v10CoreCard','v11LiveCard']},
