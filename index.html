@@ -758,9 +758,10 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </section>
 <section class="card notify-card" id="notifyCard">
  <div class="coin">🔔 Notificações do Radar</div>
- <div class="small">Receba avisos de compra, venda/redução e realização parcial. O modo de segundo plano usa Worker + Service Worker e sincronização periódica quando o Android/navegador permitir. Instale o Radar na tela inicial para obter o melhor funcionamento.</div>
- <div class="notify-row"><button id="enableNotifications" type="button">🔔 ATIVAR NOTIFICAÇÕES</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
+ <div class="small">Receba avisos da sua carteira e também do mercado. O Radar mantém um Worker ativo enquanto o Android permitir e o Service Worker faz novas checagens em eventos de sincronização.</div>
+ <div class="notify-row"><button id="enableNotifications" type="button">🔔 ATIVAR NOTIFICAÇÕES</button><button id="testBackgroundNotifications" type="button">🧪 TESTAR AGORA</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
+ <div id="notifyBgStatus" class="notify-status" style="margin-top:6px">Segundo plano: preparando…</div>
 </section>
 
 <section class="card urgent-card" id="urgentRadarCard">
@@ -992,6 +993,7 @@ async function enableRadarNotifications(){
    localStorage.setItem('radarNotifications','on');
    notifyStatus('✓ Notificações ativas neste aparelho.');
    await showRadarNotification('Cripto Radar',{body:'Alertas ativados com sucesso.',tag:'radar-test',data:{url:'./'}});
+   setTimeout(()=>window.CriptoRadarBackground?.runNow?.('notifications-enabled'),300);
   }else{
    localStorage.removeItem('radarNotifications');
    notifyStatus(perm==='denied'?'Notificações bloqueadas. Libere a permissão nas configurações do navegador.':'Permissão não concedida.');
@@ -1028,6 +1030,11 @@ function checkMarketBuyNotifications(){
  for(const x of picks)radarNotify('marketbuy-'+x.symbol,'🚨 Oportunidade no mercado: '+x.symbol,x.why);
 }
 document.getElementById('enableNotifications')?.addEventListener('click',enableRadarNotifications);
+document.getElementById('testBackgroundNotifications')?.addEventListener('click',async()=>{
+ if(!('Notification' in window)||Notification.permission!=='granted'){notifyStatus('Ative as notificações primeiro.');return;}
+ notifyStatus('Testando mercado e segundo plano…');
+ try{await window.CriptoRadarBackground?.runNow?.('manual-test');await showRadarNotification('Cripto Radar • teste',{body:'Segundo plano acionado. Agora o Radar também verifica movimentos do mercado.',tag:'radar-bg-test',data:{url:'./'}});notifyStatus('✓ Teste enviado. Verifique a barra de notificações.');}catch(e){notifyStatus('Falha no teste de segundo plano.');}
+});
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installApp');if(b)b.style.display='inline-block';});
 document.getElementById('installApp')?.addEventListener('click',async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;});
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) getRadarSW();
@@ -2860,7 +2867,7 @@ window.v8RunBacktest=run;
 (function(){
  const BG_TAG='radar-periodic',SYNC_TAG='radar-sync';
  let worker=null,lastPulse=0,lastConfig=0,pulseBusy=false,periodicReady=false;
- const status=msg=>{const e=document.getElementById('backgroundState');if(e)e.textContent='Segundo plano: '+msg};
+ const status=msg=>{const e=document.getElementById('backgroundState');if(e)e.textContent='Segundo plano: '+msg;const n=document.getElementById('notifyBgStatus');if(n)n.textContent='Segundo plano: '+msg};
  function walletFallback(){
   try{
    const raw=(typeof printWallet!=='undefined'&&Array.isArray(printWallet))?printWallet:[];
@@ -2921,13 +2928,13 @@ window.v8RunBacktest=run;
  function startWorker(){
   if(worker||!('Worker'in window))return;
   try{
-   worker=new Worker('./radar-worker.js');
+   worker=new Worker('./radar-worker.js',{name:'cripto-radar-bg'});worker.postMessage({type:'RADAR_SET_INTERVAL',ms:8000});
    worker.onmessage=e=>{
     const t=e.data?.type;
     if(t==='RADAR_WORKER_READY')status(periodicReady?'Worker + SW ativos':'Worker ativo • SW preparado');
     if(t==='RADAR_TICK'&&document.visibilityState==='hidden')pulse('worker');
    };
-   worker.onerror=()=>{status('SW ativo • Worker limitado');worker=null};
+   worker.onerror=()=>{status('SW ativo • Worker não carregou');worker=null};
   }catch(e){status('SW ativo • Worker limitado')}
  }
  async function runNow(reason='manual'){
@@ -2950,7 +2957,7 @@ window.v8RunBacktest=run;
  navigator.serviceWorker?.addEventListener?.('message',e=>{
   if(e.data?.type==='RADAR_BG_STATUS')status(e.data.message||'SW ativo');
  });
- async function init(){startWorker();await registerBackground();setInterval(()=>sendConfig(),30000);setTimeout(()=>runNow('init'),2500)}
+ async function init(){startWorker();await registerBackground();setInterval(()=>sendConfig(),30000);setInterval(()=>{if(document.visibilityState==='hidden'&&worker)worker.postMessage({type:'RADAR_PING'})},20000);setTimeout(()=>runNow('init'),2500)}
  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
  window.CriptoRadarBackground={runNow,sendConfig,queueSync};
 })();

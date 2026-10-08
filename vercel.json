@@ -9,7 +9,10 @@
     { "src": "manifest.webmanifest", "use": "@vercel/static" },
     { "src": "icon.svg", "use": "@vercel/static" },
     { "src": "icon-192.png", "use": "@vercel/static" },
-    { "src": "icon-512.png", "use": "@vercel/static" }
+    { "src": "icon-512.png", "use": "@vercel/static" },
+    { "src": "notification-icon-192.png", "use": "@vercel/static" },
+    { "src": "notification-icon-512.png", "use": "@vercel/static" },
+    { "src": "badge-96.png", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/ai", "dest": "/ai.js" },
