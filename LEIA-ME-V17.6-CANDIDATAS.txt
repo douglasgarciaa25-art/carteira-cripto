@@ -1,0 +1,12 @@
+CRIPTO RADAR V17.6
+
+Ajuste do nível CANDIDATA A COMPRA:
+- Compra confirmada continua rigorosa.
+- Candidata permite até 1 divergência estrutural e até 3 alertas leves.
+- RSI esticado passa a ser aviso para candidata, não bloqueio absoluto.
+- Mercado geral em baixa e risco acima do perfil continuam bloqueios fortes.
+- Estrutura 4h baixista só permite candidata se a pontuação for >=82.
+- Limites por perfil:
+  Conservador 78
+  Equilibrado 72
+  Agressivo 68

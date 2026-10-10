@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V17.5 • Clean Analysis</title>
+<title>Cripto Radar V17.6 • Clean Analysis</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -502,7 +502,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </style>
 
 <style>
-/* ===== V17.5 • Clean Candidate States ===== */
+/* ===== V17.6 • Clean Candidate States ===== */
 .smart-alloc-action{white-space:nowrap}
 .smart-confirmed{background:#123d2d!important;color:#86efac!important}
 .smart-pre{background:#5a4310!important;color:#ffe08a!important}
@@ -511,7 +511,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </style>
 </head>
 <body>
-<div id="v175VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#10263f;border:1px solid #3b6d9d;color:#cde5ff;font-size:8px;font-weight:950;letter-spacing:.5px">V17.5</div>
+<div id="v175VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#10263f;border:1px solid #3b6d9d;color:#cde5ff;font-size:8px;font-weight:950;letter-spacing:.5px">V17.6</div>
 
 <div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
   <div class="security-shell">
@@ -2484,12 +2484,20 @@ walletBuySignal=function(rawSymbol){
    radarSaveSignal(s,'buy',score,t.m15.last);
    return{label:score>=Math.max(cfg.strong,86)?'SINAL FORTE DE COMPRA':'COMPRA CONFIRMADA',state:'confirmed',score,technicalReady:true,hardBlocks:hard,softBlocks:soft,why:`${details} • entrada ${plan.entry.toPrecision(6)} • invalidação ${plan.invalidation.toPrecision(6)} • alvos ${plan.targets.map(x=>x.toPrecision(6)).join(' / ')}`};
  }
- const candidate=score>=candidateMin&&hard.length===0&&soft.length<=2;
+ // V17.6: candidata é uma zona intermediária real, sem afrouxar COMPRA CONFIRMADA.
+ const severeHard=hard.filter(x=>/mercado geral em baixa|risco acima do perfil/.test(x));
+ const structuralHard=hard.filter(x=>/estrutura 4h baixista|tendência 1d desfavorável/.test(x));
+ const stretchHard=hard.filter(x=>/RSI esticado/.test(x));
+ const riskOk=!/Alto|Muito Alto/i.test(String(risk.label||''));
+ const structureOk=t.h4.structure.key!=='bear'||score>=82;
+ const candidate=score>=candidateMin&&riskOk&&severeHard.length===0&&structureOk&&structuralHard.length<=1&&soft.length<=3;
  if(candidate){
-   return{label:'CANDIDATA A COMPRA',state:'candidate',score,technicalReady:true,hardBlocks:hard,softBlocks:soft,why:`${details}${soft.length?' • falta confirmar: '+soft.join(', '):' • aguardando confirmação final'}`};
+   const caution=[...structuralHard,...stretchHard,...soft].slice(0,3);
+   return{label:'CANDIDATA A COMPRA',state:'candidate',score,technicalReady:true,hardBlocks:severeHard,softBlocks:caution,why:`${details}${caution.length?' • atenção: '+caution.join(', '):' • aguardando confirmação final'}`};
  }
- if(hard.length){
-   return{label:'EVITAR ENTRADA',state:'blocked',score,technicalReady:true,hardBlocks:hard,softBlocks:soft,why:`${details} • bloqueios: ${hard.join(', ')}`};
+ if(severeHard.length||structuralHard.length>1){
+   const blocks=[...severeHard,...structuralHard];
+   return{label:'EVITAR ENTRADA',state:'blocked',score,technicalReady:true,hardBlocks:blocks,softBlocks:soft,why:`${details} • bloqueios: ${blocks.join(', ')}`};
  }
  return{label:'OBSERVAR',state:'watch',score,technicalReady:true,hardBlocks:hard,softBlocks:soft,why:`${details}${soft.length?' • falta confirmar: '+soft.join(', '):''}`};
 }
