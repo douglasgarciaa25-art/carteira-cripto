@@ -502,6 +502,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </style>
 </head>
 <body>
+<div id="v174VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#13243a;border:1px solid #37628f;color:#bcd8ff;font-size:8px;font-weight:900;letter-spacing:.5px;opacity:.88">V17.4</div>
 
 <div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
   <div class="security-shell">
@@ -539,7 +540,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V17.3 • PLAY STORE EDITION</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V17.4 • PLAY STORE EDITION</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -1866,10 +1867,10 @@ function renderWalletBuyAlerts(){
       const sig=walletBuySignal(sym);
       return {symbol:sym,change:Number(c.change24h),volume:Number(c.volume||0),...sig};
    })
-   .filter(x=>x.label==='ALARME DE COMPRA'||x.label==='OBSERVAR COMPRA')
+   .filter(x=>x.label==='SINAL FORTE DE COMPRA'||x.label==='COMPRA CONFIRMADA'||x.label==='CANDIDATA A COMPRA'||x.label==='OBSERVAR')
    .sort((a,b)=>{
       // Prioriza compra confirmada, depois score, liquidez/volume e movimento saudável.
-      const pa=a.label==='ALARME DE COMPRA'?1:0, pb=b.label==='ALARME DE COMPRA'?1:0;
+      const rank=x=>x.label==='SINAL FORTE DE COMPRA'?4:x.label==='COMPRA CONFIRMADA'?3:x.label==='CANDIDATA A COMPRA'?2:1; const pa=rank(a), pb=rank(b);
       if(pb!==pa)return pb-pa;
       if((b.score||0)!==(a.score||0))return (b.score||0)-(a.score||0);
       return (b.volume||0)-(a.volume||0);
@@ -1878,7 +1879,7 @@ function renderWalletBuyAlerts(){
 
  box.innerHTML='<div class="buy-alert-title">🌐 Alarmes de compra do mercado</div>'+
  '<div class="small" style="margin-bottom:6px">Varre os ativos disponíveis no mercado e destaca oportunidades por preço, volume e liquidez relativa. Não fica limitado à sua carteira.</div>'+
- (candidates.length?candidates.map((x,i)=>`<div class="buy-alert-item"><span class="${x.label==='ALARME DE COMPRA'?'buy-strong':'buy-watch'}">${x.label==='ALARME DE COMPRA'?'🚨🟢':'👀🟡'} <b>${i+1}. ${x.symbol}</b> — ${x.label}</span><div class="small">${Number.isFinite(x.change)?`${x.change>=0?'+':''}${x.change.toFixed(2)}% 24h • `:''}${x.why}</div></div>`).join(''):'<div class="small">Nenhuma oportunidade confirmada no mercado agora. Aguardando preço e liquidez alinharem.</div>')+
+ (candidates.length?candidates.map((x,i)=>{const good=x.state==='good',cand=x.state==='candidate';return `<div class="buy-alert-item"><span class="${good?'buy-strong':'buy-watch'}">${good?'🚨🟢':cand?'🟡':'👀'} <b>${i+1}. ${x.symbol}</b> — ${x.label}</span><div class="small">${Number.isFinite(x.change)?`${x.change>=0?'+':''}${x.change.toFixed(2)}% 24h • `:''}${x.why}</div></div>`}).join(''):'<div class="small">Nenhum ativo atingiu os critérios mínimos agora.</div>')+
  '<div class="small" style="margin-top:7px">Radar informativo: nenhuma ordem é enviada automaticamente e boatos não são usados como gatilho isolado.</div>';
 }
 
@@ -2453,7 +2454,32 @@ radarTechnical=radarTechnicalV5;
 function radarMarketRegimeV5(){const b=radarV5Cache.get('BTC')?.data,e=radarV5Cache.get('ETH')?.data;if(!radarTechFresh(b)||!radarTechFresh(e))return{key:'wait',label:'AGUARDANDO',factor:0};const long=(radarTFVote(b.h4)+radarTFVote(b.d1)+radarTFVote(e.h4)+radarTFVote(e.d1));if(long>=12)return{key:'bull',label:'BULL',factor:7};if(long<=-10)return{key:'bear',label:'BEAR',factor:-18};return{key:'neutral',label:'NEUTRO',factor:0}}
 radarMarketRegime=radarMarketRegimeV5;
 function radarV5Label(n){return n>=88?'SINAL FORTE':n>=76?'COMPRA CONFIRMADA':n>=64?'ENTRADA POSSÍVEL':'OBSERVAR'}
-walletBuySignal=function(rawSymbol){const s=normalizeWalletSymbol(rawSymbol),t=radarV5Cache.get(s)?.data||radarTechCache.get(s)?.data;if(!t?.h4||!radarTechFresh(t))return{label:'OBSERVAR COMPRA',state:'watch',score:0,why:'aguardando confluência V5'};const cfg=radarModeCfg(),reg=radarMarketRegimeV5(),risk=radarRisk(t),score=t.score,plan=radarTradePlanV5(t);const higher=t.h4.structure.key!=='bear'&&t.d1.trend>=0,confirm=t.bull&&higher&&t.m15.adx>=Math.max(16,cfg.adx-3)&&t.m15.vr>=Math.max(.85,cfg.vol-.15)&&risk.score<=cfg.riskMax&&reg.key!=='bear';const details=`Confiança técnica ${score}/100 • ${t.h4.structure.label} 4h • VWAP ${t.m15.vwapPct>=0?'+':''}${t.m15.vwapPct.toFixed(1)}% • força vs BTC ${t.relativeStrength>=0?'+':''}${t.relativeStrength.toFixed(1)} • risco ${risk.label}`;if(!confirm)return{label:'OBSERVAR COMPRA',state:'watch',score,why:details};if(score>=cfg.buy){radarSaveSignal(s,'buy',score,t.m15.last);return{label:score>=Math.max(cfg.strong,86)?'SINAL FORTE DE COMPRA':'COMPRA CONFIRMADA',state:'good',score,why:`${details} • entrada ${plan.entry.toPrecision(6)} • invalidação ${plan.invalidation.toPrecision(6)} • alvos ${plan.targets.map(x=>x.toPrecision(6)).join(' / ')}`}}return{label:'ENTRADA POSSÍVEL',state:'watch',score,why:details}}
+walletBuySignal=function(rawSymbol){
+ const s=normalizeWalletSymbol(rawSymbol),t=radarV5Cache.get(s)?.data||radarTechCache.get(s)?.data;
+ if(!t?.h4||!radarTechFresh(t))return{label:'ANÁLISE PENDENTE',state:'wait',score:null,why:'aguardando confluência V5',technicalReady:false};
+ const cfg=radarModeCfg(),reg=radarMarketRegimeV5(),risk=radarRisk(t),score=Math.round(Number(t.score)||0),plan=radarTradePlanV5(t);
+ const higher=t.h4.structure.key!=='bear'&&t.d1.trend>=0;
+ const hardBlocks=[];
+ const softBlocks=[];
+ if(t.h4.structure.key==='bear')hardBlocks.push('estrutura 4h baixista');
+ if(t.d1.trend<0)hardBlocks.push('tendência 1d desfavorável');
+ if(reg.key==='bear')hardBlocks.push('mercado geral em baixa');
+ if(t.m15.rsi>=72)hardBlocks.push('RSI esticado');
+ if(risk.score>cfg.riskMax)hardBlocks.push('risco elevado');
+ if(t.m15.adx<Math.max(16,cfg.adx-3))softBlocks.push('ADX ainda fraco');
+ if(t.m15.vr<Math.max(.85,cfg.vol-.15))softBlocks.push('volume ainda baixo');
+ const details=`Confiança técnica ${score}/100 • ${t.h4.structure.label} 4h • VWAP ${t.m15.vwapPct>=0?'+':''}${t.m15.vwapPct.toFixed(1)}% • força vs BTC ${t.relativeStrength>=0?'+':''}${t.relativeStrength.toFixed(1)} • risco ${risk.label}`;
+ const confirm=t.bull&&higher&&hardBlocks.length===0&&softBlocks.length===0;
+ if(confirm&&score>=cfg.buy){
+   radarSaveSignal(s,'buy',score,t.m15.last);
+   return{label:score>=Math.max(cfg.strong,86)?'SINAL FORTE DE COMPRA':'COMPRA CONFIRMADA',state:'good',score,technicalReady:true,why:`${details} • entrada ${plan.entry.toPrecision(6)} • invalidação ${plan.invalidation.toPrecision(6)} • alvos ${plan.targets.map(x=>x.toPrecision(6)).join(' / ')}`};
+ }
+ let riskProfile='balanced';try{riskProfile=JSON.parse(localStorage.getItem('crRadarV17Settings')||'{}').riskLevel||'balanced'}catch(e){}
+ const candidateMin=riskProfile==='conservative'?78:riskProfile==='aggressive'?68:72;
+ const candidate=score>=candidateMin&&hardBlocks.length===0&&softBlocks.length<=2;
+ if(candidate)return{label:'CANDIDATA A COMPRA',state:'candidate',score,technicalReady:true,missing:softBlocks,why:`${details}${softBlocks.length?' • falta confirmar: '+softBlocks.join(', '):' • aguardando confirmação final'}`};
+ return{label:hardBlocks.length?'EVITAR ENTRADA AGORA':'OBSERVAR',state:hardBlocks.length?'neutral':'watch',score,technicalReady:true,missing:[...hardBlocks,...softBlocks],why:`${details}${hardBlocks.length?' • bloqueios: '+hardBlocks.join(', '):softBlocks.length?' • falta confirmar: '+softBlocks.join(', '):''}`};
+}
 const walletDirectionV4=walletDirection;walletDirection=function(rawSymbol){const s=normalizeWalletSymbol(rawSymbol),t=radarV5Cache.get(s)?.data;if(!radarTechFresh(t))return walletDirectionV4(rawSymbol);if(t.bear&&t.score<=35){radarSaveSignal(s,'sell',100-t.score,t.m15.last);return{action:'ATENÇÃO PARA VENDA',icon:'🔴',cls:'guide-sell',why:`Baixa confirmada por múltiplos tempos • estrutura ${t.h4.structure.label} • confiança de baixa ${100-t.score}/100`}}const b=walletBuySignal(s);if(b.state==='good')return{action:b.score>=86?'COMPRAR / APORTAR':'ENTRADA CONFIRMADA',icon:'🟢',cls:'guide-buy',why:b.why};return walletDirectionV4(rawSymbol)}
 function radarV5Stats(){const h=radarHistory(),done=h.filter(x=>x.checks?.h24!=null);if(!done.length)return{n:h.length,win:'—',avg:'—',expect:'—'};const ret=done.map(x=>x.kind==='buy'?x.checks.h24:-x.checks.h24),wins=ret.filter(x=>x>0),loss=ret.filter(x=>x<=0),avg=ret.reduce((a,b)=>a+b,0)/ret.length,wr=wins.length/ret.length,aw=wins.length?wins.reduce((a,b)=>a+b,0)/wins.length:0,al=loss.length?Math.abs(loss.reduce((a,b)=>a+b,0)/loss.length):0,ex=wr*aw-(1-wr)*al;return{n:h.length,win:Math.round(wr*100)+'%',avg:(avg>=0?'+':'')+avg.toFixed(2)+'%',expect:(ex>=0?'+':'')+ex.toFixed(2)+'%'}}
 function renderRadarV5(){const box=document.getElementById('radarV5Panel');if(!box)return;const reg=radarMarketRegimeV5(),st=radarV5Stats(),b=radarV5Cache.get('BTC')?.data;box.innerHTML=`<div class="coin">🧠 Radar Pro V5</div><div class="small">Confluência 5m • 15m • 1h • 4h • 1D + estrutura de mercado + VWAP + divergências + força relativa ao BTC.</div><div class="radar-v5-grid"><div class="radar-v5-box"><span class="small">Regime</span><b>${reg.label}</b></div><div class="radar-v5-box"><span class="small">BTC 4h</span><b>${b?.h4?.structure?.label||'—'}</b></div><div class="radar-v5-box"><span class="small">Acerto 24h</span><b>${st.win}</b></div><div class="radar-v5-box"><span class="small">Expectancy 24h</span><b>${st.expect}</b></div></div><div class="small" style="margin-top:8px">${st.n} sinais registrados • retorno médio ${st.avg}. Confiança técnica não é probabilidade nem garantia de retorno.</div>`}
@@ -2486,16 +2512,16 @@ function renderSmartAllocation(){
   const s=String(x.symbol).toUpperCase();let sig={label:'EM ANÁLISE',state:'wait',score:0,why:'Aguardando confluência técnica'};
   try{if(typeof walletBuySignal==='function')sig=walletBuySignal(s)||sig}catch(e){}
   const score=Number(sig.score)||0,label=String(sig.label||'').toUpperCase(),confirmed=sig.state==='good'||/COMPRA CONFIRMADA|SINAL FORTE/.test(label);
-  const pre=!confirmed&&score>=60&&!/AGUARDANDO/.test(label);
-  return {s,action:confirmed?'OPORTUNIDADE CONFIRMADA':pre?'PRÉ-CANDIDATA':'EM ANÁLISE',why:sig.why||('Radar 24h '+(Number(x.change)||0).toFixed(2)+'%'),cls:confirmed?'smart-confirmed':pre?'smart-pre':'smart-analysis',ch:Number(x.change)||0,held:false,confidence:score,confirmed,risk:false,rank:Number(x.score)||0};
- }).sort((a,b)=>(b.confirmed-a.confirmed)||b.confidence-a.confidence||b.rank-a.rank).slice(0,3);
+  const candidate=sig.state==='candidate'||/CANDIDATA A COMPRA/.test(label); const pre=!confirmed&&!candidate&&score>=60&&!/AGUARDANDO|PENDENTE/.test(label);
+  return {s,action:confirmed?'OPORTUNIDADE CONFIRMADA':candidate?'CANDIDATA A COMPRA':pre?'OBSERVAR':'EM ANÁLISE',why:sig.why||('Radar 24h '+(Number(x.change)||0).toFixed(2)+'%'),cls:confirmed?'smart-confirmed':candidate?'smart-pre':pre?'smart-watch':'smart-analysis',ch:Number(x.change)||0,held:false,confidence:score,confirmed,candidate,risk:false,rank:Number(x.score)||0};
+ }).sort((a,b)=>(b.confirmed-a.confirmed)||((b.candidate?1:0)-(a.candidate?1:0))||b.confidence-a.confidence||b.rank-a.rank).slice(0,3);
  const rows=[...heldRows,...extra];
  if(!rows.length){box.innerHTML='<div class="small">Adicione sua carteira para a IA comparar suas posições com o mercado.</div>';return}
- const buys=heldRows.filter(x=>x.confirmed).length,risks=heldRows.filter(x=>x.risk).length,waits=heldRows.length-buys-risks,confirmedOpp=extra.filter(x=>x.confirmed).length;
+ const buys=heldRows.filter(x=>x.confirmed).length,risks=heldRows.filter(x=>x.risk).length,waits=heldRows.length-buys-risks,confirmedOpp=extra.filter(x=>x.confirmed).length,candidateOpp=extra.filter(x=>x.candidate).length;
  const cls=risks?'risk':buys||confirmedOpp?'good':'warn';
  const summary=risks?`⚠️ ${risks} posição(ões) pedem proteção/revisão. A IA bloqueia novos aportes conflitantes.`:
   (buys||confirmedOpp)?`🟢 Há ${buys} posição(ões) da carteira liberadas para aporte e ${confirmedOpp} oportunidade(s) externa(s) confirmada(s).`:
-  `🛡️ Nenhuma compra confirmada agora. ${waits} posição(ões) seguem em espera e o capital novo deve permanecer reservado.`;
+  candidateOpp?`🟡 ${candidateOpp} ativo(s) são CANDIDATAS A COMPRA. Ainda falta confirmação final; não é ordem automática.`:`🛡️ Nenhuma compra confirmada agora. ${waits} posição(ões) seguem em espera e o capital novo deve permanecer reservado.`;
  box.innerHTML='<div class="ai-portfolio-summary '+cls+'"><b>🧠 IA cuidando da carteira</b><br>'+summary+'</div>'+
  rows.map(x=>'<div class="smart-alloc-row"><b>'+x.s+(x.held?'':(x.confirmed?' ⭐':''))+'</b><span class="smart-alloc-action '+x.cls+'">'+x.action+'</span><div class="smart-alloc-meta">'+(x.ch===null?'':((x.ch>=0?'+':'')+x.ch.toFixed(2)+'% 24h • '))+(x.why||'Analisando mercado')+' <span class="ai-confidence">'+x.confidence.toFixed(0)+'/100</span></div></div>').join('')+
  '<div class="small" style="margin-top:8px">A IA usa a mesma decisão para carteira, aporte e oportunidades: sem confirmação técnica, não mostra “aportar” nem “oportunidade confirmada”.</div>';
@@ -3913,6 +3939,26 @@ body{padding-bottom:74px}
 
  setTimeout(()=>{try{renderWalletBuyAlerts();renderSmartAllocation()}catch(e){}},1200);
  setInterval(()=>{try{renderWalletBuyAlerts();renderSmartAllocation()}catch(e){}},4500);
+})();
+</script>
+
+
+<script>
+(function(){
+ const K='crRadarBuildReloadV174';
+ if('serviceWorker' in navigator){
+   navigator.serviceWorker.getRegistration().then(async reg=>{
+     if(!reg)return;
+     try{await reg.update()}catch(e){}
+     if(!sessionStorage.getItem(K)){
+       const waiting=reg.waiting;
+       if(waiting){sessionStorage.setItem(K,'1');waiting.postMessage({type:'SKIP_WAITING'});}
+     }
+   }).catch(()=>{});
+   navigator.serviceWorker.addEventListener('controllerchange',()=>{
+     if(!sessionStorage.getItem(K)){sessionStorage.setItem(K,'1');location.reload()}
+   });
+ }
 })();
 </script>
 

@@ -1,0 +1,11 @@
+CRIPTO RADAR V17.4 - CORREÇÃO DEFINITIVA DO STATUS DE COMPRA
+
+Corrigido diretamente no motor antigo que estava sobrescrevendo as versões novas:
+- A partir da análise V5, um ativo pode ser CANDIDATA A COMPRA.
+- A tela de mercado reconhece CANDIDATA A COMPRA como nível próprio.
+- Movimentação Inteligente não usa mais PRÉ-CANDIDATA.
+- Ordem de níveis:
+  ANÁLISE PENDENTE -> OBSERVAR -> CANDIDATA A COMPRA -> COMPRA CONFIRMADA -> SINAL FORTE
+- APT/NEAR/OP com score alto só ficam fora de CANDIDATA se houver bloqueio real.
+- Badge V17.4 aparece no alto da tela para confirmar que a versão nova carregou.
+- Service Worker atualizado para reduzir risco de tela antiga em cache.
