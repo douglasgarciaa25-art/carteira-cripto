@@ -1,0 +1,10 @@
+CRIPTO RADAR V17.3 - MOTOR DE CANDIDATAS
+
+Correção:
+- Criado nível real CANDIDATA A COMPRA.
+- Perfil conservador: candidato a partir de 78/100.
+- Perfil equilibrado: candidato a partir de 72/100.
+- Perfil agressivo: candidato a partir de 68/100.
+- Um ativo não vira candidato se houver bloqueio duro: estrutura 4h baixista, tendência 1d desfavorável, mercado geral em baixa, RSI esticado ou risco alto.
+- Até dois bloqueios leves ainda permitem status CANDIDATA, mas o app mostra o que falta confirmar.
+- COMPRA CONFIRMADA continua mais rigorosa e não foi afrouxada.
