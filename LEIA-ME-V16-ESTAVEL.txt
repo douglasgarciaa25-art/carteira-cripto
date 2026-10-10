@@ -1,0 +1,8 @@
+CRIPTO RADAR V16 — RECONSTRUÇÃO ESTÁVEL
+
+Base: V15.3 PRO Anual estável.
+Alterações únicas:
+1. Menu de idioma no topo do menu lateral: Automático, Português, English e Español.
+2. Sessão de acesso válida por 1 hora após autenticação, inclusive ao fechar e reabrir o app dentro desse período.
+
+Nenhuma outra parte do motor, push, PRO, carteira ou layout foi alterada.

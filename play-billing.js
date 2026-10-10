@@ -37,7 +37,7 @@ async function loadPrice(){
   try{
     const rows=await service.getDetails([PRODUCT_ID]);
     const item=rows?.find(x=>x.itemId===PRODUCT_ID)||rows?.[0];
-    if(item?.price){const value=Number(item.price.value),lang=window.CriptoRadarI18n?.getLanguage?.()||navigator.language||'pt-BR',price=new Intl.NumberFormat(lang,{style:'currency',currency:item.price.currency}).format(value),suffix=String(lang).toLowerCase().startsWith('en')?'/year':String(lang).toLowerCase().startsWith('es')?'/año':'/ano';document.querySelectorAll('[data-pro-price]').forEach(e=>e.textContent=price+suffix)}
+    if(item?.price){const value=Number(item.price.value);const price=new Intl.NumberFormat(navigator.language||'pt-BR',{style:'currency',currency:item.price.currency}).format(value);document.querySelectorAll('[data-pro-price]').forEach(e=>e.textContent=price+'/ano')}
   }catch(e){}
 }
 async function restore(){

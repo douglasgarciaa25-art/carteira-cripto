@@ -1,0 +1,13 @@
+CRIPTO RADAR V17 — PLAY STORE EDITION • ETAPA 1
+
+Base: V16 limpa reconstruída sobre a V15.3 estável.
+
+Incluído nesta etapa:
+- Início redesenhado com cards claros de Carteira, Mercado, Alertas e IA.
+- Central PRO dedicada comparando Grátis x PRO Anual.
+- Configurações com frequência de alertas, nível de risco, moedas favoritas e idioma.
+- Modo Amador mais limpo e Modo Profissional mais denso.
+- Política de Privacidade, Termos e Aviso Financeiro em destaque.
+- Mantidos: sessão de 1 hora, idiomas, Push 24h, PRO anual, IA, carteira e motores existentes.
+
+Esta etapa NÃO altera ainda a lógica principal de sinais/notificações. O refinamento de alertas, histórico, onboarding e espelhamento fica para a Etapa 2 para reduzir risco de regressão.
