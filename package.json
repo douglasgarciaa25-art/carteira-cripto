@@ -1,7 +1,7 @@
 {
   "name": "cripto-radar",
   "private": true,
-  "version": "17.2.0",
+  "version": "17.0.0",
   "dependencies": {
     "web-push": "^3.6.7"
   }

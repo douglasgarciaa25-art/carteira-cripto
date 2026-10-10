@@ -1,0 +1,28 @@
+CRIPTO RADAR V17.5 - CORREÇÃO LIMPA DAS ANÁLISES
+
+Base: V17.1 estável.
+Não usa camadas V17.2/V17.3/V17.4 sobrepostas.
+
+Estados:
+- ANÁLISE PENDENTE
+- OBSERVAR
+- CANDIDATA A COMPRA
+- COMPRA CONFIRMADA
+- SINAL FORTE DE COMPRA
+- EVITAR ENTRADA
+
+Regras de candidata:
+- Conservador: >=78/100
+- Equilibrado: >=72/100
+- Agressivo: >=68/100
+- Sem bloqueio duro
+- Até 2 bloqueios leves
+
+Bloqueios duros:
+- estrutura 4h baixista
+- tendência 1d desfavorável
+- mercado geral em baixa
+- RSI esticado
+- risco acima do perfil
+
+A tela não usa mais PRÉ-CANDIDATA nem OBSERVAR COMPRA.

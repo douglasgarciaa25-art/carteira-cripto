@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v17.4-final-candidate';
+const CACHE='cripto-radar-v17.5-clean-analysis';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
@@ -151,5 +151,3 @@ self.addEventListener('pushsubscriptionchange',e=>e.waitUntil((async()=>{
   }catch(_){ }
 })()));
 self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(async ws=>{const url=e.notification.data?.url||'./';if(ws[0]){await ws[0].focus();try{ws[0].navigate(url)}catch(_){ }return}return clients.openWindow(url)}))});
-
-self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});
