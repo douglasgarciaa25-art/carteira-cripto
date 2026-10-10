@@ -7,7 +7,7 @@ https://carteira-cripto-pi.vercel.app/api/push-cron
 
 Configuração:
 - Método: GET
-- Frequência: a cada 1 minuto
+- Frequência: a cada 5 minutos
 - Timeout: 60 s
 - Considerar sucesso: HTTP 200
 

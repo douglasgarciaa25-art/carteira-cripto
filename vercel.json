@@ -1,22 +1,6 @@
 {
   "builds": [
     {
-      "src": "i18n.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "play-billing.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "play-verify.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "play-config.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "ai.js",
       "use": "@vercel/node"
     },
@@ -95,29 +79,9 @@
     {
       "src": "badge-96.png",
       "use": "@vercel/static"
-    },
-    {
-      "src": "assetlinks.json",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "privacidade.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "termos.html",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/api/play-config",
-      "dest": "/play-config.js"
-    },
-    {
-      "src": "/api/play-verify",
-      "dest": "/play-verify.js"
-    },
     {
       "src": "/api/ai",
       "dest": "/ai.js"
@@ -153,10 +117,6 @@
     {
       "src": "/api/push-cron",
       "dest": "/push-cron.js"
-    },
-    {
-      "src": "/\\.well-known/assetlinks\\.json",
-      "dest": "/assetlinks.json"
     },
     {
       "src": "/(.*)",

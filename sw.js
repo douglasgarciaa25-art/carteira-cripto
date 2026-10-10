@@ -1,5 +1,5 @@
-const CACHE='cripto-radar-v16-playstore-i18n-20261010-v1';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./i18n.js','./play-billing.js'];
+const CACHE='cripto-radar-v15-webpush-20261008-v1';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
 
