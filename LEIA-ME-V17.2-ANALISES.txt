@@ -1,0 +1,10 @@
+CRIPTO RADAR V17.2 - ANÁLISES REVISADAS
+
+Principais correções:
+- Não exibe mais 0/100 quando a análise técnica ainda não terminou.
+- "Alta forte em 24h" deixou de ser tratada automaticamente como oportunidade de compra.
+- Compra confirmada exige confluência: estrutura 4h, tendência 1d, ADX, volume, RSI, risco e regime de mercado.
+- Mostra motivos positivos e bloqueios do sinal.
+- Movimentação inteligente separa: análise pendente, manter/aguardar, entrada confirmada e revisão/redução.
+- Oportunidades externas só ganham destaque quando a análise técnica estiver pronta.
+- Continua sendo ferramenta informativa, sem execução automática de ordens.

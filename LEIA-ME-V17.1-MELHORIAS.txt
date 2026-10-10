@@ -1,0 +1,9 @@
+Cripto Radar V17.1
+- Home com Central do Radar em 4 cards.
+- Navegação inferior mobile.
+- Onboarding em 4 etapas.
+- Histórico local de alertas e oportunidades.
+- Filtro de notificações conforme a frequência escolhida.
+- Espelhamento marcado claramente como simulação/alerta, sem ordens.
+- Visual mais próximo de app comercial.
+- Mantidos idiomas, sessão de 1 hora, PRO, Push 24h, IA e carteira.
