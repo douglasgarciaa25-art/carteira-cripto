@@ -1,0 +1,52 @@
+CRIPTO RADAR — PACOTE ANDROID / GOOGLE PLAY
+Versão preparada: 15.3.0
+Package ID: br.com.criptoradar.app
+Site/PWA: https://carteira-cripto-pi.vercel.app
+
+POR QUE ESTE PACOTE USA TWA
+O Cripto Radar já é um PWA com Service Worker e Push Web. A Trusted Web Activity (TWA) abre o PWA em tela cheia usando o navegador Android compatível, preservando melhor o comportamento web e as notificações do que um WebView comum.
+
+ARQUIVO FINAL DA PLAY STORE
+O Bubblewrap gera: app-release-bundle.aab
+
+PASSO 1 — PUBLIQUE O ZIP WEB V15.2
+Publique primeiro o pacote "Cripto-Radar-V15.2-Web-PlayStore-Raiz.zip" na Vercel. Ele mantém os arquivos físicos na raiz e inclui a rota obrigatória /.well-known/assetlinks.json apontando para assetlinks.json da raiz.
+
+PASSO 2 — CRIE O APP NO GOOGLE PLAY CONSOLE
+Use o Package ID exatamente como abaixo:
+br.com.criptoradar.app
+Ative o Google Play App Signing.
+
+PASSO 3 — PEGUE O SHA-256 DA CHAVE DE ASSINATURA DO APP
+No Play Console, abra Integridade do app / Assinatura do app e copie o SHA-256 da "chave de assinatura do app".
+ATENÇÃO: não use o SHA-256 da chave de upload.
+
+PASSO 4 — ATUALIZE assetlinks.json
+Substitua a frase SHA256_DO_APP_SIGNING_DO_GOOGLE_PLAY pelo SHA-256 copiado do Play Console e publique novamente o assetlinks.json na raiz.
+A URL pública obrigatória ficará:
+https://carteira-cripto-pi.vercel.app/.well-known/assetlinks.json
+
+PASSO 5 — GERE O AAB
+Windows: execute GERAR-AAB-WINDOWS.bat
+Mac/Linux: execute GERAR-AAB-MAC-LINUX.sh
+Na primeira execução o Bubblewrap pode baixar ferramentas do Android.
+
+IMPORTANTE SOBRE A CHAVE android.keystore
+Ela será sua chave de UPLOAD. Faça backup em local seguro e não publique essa chave no GitHub.
+
+REQUISITO ATUAL DO GOOGLE PLAY
+Este pacote foi preparado para o fluxo do Bubblewrap atual, que gera Android com target SDK 36. Em outubro de 2026, novos apps do Google Play precisam mirar Android 16 / API 36.
+
+PUSH 24H
+O agendador do Supabase continua independente do aplicativo Android. A TWA usa o site HTTPS e o Service Worker do PWA. O usuário ainda precisa permitir notificações no Android.
+
+RECURSOS FINANCEIROS
+O app deve ser descrito como ferramenta informativa/monitoramento. Não prometa lucro. O Cripto Radar não deve ser apresentado como corretora nem como executor de ordens se não houver integração real e licenciada para isso.
+
+
+PRO ANUAL / PLAY BILLING
+Este pacote V15.3 habilita Play Billing no TWA. Configure no Play Console a assinatura cripto_radar_pro_anual com plano básico anual.
+
+
+CRIPTO RADAR V16 • IDIOMAS
+A interface web agora oferece Automático, Português (Brasil), English e Español. A escolha também é enviada ao servidor para notificações Push 24h.

@@ -1,0 +1,39 @@
+CRIPTO RADAR — TEXTO PARA A GOOGLE PLAY
+
+NOME
+Cripto Radar
+
+DESCRIÇÃO CURTA
+Radar de criptoativos com carteira, alertas e análise de mercado.
+
+DESCRIÇÃO COMPLETA
+Cripto Radar reúne acompanhamento de criptoativos, carteira, alertas de mercado e ferramentas de análise em uma interface preparada para uso no celular.
+
+Principais recursos:
+• acompanhamento de cotações e movimentações de mercado;
+• carteira personalizada;
+• alertas e notificações de movimentações relevantes;
+• leitura de tendências e pullbacks;
+• ferramentas de simulação e espelhamento informativo;
+• visão simplificada para usuários iniciantes e visão detalhada para usuários avançados.
+
+Aviso importante: o Cripto Radar é uma ferramenta informativa e de apoio à análise. Não é uma corretora, não custodia criptoativos e não executa ordens de compra ou venda. Sinais, projeções, simulações e alertas não constituem recomendação de investimento e não garantem resultados.
+
+CATEGORIA SUGERIDA
+Finanças
+
+URL DA POLÍTICA DE PRIVACIDADE
+https://carteira-cripto-pi.vercel.app/privacidade.html
+
+URL DOS TERMOS
+https://carteira-cripto-pi.vercel.app/termos.html
+
+SUPORTE
+Definir e-mail oficial antes da publicação.
+
+
+MONETIZAÇÃO — PRO ANUAL
+Plano: Cripto Radar PRO Anual
+Preço sugerido Brasil: R$ 99,90/ano
+Renovação: automática até cancelamento
+Benefícios: IA avançada, Push 24h, sinais PRO, espelhamento e ferramentas profissionais.

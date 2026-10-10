@@ -1,0 +1,53 @@
+CRIPTO RADAR V15.3 — PRO ANUAL / GOOGLE PLAY BILLING
+
+PREÇO DE LANÇAMENTO
+R$ 99,90 por ano no Brasil. O app consulta o preço real no Google Play e exibe o valor da loja quando disponível.
+
+CATÁLOGO NO PLAY CONSOLE
+Assinatura / Product ID: cripto_radar_pro_anual
+Plano básico / Base plan ID: anual
+Tipo: renovação automática
+Período: 1 ano
+Preço Brasil sugerido: R$ 99,90
+
+RECURSOS PRO CONFIGURADOS
+- IA Radar avançada
+- Push 24h
+- Espelhamento Inteligente
+- Alarme Inteligente / sinais PRO
+- Modo Profissional
+- Motor V10/V11
+- Backtest e Paper Trading
+
+GOOGLE PLAY BILLING / TWA
+O twa-manifest.json do pacote Android V15.3 já vem com features.playBilling.enabled=true e alphaDependencies.enabled=true. Depois de gerar/atualizar o projeto Bubblewrap, gere o AAB novamente.
+
+VALIDAÇÃO DE COMPRA NO SERVIDOR
+O arquivo play-verify.js valida a assinatura pela Google Play Developer API e confirma (acknowledge) a compra. Isso é importante porque compras não confirmadas podem ser reembolsadas/revogadas pelo Google.
+
+Na Vercel crie a variável de ambiente:
+GOOGLE_PLAY_SERVICE_ACCOUNT_JSON
+
+Valor: JSON completo da conta de serviço vinculada ao seu Play Console, com acesso à Google Play Developer API e permissão para consultar/gerenciar assinaturas. NÃO coloque esse JSON em arquivo público e NÃO envie para GitHub.
+
+ANTES DE VENDER
+1. Criar o app br.com.criptoradar.app no Play Console.
+2. Ativar Google Play App Signing.
+3. Criar a assinatura e o plano básico acima.
+4. Configurar a conta de comerciante Google Payments.
+5. Vincular a conta de serviço à Google Play Developer API.
+6. Adicionar GOOGLE_PLAY_SERVICE_ACCOUNT_JSON na Vercel.
+7. Atualizar assetlinks.json com o SHA-256 da chave de assinatura do app do Google Play.
+8. Publicar a V15.3 web na Vercel.
+9. Gerar novo AAB do pacote Android V15.3.
+10. Testar usando faixa interna/fechada e conta de testador de licença antes de produção.
+
+OBSERVAÇÃO
+A assinatura é anual e com renovação automática até cancelamento. O app não promete lucro e não executa ordens reais.
+
+PACOTE ANDROID
+Execute bubblewrap update antes de bubblewrap build para aplicar a flag playBilling do twa-manifest.json.
+
+
+CRIPTO RADAR V16 • IDIOMAS
+A interface web agora oferece Automático, Português (Brasil), English e Español. A escolha também é enviada ao servidor para notificações Push 24h.

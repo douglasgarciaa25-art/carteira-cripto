@@ -1,0 +1,18 @@
+CHECKLIST GOOGLE PLAY — CRIPTO RADAR
+
+[ ] Publicar V15.2 Web Play Store na Vercel
+[ ] Confirmar https://carteira-cripto-pi.vercel.app/manifest.webmanifest
+[ ] Confirmar https://carteira-cripto-pi.vercel.app/privacidade.html
+[ ] Confirmar https://carteira-cripto-pi.vercel.app/termos.html
+[ ] Criar app no Play Console com package br.com.criptoradar.app
+[ ] Ativar Play App Signing
+[ ] Copiar SHA-256 da chave de assinatura do app
+[ ] Atualizar assetlinks.json e republicar
+[ ] Confirmar /.well-known/assetlinks.json
+[ ] Gerar app-release-bundle.aab
+[ ] Enviar AAB para teste fechado
+[ ] Preencher Segurança de dados
+[ ] Preencher Declaração de recursos financeiros
+[ ] Preencher classificação etária
+[ ] Adicionar ícone, screenshots e gráfico de destaque
+[ ] Configurar preço/assinatura antes do lançamento comercial

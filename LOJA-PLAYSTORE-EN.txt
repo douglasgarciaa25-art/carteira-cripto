@@ -1,0 +1,11 @@
+Name: Cripto Radar
+Short description: Portfolio, market, alerts and AI tools to monitor crypto assets in real time.
+
+Description:
+Cripto Radar brings together portfolio tracking, market data, alerts, AI, technical signals and monitoring tools in a simple or professional interface.
+
+Features include 24h Push alerts, opportunity analysis, portfolio import from screenshots, Smart Mirroring in informational/simulation mode, history, backtesting and Paper Trading depending on the available plan.
+
+Languages: Portuguese (Brazil), English and Spanish, with automatic device-language selection.
+
+Cripto Radar is an informational and educational tool. It does not execute buy or sell orders and does not guarantee profit, returns or financial results.

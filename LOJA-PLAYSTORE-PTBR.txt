@@ -1,0 +1,11 @@
+Nome: Cripto Radar
+Descrição curta: Carteira, mercado, alertas e IA para acompanhar criptoativos em tempo real.
+
+Descrição:
+Cripto Radar reúne carteira, mercado, alertas, IA, sinais técnicos e ferramentas de acompanhamento em uma interface simples ou profissional.
+
+Recursos incluem alertas Push 24h, análise de oportunidades, carteira por print, Espelhamento Inteligente em modo informativo/simulado, histórico, backtest e Paper Trading conforme o plano disponível.
+
+Idiomas: Português (Brasil), English e Español, com seleção automática pelo aparelho.
+
+O Cripto Radar é uma ferramenta informativa e educacional. Não executa ordens de compra ou venda e não garante lucro, retorno ou resultado financeiro.

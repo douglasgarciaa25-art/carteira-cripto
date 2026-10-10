@@ -1,0 +1,46 @@
+{
+  "packageId": "br.com.criptoradar.app",
+  "host": "carteira-cripto-pi.vercel.app",
+  "name": "Cripto Radar",
+  "launcherName": "Cripto Radar",
+  "display": "standalone",
+  "themeColor": "#0b1220",
+  "themeColorDark": "#07101d",
+  "navigationColor": "#07101d",
+  "navigationColorDark": "#07101d",
+  "navigationDividerColor": "#07101d",
+  "navigationDividerColorDark": "#07101d",
+  "backgroundColor": "#07101d",
+  "enableNotifications": true,
+  "startUrl": "/?source=playstore",
+  "iconUrl": "https://carteira-cripto-pi.vercel.app/icon-512.png",
+  "maskableIconUrl": "https://carteira-cripto-pi.vercel.app/icon-512.png",
+  "monochromeIconUrl": "https://carteira-cripto-pi.vercel.app/notification-icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "criptoradar"
+  },
+  "appVersionCode": 16000,
+  "appVersion": "16.0.0",
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://carteira-cripto-pi.vercel.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "playBilling": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": true
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://carteira-cripto-pi.vercel.app/",
+  "minSdkVersion": 23,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": []
+}

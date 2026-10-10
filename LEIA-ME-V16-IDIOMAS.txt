@@ -1,0 +1,20 @@
+CRIPTO RADAR V16 • PLAY STORE EDITION
+
+Idiomas disponíveis:
+- Automático: usa o idioma do aparelho quando for Português, Inglês ou Espanhol.
+- Português (Brasil)
+- English
+- Español
+
+Onde trocar:
+Menu ☰ > Idioma do aplicativo.
+Também aparece no primeiro acesso antes da escolha Amador/Profissional.
+
+A escolha fica salva neste aparelho. A interface principal e as notificações Push 24h do servidor respeitam o idioma selecionado. Termos financeiros universais, nomes de moedas e indicadores técnicos podem permanecer no formato original.
+
+Outras melhorias desta edição:
+- Identificação V16 / Play Store Edition.
+- Integração do idioma com o preço anual exibido pelo Google Play Billing.
+- Idioma enviado ao servidor junto da inscrição do Push 24h.
+- Notificações de teste, movimentos rápidos, movimentos fortes e pullback em PT-BR, EN ou ES.
+- Arquivo i18n.js em raiz, compatível com a preferência de manter o projeto sem pastas.
