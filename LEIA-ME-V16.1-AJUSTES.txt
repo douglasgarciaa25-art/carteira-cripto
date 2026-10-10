@@ -1,0 +1,11 @@
+CRIPTO RADAR V16.1 — AJUSTES SOLICITADOS
+
+1. Idioma
+- O seletor de idioma foi movido para o topo do menu lateral (☰), ficando visível assim que o menu abre.
+- Opções: Automático, Português (Brasil), English e Español.
+
+2. Segurança / senha
+- A sessão permanece liberada por 1 hora após a autenticação/última atividade.
+- Fechar e reabrir o app dentro desse período não pede senha novamente.
+- Depois de 1 hora sem atividade, a senha volta a ser solicitada.
+- O botão “Bloquear aplicativo agora” continua bloqueando imediatamente.

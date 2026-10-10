@@ -44,10 +44,3 @@ ANTES DE VENDER
 
 OBSERVAÇÃO
 A assinatura é anual e com renovação automática até cancelamento. O app não promete lucro e não executa ordens reais.
-
-PACOTE ANDROID
-Execute bubblewrap update antes de bubblewrap build para aplicar a flag playBilling do twa-manifest.json.
-
-
-CRIPTO RADAR V16 • IDIOMAS
-A interface web agora oferece Automático, Português (Brasil), English e Español. A escolha também é enviada ao servidor para notificações Push 24h.

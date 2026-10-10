@@ -1,6 +1,8 @@
 {
-  "name":"cripto-radar",
-  "private":true,
-  "version":"15.0.0",
-  "dependencies":{"web-push":"^3.6.7"}
+  "name": "cripto-radar",
+  "private": true,
+  "version": "16.0.0",
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
 }

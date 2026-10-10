@@ -7,14 +7,14 @@ COMO FUNCIONA
 - As inscrições ficam no KV já conectado ao projeto da Vercel.
 - O endpoint /api/push-cron faz a varredura de mercado no servidor e envia os Push.
 - Para continuar funcionando com o app fechado/celular bloqueado, um agendador externo deve chamar esse endpoint periodicamente.
-- Recomendado: GET a cada 5 minutos.
+- Recomendado: GET a cada 1 minuto.
 
 ENDPOINT DO SEU PROJETO
 https://carteira-cripto-pi.vercel.app/api/push-cron
 
 CONFIGURAÇÃO DO AGENDADOR EXTERNO
 Método: GET
-Intervalo: 5 minutos
+Intervalo: 1 minuto
 URL: https://carteira-cripto-pi.vercel.app/api/push-cron
 Status esperado: HTTP 200
 Timeout recomendado: 60 segundos
@@ -26,12 +26,12 @@ TESTE
 4. Toque em TESTAR PUSH para validar o canal servidor -> Android.
 5. Configure o agendador externo com a URL acima.
 6. Toque em TESTAR BLOQUEADO, feche o app e bloqueie o celular.
-7. Na próxima chamada do agendador (~5 min), o teste deve chegar.
+7. Na próxima chamada do agendador (~1 min), o teste deve chegar.
 
 O app também mostra a idade da última varredura do servidor. Se aparecer “aguardando agendador externo”, o endpoint ainda não foi chamado.
 
 OBSERVAÇÕES
 - O Android precisa permitir notificações para o navegador/PWA.
 - Economia extrema de bateria e Não Perturbe podem atrasar ou ocultar notificações.
-- O intervalo de 5 minutos depende do serviço externo escolhido e não é tempo real absoluto.
+- O intervalo de 1 minuto depende do serviço externo escolhido e não é tempo real absoluto.
 - Alertas são informativos e não garantem resultado financeiro.
