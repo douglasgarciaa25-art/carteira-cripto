@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.0 • Interface Pro Multilíngue</title>
+<title>Cripto Radar V19.1 • Interface Pro Responsiva</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -655,8 +655,6 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <link rel="stylesheet" href="./alerts-center.css">
 </head>
 <body>
-<div id="v18VersionBadge">V19.0 • DESIGN PRO</div>
-<div id="v175VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#10263f;border:1px solid #3b6d9d;color:#cde5ff;font-size:8px;font-weight:950;letter-spacing:.5px">V19.0</div>
 
 <div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
   <div class="security-shell">
@@ -694,7 +692,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V17.1 • PLAY STORE EDITION</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.1 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -762,7 +760,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL</div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.1">V19.1</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1120,10 +1118,10 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 <section class="card" id="aporteCard">
   <div class="coin">💰 Simulador de aporte</div>
-  <div class="small">Digite o valor que pretende aportar. A Central V18 compara carteira, mercado, risco e timing e monta cenários conservador, equilibrado e agressivo.</div>
-  <div style="display:flex;gap:8px;margin-top:12px">
-    <input id="aporte" type="number" value="100" min="1" inputmode="decimal" style="flex:1;border:1px solid var(--line);background:#0b1525;color:#fff;border-radius:12px;padding:11px;font-size:16px">
-    <button type="button" onclick="window.CriptoRadarMarketIntelligence?.render()">Analisar aporte</button>
+  <div class="small">Informe quanto deseja investir. O Radar compara sua carteira, o mercado e os riscos para simular cenários conservador, equilibrado e agressivo.</div>
+  <div class="cr191-aporte-form" role="group" aria-label="Simular aporte">
+    <label class="cr191-aporte-input" for="aporte"><span>Valor do novo aporte (R$)</span><input id="aporte" type="number" value="100" min="1" step="0.01" inputmode="decimal" aria-label="Valor do aporte em reais"></label>
+    <button id="cr191AnalyzeAporte" class="cr191-aporte-btn" type="button" onclick="window.CriptoRadarMarketIntelligence?.render(); document.getElementById('marketIntelligenceCard')?.scrollIntoView({behavior:'smooth',block:'start'})"><span aria-hidden="true">↗</span> Analisar aporte</button>
   </div>
   <div id="allocation" style="display:none"></div>
   <div id="smartAllocation" class="smart-allocation" style="display:none">
@@ -4235,4 +4233,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 </script>
 
 <link rel="stylesheet" href="./design-v190.css?v=1901">
+<link rel="stylesheet" href="./layout-v191.css?v=1912">
 </body></html>

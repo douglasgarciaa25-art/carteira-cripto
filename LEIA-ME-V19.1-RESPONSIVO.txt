@@ -1,0 +1,18 @@
+CRIPTO RADAR V19.1 — CORREÇÃO REAL DO LAYOUT MOBILE
+
+BASE: Cripto Radar V19.0 original completo, sem remover recursos.
+
+CORREÇÕES:
+1. Simulador: grid responsivo, campo com min-width:0 e botão de largura adequada, sem texto vertical ou quebrado.
+2. Duplicação dos selos de versão: removidos dois elementos fixos sobre o conteúdo; versão unificada e discreta na barra de ferramentas.
+3. Painel de hoje: grade de 2 colunas em celular, textos legíveis e cartões mais compactos.
+4. Navegação inferior: espaços de toque confortáveis, conteúdo com margem inferior para rolagem até o final.
+5. Nova folha layout-v191.css carregada DEPOIS do tema antigo, sem modificar regras de trading ou autenticação.
+6. Cache do service worker incrementado, evitando reaproveitar layout antigo; versão do pacote 19.1.
+7. Idiomas PT/EN/ES e acesso do desenvolvedor da versão anterior preservados.
+
+INSTALAÇÃO: extraia e envie TODOS os arquivos deste ZIP para a RAIZ do repositório GitHub e substitua os antigos. Não crie pasta api. O arquivo layout-v191.css deve estar na raiz junto do index.html.
+VERCEL: a rota e build de layout-v191.css foram adicionadas ao vercel.json.
+IMPORTANTE: NÃO apague todos os dados do site sem exportar a carteira. Senhas, posições e preferências são armazenadas no navegador. Para obter a interface nova, atualize o site ou feche/reabra o PWA.
+
+Sem execução automática de ordens; sinais e classificações continuam informativos.

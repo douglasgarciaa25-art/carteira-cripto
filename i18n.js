@@ -80,6 +80,23 @@
     }
   };
 
+  // V19.1: strings do novo formulário responsivo de aporte.
+  Object.assign(STRINGS.en, {
+    'Analisar aporte':'Analyze contribution',
+    'Valor do novo aporte (R$)':'New contribution amount (BRL)',
+    'Valor do aporte em reais':'Contribution amount in BRL',
+    'Simular aporte':'Simulate contribution',
+    '💰 Simulador de aporte':'💰 Contribution simulator',
+    'Informe quanto deseja investir. O Radar compara sua carteira, o mercado e os riscos para simular cenários conservador, equilibrado e agressivo.':'Enter how much you want to invest. Radar compares your portfolio, the market and risks to simulate conservative, balanced and aggressive scenarios.'
+  });
+  Object.assign(STRINGS.es, {
+    'Analisar aporte':'Analizar aporte',
+    'Valor do novo aporte (R$)':'Importe del nuevo aporte (BRL)',
+    'Valor do aporte em reais':'Importe del aporte en reales',
+    'Simular aporte':'Simular aporte',
+    '💰 Simulador de aporte':'💰 Simulador de aportes',
+    'Informe quanto deseja investir. O Radar compara sua carteira, o mercado e os riscos para simular cenários conservador, equilibrado e agressivo.':'Introduce cuánto quieres invertir. Radar compara tu cartera, el mercado y los riesgos para simular escenarios conservadores, equilibrados y agresivos.'
+  });
   const FALLBACK={
     en:[['Aguardando','Waiting'],['Carregando','Loading'],['Buscando','Searching'],['Iniciando','Starting'],['Atualizando','Updating'],['Atualizado','Updated'],['Falha ao','Failed to'],['Falha no','Failure in'],['Nenhum sinal confirmado agora.','No confirmed signal right now.'],['Capital detectado para simulação.','Capital detected for simulation.'],['Entrada','Entry'],['Alvo','Target'],['Risco no stop','Stop risk'],['Projeção no alvo','Target projection'],['Exposição','Exposure'],['Valor proporcional','Proportional amount'],['Risco efetivo','Effective risk'],['Risco : retorno','Risk : reward'],['possível continuação da alta','possible bullish continuation'],['possível continuação da baixa','possible bearish continuation'],['sinal técnico','technical signal'],['mercado indisponível','market unavailable']],
     es:[['Aguardando','Esperando'],['Carregando','Cargando'],['Buscando','Buscando'],['Iniciando','Iniciando'],['Atualizando','Actualizando'],['Atualizado','Actualizado'],['Falha ao','Error al'],['Falha no','Error en'],['Nenhum sinal confirmado agora.','No hay señal confirmada ahora.'],['Capital detectado para simulação.','Capital detectado para simulación.'],['Entrada','Entrada'],['Alvo','Objetivo'],['Risco no stop','Riesgo en stop'],['Projeção no alvo','Proyección al objetivo'],['Exposição','Exposición'],['Valor proporcional','Valor proporcional'],['Risco efetivo','Riesgo efectivo'],['Risco : retorno','Riesgo : retorno'],['possível continuação da alta','posible continuación alcista'],['possível continuação da baixa','posible continuación bajista'],['sinal técnico','señal técnica'],['mercado indisponível','mercado no disponible']]

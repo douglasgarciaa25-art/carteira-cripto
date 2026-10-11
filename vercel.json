@@ -1,6 +1,10 @@
 {
   "builds": [
     {
+      "src": "layout-v191.css",
+      "use": "@vercel/static"
+    },
+    {
       "src": "design-v190.css",
       "use": "@vercel/static"
     },
