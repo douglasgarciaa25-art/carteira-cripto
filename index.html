@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V18.7 • Confirmação Convergente</title>
+<title>Cripto Radar V18.8 • Confirmação Convergente</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -797,6 +797,13 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 
 <section class="card v17-pro-hero" id="proCenterCard">
+  <div class="dev-owner-card" id="developerLicenseCard">
+  <details><summary>🔐 Sou o desenvolvedor — liberar meu PRO</summary>
+  <p class="small">A licença do criador é gratuita e não realiza compra pela Google Play. Necessita da chave segura configurada no Vercel.</p>
+  <div class="dev-owner-form"><input type="password" id="ownerAccessCode" minlength="24" maxlength="256" autocomplete="off" placeholder="Chave exclusiva de desenvolvedor" aria-label="Chave do desenvolvedor"><button type="button" id="ownerAccessBtn">ATIVAR PRO</button></div>
+  <div id="ownerAccessStatus" class="pro-billing-status">Verificando licença…</div>
+</details></div>
+
   <div class="v17-section-kicker">CRIPTO RADAR PRO</div>
   <div class="v17-title">Escolha o nível certo para você</div>
   <div class="v17-muted">Comece com os recursos essenciais e desbloqueie ferramentas avançadas quando precisar de mais profundidade.</div>
@@ -3651,6 +3658,15 @@ window.v8RunBacktest=run;
 </script>
 
 <script src="./i18n.js"></script>
+<style>
+.dev-owner-card{margin:12px 0 18px;padding:13px;border:1px solid #315d75;border-radius:15px;background:#0b2233;color:#e4efff}
+.dev-owner-card summary{cursor:pointer;font-weight:800;list-style:revert}.dev-owner-card p{line-height:1.5}
+.dev-owner-form{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dev-owner-form input{flex:1 1 180px;min-width:0;padding:11px 12px;color:#fff;background:#081525;border:1px solid #345373;border-radius:10px}
+.dev-owner-form button{flex:0 0 auto;padding:10px 13px;background:#147b60}
+body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';color:#7fe6b4;font-size:12px;vertical-align:middle}
+</style>
+
 <script src="./play-billing.js"></script>
 
 <script>

@@ -1,0 +1,31 @@
+CRIPTO RADAR V18.8 — LICENÇA DO CRIADOR (SEM COBRANÇA)
+
+O QUE MUDOU
+- Desenvolvedor pode ativar licença PRO sem passar pela compra da Google Play.
+- Recursos avançados são liberados apenas após a chave ser conferida pelo servidor Vercel.
+- Os demais usuários continuam com os planos de assinatura originais.
+- A chave de ativação e o segredo das sessões NÃO são expostos no HTML, JavaScript público nem ZIP.
+- Licença é verificada por cookie HttpOnly assinado (duração de 365 dias no aparelho; renovável gratuitamente com a chave).
+
+ANTES DE ATIVAR (UMA VEZ)
+1) Publique TODOS os arquivos deste ZIP na RAIZ do repositório GitHub (sem pasta api).
+2) No Vercel, abra o projeto carteira-cripto > Settings > Environment Variables.
+3) Crie duas variáveis de ambiente para Production:
+   RADAR_OWNER_ACCESS_CODE = uma sequência aleatória exclusiva com ao menos 24 caracteres.
+   RADAR_OWNER_SESSION_SECRET = outra sequência aleatória diferente, com ao menos 32 caracteres.
+   Gere ambas com gerenciador de senhas confiável. NÃO comite essas chaves no GitHub.
+4) Faça REDEPLOY para que as variáveis entrem em vigor.
+5) Abra o app > Menu > PRO Anual > "Sou o desenvolvedor — liberar meu PRO".
+6) Digite o RADAR_OWNER_ACCESS_CODE e toque em "ATIVAR PRO".
+7) O aplicativo será recarregado e mostrará DESENVOLVEDOR • PRO. Não cobrará Google Play.
+
+IMPORTANTE
+- A conta atual do Radar é local ao navegador, sem autenticação central de usuário.
+  Por isso identificar o criador apenas pelo nome de usuário não é seguro.
+- A licença é por aparelho/navegador. Ao trocar de celular ou apagar os cookies, digite a chave novamente.
+- Não use uma chave curta, como '123456', ou coloque a chave na URL, no código ou em mensagens públicas.
+- Sem configurar as chaves no Vercel, o acesso de desenvolvedor NÃO será ativado.
+- Os outros usuários continuam sujeitos à assinatura PRO.
+- O acesso PRO não altera a plataforma Google Play nem possíveis cobranças antigas já existentes.
+- Recursos de push 24h continuam dependentes das configurações do servidor e do dispositivo.
+- Este ZIP contém o projeto web; não é um APK instalável.
