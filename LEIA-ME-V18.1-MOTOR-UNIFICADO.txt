@@ -1,0 +1,17 @@
+CRIPTO RADAR V18.1 — MOTOR UNIFICADO
+
+Correções:
+- V10 e V11 passam a usar o mesmo CriptoRadarMarketIntelligence.scoreAsset() do V18.
+- Score 0/100 deixou de significar "sem dados": agora aparece ANÁLISE PENDENTE / —.
+- Ranking V11 mostra:
+  tendência, momentum, liquidez, timing e risco.
+- Estados unificados:
+  ANÁLISE PENDENTE
+  OBSERVAR
+  CANDIDATA A COMPRA
+  COMPRA CONFIRMADA
+  SINAL FORTE
+  EVITAR ENTRADA
+- V10 mostra candidata separadamente de compra confirmada.
+- O botão de operação teste saiu da tela principal e foi colocado dentro de Diagnóstico.
+- Paper Trading e validação de sinais só capturam sinal confirmado, não candidata.
