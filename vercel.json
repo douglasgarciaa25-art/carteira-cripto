@@ -1,6 +1,18 @@
 {
   "builds": [
     {
+      "src": "design-v190.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "wallet-dashboard.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "i18n.js",
+      "use": "@vercel/static"
+    },
+    {
       "src": "alerts-center.js",
       "use": "@vercel/static"
     },

@@ -1,0 +1,21 @@
+CRIPTO RADAR V19.0 — DESIGN PRO + IDIOMAS FUNCIONAIS
+
+O PROJETO COMPLETO está neste pacote: extraia todos os arquivos para a RAIZ do repositório GitHub (sem pasta api).
+
+DIAGNÓSTICO E CORREÇÃO:
+- O i18n.js existia, mas estava ausente do campo builds do vercel.json (que usa builds explícitos). Portanto, o seletor de idioma podia aparecer mas o módulo de tradução não era publicado.
+- wallet-dashboard.js também não constava de builds, então o painel novo de carteira podia não carregar em produção.
+- Os dois foram adicionados ao vercel.json, bem como design-v190.css.
+- SW atualizado para versão cripto-radar-v19.0-layout-i18n, incluindo todos os três arquivos no precache.
+- Idioma PT / EN / ES com preferência local e seletor rápido na barra superior, no menu e em Configurações.
+- Tradução amplificada para alertas V18.9 e carteira V18.7; mensagens livres ou de APIs externas podem permanecer no idioma original.
+- Polimento visual: cartões, tipografia, hierarquia, telas menores, navegação inferior única, gráfico de carteira, alertas e campos.
+
+TESTE APÓS PUBLICAR:
+1) Abra o site pelo Chrome e atualize a página. Se estiver instalado como aplicativo, feche e abra novamente.
+2) No topo, altere o idioma para English; verifique Menu, Portfolio/Carteira e Alert Center/Alertas.
+3) Volte para Português e verifique a carteira com seus ativos e alertas.
+4) Se não atualizar, nas configurações do Chrome remova APENAS os dados em cache do site; dados locais da carteira e login podem ser apagados se limpar todos os dados, então faça backup antes.
+5) As notificações em segundo plano dependem do servidor, autorizações e configuração Vercel. O ZIP não garante entrega de Push quando app fechado.
+
+Observação: sinais são informativos, não executam ordens e não garantem lucros.
