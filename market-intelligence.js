@@ -158,14 +158,24 @@ function scoreAsset(symbol){
 
   const severe=blocks.length>0;
   let status='watch', statusLabel='OBSERVAR';
-  if(!severe && blended>=86 && trend>=72 && momentum>=65 && liquidity>=58 && timing>=52){
+  const structureBull = t.h4?.structure?.key==='bull';
+  const mixedStructure = !structureBull && t.h4?.structure?.key!=='bear';
+  const extended24h = change>=12;
+  const stretched = rsi>=72 || vwap>8 || extended24h;
+  if(!severe && blended>=90 && structureBull && trend>=72 && momentum>=65 && liquidity>=58 && timing>=52 && !stretched){
     status='strong';statusLabel='SINAL FORTE';
-  }else if(!severe && blended>=80 && trend>=65 && momentum>=58 && timing>=45){
+  }else if(!severe && blended>=85 && structureBull && trend>=62 && momentum>=55 && timing>=42 && riskScore<72 && !stretched){
     status='confirmed';statusLabel='COMPRA CONFIRMADA';
-  }else if(!severe && blended>=70 && trend>=55 && riskScore<72){
+  }else if(!severe && blended>=70 && trend>=50 && riskScore<72){
     status='candidate';statusLabel='CANDIDATA A COMPRA';
   }else if(severe || blended<48){
     status='avoid';statusLabel='EVITAR ENTRADA';
+  }
+  if(mixedStructure && blended>=85 && status==='candidate'){
+    cautions.push('estrutura 4h ainda mista; falta confirmação');
+  }
+  if(extended24h && blended>=85){
+    cautions.push('movimento 24h já avançado; evitar perseguir preço');
   }
 
   return {

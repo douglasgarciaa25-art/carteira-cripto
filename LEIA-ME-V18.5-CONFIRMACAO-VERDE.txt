@@ -1,0 +1,14 @@
+CRIPTO RADAR V18.5 — CONFIRMAÇÃO VERDE
+
+Nova regra:
+- 90+ + estrutura 4h favorável + sem bloqueio/esticamento -> SINAL FORTE.
+- 85+ + estrutura 4h favorável + risco/timing aceitáveis -> COMPRA CONFIRMADA (verde).
+- 70+ -> CANDIDATA A COMPRA (amarelo).
+- Estrutura 4h mista não vira verde só por score alto.
+- Alta 24h >=12%, RSI >=72 ou VWAP muito distante impedem confirmação automática.
+- Estrutura baixista, mercado defensivo forte ou risco alto continuam bloqueando.
+
+Exemplo:
+- BAT 89/100 + HH/HL 4h + timing saudável -> COMPRA CONFIRMADA.
+- AERO 87/100 + estrutura 4h MISTA -> CANDIDATA A COMPRA.
+- RLC 100/100 + HH/HL 4h, mas muito esticado -> pode permanecer CANDIDATA.
