@@ -68,8 +68,10 @@ let voiceAuto=localStorage.getItem('aiRadarVoice')!=='off';
 function speak(t){
  if(!('speechSynthesis' in window)||!voiceAuto||!t)return;
  speechSynthesis.cancel();
- const u=new SpeechSynthesisUtterance(String(t).replace(/%/g,' por cento '));u.lang='pt-BR';u.rate=.98;u.pitch=1;
- const vs=speechSynthesis.getVoices();u.voice=vs.find(v=>/^pt-BR/i.test(v.lang))||vs.find(v=>/^pt/i.test(v.lang))||null;speechSynthesis.speak(u);
+ const lang=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';const spoken=window.CriptoRadarI18n?.translate?.(String(t))||String(t);
+ const percentWord=lang==='en'?' percent ':lang==='es'?' por ciento ':' por cento ';
+ const u=new SpeechSynthesisUtterance(spoken.replace(/%/g,percentWord));u.lang=lang;u.rate=.98;u.pitch=1;
+ const vs=speechSynthesis.getVoices();const base=lang.split('-')[0];u.voice=vs.find(v=>v.lang.toLowerCase()===lang.toLowerCase())||vs.find(v=>v.lang.toLowerCase().startsWith(base))||null;speechSynthesis.speak(u);
 }
 function addVoiceControls(){
  const inp=document.getElementById('aiQuestion'),askBtn=document.getElementById('aiAsk');
@@ -80,9 +82,10 @@ function addVoiceControls(){
  [mic,audio].forEach(x=>x.style.cssText='padding:10px 12px;border-radius:10px;cursor:pointer');wrap.append(mic,audio);(askBtn?.parentElement||inp.parentElement).appendChild(wrap);
  audio.onclick=()=>{voiceAuto=!voiceAuto;localStorage.setItem('aiRadarVoice',voiceAuto?'on':'off');audio.textContent=voiceAuto?'🔊 Voz ligada':'🔇 Voz desligada';if(!voiceAuto&&'speechSynthesis'in window)speechSynthesis.cancel()};
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){mic.disabled=true;mic.textContent='🎙️ Voz não suportada';return}
- const rec=new SR();rec.lang='pt-BR';rec.interimResults=false;rec.maxAlternatives=1;
+ const rec=new SR();rec.lang=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';rec.interimResults=false;rec.maxAlternatives=1;
  rec.onstart=()=>mic.textContent='🔴 Ouvindo…';rec.onend=()=>mic.textContent='🎙️ Falar';rec.onerror=()=>mic.textContent='🎙️ Falar';
- rec.onresult=e=>{const q=e.results?.[0]?.[0]?.transcript||'';if(q){inp.value=q;ask(q,false)}};mic.onclick=()=>{try{if('speechSynthesis'in window)speechSynthesis.cancel();rec.start()}catch(e){}};
+ window.addEventListener('criptoradar:languagechange',()=>{rec.lang=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';if('speechSynthesis' in window)speechSynthesis.cancel();});
+ rec.onresult=e=>{const q=e.results?.[0]?.[0]?.transcript||'';if(q){inp.value=q;ask(q,false)}};mic.onclick=()=>{try{if('speechSynthesis'in window)speechSynthesis.cancel();rec.lang=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';rec.start()}catch(e){}};
 }
 function init(){
  const b=document.getElementById('aiAsk'),i=document.getElementById('aiQuestion');if(i)i.placeholder='Pergunte sobre mercado, uma moeda ou sua carteira…';

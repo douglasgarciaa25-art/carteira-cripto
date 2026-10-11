@@ -7,7 +7,7 @@ module.exports=async(req,res)=>{
     const b=typeof req.body==='string'?JSON.parse(req.body):req.body||{};if(!b.subscription?.endpoint)return res.status(400).json({ok:false,error:'Subscription inválida'});
     await ensureVapid();
     const payload={subscription:b.subscription,userAgent:String(req.headers['user-agent']||'').slice(0,300),lastSeenAt:new Date().toISOString()};
-    if(b.context!==undefined)payload.context=b.context||{};if(b.mirror!==undefined)payload.mirror=b.mirror||{};if(b.prefs!==undefined)payload.prefs=b.prefs||{};if(b.pendingLockedTest!==undefined)payload.pendingLockedTest=!!b.pendingLockedTest;
+    if(b.context!==undefined)payload.context=b.context||{};if(b.mirror!==undefined)payload.mirror=b.mirror||{};if(b.prefs!==undefined)payload.prefs=b.prefs||{};if(b.language!==undefined)payload.language=['pt-BR','en','es'].includes(b.language)?b.language:'pt-BR';if(b.pendingLockedTest!==undefined)payload.pendingLockedTest=!!b.pendingLockedTest;
     const rec=await saveSubscription(payload);
     return res.status(200).json({ok:true,id:rec.id,pendingLockedTest:!!rec.pendingLockedTest});
   }catch(e){return res.status(500).json({ok:false,error:String(e?.message||e)});}

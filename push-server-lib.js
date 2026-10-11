@@ -54,10 +54,23 @@ async function listSubscriptions(){
   for(const id of ids){const x=await getSubscription(id);if(x?.subscription?.endpoint)out.push(x);else await kv(['SREM',SUB_SET,id]).catch(()=>{})}
   return out;
 }
+
+// User-visible market events are localized on the server: push works even with the app closed.
+const PUSH_TEXT={
+ en:[['Teste automático recebido pelo servidor. Se você viu esta mensagem com o app fechado ou a tela bloqueada, o Push 24h está funcionando.','Automated test received. If this arrived while the app was closed or the screen locked, 24h Push is working.'],['Cripto Radar • tela bloqueada','Cripto Radar • locked screen'],['Movimento rápido:','Rapid move:'],['Queda rápida:','Rapid drop:'],['Movimento relevante:','Significant move:'],['Atenção no mercado:','Market alert:'],['desde a última varredura','since last scan'],['em 24h','over 24h'],['liquidez','liquidity'],['perfil','profile'],['Falha de pullback:','Failed pullback:'],['Confluência detectada pelo motor V18','Technical alignment detected by V18'],['Candidata técnica','Technical candidate'],['score técnico','technical score'],['nível','level'],['preço','price'],['possível continuação da alta','possible continuation higher'],['possível continuação da baixa','possible continuation lower'],['simulação','simulation'],['risco','risk'],['alvo técnico','technical target'],['Espelhamento:','Mirroring:'],['ALTA','UP'],['BAIXA','DOWN'],['SINAL FORTE DE COMPRA','STRONG BUY SIGNAL'],['COMPRA CONFIRMADA','CONFIRMED BUY'],['CANDIDATA A COMPRA','BUY CANDIDATE'],['Aguardando confirmação','Waiting for confirmation'],['mercado geral em baixa','broader market bearish'],['volume ainda baixo','volume remains low']],
+ es:[['Teste automático recebido pelo servidor. Se você viu esta mensagem com o app fechado ou a tela bloqueada, o Push 24h está funcionando.','Prueba automática recibida. Si llegó con la app cerrada o la pantalla bloqueada, Push 24 h funciona.'],['Cripto Radar • tela bloqueada','Cripto Radar • pantalla bloqueada'],['Movimento rápido:','Movimiento rápido:'],['Queda rápida:','Caída rápida:'],['Movimento relevante:','Movimiento relevante:'],['Atenção no mercado:','Atención al mercado:'],['desde a última varredura','desde el último análisis'],['em 24h','en 24 h'],['liquidez','liquidez'],['perfil','perfil'],['Falha de pullback:','Fallo de retroceso:'],['Confluência detectada pelo motor V18','Confluencia detectada por el motor V18'],['Candidata técnica','Candidata técnica'],['score técnico','puntuación técnica'],['nível','nivel'],['preço','precio'],['possível continuação da alta','posible continuación alcista'],['possível continuação da baixa','posible continuación bajista'],['simulação','simulación'],['risco','riesgo'],['alvo técnico','objetivo técnico'],['Espelhamento:','Replicación:'],['ALTA','ALZA'],['BAIXA','BAJA'],['SINAL FORTE DE COMPRA','SEÑAL FUERTE DE COMPRA'],['COMPRA CONFIRMADA','COMPRA CONFIRMADA'],['CANDIDATA A COMPRA','CANDIDATA A COMPRA'],['Aguardando confirmação','Esperando confirmación'],['mercado geral em baixa','mercado general bajista'],['volume ainda baixo','el volumen sigue bajo']]
+};
+function localizePush(payload,lang){
+ if(!['en','es'].includes(lang))return {...payload,lang:'pt-BR'};
+ const rows=[...PUSH_TEXT[lang]].sort((a,b)=>b[0].length-a[0].length);
+ const convert=v=>{let out=String(v||'');for(const [pt,target] of rows)if(out.includes(pt))out=out.split(pt).join(target);return out};
+ return {...payload,title:convert(payload.title),body:convert(payload.body),lang};
+}
+
 async function sendPush(req,record,payload){
   const vapid=await ensureVapid();webpush.setVapidDetails(vapidSubject(req),vapid.publicKey,vapid.privateKey);
   try{
-    const result=await webpush.sendNotification(record.subscription,JSON.stringify(payload),{TTL:240,urgency:'high'});
+    const result=await webpush.sendNotification(record.subscription,JSON.stringify(localizePush(payload,record?.language)),{TTL:240,urgency:'high'});
     return {ok:true,statusCode:result?.statusCode||201};
   }catch(e){
     const statusCode=Number(e?.statusCode)||0;

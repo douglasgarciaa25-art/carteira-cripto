@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v19.1-responsive';
+const CACHE='cripto-radar-v19.2-market-i18n';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
@@ -140,7 +140,7 @@ self.addEventListener('sync',e=>{if(e.tag===SYNC_TAG)e.waitUntil(runMarketScan('
 self.addEventListener('periodicsync',e=>{if(e.tag===BG_TAG)e.waitUntil(runMarketScan('periodic-sync'))});
 self.addEventListener('push',e=>e.waitUntil((async()=>{
   let d={};try{d=e.data?.json?.()||{}}catch(_){d={body:e.data?.text?.()||''}}
-  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||'Novo alerta do mercado.',icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,requireInteraction:!!d.requireInteraction,vibrate:[180,80,180],data:{url:d.url||'./',kind:d.kind||'market',symbol:d.symbol||null},actions:[{action:'open',title:'Abrir Radar'}]});
+  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||(d.lang==='en'?'New market alert.':d.lang==='es'?'Nueva alerta del mercado.':'Novo alerta do mercado.'),icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,requireInteraction:!!d.requireInteraction,vibrate:[180,80,180],data:{url:d.url||'./',kind:d.kind||'market',symbol:d.symbol||null},actions:[{action:'open',title:d.lang==='en'?'Open Radar':'Abrir Radar'}]});
 })()));
 self.addEventListener('pushsubscriptionchange',e=>e.waitUntil((async()=>{
   try{

@@ -424,6 +424,2727 @@
   "Risco alto": "Riesgo alto"
 });
 
+
+  /* V19.2: correção de cobertura integral de rótulos e descrições fixas. */
+  Object.assign(STRINGS.en, {
+  "A Central exibirá apenas condições verificáveis dos dados disponíveis.": "The center will only show verifiable conditions based on available data.",
+  "ATIVAR PRO": "ACTIVATE PRO",
+  "Acerto técnico": "Technical hit rate",
+  "Aguardando a análise": "Waiting for analysis",
+  "Aguardando dados do Radar…": "Waiting for Radar data…",
+  "Aguardando dados suficientes…": "Waiting for enough data…",
+  "Ajusta a forma como a interface destaca risco e oportunidade.": "Adjust how the interface highlights risk and opportunity.",
+  "Alertas com menos ruído": "Less noisy alerts",
+  "Alertas e oportunidades importantes salvos neste aparelho.": "Important alerts and opportunities saved on this device.",
+  "Alertas e oportunidades recentes": "Recent alerts and opportunities",
+  "Alertas essenciais": "Essential alerts",
+  "Alertas, risco, favoritas e idioma": "Alerts, risk, favorites and language",
+  "Altera a interface e mantém a preferência neste aparelho.": "Changes the interface and saves the preference on this device.",
+  "Analisando moedas cadastradas...": "Analyzing your coins…",
+  "Analisando...": "Analyzing…",
+  "Análise em preparação": "Preparing analysis",
+  "Ativa": "Active",
+  "Ativar Push": "Enable Push",
+  "Atualizando dados…": "Updating data…",
+  "BEM-VINDO AO CRIPTO RADAR": "WELCOME TO CRIPTO RADAR",
+  "Buscando tendência": "Checking trend",
+  "CARTEIRA INTELIGENTE • V18.7": "SMART PORTFOLIO • V18.7",
+  "CONTINUAR": "CONTINUE",
+  "Candidatas": "Candidates",
+  "Carregando Inteligência de Mercado V18…": "Loading Market Intelligence V18…",
+  "Carregando informações da carteira...": "Loading portfolio information…",
+  "Carteira e acompanhamento básico": "Portfolio and basic tracking",
+  "Compare Grátis e Premium": "Compare Free and Premium",
+  "Compra confirmada, sinal forte e candidatas.": "Confirmed buys, strong signals and candidates.",
+  "Compra, venda, risco e oportunidades da sua carteira em uma única tela.": "Buy, sell, risk and portfolio opportunities in one screen.",
+  "Compras": "Buys",
+  "Compras confirmadas": "Confirmed buys",
+  "Confirmadas": "Confirmed",
+  "Controle quanto o Radar deve interromper você.": "Control how often Radar should interrupt you.",
+  "Dados: verificando": "Data: checking",
+  "Desempenho por tipo de sinal": "Performance by signal type",
+  "Distribuição dos ativos": "Asset allocation",
+  "ESSENCIAL": "ESSENTIAL",
+  "Em observação": "On watch",
+  "Escolha o nível certo para você": "Choose the right level for you",
+  "Espelhamento Inteligente em simulação/alerta": "Smart Mirroring in simulation/alert mode",
+  "Espelhamento com segurança": "Safe mirroring",
+  "Ferramenta técnica de validação. Não é recomendação de compra.": "Technical validation tool. Not investment advice.",
+  "Grátis": "Free",
+  "Histórico": "History",
+  "Histórico de decisões da IA": "AI decision history",
+  "IA avançada e Modo Profissional": "Advanced AI and Professional Mode",
+  "Informativo: o Cripto Radar não executa compras ou vendas automaticamente.": "For information only: Cripto Radar does not automatically buy or sell.",
+  "LIMPAR": "CLEAR",
+  "Leitura do Radar:": "Radar reading:",
+  "Leitura orientada da carteira": "Guided portfolio insights",
+  "Maior posição": "Largest holding",
+  "Maior resultado": "Best return",
+  "Maior risco técnico": "Highest technical risk",
+  "Manter acesso ao fechar/voltar dentro de 1 hora": "Stay signed in when leaving and returning within 1 hour",
+  "Mede como os sinais anteriores evoluíram e registra as mudanças de decisão do Radar.": "Tracks how past signals evolved and records Radar decision changes.",
+  "Mercado, destaques e tendências": "Market, highlights and trends",
+  "Meus ativos": "My assets",
+  "Moderado": "Moderate",
+  "Modo Profissional completo": "Full Professional Mode",
+  "Monitorando": "Monitoring",
+  "Monitorando posições": "Monitoring positions",
+  "Motor V10/V11, Backtest e Paper Trading": "V10/V11 Engine, Backtest and Paper Trading",
+  "Nenhum registro ainda.": "No records yet.",
+  "Nenhuma mudança registrada ainda.": "No changes recorded yet.",
+  "Não lidos": "Unread",
+  "Oportunidades": "Opportunities",
+  "Ordem alfabética": "Alphabetical order",
+  "Os sinais aparecerão aqui quando mudarem de estado.": "Signals will appear here when their status changes.",
+  "PREFERÊNCIAS DO APLICATIVO": "APP PREFERENCES",
+  "PRIORIDADE DO RADAR": "RADAR PRIORITY",
+  "PULAR": "SKIP",
+  "Painel inteligente de mercado": "Smart market dashboard",
+  "Personalize o Radar sem alterar a lógica central do mercado.": "Customize Radar without changing the underlying market logic.",
+  "Pior drawdown": "Worst drawdown",
+  "Precisa atenção": "Needs attention",
+  "Push 24h com app fechado": "24h Push with app closed",
+  "Push 24h e ferramentas PRO": "24h Push and PRO tools",
+  "Push: verificando": "Push: checking",
+  "RADAR PRO • CENTRAL INTELIGENTE": "RADAR PRO • INTELLIGENCE CENTER",
+  "REGISTRO LOCAL": "LOCAL HISTORY",
+  "Ranking e oportunidades": "Ranking and opportunities",
+  "Regime": "Market regime",
+  "Registra quando o status de uma moeda muda.": "Records whenever a coin's status changes.",
+  "Resumo rápido do mercado, carteira e funcionamento do Radar.": "Quick summary of the market, portfolio and Radar operation.",
+  "Retorno médio": "Average return",
+  "Riscos": "Risks",
+  "Riscos / vendas": "Risks / sell signals",
+  "SEM INTERNET • usando dados em cache": "OFFLINE • using cached data",
+  "Saldo, composição e aporte": "Balance, holdings and contributions",
+  "Sem alerta crítico": "No critical alert",
+  "Separe por vírgulas. Ex.: BTC, ETH, SOL, LINK.": "Separate with commas. E.g.: BTC, ETH, SOL, LINK.",
+  "Sinal forte": "Strong signal",
+  "Sua carteira em um só lugar": "Your portfolio in one place",
+  "Só o que merece atenção": "Only what matters",
+  "Testar": "Test",
+  "Todos": "All",
+  "Todos os confirmados": "All confirmed",
+  "Todos os sinais": "All signals",
+  "Vendas": "Sells",
+  "Verificando licença…": "Checking license…",
+  "Verificando mercado…": "Checking market…",
+  "Verificando saúde do Push 24h…": "Checking 24h Push health…",
+  "Visão clara de patrimônio, riscos e decisões da IA.": "Clear view of your portfolio, risks and AI decisions.",
+  "aguardando": "waiting",
+  "aguardando dados suficientes para gerar um resumo.": "waiting for sufficient data to summarize.",
+  "aguardando primeira leitura": "waiting for first reading",
+  "após o sinal": "after the signal",
+  "heurístico": "heuristic",
+  "histórico local": "local history",
+  "histórico medido": "measured history",
+  "mercado": "market",
+  "saúde": "health",
+  "• agora configurado a cada 1 min para alertas com o app fechado.": "• configured to run every minute for alerts when the app is closed.",
+  "↓ Exportar CSV": "↓ Export CSV",
+  "↻ ATUALIZAR AGORA": "↻ REFRESH NOW",
+  "↻ Atualizar dados": "↻ Refresh data",
+  "↻ RECALCULAR": "↻ RECALCULATE",
+  "◈ Simular aporte": "◈ Simulate contribution",
+  "⚠️ Aviso Financeiro": "⚠️ Financial Notice",
+  "⭐ Moedas favoritas": "⭐ Favorite coins",
+  "＋ Adicionar ou atualizar": "＋ Add or update",
+  "🌐 Idioma": "🌐 Language",
+  "🌐 Idioma do aplicativo": "🌐 App language",
+  "👛 Minha carteira": "👛 My portfolio",
+  "👛 VER CARTEIRA": "👛 VIEW PORTFOLIO",
+  "📄 Termos de Uso": "📄 Terms of Use",
+  "📈 V18.4 • Backtest & Histórico da IA": "📈 V18.4 • Backtest & AI History",
+  "📈 VER MERCADO": "📈 VIEW MARKET",
+  "📊 Painel de hoje": "📊 Today's dashboard",
+  "📡 Push: verificando permissão": "📡 Push: checking permission",
+  "🔐 Sou o desenvolvedor — liberar meu PRO": "🔐 I'm the developer — unlock my PRO",
+  "🔒 Política de Privacidade": "🔒 Privacy Policy",
+  "🔔 Frequência dos alertas": "🔔 Alert frequency",
+  "🕘 Histórico de mudanças": "🕘 Change history",
+  "🕘 Histórico do Radar": "🕘 Radar history",
+  "🚀 V18.1 • Live & Validação": "🚀 V18.1 • Live & Validation",
+  "🚨 Central de Alertas": "🚨 Alert Center",
+  "🛠️ DIAGNÓSTICO": "🛠️ DIAGNOSTICS",
+  "🛡️ Nível de risco": "🛡️ Risk level",
+  "🤖 Colar lista analisada pelo ChatGPT": "🤖 Paste ChatGPT-analyzed list",
+  "🤖 IMPORTAR LISTA DO CHATGPT": "🤖 IMPORT CHATGPT LIST",
+  "🧠 V18.1 • Motor Unificado": "🧠 V18.1 • Unified Engine",
+  "🧪 Abrir operação Paper de teste BTC": "🧪 Open BTC test Paper trade",
+  "A IA/Radar considera todas as moedas que você já possui e as melhores oportunidades atuais para sugerir onde manter, reduzir ou direcionar um novo aporte. É uma análise informativa e não garante lucro.": "Radar AI evaluates coins you hold and current opportunities to suggest where to hold, reduce exposure or allocate new funds. This information does not guarantee profits.",
+  "A biometria exige HTTPS e suporte do navegador. Usuário + senha e PIN continuam disponíveis como alternativas.": "Biometrics requires HTTPS and browser support. Username, password and PIN remain available.",
+  "A licença do criador é gratuita e não realiza compra pela Google Play. Necessita da chave segura configurada no Vercel.": "The creator license is free and does not charge through Google Play. It requires the secure key configured on Vercel.",
+  "A simulação usa stop, alvo e risco proporcional. Resultados projetados não são promessa de retorno. Revise o sinal antes de operar.": "The simulation uses a stop, target and proportional risk. Projected results are not guaranteed. Review the signal before trading.",
+  "Adicione suas moedas e acompanhe posições, mercado e oportunidades sem precisar navegar por várias telas.": "Add coins and follow your positions, market and opportunities without switching between multiple screens.",
+  "Agente adaptativo no servidor: cruza liquidez, força, volume e estabilidade e pode guardar o desempenho dos sinais.": "Server-side adaptive agent: combines liquidity, momentum, volume and stability and can track signal performance.",
+  "As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.": "The three highest-ranked coins appear here. They change automatically as the market moves.",
+  "Assinatura com renovação automática pela Google Play. O Cripto Radar informa e simula cenários; não executa ordens e não garante retorno financeiro.": "Auto-renewing subscription through Google Play. Cripto Radar provides analysis and scenarios but does not trade or guarantee returns.",
+  "Assinatura com renovação automática. Você pode cancelar pela Google Play. O Cripto Radar é uma ferramenta informativa e não garante lucro ou retorno financeiro.": "Auto-renewing subscription. You can cancel through Google Play. Cripto Radar provides information and does not guarantee returns.",
+  "Backtest local e heurístico: usa dados observados pelo próprio aplicativo. Não representa promessa de retorno, não executa ordens e não substitui validação histórica profissional.": "Local heuristic backtest using data observed by the app. No returns are guaranteed; no orders are placed. It does not replace professional validation.",
+  "Com as notificações permitidas, o servidor pode avisar sobre eventos importantes mesmo com o aplicativo fechado, respeitando as limitações do Android.": "With notifications enabled, the server can alert you about important events while the app is closed, subject to Android limitations.",
+  "Comece com os recursos essenciais e desbloqueie ferramentas avançadas quando precisar de mais profundidade.": "Start with essential features and unlock advanced tools when needed.",
+  "Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Também procura falha de pullback após rompimentos e exige 2 confirmações consecutivas nos sinais fortes para reduzir falso disparo.": "Combines 1m, 5m, 15m and 24h data with volume, liquidity and portfolio weight, plus derivatives data when available. It checks failed pullbacks and requires two consecutive confirmations for strong signals.",
+  "Envie um print da corretora. O Radar identifica moedas e quantidades, cria uma prévia para conferência e só altera sua carteira depois da sua confirmação.": "Upload an exchange screenshot. Radar detects coins and quantities and only changes your portfolio after you confirm.",
+  "Esta versão usa segurança local do aparelho. Não envia sua senha para o Cripto Radar e não possui recuperação por e-mail sem um serviço de conta na nuvem.": "This version uses local device security. Your password is not sent to Cripto Radar. Email recovery requires a cloud account service.",
+  "Interface mais simples, focada em carteira, alertas, mercado e IA. Esconde ferramentas técnicas avançadas.": "Simplified interface focused on portfolio, alerts, market and AI. Advanced tools are hidden.",
+  "Libera motor V10/V11, backtest, Paper Trading, diagnóstico de fontes e controles avançados.": "Unlocks the V10/V11 engine, backtesting, Paper Trading, source diagnostics and advanced controls.",
+  "Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.": "Shows only what matters for your portfolio, alerts and opportunities.",
+  "Notícias e rumores ficam separados do sinal técnico. Nada aqui vira compra ou venda sozinho.": "News and rumors are kept separate from technical signals. Neither triggers a buy or sell on its own.",
+  "O Cripto Radar é uma ferramenta informativa. Sinais, scores, IA, espelhamento e simulações não constituem promessa de lucro, recomendação personalizada nem execução automática de operações.": "Cripto Radar provides information. Signals, scores, AI, mirroring and simulations do not guarantee profits, constitute personalized financial advice or execute trades.",
+  "O Espelhamento Inteligente é somente simulação e alerta. Não envia ordens para corretoras.": "Smart Mirroring is for simulation and alerts only. It does not send exchange orders.",
+  "O Radar prioriza sinais confirmados. Em Configurações você escolhe a frequência, o perfil de risco e as moedas favoritas.": "Radar prioritizes confirmed signals. Set alert frequency, risk profile and favorites in Settings.",
+  "O painel só registra dados observados enquanto esta página está aberta. Push 24h depende da assinatura do dispositivo e do agendador externo. Sinais são heurísticos, não garantem lucro e não executam ordens.": "The dashboard records data while this page is open. 24h Push depends on device subscription and external scheduler. Signals are heuristic and do not place trades or guarantee returns.",
+  "Os preços podem variar entre corretoras. O painel é informativo; “tempo real” depende da disponibilidade da fonte e da conexão do aparelho.": "Prices may vary across exchanges. Real-time availability depends on data sources and your connection.",
+  "Preço ao vivo, ranking pelo mesmo motor V18, validação dos sinais confirmados e proteção diária do Paper.": "Live prices, ranking with the V18 engine, confirmed-signal validation and daily Paper protection.",
+  "Renovação automática anual até o cancelamento. O preço final e eventuais impostos são sempre os exibidos pelo Google Play no momento da compra.": "Renews yearly until canceled. Final price and applicable taxes are those shown by Google Play at checkout.",
+  "Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.": "Operational dashboard with data quality, best signal, Paper Trading and notifications.",
+  "Seu usuário e sua senha ficam protegidos neste aparelho. Se o celular permitir, você também pode ativar digital ou reconhecimento facial.": "Your username and password stay protected on this device. You may enable fingerprint or face unlock if supported.",
+  "Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.": "Simulates confirmed Radar signals and measures outcomes. Win rate, profit factor, expectancy and drawdown use closed simulated trades only.",
+  "Somente dados públicos de mercado. Não solicita login, senha, 2FA ou chave API e não envia ordens. O Radar apenas acompanha preços, volume e variação para montar os destaques.": "Public market data only. Radar does not request credentials, 2FA or API keys, and does not place orders.",
+  "Testa candles históricos públicos da Binance. Resultado inclui taxa e slippage configuráveis e compara a estratégia com comprar e manter BTC no mesmo período. Backtest não garante desempenho futuro.": "Tests public historical Binance candles with configurable fees/slippage and compares strategies against buy-and-hold BTC. Past results do not guarantee future performance.",
+  "Top 5 dinâmico do mercado analisado. As moedas entram, saem e mudam de posição automaticamente conforme força de 24h, liquidez e volume.": "Dynamic Top 5 based on 24h strength, liquidity and volume. Coins enter, exit and change ranks automatically.",
+  "Transforma sinais confirmados do Radar em uma simulação proporcional à sua carteira. Não copia terceiros e não envia ordens reais.": "Converts confirmed Radar signals into a proportional portfolio simulation. No copying or live trades.",
+  "Uma única leitura para Mercado, Carteira, Paper e notificações. Todos usam o mesmo score V18 e a mesma classificação do sinal.": "Unified signals for Market, Portfolio, Paper and notifications, using the same V18 score and decision.",
+  "Usa primeiro a Binance data-api que já funciona neste navegador e mantém fontes alternativas como reserva. Antes de considerar uma moeda, confira liquidez, volume, motivo da alta e risco de entrar após uma valorização excessiva.": "Uses Binance's data API first, with backup sources. Check liquidity, volume and entry risk before considering a coin after a sharp rise.",
+  "Você pode trocar depois a qualquer momento. O mercado e a IA continuam os mesmos; muda apenas a quantidade de ferramentas e detalhes exibidos.": "You can change modes any time. Market data and AI remain the same; only the displayed tools change.",
+  "🆕 entrou no Top 5 • ⬆️ subiu • ⬇️ caiu • ➖ manteve posição. O ranking é informativo e não garante retorno.": "🆕 joined Top 5 • ⬆️ rose • ⬇️ fell • ➖ held position. Rankings are informational and do not guarantee returns.",
+  "🔔 Ative “Notificações do Radar”. O modo de segundo plano tentará manter o Paper e os alertas atualizados mesmo com o PWA minimizado, conforme os limites do Android/navegador.": "🔔 Enable “Radar Notifications”. Background mode will try to keep Paper and alerts updated while the PWA is minimized, subject to Android/browser limits."
+});
+  Object.assign(STRINGS.es, {
+  "A Central exibirá apenas condições verificáveis dos dados disponíveis.": "El centro mostrará solo condiciones verificables con los datos disponibles.",
+  "ATIVAR PRO": "ACTIVAR PRO",
+  "Acerto técnico": "Tasa de acierto técnico",
+  "Aguardando a análise": "Esperando el análisis",
+  "Aguardando dados do Radar…": "Esperando datos del Radar…",
+  "Aguardando dados suficientes…": "Esperando datos suficientes…",
+  "Ajusta a forma como a interface destaca risco e oportunidade.": "Ajusta cómo la interfaz destaca riesgos y oportunidades.",
+  "Alertas com menos ruído": "Alertas con menos ruido",
+  "Alertas e oportunidades importantes salvos neste aparelho.": "Alertas y oportunidades importantes guardados en este dispositivo.",
+  "Alertas e oportunidades recentes": "Alertas y oportunidades recientes",
+  "Alertas essenciais": "Alertas esenciales",
+  "Alertas, risco, favoritas e idioma": "Alertas, riesgo, favoritos e idioma",
+  "Altera a interface e mantém a preferência neste aparelho.": "Cambia la interfaz y guarda la preferencia en este dispositivo.",
+  "Analisando moedas cadastradas...": "Analizando tus monedas…",
+  "Analisando...": "Analizando…",
+  "Análise em preparação": "Preparando análisis",
+  "Ativa": "Activa",
+  "Ativar Push": "Activar Push",
+  "Atualizando dados…": "Actualizando datos…",
+  "BEM-VINDO AO CRIPTO RADAR": "BIENVENIDO A CRIPTO RADAR",
+  "Buscando tendência": "Buscando tendencia",
+  "CARTEIRA INTELIGENTE • V18.7": "CARTERA INTELIGENTE • V18.7",
+  "CONTINUAR": "CONTINUAR",
+  "Candidatas": "Candidatas",
+  "Carregando Inteligência de Mercado V18…": "Cargando Inteligencia de Mercado V18…",
+  "Carregando informações da carteira...": "Cargando información de la cartera…",
+  "Carteira e acompanhamento básico": "Cartera y seguimiento básico",
+  "Compare Grátis e Premium": "Compara Gratis y Premium",
+  "Compra confirmada, sinal forte e candidatas.": "Compras confirmadas, señales fuertes y candidatas.",
+  "Compra, venda, risco e oportunidades da sua carteira em uma única tela.": "Compra, venta, riesgos y oportunidades de tu cartera en una pantalla.",
+  "Compras": "Compras",
+  "Compras confirmadas": "Compras confirmadas",
+  "Confirmadas": "Confirmadas",
+  "Controle quanto o Radar deve interromper você.": "Controla con qué frecuencia Radar debe interrumpirte.",
+  "Dados: verificando": "Datos: verificando",
+  "Desempenho por tipo de sinal": "Rendimiento por tipo de señal",
+  "Distribuição dos ativos": "Distribución de activos",
+  "ESSENCIAL": "ESENCIAL",
+  "Em observação": "En observación",
+  "Escolha o nível certo para você": "Elige el nivel adecuado para ti",
+  "Espelhamento Inteligente em simulação/alerta": "Espejo inteligente en modo simulación/alerta",
+  "Espelhamento com segurança": "Espejo seguro",
+  "Ferramenta técnica de validação. Não é recomendação de compra.": "Herramienta de validación técnica. No es una recomendación de compra.",
+  "Grátis": "Gratis",
+  "Histórico": "Historial",
+  "Histórico de decisões da IA": "Historial de decisiones de IA",
+  "IA avançada e Modo Profissional": "IA avanzada y Modo Profesional",
+  "Informativo: o Cripto Radar não executa compras ou vendas automaticamente.": "Solo informativo: Cripto Radar no compra ni vende automáticamente.",
+  "LIMPAR": "LIMPIAR",
+  "Leitura do Radar:": "Lectura del Radar:",
+  "Leitura orientada da carteira": "Lectura guiada de la cartera",
+  "Maior posição": "Mayor posición",
+  "Maior resultado": "Mejor resultado",
+  "Maior risco técnico": "Mayor riesgo técnico",
+  "Manter acesso ao fechar/voltar dentro de 1 hora": "Mantener sesión al salir y volver dentro de 1 hora",
+  "Mede como os sinais anteriores evoluíram e registra as mudanças de decisão do Radar.": "Mide la evolución de señales anteriores y registra cambios de decisión.",
+  "Mercado, destaques e tendências": "Mercado, destacados y tendencias",
+  "Meus ativos": "Mis activos",
+  "Moderado": "Moderado",
+  "Modo Profissional completo": "Modo Profesional completo",
+  "Monitorando": "Monitoreando",
+  "Monitorando posições": "Monitoreando posiciones",
+  "Motor V10/V11, Backtest e Paper Trading": "Motor V10/V11, Backtest y Paper Trading",
+  "Nenhum registro ainda.": "Aún no hay registros.",
+  "Nenhuma mudança registrada ainda.": "Aún no hay cambios registrados.",
+  "Não lidos": "No leídos",
+  "Oportunidades": "Oportunidades",
+  "Ordem alfabética": "Orden alfabético",
+  "Os sinais aparecerão aqui quando mudarem de estado.": "Las señales aparecerán aquí cuando cambien de estado.",
+  "PREFERÊNCIAS DO APLICATIVO": "PREFERENCIAS DE LA APLICACIÓN",
+  "PRIORIDADE DO RADAR": "PRIORIDAD DEL RADAR",
+  "PULAR": "SALTAR",
+  "Painel inteligente de mercado": "Panel inteligente de mercado",
+  "Personalize o Radar sem alterar a lógica central do mercado.": "Personaliza Radar sin cambiar la lógica central del mercado.",
+  "Pior drawdown": "Máxima caída",
+  "Precisa atenção": "Necesita atención",
+  "Push 24h com app fechado": "Push 24 h con la app cerrada",
+  "Push 24h e ferramentas PRO": "Push 24 h y herramientas PRO",
+  "Push: verificando": "Push: verificando",
+  "RADAR PRO • CENTRAL INTELIGENTE": "RADAR PRO • CENTRO INTELIGENTE",
+  "REGISTRO LOCAL": "REGISTRO LOCAL",
+  "Ranking e oportunidades": "Ranking y oportunidades",
+  "Regime": "Régimen de mercado",
+  "Registra quando o status de uma moeda muda.": "Registra cuándo cambia el estado de una moneda.",
+  "Resumo rápido do mercado, carteira e funcionamento do Radar.": "Resumen rápido del mercado, cartera y funcionamiento del Radar.",
+  "Retorno médio": "Rentabilidad media",
+  "Riscos": "Riesgos",
+  "Riscos / vendas": "Riesgos / ventas",
+  "SEM INTERNET • usando dados em cache": "SIN CONEXIÓN • usando datos en caché",
+  "Saldo, composição e aporte": "Saldo, composición y aportes",
+  "Sem alerta crítico": "Sin alerta crítica",
+  "Separe por vírgulas. Ex.: BTC, ETH, SOL, LINK.": "Separa con comas. Ej.: BTC, ETH, SOL, LINK.",
+  "Sinal forte": "Señal fuerte",
+  "Sua carteira em um só lugar": "Tu cartera en un solo lugar",
+  "Só o que merece atenção": "Solo lo importante",
+  "Testar": "Probar",
+  "Todos": "Todos",
+  "Todos os confirmados": "Todos los confirmados",
+  "Todos os sinais": "Todas las señales",
+  "Vendas": "Ventas",
+  "Verificando licença…": "Verificando licencia…",
+  "Verificando mercado…": "Verificando mercado…",
+  "Verificando saúde do Push 24h…": "Verificando estado del Push 24 h…",
+  "Visão clara de patrimônio, riscos e decisões da IA.": "Vista clara del patrimonio, riesgos y decisiones de IA.",
+  "aguardando": "esperando",
+  "aguardando dados suficientes para gerar um resumo.": "esperando suficientes datos para crear un resumen.",
+  "aguardando primeira leitura": "esperando la primera lectura",
+  "após o sinal": "después de la señal",
+  "heurístico": "heurístico",
+  "histórico local": "historial local",
+  "histórico medido": "historial medido",
+  "mercado": "mercado",
+  "saúde": "salud",
+  "• agora configurado a cada 1 min para alertas com o app fechado.": "• configurado cada minuto para alertas con la app cerrada.",
+  "↓ Exportar CSV": "↓ Exportar CSV",
+  "↻ ATUALIZAR AGORA": "↻ ACTUALIZAR AHORA",
+  "↻ Atualizar dados": "↻ Actualizar datos",
+  "↻ RECALCULAR": "↻ RECALCULAR",
+  "◈ Simular aporte": "◈ Simular aporte",
+  "⚠️ Aviso Financeiro": "⚠️ Aviso financiero",
+  "⭐ Moedas favoritas": "⭐ Monedas favoritas",
+  "＋ Adicionar ou atualizar": "＋ Añadir o actualizar",
+  "🌐 Idioma": "🌐 Idioma",
+  "🌐 Idioma do aplicativo": "🌐 Idioma de la aplicación",
+  "👛 Minha carteira": "👛 Mi cartera",
+  "👛 VER CARTEIRA": "👛 VER CARTERA",
+  "📄 Termos de Uso": "📄 Términos de uso",
+  "📈 V18.4 • Backtest & Histórico da IA": "📈 V18.4 • Backtest e historial de IA",
+  "📈 VER MERCADO": "📈 VER MERCADO",
+  "📊 Painel de hoje": "📊 Panel de hoy",
+  "📡 Push: verificando permissão": "📡 Push: verificando permiso",
+  "🔐 Sou o desenvolvedor — liberar meu PRO": "🔐 Soy el desarrollador — desbloquear mi PRO",
+  "🔒 Política de Privacidade": "🔒 Política de privacidad",
+  "🔔 Frequência dos alertas": "🔔 Frecuencia de alertas",
+  "🕘 Histórico de mudanças": "🕘 Historial de cambios",
+  "🕘 Histórico do Radar": "🕘 Historial del Radar",
+  "🚀 V18.1 • Live & Validação": "🚀 V18.1 • Live y validación",
+  "🚨 Central de Alertas": "🚨 Centro de alertas",
+  "🛠️ DIAGNÓSTICO": "🛠️ DIAGNÓSTICO",
+  "🛡️ Nível de risco": "🛡️ Nivel de riesgo",
+  "🤖 Colar lista analisada pelo ChatGPT": "🤖 Pegar lista analizada por ChatGPT",
+  "🤖 IMPORTAR LISTA DO CHATGPT": "🤖 IMPORTAR LISTA DE CHATGPT",
+  "🧠 V18.1 • Motor Unificado": "🧠 V18.1 • Motor unificado",
+  "🧪 Abrir operação Paper de teste BTC": "🧪 Abrir operación Paper de prueba BTC",
+  "A IA/Radar considera todas as moedas que você já possui e as melhores oportunidades atuais para sugerir onde manter, reduzir ou direcionar um novo aporte. É uma análise informativa e não garante lucro.": "La IA de Radar evalúa tus monedas y oportunidades actuales para sugerir dónde mantener, reducir o aportar capital nuevo. No garantiza beneficios.",
+  "A biometria exige HTTPS e suporte do navegador. Usuário + senha e PIN continuam disponíveis como alternativas.": "La biometría requiere HTTPS y compatibilidad del navegador. Usuario, contraseña y PIN siguen disponibles.",
+  "A licença do criador é gratuita e não realiza compra pela Google Play. Necessita da chave segura configurada no Vercel.": "La licencia del creador es gratuita y no realiza compras mediante Google Play. Requiere la clave segura configurada en Vercel.",
+  "A simulação usa stop, alvo e risco proporcional. Resultados projetados não são promessa de retorno. Revise o sinal antes de operar.": "La simulación usa stop, objetivo y riesgo proporcional. Los resultados previstos no están garantizados. Revisa la señal antes de operar.",
+  "Adicione suas moedas e acompanhe posições, mercado e oportunidades sem precisar navegar por várias telas.": "Añade monedas y sigue posiciones, mercado y oportunidades sin pasar por varias pantallas.",
+  "Agente adaptativo no servidor: cruza liquidez, força, volume e estabilidade e pode guardar o desempenho dos sinais.": "Agente adaptativo en el servidor: combina liquidez, fuerza, volumen y estabilidad y puede registrar el rendimiento de señales.",
+  "As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.": "Aquí aparecen las tres monedas con mayor puntuación, que cambian automáticamente según el mercado.",
+  "Assinatura com renovação automática pela Google Play. O Cripto Radar informa e simula cenários; não executa ordens e não garante retorno financeiro.": "Suscripción con renovación automática en Google Play. Cripto Radar informa y simula escenarios; no opera ni garantiza beneficios.",
+  "Assinatura com renovação automática. Você pode cancelar pela Google Play. O Cripto Radar é uma ferramenta informativa e não garante lucro ou retorno financeiro.": "Suscripción con renovación automática. Puedes cancelarla en Google Play. Cripto Radar es informativo y no garantiza beneficios.",
+  "Backtest local e heurístico: usa dados observados pelo próprio aplicativo. Não representa promessa de retorno, não executa ordens e não substitui validação histórica profissional.": "Backtest local y heurístico con datos observados por la app. No garantiza ganancias, no ejecuta órdenes ni sustituye validación profesional.",
+  "Com as notificações permitidas, o servidor pode avisar sobre eventos importantes mesmo com o aplicativo fechado, respeitando as limitações do Android.": "Con las notificaciones permitidas, el servidor puede avisarte de eventos importantes aunque la app esté cerrada, según los límites de Android.",
+  "Comece com os recursos essenciais e desbloqueie ferramentas avançadas quando precisar de mais profundidade.": "Empieza con las funciones esenciales y desbloquea herramientas avanzadas cuando las necesites.",
+  "Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Também procura falha de pullback após rompimentos e exige 2 confirmações consecutivas nos sinais fortes para reduzir falso disparo.": "Combina datos de 1m, 5m, 15m y 24h con volumen, liquidez y peso en cartera, además de derivados cuando estén disponibles. Busca fallos de retroceso y exige dos confirmaciones consecutivas para señales fuertes.",
+  "Envie um print da corretora. O Radar identifica moedas e quantidades, cria uma prévia para conferência e só altera sua carteira depois da sua confirmação.": "Envía una captura de la plataforma. Radar identifica monedas y cantidades y solo cambia tu cartera tras tu confirmación.",
+  "Esta versão usa segurança local do aparelho. Não envia sua senha para o Cripto Radar e não possui recuperação por e-mail sem um serviço de conta na nuvem.": "Esta versión usa seguridad local. Tu contraseña no se envía a Cripto Radar. Recuperarla por correo requiere una cuenta en la nube.",
+  "Interface mais simples, focada em carteira, alertas, mercado e IA. Esconde ferramentas técnicas avançadas.": "Interfaz simplificada centrada en cartera, alertas, mercado e IA. Oculta herramientas avanzadas.",
+  "Libera motor V10/V11, backtest, Paper Trading, diagnóstico de fontes e controles avançados.": "Desbloquea motor V10/V11, backtest, Paper Trading, diagnóstico de fuentes y controles avanzados.",
+  "Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.": "Muestra solo lo esencial para tu cartera, alertas y oportunidades.",
+  "Notícias e rumores ficam separados do sinal técnico. Nada aqui vira compra ou venda sozinho.": "Noticias y rumores se separan de señales técnicas. Ninguno desencadena compras o ventas por sí solo.",
+  "O Cripto Radar é uma ferramenta informativa. Sinais, scores, IA, espelhamento e simulações não constituem promessa de lucro, recomendação personalizada nem execução automática de operações.": "Cripto Radar ofrece información. Señales, puntuaciones, IA, simulaciones y replicación no garantizan beneficios ni ejecutan operaciones.",
+  "O Espelhamento Inteligente é somente simulação e alerta. Não envia ordens para corretoras.": "La replicación inteligente solo simula y envía alertas. No envía órdenes a plataformas.",
+  "O Radar prioriza sinais confirmados. Em Configurações você escolhe a frequência, o perfil de risco e as moedas favoritas.": "Radar prioriza señales confirmadas. Ajusta frecuencia, riesgo y favoritos en Configuración.",
+  "O painel só registra dados observados enquanto esta página está aberta. Push 24h depende da assinatura do dispositivo e do agendador externo. Sinais são heurísticos, não garantem lucro e não executam ordens.": "El panel registra datos mientras está abierto. Push 24 h depende de la suscripción del dispositivo y el planificador externo. Las señales son heurísticas y no operan ni garantizan ganancias.",
+  "Os preços podem variar entre corretoras. O painel é informativo; “tempo real” depende da disponibilidade da fonte e da conexão do aparelho.": "Los precios pueden variar entre plataformas. Los datos en tiempo real dependen de las fuentes y de tu conexión.",
+  "Preço ao vivo, ranking pelo mesmo motor V18, validação dos sinais confirmados e proteção diária do Paper.": "Precios en vivo, ranking del motor V18, validación de señales confirmadas y protección diaria de Paper.",
+  "Renovação automática anual até o cancelamento. O preço final e eventuais impostos são sempre os exibidos pelo Google Play no momento da compra.": "Se renueva anualmente hasta la cancelación. El precio final e impuestos son los que muestra Google Play al pagar.",
+  "Resumo operacional em um só lugar. Mostra qualidade dos dados, melhor sinal, Paper Trading e notificações.": "Panel operativo con calidad de datos, mejor señal, Paper Trading y notificaciones.",
+  "Seu usuário e sua senha ficam protegidos neste aparelho. Se o celular permitir, você também pode ativar digital ou reconhecimento facial.": "Tu usuario y contraseña permanecen protegidos en el dispositivo. Puedes activar huella o reconocimiento facial si es compatible.",
+  "Simula os sinais confirmados do Radar e mede o que acontece depois. Win rate, profit factor, expectancy e drawdown são calculados somente com operações simuladas encerradas.": "Simula señales confirmadas y mide los resultados. Las estadísticas usan solo operaciones simuladas cerradas.",
+  "Somente dados públicos de mercado. Não solicita login, senha, 2FA ou chave API e não envia ordens. O Radar apenas acompanha preços, volume e variação para montar os destaques.": "Solo datos públicos de mercado. Radar no solicita contraseñas, 2FA ni claves API, y no envía órdenes.",
+  "Testa candles históricos públicos da Binance. Resultado inclui taxa e slippage configuráveis e compara a estratégia com comprar e manter BTC no mesmo período. Backtest não garante desempenho futuro.": "Prueba velas históricas públicas de Binance con tarifas y slippage configurables y compara con comprar y mantener BTC. El pasado no garantiza resultados futuros.",
+  "Top 5 dinâmico do mercado analisado. As moedas entram, saem e mudam de posição automaticamente conforme força de 24h, liquidez e volume.": "Top 5 dinámico según fuerza de 24 h, liquidez y volumen. Las monedas entran, salen y cambian de puesto automáticamente.",
+  "Transforma sinais confirmados do Radar em uma simulação proporcional à sua carteira. Não copia terceiros e não envia ordens reais.": "Convierte señales confirmadas en una simulación proporcional a tu cartera, sin copiar ni ejecutar órdenes reales.",
+  "Uma única leitura para Mercado, Carteira, Paper e notificações. Todos usam o mesmo score V18 e a mesma classificação do sinal.": "Una sola lectura para Mercado, Cartera, Paper y notificaciones, con la misma puntuación V18 y clasificación.",
+  "Usa primeiro a Binance data-api que já funciona neste navegador e mantém fontes alternativas como reserva. Antes de considerar uma moeda, confira liquidez, volume, motivo da alta e risco de entrar após uma valorização excessiva.": "Usa primero la API de Binance y fuentes alternativas. Revisa liquidez, volumen y riesgo antes de entrar tras una subida fuerte.",
+  "Você pode trocar depois a qualquer momento. O mercado e a IA continuam os mesmos; muda apenas a quantidade de ferramentas e detalhes exibidos.": "Puedes cambiar el modo cuando quieras. El mercado y la IA no cambian; solo las herramientas visibles.",
+  "🆕 entrou no Top 5 • ⬆️ subiu • ⬇️ caiu • ➖ manteve posição. O ranking é informativo e não garante retorno.": "🆕 entró al Top 5 • ⬆️ subió • ⬇️ bajó • ➖ mantuvo posición. No garantiza beneficios.",
+  "🔔 Ative “Notificações do Radar”. O modo de segundo plano tentará manter o Paper e os alertas atualizados mesmo com o PWA minimizado, conforme os limites do Android/navegador.": "🔔 Activa “Notificaciones de Radar”. El segundo plano intentará actualizar Paper y alertas con la PWA minimizada, según los límites de Android/navegador."
+});
+  const DYNAMIC_V192={
+  "en": [
+    [
+      "Valor e variação de 24h são estimativas de mercado. Resultado não realizado usa apenas posições com preço médio cadastrado; não inclui taxas ou impostos. Pontuação técnica não é probabilidade de lucro.",
+      "24h values and changes are market estimates. Unrealized P&L requires a recorded average cost and excludes fees and taxes. Technical scores are not profit probabilities."
+    ],
+    [
+      "A IA não libera aporte quando o Radar ainda está em espera e não manda reduzir apenas por diferença de alocação.",
+      "AI does not approve contributions while Radar is waiting or recommend reductions based only on allocation differences."
+    ],
+    [
+      "Nenhuma compra está confirmada agora. A IA mantém o capital novo em espera em vez de forçar um aporte.",
+      "No buy is confirmed. The AI holds new capital in reserve rather than forcing an entry."
+    ],
+    [
+      "Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.",
+      "Radar will show verifiable alerts when price and technical data are refreshed."
+    ],
+    [
+      "Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.",
+      "Waiting for structure, trend and technical indicators before assessing entry."
+    ],
+    [
+      "A análise está ativa, mas a memória permanente não está disponível nesta execução.",
+      "Analysis is active, but persistent memory is unavailable in this session."
+    ],
+    [
+      "Memória ativa. A próxima avaliação só ocorre depois de uma janela mínima de",
+      "Memory active. The next evaluation will only run after at least"
+    ],
+    [
+      "posição(ões) seguem em espera e o capital novo deve permanecer reservado.",
+      "position(s) remain on hold and new capital should stay reserved."
+    ],
+    [
+      "Sem alertas de concentração extrema ou de dados ausentes nesta leitura.",
+      "No concentration or missing-data alerts in this reading."
+    ],
+    [
+      "cenário incompleto; aguardar melhora antes de elevar a exposição.",
+      "incomplete setup; wait for improvement before adding exposure."
+    ],
+    [
+      "💵 Aporte novo: manter em reserva até surgir confirmação técnica.",
+      "💵 New contribution: hold in reserve until technical confirmation."
+    ],
+    [
+      "A IA bloqueou qualquer movimentação até os dados normalizarem.",
+      "The AI has blocked new actions until data are current."
+    ],
+    [
+      "A IA usa a mesma decisão para carteira, aporte e oportunidades",
+      "AI uses one decision for portfolio, contributions and opportunities"
+    ],
+    [
+      "Importe um print ou adicione moedas manualmente para começar.",
+      "Import a screenshot or add coins manually to start."
+    ],
+    [
+      "IA temporariamente indisponível • nova tentativa automática",
+      "AI temporarily unavailable • retrying automatically"
+    ],
+    [
+      "Sua carteira ainda não foi enviada para a IA nesta leitura.",
+      "Your portfolio has not been sent to the AI for this reading."
+    ],
+    [
+      "posição(ões) da carteira com entrada confirmada pelo Radar.",
+      "portfolio position(s) with confirmed Radar entries."
+    ],
+    [
+      "posição(ões) pedem redução/revisão antes de aumentar risco.",
+      "position(s) need reduction or review before increasing risk."
+    ],
+    [
+      "Esse ativo não aparece na carteira enviada nesta leitura.",
+      "This asset is not included in your portfolio for this reading."
+    ],
+    [
+      "Sua carteira não tem aporte liberado agora, mas existem",
+      "Your portfolio has no eligible new contributions now, but there are"
+    ],
+    [
+      "oportunidade(s) externa(s) confirmada(s) para observar.",
+      "confirmed external opportunities worth monitoring."
+    ],
+    [
+      "A carteira merece reequilíbrio antes de aumentar risco",
+      "Consider rebalancing before increasing risk"
+    ],
+    [
+      "Sem posições precificadas para mostrar a distribuição.",
+      "No priced positions to display the allocation."
+    ],
+    [
+      "Movimento confirmado em duas leituras; score de risco",
+      "Movement confirmed in two readings; risk score"
+    ],
+    [
+      "Revisar proteção e concentração antes de movimentar.",
+      "Review protection and concentration before acting."
+    ],
+    [
+      "Reserva de moedas estáveis abaixo de 5% da carteira",
+      "Stablecoin reserve below 5% of the portfolio"
+    ],
+    [
+      "tendência de alta alinhada entre os tempos gráficos",
+      "aligned bullish trend across timeframes"
+    ],
+    [
+      "Adicione seus ativos para iniciar o monitoramento.",
+      "Add assets to start monitoring."
+    ],
+    [
+      "ativo(s) sem cotação: não incluídos no valor total",
+      "asset(s) without prices: excluded from the total value"
+    ],
+    [
+      "Conferir posição, risco e taxas antes de decidir.",
+      "Review position, risk and fees before deciding."
+    ],
+    [
+      "Confira valor do aporte e limite de concentração.",
+      "Check contribution amount and concentration limits."
+    ],
+    [
+      "boa base técnica, mas ainda merece confirmação de",
+      "solid technical basis, but still requires confirmation of"
+    ],
+    [
+      "movimento 24h já avançado; evitar perseguir preço",
+      "24h move already extended; avoid chasing price"
+    ],
+    [
+      "Confluência confirmada no Radar V5 e no mercado;",
+      "Technical alignment confirmed by Radar V5 and the market;"
+    ],
+    [
+      "avançaram. Os pesos são ajustados gradualmente.",
+      "moved up. Weights adjust gradually."
+    ],
+    [
+      "em reserva até aparecer confluência suficiente.",
+      "in reserve until enough technical alignment appears."
+    ],
+    [
+      "Aguardar fechamento das confirmações técnicas.",
+      "Wait for technical confirmations to close."
+    ],
+    [
+      "alta de 24h menos esticada (aguardar correção)",
+      "less extended 24h rise (wait for pullback)"
+    ],
+    [
+      "ativo(s) com bloqueio ou risco técnico elevado",
+      "asset(s) blocked or with high technical risk"
+    ],
+    [
+      "posição(ões) da carteira liberadas para aporte",
+      "portfolio position(s) eligible for contributions"
+    ],
+    [
+      "Condição de redução sinalizada pela carteira.",
+      "Portfolio reduction condition detected."
+    ],
+    [
+      "abaixo do VWAP; reversão ainda não confirmada",
+      "below VWAP; reversal not yet confirmed"
+    ],
+    [
+      "Aguardar confirmação, sem aporte automático.",
+      "Wait for confirmation. No automatic contribution."
+    ],
+    [
+      "Há cotações desatualizadas no valor estimado",
+      "Estimated value contains outdated quotes"
+    ],
+    [
+      "Avaliar liquidez e risco antes de investir.",
+      "Assess liquidity and risk before investing."
+    ],
+    [
+      "estrutura 4h ainda mista; falta confirmação",
+      "mixed 4h structure; confirmation missing"
+    ],
+    [
+      "minutos para evitar aprendizado por ruído.",
+      "minutes to avoid learning from noise."
+    ],
+    [
+      "A IA bloqueia novos aportes conflitantes.",
+      "AI blocks conflicting new contributions."
+    ],
+    [
+      "A carteira está em condição intermediária",
+      "The portfolio is in an intermediate condition"
+    ],
+    [
+      "Analisando sinais e buscando confirmações",
+      "Analyzing signals and seeking confirmation"
+    ],
+    [
+      "oportunidade(s) externa(s) confirmada(s).",
+      "confirmed external opportunity(ies)."
+    ],
+    [
+      "A carteira está estruturalmente saudável",
+      "The portfolio is structurally healthy"
+    ],
+    [
+      "Nenhuma moeda corresponde a este filtro.",
+      "No coins match this filter."
+    ],
+    [
+      "e o mercado geral pede postura defensiva",
+      "and the wider market warrants a defensive stance"
+    ],
+    [
+      "indicadores 15m, 4h e diário atualizados",
+      "updated 15m, 4h and daily indicators"
+    ],
+    [
+      "Faltam critérios para liberar a compra.",
+      "Some criteria are still missing for a buy."
+    ],
+    [
+      "cotação e volume de mercado atualizados",
+      "updated market price and volume"
+    ],
+    [
+      "reserva alta; pode haver capital ocioso",
+      "high reserve; some capital may be idle"
+    ],
+    [
+      "sinais de uma fotografia com pelo menos",
+      "signals from a snapshot at least"
+    ],
+    [
+      "aguardando confirmação de preço/volume",
+      "awaiting price/volume confirmation"
+    ],
+    [
+      "capital novo deve permanecer reservado",
+      "new capital should stay in reserve"
+    ],
+    [
+      "há concentração elevada em uma posição",
+      "there is high concentration in one position"
+    ],
+    [
+      "preço próximo de zona saudável do VWAP",
+      "price near a healthy VWAP zone"
+    ],
+    [
+      "confirmação final do motor técnico V5",
+      "final confirmation from V5 technical engine"
+    ],
+    [
+      "estrutura de alta HH/HL no gráfico 4h",
+      "bullish HH/HL structure on the 4h chart"
+    ],
+    [
+      "Confluência detectada pelo motor V18",
+      "Technical alignment detected by V18"
+    ],
+    [
+      "Fonte/preço ainda não estão frescos.",
+      "The data feed or price is outdated."
+    ],
+    [
+      "da carteira: acompanhar concentração",
+      "of the portfolio: monitor concentration"
+    ],
+    [
+      "posição(ões) pedem proteção/revisão.",
+      "position(s) need protection or review."
+    ],
+    [
+      "Distribuição monitorada pelo Radar.",
+      "Allocation monitored by Radar."
+    ],
+    [
+      "RSI fora de extremo de compra/venda",
+      "RSI outside buy/sell extremes"
+    ],
+    [
+      "carteira concentrada em uma posição",
+      "portfolio concentrated in one position"
+    ],
+    [
+      "memória permanente não configurada",
+      "persistent memory not configured"
+    ],
+    [
+      "qualidade técnica mínima de 85/100",
+      "minimum technical quality of 85/100"
+    ],
+    [
+      "Aguardando confirmação do mercado",
+      "Waiting for market confirmation"
+    ],
+    [
+      "Aguardando confluência dos sinais",
+      "Waiting for signal alignment"
+    ],
+    [
+      "IA analisando mercado + carteira…",
+      "AI analyzing market and portfolio…"
+    ],
+    [
+      "Maior cautela entre os destaques:",
+      "Most caution among highlights:"
+    ],
+    [
+      "da carteira: concentração elevada",
+      "of the portfolio: high concentration"
+    ],
+    [
+      "Aguardando confirmação do Radar.",
+      "Waiting for Radar confirmation."
+    ],
+    [
+      "Cenário estimado de curto prazo:",
+      "Estimated short-term scenario:"
+    ],
+    [
+      "Confluência validada pelo Radar.",
+      "Technical alignment validated by Radar."
+    ],
+    [
+      "Esperando confluência adicional.",
+      "Waiting for additional technical alignment."
+    ],
+    [
+      "Nenhuma compra confirmada agora.",
+      "No confirmed buys right now."
+    ],
+    [
+      "qualidade técnica média positiva",
+      "positive average technical quality"
+    ],
+    [
+      "volume 15m confirmando a entrada",
+      "15m volume confirming the entry"
+    ],
+    [
+      "Informe um preço maior que zero",
+      "Enter a price greater than zero"
+    ],
+    [
+      "com regime de mercado favorável",
+      "with a favorable market regime"
+    ],
+    [
+      "A prioridade agora é proteção:",
+      "Protection is the priority now:"
+    ],
+    [
+      "Aguardando confirmação técnica",
+      "Waiting for technical confirmation"
+    ],
+    [
+      "Aguardando confluência técnica",
+      "Waiting for technical alignment"
+    ],
+    [
+      "Sua carteira está concentrada.",
+      "Your portfolio is concentrated."
+    ],
+    [
+      "liquidez de mercado suficiente",
+      "sufficient market liquidity"
+    ],
+    [
+      "possível continuação da baixa",
+      "possible continuation lower"
+    ],
+    [
+      "preço próximo de zona técnica",
+      "price near a technical zone"
+    ],
+    [
+      "Inclui cotação desatualizada",
+      "Includes an outdated quote"
+    ],
+    [
+      "aguardando confirmação final",
+      "waiting for final confirmation"
+    ],
+    [
+      "movimento 24h muito esticado",
+      "24h move is overextended"
+    ],
+    [
+      "possível continuação da alta",
+      "possible continuation higher"
+    ],
+    [
+      "🛡️ Monitoramento da carteira",
+      "🛡️ Portfolio monitoring"
+    ],
+    [
+      "força ADX suficiente no 15m",
+      "sufficient ADX strength on 15m"
+    ],
+    [
+      "força relativa acima do BTC",
+      "strength above BTC"
+    ],
+    [
+      "Sem alocação técnica agora",
+      "No technical allocation right now"
+    ],
+    [
+      "ativo(s) em acompanhamento",
+      "asset(s) monitored"
+    ],
+    [
+      "tendência diária favorável",
+      "favorable daily trend"
+    ],
+    [
+      "A IA cuidando da carteira",
+      "AI managing your portfolio"
+    ],
+    [
+      "Aguardando dados recentes",
+      "Waiting for recent data"
+    ],
+    [
+      "a diversificação está boa",
+      "diversification is adequate"
+    ],
+    [
+      "tendência 1d desfavorável",
+      "unfavorable daily trend"
+    ],
+    [
+      "Aguardando sinal técnico",
+      "Waiting for technical signal"
+    ],
+    [
+      "Oportunidades em análise",
+      "Opportunities under review"
+    ],
+    [
+      "Sua carteira está vazia.",
+      "Your portfolio is empty."
+    ],
+    [
+      "desde a última varredura",
+      "since the last scan"
+    ],
+    [
+      "fraqueza relativa ao BTC",
+      "weakness relative to BTC"
+    ],
+    [
+      "regime BTC/ETH favorável",
+      "favorable BTC/ETH market regime"
+    ],
+    [
+      "● Atualização de mercado",
+      "● Market update"
+    ],
+    [
+      "IA cuidando da carteira",
+      "AI monitoring your portfolio"
+    ],
+    [
+      "Memória ativa. Comparei",
+      "Memory active. I compared"
+    ],
+    [
+      "Novo alerta do mercado.",
+      "New market alert."
+    ],
+    [
+      "diversificação limitada",
+      "limited diversification"
+    ],
+    [
+      "mercado geral defensivo",
+      "defensive broader market"
+    ],
+    [
+      "nenhum sinal confirmado",
+      "no confirmed signal"
+    ],
+    [
+      "Aguardando novos dados",
+      "Waiting for fresh data"
+    ],
+    [
+      "Aguardar nova leitura.",
+      "Wait for the next reading."
+    ],
+    [
+      "Atualização de mercado",
+      "Market update"
+    ],
+    [
+      "CANDIDATA • AGUARDANDO",
+      "CANDIDATE • WAITING"
+    ],
+    [
+      "O motor prefere manter",
+      "The engine prefers to keep"
+    ],
+    [
+      "Sem compra confirmada.",
+      "No confirmed buy."
+    ],
+    [
+      "mercado geral em baixa",
+      "broader market is bearish"
+    ],
+    [
+      "regime geral favorável",
+      "favorable broader market"
+    ],
+    [
+      "risco agregado elevado",
+      "elevated overall risk"
+    ],
+    [
+      "risco dentro do perfil",
+      "risk within your profile"
+    ],
+    [
+      "volume abaixo do ideal",
+      "volume below target"
+    ],
+    [
+      "O Radar está marcando",
+      "Radar indicates"
+    ],
+    [
+      "RSI em faixa saudável",
+      "RSI in a healthy range"
+    ],
+    [
+      "Rompimento confirmado",
+      "Confirmed breakout"
+    ],
+    [
+      "SINAL FORTE DE COMPRA",
+      "STRONG BUY SIGNAL"
+    ],
+    [
+      "Variação indisponível",
+      "Change unavailable"
+    ],
+    [
+      "da carteira rastreada",
+      "of tracked portfolio"
+    ],
+    [
+      "estrutura 4h baixista",
+      "bearish 4h structure"
+    ],
+    [
+      "força relativa ao BTC",
+      "relative strength versus BTC"
+    ],
+    [
+      "liquidez no percentil",
+      "liquidity percentile"
+    ],
+    [
+      "minutos de intervalo;",
+      "minutes apart;"
+    ],
+    [
+      "risco acima do perfil",
+      "risk exceeds profile"
+    ],
+    [
+      "risco técnico elevado",
+      "high technical risk"
+    ],
+    [
+      "Concentração elevada",
+      "High concentration"
+    ],
+    [
+      "Dados desatualizados",
+      "Stale data"
+    ],
+    [
+      "Divergência de baixa",
+      "Bearish divergence"
+    ],
+    [
+      "Movimento relevante:",
+      "Significant move:"
+    ],
+    [
+      "a reserva está baixa",
+      "reserves are low"
+    ],
+    [
+      "capitalização global",
+      "global market cap"
+    ],
+    [
+      "momentum ainda fraco",
+      "momentum remains weak"
+    ],
+    [
+      "sinal(is) exibido(s)",
+      "signal(s) shown"
+    ],
+    [
+      "⚠️ Pontos de atenção",
+      "⚠️ Needs attention"
+    ],
+    [
+      "Atenção no mercado:",
+      "Market caution:"
+    ],
+    [
+      "Compras confirmadas",
+      "Confirmed buys"
+    ],
+    [
+      "Dados em tempo real",
+      "Live data"
+    ],
+    [
+      "Divergência de alta",
+      "Bullish divergence"
+    ],
+    [
+      "dos ativos em valor",
+      "of portfolio value"
+    ],
+    [
+      "força abaixo do BTC",
+      "underperforming BTC"
+    ],
+    [
+      "queda 24h relevante",
+      "significant 24h decline"
+    ],
+    [
+      "reserva muito baixa",
+      "very low reserve"
+    ],
+    [
+      "risco técnico baixo",
+      "low technical risk"
+    ],
+    [
+      "volume insuficiente",
+      "insufficient volume"
+    ],
+    [
+      "Última atualização:",
+      "Last update:"
+    ],
+    [
+      "AGUARDANDO ENTRADA",
+      "WAITING FOR ENTRY"
+    ],
+    [
+      "Aguardando entrada",
+      "Waiting for entry"
+    ],
+    [
+      "CANDIDATA A COMPRA",
+      "BUY CANDIDATE"
+    ],
+    [
+      "Entrada bloqueada.",
+      "Entry blocked."
+    ],
+    [
+      "Falha de pullback:",
+      "Failed pullback:"
+    ],
+    [
+      "TENDÊNCIA DE BAIXA",
+      "DOWNTREND"
+    ],
+    [
+      "Tendência de baixa",
+      "Downtrend"
+    ],
+    [
+      "alta 24h acelerada",
+      "rapid 24h rally"
+    ],
+    [
+      "confluência forte;",
+      "strong technical alignment;"
+    ],
+    [
+      "estrutura 4h HH/HL",
+      "bullish 4h HH/HL structure"
+    ],
+    [
+      "volume ainda baixo",
+      "volume remains low"
+    ],
+    [
+      "volume confirmando",
+      "volume confirms"
+    ],
+    [
+      "COMPRA CONFIRMADA",
+      "CONFIRMED BUY"
+    ],
+    [
+      "Candidata técnica",
+      "Technical candidate"
+    ],
+    [
+      "Dados atualizados",
+      "Data updated"
+    ],
+    [
+      "Dados recebidos •",
+      "Data received •"
+    ],
+    [
+      "Movimento rápido:",
+      "Rapid move:"
+    ],
+    [
+      "TENDÊNCIA DE ALTA",
+      "UPTREND"
+    ],
+    [
+      "Tendência de alta",
+      "Uptrend"
+    ],
+    [
+      "Tendência lateral",
+      "Sideways trend"
+    ],
+    [
+      "qualidade técnica",
+      "technical quality"
+    ],
+    [
+      "AGUARDAR ENTRADA",
+      "WAIT FOR ENTRY"
+    ],
+    [
+      "ANÁLISE PENDENTE",
+      "ANALYSIS PENDING"
+    ],
+    [
+      "Aguardando dados",
+      "Waiting for data"
+    ],
+    [
+      "Alertas do Radar",
+      "Radar alerts"
+    ],
+    [
+      "Falta confirmar:",
+      "Still required:"
+    ],
+    [
+      "Mercado em baixa",
+      "Bearish market"
+    ],
+    [
+      "VENDA CONFIRMADA",
+      "CONFIRMED SELL"
+    ],
+    [
+      "VENDER / REDUZIR",
+      "SELL / REDUCE"
+    ],
+    [
+      "distante do VWAP",
+      "far from VWAP"
+    ],
+    [
+      "valor aproximado",
+      "estimated value"
+    ],
+    [
+      "ADX ainda fraco",
+      "ADX still weak"
+    ],
+    [
+      "Atualizar dados",
+      "Refresh data"
+    ],
+    [
+      "Dados recebidos",
+      "Data received"
+    ],
+    [
+      "Falta confirmar",
+      "Still to confirm"
+    ],
+    [
+      "IA indisponível",
+      "AI unavailable"
+    ],
+    [
+      "Mercado ao vivo",
+      "Live market"
+    ],
+    [
+      "Mercado em alta",
+      "Bullish market"
+    ],
+    [
+      "RSI já aquecido",
+      "RSI is getting hot"
+    ],
+    [
+      "com preço médio",
+      "with cost basis"
+    ],
+    [
+      "EVITAR ENTRADA",
+      "AVOID ENTRY"
+    ],
+    [
+      "Maior posição:",
+      "Largest holding:"
+    ],
+    [
+      "Mercado agora:",
+      "Market now:"
+    ],
+    [
+      "Mercado neutro",
+      "Neutral market"
+    ],
+    [
+      "REALIZAR PARTE",
+      "TAKE PARTIAL PROFITS"
+    ],
+    [
+      "Sinais ao vivo",
+      "Live signals"
+    ],
+    [
+      "risco moderado",
+      "moderate risk"
+    ],
+    [
+      "% da carteira",
+      "% of portfolio"
+    ],
+    [
+      "AI analisando",
+      "AI analyzing"
+    ],
+    [
+      "Extreme Greed",
+      "Extreme Greed"
+    ],
+    [
+      "IA analisando",
+      "AI analyzing"
+    ],
+    [
+      "Queda rápida:",
+      "Rapid drop:"
+    ],
+    [
+      "RISCO ELEVADO",
+      "ELEVATED RISK"
+    ],
+    [
+      "medo/ganância",
+      "fear/greed"
+    ],
+    [
+      "memória ativa",
+      "memory active"
+    ],
+    [
+      "mercado geral",
+      "overall market"
+    ],
+    [
+      "Atualizando…",
+      "Updating…"
+    ],
+    [
+      "Extreme Fear",
+      "Extreme Fear"
+    ],
+    [
+      "RSI esticado",
+      "overbought RSI"
+    ],
+    [
+      "alvo técnico",
+      "technical target"
+    ],
+    [
+      "movimento de",
+      "change of"
+    ],
+    [
+      "volume forte",
+      "strong volume"
+    ],
+    [
+      "(confiança ",
+      "(confidence "
+    ],
+    [
+      "Abrir Radar",
+      "Open Radar"
+    ],
+    [
+      "Forte queda",
+      "Sharp drop"
+    ],
+    [
+      "Preço atual",
+      "Current price"
+    ],
+    [
+      "RISCO BAIXO",
+      "LOW RISK"
+    ],
+    [
+      "RISCO MÉDIO",
+      "MEDIUM RISK"
+    ],
+    [
+      "Risco baixo",
+      "Low risk"
+    ],
+    [
+      "Risco médio",
+      "Medium risk"
+    ],
+    [
+      "SINAL FORTE",
+      "STRONG SIGNAL"
+    ],
+    [
+      "Você possui",
+      "You hold"
+    ],
+    [
+      "com cotação",
+      "with price data"
+    ],
+    [
+      "risco Baixo",
+      "low risk"
+    ],
+    [
+      "risco Médio",
+      "medium risk"
+    ],
+    [
+      "risco baixo",
+      "low risk"
+    ],
+    [
+      "risco médio",
+      "medium risk"
+    ],
+    [
+      "Confiança ",
+      "Confidence "
+    ],
+    [
+      "EM ANÁLISE",
+      "UNDER REVIEW"
+    ],
+    [
+      "Forte alta",
+      "Strong rally"
+    ],
+    [
+      "RISCO ALTO",
+      "HIGH RISK"
+    ],
+    [
+      "Risco alto",
+      "High risk"
+    ],
+    [
+      "risco Alto",
+      "high risk"
+    ],
+    [
+      "risco alto",
+      "high risk"
+    ],
+    [
+      "volume US$",
+      "volume US$"
+    ],
+    [
+      "• filtrado",
+      "• filtered"
+    ],
+    [
+      " e score ",
+      " and score "
+    ],
+    [
+      " lateral ",
+      " sideways "
+    ],
+    [
+      ",lateral ",
+      ",sideways "
+    ],
+    [
+      "CONFIANÇA",
+      "CONFIDENCE"
+    ],
+    [
+      "Carteira:",
+      "Portfolio:"
+    ],
+    [
+      "EM ESPERA",
+      "ON HOLD"
+    ],
+    [
+      "em espera",
+      "on hold"
+    ],
+    [
+      "simulação",
+      "simulation"
+    ],
+    [
+      ", queda ",
+      ", down "
+    ],
+    [
+      "LIQUIDEZ",
+      "LIQUIDITY"
+    ],
+    [
+      "MOMENTUM",
+      "MOMENTUM"
+    ],
+    [
+      "liquidez",
+      "liquidity"
+    ],
+    [
+      "segundos",
+      "seconds"
+    ],
+    [
+      " queda ",
+      " down "
+    ],
+    [
+      "APORTAR",
+      "ADD FUNDS"
+    ],
+    [
+      "LATERAL",
+      "SIDEWAYS"
+    ],
+    [
+      "Neutral",
+      "Neutral"
+    ],
+    [
+      "Resumo ",
+      "Summary "
+    ],
+    [
+      "lateral",
+      "sideways"
+    ],
+    [
+      "minutos",
+      "minutes"
+    ],
+    [
+      " alta ",
+      " up "
+    ],
+    [
+      "MANTER",
+      "HOLD"
+    ],
+    [
+      "NEUTRO",
+      "NEUTRAL"
+    ],
+    [
+      "VOLUME",
+      "VOLUME"
+    ],
+    [
+      "em 24h",
+      "over 24h"
+    ],
+    [
+      "perfil",
+      "profile"
+    ],
+    [
+      "riscos",
+      "risks"
+    ],
+    [
+      "BAIXA",
+      "DOWN"
+    ],
+    [
+      "Greed",
+      "Greed"
+    ],
+    [
+      "nível",
+      "level"
+    ],
+    [
+      "ocupa",
+      "represents"
+    ],
+    [
+      "preço",
+      "price"
+    ],
+    [
+      "queda",
+      "downside"
+    ],
+    [
+      "risco",
+      "risk"
+    ],
+    [
+      " há ",
+      " ago: "
+    ],
+    [
+      "ALTA",
+      "UP"
+    ],
+    [
+      "BEAR",
+      "BEARISH"
+    ],
+    [
+      "BULL",
+      "BULLISH"
+    ],
+    [
+      "Fear",
+      "Fear"
+    ],
+    [
+      "alta",
+      "upside"
+    ],
+    [
+      " e ",
+      " and "
+    ],
+    [
+      "Há",
+      "There are"
+    ]
+  ],
+  "es": [
+    [
+      "Valor e variação de 24h são estimativas de mercado. Resultado não realizado usa apenas posições com preço médio cadastrado; não inclui taxas ou impostos. Pontuação técnica não é probabilidade de lucro.",
+      "Los valores y cambios de 24 h son estimaciones. Ganancias/pérdidas no realizadas requieren precio medio y excluyen comisiones e impuestos. La puntuación técnica no es probabilidad de beneficio."
+    ],
+    [
+      "A IA não libera aporte quando o Radar ainda está em espera e não manda reduzir apenas por diferença de alocação.",
+      "La IA no autoriza aportes mientras Radar espera, ni recomienda reducir solo por diferencia de asignación."
+    ],
+    [
+      "Nenhuma compra está confirmada agora. A IA mantém o capital novo em espera em vez de forçar um aporte.",
+      "No hay compras confirmadas. La IA mantiene el capital nuevo en reserva en vez de forzar una entrada."
+    ],
+    [
+      "Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.",
+      "Radar mostrará alertas verificables cuando se actualicen los precios y los datos técnicos."
+    ],
+    [
+      "Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.",
+      "Esperando estructura, tendencia e indicadores técnicos antes de evaluar la entrada."
+    ],
+    [
+      "A análise está ativa, mas a memória permanente não está disponível nesta execução.",
+      "El análisis está activo, pero la memoria persistente no está disponible en esta sesión."
+    ],
+    [
+      "Memória ativa. A próxima avaliação só ocorre depois de uma janela mínima de",
+      "Memoria activa. La próxima evaluación solo ocurrirá después de al menos"
+    ],
+    [
+      "posição(ões) seguem em espera e o capital novo deve permanecer reservado.",
+      "posición(es) siguen en espera y el capital nuevo debe quedar reservado."
+    ],
+    [
+      "Sem alertas de concentração extrema ou de dados ausentes nesta leitura.",
+      "Sin alertas de concentración extrema ni datos faltantes en esta lectura."
+    ],
+    [
+      "cenário incompleto; aguardar melhora antes de elevar a exposição.",
+      "escenario incompleto; espera una mejora antes de aumentar la exposición."
+    ],
+    [
+      "💵 Aporte novo: manter em reserva até surgir confirmação técnica.",
+      "💵 Nuevo aporte: mantener en reserva hasta confirmación técnica."
+    ],
+    [
+      "A IA bloqueou qualquer movimentação até os dados normalizarem.",
+      "La IA bloqueó acciones nuevas hasta que los datos se actualicen."
+    ],
+    [
+      "A IA usa a mesma decisão para carteira, aporte e oportunidades",
+      "La IA utiliza una sola decisión para cartera, aportes y oportunidades"
+    ],
+    [
+      "Importe um print ou adicione moedas manualmente para começar.",
+      "Importa una captura o añade monedas manualmente para empezar."
+    ],
+    [
+      "IA temporariamente indisponível • nova tentativa automática",
+      "IA temporalmente no disponible • nuevo intento automático"
+    ],
+    [
+      "Sua carteira ainda não foi enviada para a IA nesta leitura.",
+      "Tu cartera todavía no se ha enviado a la IA en esta lectura."
+    ],
+    [
+      "posição(ões) da carteira com entrada confirmada pelo Radar.",
+      "posición(es) de la cartera con entrada confirmada por Radar."
+    ],
+    [
+      "posição(ões) pedem redução/revisão antes de aumentar risco.",
+      "posición(es) requieren reducción o revisión antes de aumentar el riesgo."
+    ],
+    [
+      "Esse ativo não aparece na carteira enviada nesta leitura.",
+      "Este activo no aparece en tu cartera para esta lectura."
+    ],
+    [
+      "Sua carteira não tem aporte liberado agora, mas existem",
+      "Tu cartera no permite aportes nuevos ahora, pero hay"
+    ],
+    [
+      "oportunidade(s) externa(s) confirmada(s) para observar.",
+      "oportunidad(es) externas confirmadas para observar."
+    ],
+    [
+      "A carteira merece reequilíbrio antes de aumentar risco",
+      "Conviene reequilibrar antes de aumentar el riesgo"
+    ],
+    [
+      "Sem posições precificadas para mostrar a distribuição.",
+      "No hay posiciones con precio para mostrar la distribución."
+    ],
+    [
+      "Movimento confirmado em duas leituras; score de risco",
+      "Movimiento confirmado en dos lecturas; puntuación de riesgo"
+    ],
+    [
+      "Revisar proteção e concentração antes de movimentar.",
+      "Revisa la protección y concentración antes de actuar."
+    ],
+    [
+      "Reserva de moedas estáveis abaixo de 5% da carteira",
+      "Reserva de monedas estables inferior al 5% de la cartera"
+    ],
+    [
+      "tendência de alta alinhada entre os tempos gráficos",
+      "tendencia alcista alineada en los marcos temporales"
+    ],
+    [
+      "Adicione seus ativos para iniciar o monitoramento.",
+      "Añade activos para iniciar el monitoreo."
+    ],
+    [
+      "ativo(s) sem cotação: não incluídos no valor total",
+      "activo(s) sin precio: excluidos del valor total"
+    ],
+    [
+      "Conferir posição, risco e taxas antes de decidir.",
+      "Revisa posición, riesgo y comisiones antes de decidir."
+    ],
+    [
+      "Confira valor do aporte e limite de concentração.",
+      "Comprueba el importe del aporte y el límite de concentración."
+    ],
+    [
+      "boa base técnica, mas ainda merece confirmação de",
+      "buena base técnica, pero aún requiere confirmación de"
+    ],
+    [
+      "movimento 24h já avançado; evitar perseguir preço",
+      "movimiento de 24 h avanzado; evita perseguir precio"
+    ],
+    [
+      "Confluência confirmada no Radar V5 e no mercado;",
+      "Confluencia confirmada por Radar V5 y el mercado;"
+    ],
+    [
+      "avançaram. Os pesos são ajustados gradualmente.",
+      "avanzaron. Los pesos se ajustan gradualmente."
+    ],
+    [
+      "em reserva até aparecer confluência suficiente.",
+      "en reserva hasta que haya confluencia suficiente."
+    ],
+    [
+      "Aguardar fechamento das confirmações técnicas.",
+      "Espera el cierre de las confirmaciones técnicas."
+    ],
+    [
+      "alta de 24h menos esticada (aguardar correção)",
+      "subida de 24 h menos extendida (espera corrección)"
+    ],
+    [
+      "ativo(s) com bloqueio ou risco técnico elevado",
+      "activo(s) bloqueados o con alto riesgo técnico"
+    ],
+    [
+      "posição(ões) da carteira liberadas para aporte",
+      "posición(es) aptas para aportes"
+    ],
+    [
+      "Condição de redução sinalizada pela carteira.",
+      "Condición de reducción detectada en la cartera."
+    ],
+    [
+      "abaixo do VWAP; reversão ainda não confirmada",
+      "por debajo del VWAP; reversión aún sin confirmar"
+    ],
+    [
+      "Aguardar confirmação, sem aporte automático.",
+      "Espera confirmación, sin aporte automático."
+    ],
+    [
+      "Há cotações desatualizadas no valor estimado",
+      "El valor estimado incluye cotizaciones desactualizadas"
+    ],
+    [
+      "Avaliar liquidez e risco antes de investir.",
+      "Evalúa liquidez y riesgo antes de invertir."
+    ],
+    [
+      "estrutura 4h ainda mista; falta confirmação",
+      "estructura de 4 h mixta; falta confirmación"
+    ],
+    [
+      "minutos para evitar aprendizado por ruído.",
+      "minutos para evitar aprender del ruido."
+    ],
+    [
+      "A IA bloqueia novos aportes conflitantes.",
+      "La IA bloquea nuevos aportes contradictorios."
+    ],
+    [
+      "A carteira está em condição intermediária",
+      "La cartera está en situación intermedia"
+    ],
+    [
+      "Analisando sinais e buscando confirmações",
+      "Analizando señales y buscando confirmaciones"
+    ],
+    [
+      "oportunidade(s) externa(s) confirmada(s).",
+      "oportunidad(es) externa(s) confirmada(s)."
+    ],
+    [
+      "A carteira está estruturalmente saudável",
+      "La cartera es estructuralmente sólida"
+    ],
+    [
+      "Nenhuma moeda corresponde a este filtro.",
+      "Ninguna moneda coincide con este filtro."
+    ],
+    [
+      "e o mercado geral pede postura defensiva",
+      "y el mercado general exige prudencia"
+    ],
+    [
+      "indicadores 15m, 4h e diário atualizados",
+      "indicadores actualizados de 15 min, 4 h y diario"
+    ],
+    [
+      "Faltam critérios para liberar a compra.",
+      "Aún faltan criterios para permitir la compra."
+    ],
+    [
+      "cotação e volume de mercado atualizados",
+      "precio y volumen de mercado actualizados"
+    ],
+    [
+      "reserva alta; pode haver capital ocioso",
+      "reserva alta; puede haber capital sin invertir"
+    ],
+    [
+      "sinais de uma fotografia com pelo menos",
+      "señales de una muestra separada por al menos"
+    ],
+    [
+      "aguardando confirmação de preço/volume",
+      "esperando confirmación de precio/volumen"
+    ],
+    [
+      "capital novo deve permanecer reservado",
+      "el capital nuevo debe permanecer en reserva"
+    ],
+    [
+      "há concentração elevada em uma posição",
+      "hay alta concentración en una posición"
+    ],
+    [
+      "preço próximo de zona saudável do VWAP",
+      "precio cerca de una zona saludable de VWAP"
+    ],
+    [
+      "confirmação final do motor técnico V5",
+      "confirmación final del motor técnico V5"
+    ],
+    [
+      "estrutura de alta HH/HL no gráfico 4h",
+      "estructura alcista HH/HL en el gráfico de 4 h"
+    ],
+    [
+      "Confluência detectada pelo motor V18",
+      "Confluencia detectada por V18"
+    ],
+    [
+      "Fonte/preço ainda não estão frescos.",
+      "La fuente o el precio están desactualizados."
+    ],
+    [
+      "da carteira: acompanhar concentração",
+      "de la cartera: vigilar concentración"
+    ],
+    [
+      "posição(ões) pedem proteção/revisão.",
+      "posición(es) necesitan protección o revisión."
+    ],
+    [
+      "Distribuição monitorada pelo Radar.",
+      "Distribución monitoreada por Radar."
+    ],
+    [
+      "RSI fora de extremo de compra/venda",
+      "RSI fuera de extremos de compra/venta"
+    ],
+    [
+      "carteira concentrada em uma posição",
+      "cartera concentrada en una posición"
+    ],
+    [
+      "memória permanente não configurada",
+      "memoria persistente no configurada"
+    ],
+    [
+      "qualidade técnica mínima de 85/100",
+      "calidad técnica mínima de 85/100"
+    ],
+    [
+      "Aguardando confirmação do mercado",
+      "Esperando confirmación del mercado"
+    ],
+    [
+      "Aguardando confluência dos sinais",
+      "Esperando alineación de señales"
+    ],
+    [
+      "IA analisando mercado + carteira…",
+      "IA analizando mercado y cartera…"
+    ],
+    [
+      "Maior cautela entre os destaques:",
+      "Mayor precaución entre destacados:"
+    ],
+    [
+      "da carteira: concentração elevada",
+      "de la cartera: concentración alta"
+    ],
+    [
+      "Aguardando confirmação do Radar.",
+      "Esperando confirmación de Radar."
+    ],
+    [
+      "Cenário estimado de curto prazo:",
+      "Escenario estimado a corto plazo:"
+    ],
+    [
+      "Confluência validada pelo Radar.",
+      "Confluencia validada por Radar."
+    ],
+    [
+      "Esperando confluência adicional.",
+      "Esperando confluencia técnica adicional."
+    ],
+    [
+      "Nenhuma compra confirmada agora.",
+      "Ninguna compra confirmada ahora."
+    ],
+    [
+      "qualidade técnica média positiva",
+      "calidad técnica media positiva"
+    ],
+    [
+      "volume 15m confirmando a entrada",
+      "volumen de 15 min confirmando la entrada"
+    ],
+    [
+      "Informe um preço maior que zero",
+      "Introduce un precio mayor que cero"
+    ],
+    [
+      "com regime de mercado favorável",
+      "con un régimen de mercado favorable"
+    ],
+    [
+      "A prioridade agora é proteção:",
+      "La prioridad ahora es proteger:"
+    ],
+    [
+      "Aguardando confirmação técnica",
+      "Esperando confirmación técnica"
+    ],
+    [
+      "Aguardando confluência técnica",
+      "Esperando confluencia técnica"
+    ],
+    [
+      "Sua carteira está concentrada.",
+      "Tu cartera está concentrada."
+    ],
+    [
+      "liquidez de mercado suficiente",
+      "liquidez de mercado suficiente"
+    ],
+    [
+      "possível continuação da baixa",
+      "posible continuación bajista"
+    ],
+    [
+      "preço próximo de zona técnica",
+      "precio próximo a zona técnica"
+    ],
+    [
+      "Inclui cotação desatualizada",
+      "Incluye cotización desactualizada"
+    ],
+    [
+      "aguardando confirmação final",
+      "esperando confirmación final"
+    ],
+    [
+      "movimento 24h muito esticado",
+      "movimiento de 24 h demasiado extendido"
+    ],
+    [
+      "possível continuação da alta",
+      "posible continuación alcista"
+    ],
+    [
+      "🛡️ Monitoramento da carteira",
+      "🛡️ Monitoreo de cartera"
+    ],
+    [
+      "força ADX suficiente no 15m",
+      "fuerza ADX suficiente en 15 min"
+    ],
+    [
+      "força relativa acima do BTC",
+      "fuerza relativa superior a BTC"
+    ],
+    [
+      "Sem alocação técnica agora",
+      "Sin asignación técnica por ahora"
+    ],
+    [
+      "ativo(s) em acompanhamento",
+      "activo(s) monitoreado(s)"
+    ],
+    [
+      "tendência diária favorável",
+      "tendencia diaria favorable"
+    ],
+    [
+      "A IA cuidando da carteira",
+      "IA gestionando tu cartera"
+    ],
+    [
+      "Aguardando dados recentes",
+      "Esperando datos recientes"
+    ],
+    [
+      "a diversificação está boa",
+      "la diversificación es adecuada"
+    ],
+    [
+      "tendência 1d desfavorável",
+      "tendencia diaria desfavorable"
+    ],
+    [
+      "Aguardando sinal técnico",
+      "Esperando señal técnica"
+    ],
+    [
+      "Oportunidades em análise",
+      "Oportunidades en análisis"
+    ],
+    [
+      "Sua carteira está vazia.",
+      "Tu cartera está vacía."
+    ],
+    [
+      "desde a última varredura",
+      "desde el último análisis"
+    ],
+    [
+      "fraqueza relativa ao BTC",
+      "debilidad relativa frente a BTC"
+    ],
+    [
+      "regime BTC/ETH favorável",
+      "régimen BTC/ETH favorable"
+    ],
+    [
+      "● Atualização de mercado",
+      "● Actualización de mercado"
+    ],
+    [
+      "IA cuidando da carteira",
+      "IA cuidando de tu cartera"
+    ],
+    [
+      "Memória ativa. Comparei",
+      "Memoria activa. Comparé"
+    ],
+    [
+      "Novo alerta do mercado.",
+      "Nueva alerta del mercado."
+    ],
+    [
+      "diversificação limitada",
+      "diversificación limitada"
+    ],
+    [
+      "mercado geral defensivo",
+      "mercado general defensivo"
+    ],
+    [
+      "nenhum sinal confirmado",
+      "ninguna señal confirmada"
+    ],
+    [
+      "Aguardando novos dados",
+      "Esperando datos nuevos"
+    ],
+    [
+      "Aguardar nova leitura.",
+      "Espera la próxima lectura."
+    ],
+    [
+      "Atualização de mercado",
+      "Actualización de mercado"
+    ],
+    [
+      "CANDIDATA • AGUARDANDO",
+      "CANDIDATA • ESPERANDO"
+    ],
+    [
+      "O motor prefere manter",
+      "El motor prefiere mantener"
+    ],
+    [
+      "Sem compra confirmada.",
+      "Sin compra confirmada."
+    ],
+    [
+      "mercado geral em baixa",
+      "mercado general bajista"
+    ],
+    [
+      "regime geral favorável",
+      "mercado general favorable"
+    ],
+    [
+      "risco agregado elevado",
+      "riesgo global elevado"
+    ],
+    [
+      "risco dentro do perfil",
+      "riesgo dentro de tu perfil"
+    ],
+    [
+      "volume abaixo do ideal",
+      "volumen por debajo de lo ideal"
+    ],
+    [
+      "O Radar está marcando",
+      "Radar indica"
+    ],
+    [
+      "RSI em faixa saudável",
+      "RSI en un rango saludable"
+    ],
+    [
+      "Rompimento confirmado",
+      "Ruptura confirmada"
+    ],
+    [
+      "SINAL FORTE DE COMPRA",
+      "SEÑAL FUERTE DE COMPRA"
+    ],
+    [
+      "Variação indisponível",
+      "Variación no disponible"
+    ],
+    [
+      "da carteira rastreada",
+      "de la cartera monitoreada"
+    ],
+    [
+      "estrutura 4h baixista",
+      "estructura bajista de 4 h"
+    ],
+    [
+      "força relativa ao BTC",
+      "fuerza relativa frente a BTC"
+    ],
+    [
+      "liquidez no percentil",
+      "percentil de liquidez"
+    ],
+    [
+      "minutos de intervalo;",
+      "minutos de intervalo;"
+    ],
+    [
+      "risco acima do perfil",
+      "el riesgo supera el perfil"
+    ],
+    [
+      "risco técnico elevado",
+      "riesgo técnico elevado"
+    ],
+    [
+      "Concentração elevada",
+      "Concentración elevada"
+    ],
+    [
+      "Dados desatualizados",
+      "Datos desactualizados"
+    ],
+    [
+      "Divergência de baixa",
+      "Divergencia bajista"
+    ],
+    [
+      "Movimento relevante:",
+      "Movimiento relevante:"
+    ],
+    [
+      "a reserva está baixa",
+      "la reserva es baja"
+    ],
+    [
+      "capitalização global",
+      "capitalización global"
+    ],
+    [
+      "momentum ainda fraco",
+      "impulso todavía débil"
+    ],
+    [
+      "sinal(is) exibido(s)",
+      "señal(es) mostrada(s)"
+    ],
+    [
+      "⚠️ Pontos de atenção",
+      "⚠️ Puntos de atención"
+    ],
+    [
+      "Atenção no mercado:",
+      "Atención al mercado:"
+    ],
+    [
+      "Compras confirmadas",
+      "Compras confirmadas"
+    ],
+    [
+      "Dados em tempo real",
+      "Datos en tiempo real"
+    ],
+    [
+      "Divergência de alta",
+      "Divergencia alcista"
+    ],
+    [
+      "dos ativos em valor",
+      "del valor de los activos"
+    ],
+    [
+      "força abaixo do BTC",
+      "fuerza inferior a BTC"
+    ],
+    [
+      "queda 24h relevante",
+      "caída importante de 24 h"
+    ],
+    [
+      "reserva muito baixa",
+      "reserva muy baja"
+    ],
+    [
+      "risco técnico baixo",
+      "riesgo técnico bajo"
+    ],
+    [
+      "volume insuficiente",
+      "volumen insuficiente"
+    ],
+    [
+      "Última atualização:",
+      "Última actualización:"
+    ],
+    [
+      "AGUARDANDO ENTRADA",
+      "ESPERANDO ENTRADA"
+    ],
+    [
+      "Aguardando entrada",
+      "Esperando entrada"
+    ],
+    [
+      "CANDIDATA A COMPRA",
+      "CANDIDATA A COMPRA"
+    ],
+    [
+      "Entrada bloqueada.",
+      "Entrada bloqueada."
+    ],
+    [
+      "Falha de pullback:",
+      "Fallo de retroceso:"
+    ],
+    [
+      "TENDÊNCIA DE BAIXA",
+      "TENDENCIA BAJISTA"
+    ],
+    [
+      "Tendência de baixa",
+      "Tendencia bajista"
+    ],
+    [
+      "alta 24h acelerada",
+      "subida acelerada de 24 h"
+    ],
+    [
+      "confluência forte;",
+      "confluencia técnica fuerte;"
+    ],
+    [
+      "estrutura 4h HH/HL",
+      "estructura alcista HH/HL de 4 h"
+    ],
+    [
+      "volume ainda baixo",
+      "el volumen sigue bajo"
+    ],
+    [
+      "volume confirmando",
+      "volumen confirmando"
+    ],
+    [
+      "COMPRA CONFIRMADA",
+      "COMPRA CONFIRMADA"
+    ],
+    [
+      "Candidata técnica",
+      "Candidata técnica"
+    ],
+    [
+      "Dados atualizados",
+      "Datos actualizados"
+    ],
+    [
+      "Dados recebidos •",
+      "Datos recibidos •"
+    ],
+    [
+      "Movimento rápido:",
+      "Movimiento rápido:"
+    ],
+    [
+      "TENDÊNCIA DE ALTA",
+      "TENDENCIA ALCISTA"
+    ],
+    [
+      "Tendência de alta",
+      "Tendencia alcista"
+    ],
+    [
+      "Tendência lateral",
+      "Tendencia lateral"
+    ],
+    [
+      "qualidade técnica",
+      "calidad técnica"
+    ],
+    [
+      "AGUARDAR ENTRADA",
+      "ESPERAR ENTRADA"
+    ],
+    [
+      "ANÁLISE PENDENTE",
+      "ANÁLISIS PENDIENTE"
+    ],
+    [
+      "Aguardando dados",
+      "Esperando datos"
+    ],
+    [
+      "Alertas do Radar",
+      "Alertas de Radar"
+    ],
+    [
+      "Falta confirmar:",
+      "Falta confirmar:"
+    ],
+    [
+      "Mercado em baixa",
+      "Mercado bajista"
+    ],
+    [
+      "VENDA CONFIRMADA",
+      "VENTA CONFIRMADA"
+    ],
+    [
+      "VENDER / REDUZIR",
+      "VENDER / REDUCIR"
+    ],
+    [
+      "distante do VWAP",
+      "lejos del VWAP"
+    ],
+    [
+      "valor aproximado",
+      "valor aproximado"
+    ],
+    [
+      "ADX ainda fraco",
+      "ADX aún débil"
+    ],
+    [
+      "Atualizar dados",
+      "Actualizar datos"
+    ],
+    [
+      "Dados recebidos",
+      "Datos recibidos"
+    ],
+    [
+      "Falta confirmar",
+      "Falta confirmar"
+    ],
+    [
+      "IA indisponível",
+      "IA no disponible"
+    ],
+    [
+      "Mercado ao vivo",
+      "Mercado en vivo"
+    ],
+    [
+      "Mercado em alta",
+      "Mercado alcista"
+    ],
+    [
+      "RSI já aquecido",
+      "RSI ya sobrecalentado"
+    ],
+    [
+      "com preço médio",
+      "con precio medio"
+    ],
+    [
+      "EVITAR ENTRADA",
+      "EVITAR ENTRADA"
+    ],
+    [
+      "Maior posição:",
+      "Mayor posición:"
+    ],
+    [
+      "Mercado agora:",
+      "Mercado ahora:"
+    ],
+    [
+      "Mercado neutro",
+      "Mercado neutral"
+    ],
+    [
+      "REALIZAR PARTE",
+      "REALIZAR PARTE"
+    ],
+    [
+      "Sinais ao vivo",
+      "Señales en vivo"
+    ],
+    [
+      "risco moderado",
+      "riesgo moderado"
+    ],
+    [
+      "% da carteira",
+      "% de la cartera"
+    ],
+    [
+      "AI analisando",
+      "IA analizando"
+    ],
+    [
+      "Extreme Greed",
+      "Codicia extrema"
+    ],
+    [
+      "IA analisando",
+      "IA analizando"
+    ],
+    [
+      "Queda rápida:",
+      "Caída rápida:"
+    ],
+    [
+      "RISCO ELEVADO",
+      "RIESGO ELEVADO"
+    ],
+    [
+      "medo/ganância",
+      "miedo/codicia"
+    ],
+    [
+      "memória ativa",
+      "memoria activa"
+    ],
+    [
+      "mercado geral",
+      "mercado general"
+    ],
+    [
+      "Atualizando…",
+      "Actualizando…"
+    ],
+    [
+      "Extreme Fear",
+      "Miedo extremo"
+    ],
+    [
+      "RSI esticado",
+      "RSI sobrecomprado"
+    ],
+    [
+      "alvo técnico",
+      "objetivo técnico"
+    ],
+    [
+      "movimento de",
+      "movimiento de"
+    ],
+    [
+      "volume forte",
+      "volumen fuerte"
+    ],
+    [
+      "(confiança ",
+      "(confianza "
+    ],
+    [
+      "Abrir Radar",
+      "Abrir Radar"
+    ],
+    [
+      "Forte queda",
+      "Caída fuerte"
+    ],
+    [
+      "Preço atual",
+      "Precio actual"
+    ],
+    [
+      "RISCO BAIXO",
+      "RIESGO BAJO"
+    ],
+    [
+      "RISCO MÉDIO",
+      "RIESGO MEDIO"
+    ],
+    [
+      "Risco baixo",
+      "Riesgo bajo"
+    ],
+    [
+      "Risco médio",
+      "Riesgo medio"
+    ],
+    [
+      "SINAL FORTE",
+      "SEÑAL FUERTE"
+    ],
+    [
+      "Você possui",
+      "Tienes"
+    ],
+    [
+      "com cotação",
+      "con cotización"
+    ],
+    [
+      "risco Baixo",
+      "riesgo bajo"
+    ],
+    [
+      "risco Médio",
+      "riesgo medio"
+    ],
+    [
+      "risco baixo",
+      "riesgo bajo"
+    ],
+    [
+      "risco médio",
+      "riesgo medio"
+    ],
+    [
+      "Confiança ",
+      "Confianza "
+    ],
+    [
+      "EM ANÁLISE",
+      "EN ANÁLISIS"
+    ],
+    [
+      "Forte alta",
+      "Fuerte subida"
+    ],
+    [
+      "RISCO ALTO",
+      "RIESGO ALTO"
+    ],
+    [
+      "Risco alto",
+      "Riesgo alto"
+    ],
+    [
+      "risco Alto",
+      "riesgo alto"
+    ],
+    [
+      "risco alto",
+      "riesgo alto"
+    ],
+    [
+      "volume US$",
+      "volumen USD"
+    ],
+    [
+      "• filtrado",
+      "• filtrado"
+    ],
+    [
+      " e score ",
+      " y puntuación "
+    ],
+    [
+      " lateral ",
+      " lateral "
+    ],
+    [
+      ",lateral ",
+      ",lateral "
+    ],
+    [
+      "CONFIANÇA",
+      "CONFIANZA"
+    ],
+    [
+      "Carteira:",
+      "Cartera:"
+    ],
+    [
+      "EM ESPERA",
+      "EN ESPERA"
+    ],
+    [
+      "em espera",
+      "en espera"
+    ],
+    [
+      "simulação",
+      "simulación"
+    ],
+    [
+      ", queda ",
+      ", caída "
+    ],
+    [
+      "LIQUIDEZ",
+      "LIQUIDEZ"
+    ],
+    [
+      "MOMENTUM",
+      "IMPULSO"
+    ],
+    [
+      "liquidez",
+      "liquidez"
+    ],
+    [
+      "segundos",
+      "segundos"
+    ],
+    [
+      " queda ",
+      " caída "
+    ],
+    [
+      "APORTAR",
+      "APORTAR"
+    ],
+    [
+      "LATERAL",
+      "LATERAL"
+    ],
+    [
+      "Neutral",
+      "Neutral"
+    ],
+    [
+      "Resumo ",
+      "Resumen "
+    ],
+    [
+      "lateral",
+      "lateral"
+    ],
+    [
+      "minutos",
+      "minutos"
+    ],
+    [
+      " alta ",
+      " alza "
+    ],
+    [
+      "MANTER",
+      "MANTENER"
+    ],
+    [
+      "NEUTRO",
+      "NEUTRAL"
+    ],
+    [
+      "VOLUME",
+      "VOLUMEN"
+    ],
+    [
+      "em 24h",
+      "en 24 h"
+    ],
+    [
+      "perfil",
+      "perfil"
+    ],
+    [
+      "riscos",
+      "riesgos"
+    ],
+    [
+      "BAIXA",
+      "BAJA"
+    ],
+    [
+      "Greed",
+      "Codicia"
+    ],
+    [
+      "nível",
+      "nivel"
+    ],
+    [
+      "ocupa",
+      "representa"
+    ],
+    [
+      "preço",
+      "precio"
+    ],
+    [
+      "queda",
+      "bajada"
+    ],
+    [
+      "risco",
+      "riesgo"
+    ],
+    [
+      " há ",
+      " hace "
+    ],
+    [
+      "ALTA",
+      "ALZA"
+    ],
+    [
+      "BEAR",
+      "BAJISTA"
+    ],
+    [
+      "BULL",
+      "ALCISTA"
+    ],
+    [
+      "Fear",
+      "Miedo"
+    ],
+    [
+      "alta",
+      "subida"
+    ],
+    [
+      " e ",
+      " y "
+    ],
+    [
+      "Há",
+      "Hay"
+    ]
+  ]
+};
+
   function resolve(choice){
     if(choice&&choice!=='auto')return ['en','es','pt-BR'].includes(choice)?choice:'pt-BR';
     const n=(navigator.language||'pt-BR').toLowerCase();
@@ -437,8 +3158,25 @@
     if(lang==='pt-BR')return original;
     const exact=STRINGS[lang]?.[original]; if(exact!==undefined)return exact;
     let out=original;
-    for(const [a,b] of PHRASES[lang]||[]){if(out.includes(a))out=out.split(a).join(b);}
-    for(const [a,b] of FALLBACK[lang]||[]){if(out.includes(a))out=out.split(a).join(b);}
+    // Mensagens dinâmicas podem conter números, moedas e valores; traduza apenas o texto humano.
+    // Do not translate a short Portuguese token inside another word (e.g., "alta" inside "Falta").
+    const word=/[\p{L}\p{N}]/u;
+    const replaceRule=(input,source,target)=>{
+      if(!input.includes(source))return input;
+      let out='',at=0,i;
+      while((i=input.indexOf(source,at))!==-1){
+        const prev=i>0?input[i-1]:'',next=input[i+source.length]||'';
+        const startInside=word.test(source[0])&&prev&&word.test(prev);
+        const endInside=word.test(source[source.length-1])&&next&&word.test(next);
+        out+=input.slice(at,i)+(startInside||endInside?source:target);
+        at=i+source.length;
+      }
+      return out+input.slice(at);
+    };
+    for(const [a,b] of DYNAMIC_V192[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of FALLBACK[lang]||[])out=replaceRule(out,a,b);
+    if(lang==='en'&&/\bhá\s+\d/i.test(original))out=out.replace(/ago:\s*(\d+)\s*(seconds|minutes|hours|days)/i,'$1 $2 ago');
     return out;
   }
   const textState=new WeakMap(), attrState=new WeakMap();
@@ -458,7 +3196,7 @@
     const val=left+out+right; if(node.nodeValue!==val){internalWrite=true;node.nodeValue=val;internalWrite=false}r.lastApplied=val;
   }
   function translateAttrs(el,lang){
-    for(const a of ['placeholder','aria-label','title'])if(el.hasAttribute?.(a)){
+    for(const a of ['placeholder','aria-label','title','alt'])if(el.hasAttribute?.(a)){
       const r=attrRecord(el,a);if(r.base==null)continue;const val=tr(r.base,lang);if(el.getAttribute(a)!==val){internalWrite=true;el.setAttribute(a,val);internalWrite=false}r.lastApplied=val;
     }
   }
@@ -469,7 +3207,7 @@
     translateAttrs(root,lang);
     const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
     let n;while(n=w.nextNode())translateText(n,lang);
-    root.querySelectorAll?.('[placeholder],[aria-label],[title]').forEach(el=>translateAttrs(el,lang));
+    root.querySelectorAll?.('[placeholder],[aria-label],[title],[alt]').forEach(el=>translateAttrs(el,lang));
   }
   function selectedChoice(){return localStorage.getItem(STORAGE_KEY)||'auto'}
   function syncSelectors(choice){
@@ -479,6 +3217,7 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
+    document.title=tr('Cripto Radar V19.2 • Idiomas completos',lang);
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }
@@ -492,7 +3231,7 @@
       else if(m.type==='attributes')translateAttrs(m.target,lang);
     }
   });
-  function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']})}
-  window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false)};
+  function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt']})}
+  window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false)};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

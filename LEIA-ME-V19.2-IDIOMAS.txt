@@ -1,0 +1,35 @@
+CRIPTO RADAR V19.2 — IDIOMAS NAS ANÁLISES EM TEMPO REAL
+
+Base: projeto completo V19.1, sem perder as funcionalidades de carteira, alertas, push, simulador, PRO do desenvolvedor e mercado.
+
+CORREÇÕES
+- Traduz textos fixos e novas mensagens dinâmicas do Radar e da IA em português (Brasil), inglês e espanhol.
+- Analisa novamente os nós de texto quando o mercado atualiza as cotações e as classificações.
+- Não traduz preços, símbolos, indicadores ou números; altera só os textos exibidos.
+- Mercado: tendência, estruturas HH/HL, RSI, ADX, VWAP, liquidez, risco, sinais e justificativas de compra/venda.
+- IA Radar: análise ao vivo, razões de espera e leitura da carteira (textos produzidos pelo motor integrado).
+- Voice AI: seleção automática do idioma de voz/ditado quando o dispositivo suporta o idioma.
+- Alertas Push do servidor: corrige salvamento do idioma do assinante, traduz os eventos de mercado para a opção registrada (incluindo app fechado).
+- Alteração de idioma sincroniza o servidor Push quando a assinatura está ativa.
+- Corrige a troca PT -> EN -> ES -> PT sem exigir reiniciar o app, e as traduções ao receber novos resultados.
+- Atualiza versão do cache e do script i18n para evitar exibição de textos antigos.
+
+LIMITAÇÕES
+- Notícias e textos livres fornecidos por terceiros não são traduzidos automaticamente. Mensagens técnicas e explicações produzidas pelos mecanismos do próprio Radar estão cobertas pelas regras locais.
+- A tradução de notificações remotas depende de uma assinatura ativa e de sincronizar seu idioma com o servidor. Notificações emitidas antes da atualização podem continuar em português.
+- Novas mensagens futuras que não existam no catálogo de textos podem precisar de uma tradução específica.
+- Não altera a análise financeira, não opera em corretoras nem garante retorno.
+
+PUBLICAÇÃO
+1. Extraia o arquivo ZIP completo (arquivos na RAIZ; não crie pasta api).
+2. Atualize os arquivos do repositório GitHub e aguarde o deploy no Vercel.
+3. Feche/reabra o PWA; a atualização do Service Worker pode demorar até carregar.
+4. Em Configurações > Idioma, teste English, Español e Português.
+5. Se utilizar Push, ative e sincronize notificações depois de alterar o idioma; verifique com o app fechado.
+
+TESTES EXECUTADOS
+- Sintaxe dos JS principais.
+- Tradução e reversibilidade PT/EN/ES/PT nas mensagens de análise dinâmica.
+- Textos inseridos/atualizados durante execução (simulação no navegador).
+- Internacionalização dos payloads de Push do servidor (verificação sem envio real).
+- Ainda não foi publicado nem testado com serviço de dados ao vivo em produção.
