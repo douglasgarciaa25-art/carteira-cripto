@@ -1,0 +1,21 @@
+CRIPTO RADAR V18.2 — PUSH RECOVERY
+
+Diagnóstico real antes da correção:
+- Supabase cron ativo: a cada 1 minuto.
+- Vercel /api/push-cron respondendo OK.
+- 1 assinatura ativa.
+- Nenhum erro de runtime.
+- O problema era baixa geração de alertas: sent=0.
+
+Mudanças:
+- Gatilhos variam conforme frequência escolhida.
+- "Importantes": movimento rápido 0,50%; 24h 6,0%.
+- "Equilibrado": movimento rápido 0,38%; 24h 4,8%.
+- "Frequente": movimento rápido 0,28%; 24h 3,8%.
+- Liquidez mínima continua alta para evitar moedas ruins.
+- Pullback forte (82+) pode alertar com uma confirmação; sinais normais mantêm filtro.
+- Motor também aceita contexto de sinais/candidatas V18 enviado pelo app.
+- Limites e cooldowns continuam ativos para reduzir spam.
+- Nova caixa "Saúde do Push 24h" mostra servidor, inscrições, enviados e falhas.
+
+Não é garantia de recebimento instantâneo: Android, bateria, rede e permissões ainda podem interferir.

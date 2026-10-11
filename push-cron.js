@@ -5,7 +5,7 @@ function pct(a,b){return a>0&&b>0?(b/a-1)*100:null}
 function fmt(n){return Number.isFinite(n)?`${n>=0?'+':''}${n.toFixed(2)}%`:'—'}
 function ema(v,n){if(!v.length)return 0;const k=2/(n+1);let e=v[0];for(const x of v.slice(1))e=x*k+e*(1-k);return e}
 
-async function fetchJson(url,ms=8500){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{cache:'no-store',signal:c.signal,headers:{Accept:'application/json','User-Agent':'Cripto-Radar-V15'}});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+async function fetchJson(url,ms=8500){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{cache:'no-store',signal:c.signal,headers:{Accept:'application/json','User-Agent':'Cripto-Radar-V18.2'}});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
 async function snapshot(){
  const sources=['https://data-api.binance.vision/api/v3/ticker/24hr','https://api.binance.com/api/v3/ticker/24hr'];
  for(const u of sources){try{const rows=await fetchJson(u);if(!Array.isArray(rows))continue;const assets=rows.filter(x=>x?.symbol?.endsWith('USDT')&&Number(x.quoteVolume)>0).map(x=>({symbol:x.symbol.slice(0,-4),change24h:Number(x.priceChangePercent)||0,volume:Number(x.quoteVolume)||0,last:Number(x.lastPrice)||0})).filter(x=>x.last>0);const sorted=[...assets].sort((a,b)=>a.volume-b.volume),n=sorted.length,rank=new Map(sorted.map((x,i)=>[x.symbol,n>1?Math.round(i/(n-1)*100):100]));assets.forEach(x=>x.liquidityPct=rank.get(x.symbol)||0);if(assets.length)return {assets,source:new URL(u).hostname}}catch(e){}}
@@ -26,6 +26,22 @@ function confirmPullback(state,symbol,p){state.pullbacks=state.pullbacks||{};con
 function userWatch(rec,assets){const held=(rec?.context?.wallet||[]).map(x=>clean(x.symbol)).filter(Boolean),defaults=['BTC','ETH','BNB','SOL','XRP','DOGE','ADA','LINK','SUI','AVAX'],top=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,16).map(x=>clean(x.symbol));return new Set([...held,...defaults,...top])}
 function mirrorBody(rec,x){const mirror=rec?.mirror||{},cap=Number(rec?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;return `${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}
 
+
+function pushProfile(rec){
+ const mode=String(rec?.prefs?.alertFrequency||'important');
+ if(mode==='all'||mode==='frequent')return {fastMove:.28,fastCooldown:12,dayMove:3.8,dayCooldown:45,pullbackScore:68,pullbackCooldown:35,maxPerRun:3};
+ if(mode==='balanced')return {fastMove:.38,fastCooldown:15,dayMove:4.8,dayCooldown:55,pullbackScore:72,pullbackCooldown:45,maxPerRun:3};
+ return {fastMove:.50,fastCooldown:20,dayMove:6.0,dayCooldown:70,pullbackScore:76,pullbackCooldown:55,maxPerRun:2};
+}
+function contextSignal(rec){
+ const xs=Array.isArray(rec?.context?.opportunities)?rec.context.opportunities:[];
+ return xs.filter(x=>{
+   const st=String(x?.signalState||x?.state||x?.signal||x?.label||'').toLowerCase();
+   const sc=Number(x?.score??x?.confidence??0);
+   return /confirm|forte|candidate|candidata|compra/.test(st)&&sc>=72;
+ }).sort((a,b)=>Number(b?.score??b?.confidence??0)-Number(a?.score??a?.confidence??0)).slice(0,2);
+}
+
 module.exports=async(req,res)=>{
  res.setHeader('Cache-Control','no-store');if(req.method!=='GET')return res.status(405).json({ok:false,error:'Método não permitido'});
  try{
@@ -35,13 +51,19 @@ module.exports=async(req,res)=>{
   const kcache=new Map();let sent=0,failed=0;
   for(const rec of subs){
    if(rec.pendingLockedTest){const r=await sendPush(req,rec,{title:'🔒 Cripto Radar • tela bloqueada',body:'Teste automático recebido pelo servidor. Se você viu esta mensagem com o app fechado ou a tela bloqueada, o Push 24h está funcionando.',tag:'radar-locked-test',url:'./',kind:'locked-test'});if(r.ok){sent++;await saveSubscription({...rec,pendingLockedTest:false,pendingLockedTestSentAt:new Date().toISOString()})}else failed++;}
-   const watch=userWatch(rec,assets),cand=assets.filter(x=>watch.has(clean(x.symbol))&&Number(x.liquidityPct)>=70).sort((a,b)=>b.volume-a.volume);let userSent=0;
-   for(const x of cand){if(userSent>=2)break;const s=clean(x.symbol),price=Number(x.last),move=pct(Number(oldPrices[s]),price),ch=Number(x.change24h)||0;
-    if(Number.isFinite(move)&&Math.abs(move)>=0.55&&allowed(state,rec.id+':fast:'+s+(move>0?':up':':down'),10)){const r=await sendPush(req,rec,{title:(move>0?'🚀 Alta rápida: ':'🔴 Queda rápida: ')+s,body:`${fmt(move)} desde a última varredura • 24h ${fmt(ch)} • mercado ${snap.source}`,tag:'server-fast-'+s,url:'./#urgentRadarCard',kind:'market-fast',symbol:s});if(r.ok){sent++;userSent++}else failed++;continue}
-    if(Math.abs(ch)>=7.5&&allowed(state,rec.id+':24h:'+s+(ch>0?':up':':down'),45)){const r=await sendPush(req,rec,{title:(ch>0?'🟢 Movimento forte: ':'🔴 Atenção no mercado: ')+s,body:`${fmt(ch)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,tag:'server-24h-'+s,url:'./#urgentRadarCard',kind:'market-24h',symbol:s});if(r.ok){sent++;userSent++}else failed++;}
+   const prof=pushProfile(rec),watch=userWatch(rec,assets),cand=assets.filter(x=>watch.has(clean(x.symbol))&&Number(x.liquidityPct)>=70).sort((a,b)=>b.volume-a.volume);let userSent=0;
+   for(const x of cand){if(userSent>=prof.maxPerRun)break;const s=clean(x.symbol),price=Number(x.last),move=pct(Number(oldPrices[s]),price),ch=Number(x.change24h)||0;
+    if(Number.isFinite(move)&&Math.abs(move)>=prof.fastMove&&allowed(state,rec.id+':fast:'+s+(move>0?':up':':down'),prof.fastCooldown)){const r=await sendPush(req,rec,{title:(move>0?'🚀 Movimento rápido: ':'🔴 Queda rápida: ')+s,body:`${fmt(move)} desde a última varredura • 24h ${fmt(ch)} • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,tag:'server-fast-'+s,url:'./#urgentRadarCard',kind:'market-fast',symbol:s});if(r.ok){sent++;userSent++}else failed++;continue}
+    if(Math.abs(ch)>=prof.dayMove&&Number(x.liquidityPct)>=75&&allowed(state,rec.id+':24h:'+s+(ch>0?':up':':down'),prof.dayCooldown)){const r=await sendPush(req,rec,{title:(ch>0?'🟢 Movimento relevante: ':'🔴 Atenção no mercado: ')+s,body:`${fmt(ch)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100 • perfil ${String(rec?.prefs?.alertFrequency||'important')}`,tag:'server-24h-'+s,url:'./#urgentRadarCard',kind:'market-24h',symbol:s});if(r.ok){sent++;userSent++}else failed++;}
+   }
+   if(userSent<prof.maxPerRun){
+    for(const x of contextSignal(rec)){if(userSent>=prof.maxPerRun)break;const s=clean(x.symbol);if(!s)continue;const sc=Math.round(Number(x.score??x.confidence??0));const key=rec.id+':ctx-v18:'+s; if(!allowed(state,key,90))continue;
+     const r=await sendPush(req,rec,{title:'🧠 Radar V18: '+s,body:`${String(x.label||x.signal||'Candidata técnica')} • ${sc}/100 • ${String(x.reason||x.why||'Confluência detectada pelo motor V18').slice(0,150)}`,tag:'server-v18-'+s,url:'./#marketIntelligenceCard',kind:'v18-signal',symbol:s});
+     if(r.ok){sent++;userSent++}else failed++;
+    }
    }
    const held=(rec?.context?.wallet||[]).map(x=>clean(x.symbol)).filter(Boolean),tops=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,8).map(x=>clean(x.symbol)),syms=[...new Set([...held,'BTC','ETH','SOL','BNB','LINK','SUI',...tops])].filter(s=>watch.has(s)).slice(0,8);
-   for(const s of syms){if(userSent>=3)break;try{let rows=kcache.get(s);if(!rows){rows=await klines(s);kcache.set(s,rows)}const raw=detectPullback(rows);if(!raw)continue;const p=confirmPullback(state,s,raw);if(!p.confirmed||p.score<72)continue;const k=rec.id+':pullback:'+s+':'+p.side;if(!allowed(state,k,45))continue;const mirrorOn=rec?.mirror?.mode==='alerts';const r=await sendPush(req,rec,{title:mirrorOn?'🪞 Espelhamento: '+s:(p.side==='bull'?'↗️ Falha de pullback: ':'↘️ Falha de pullback: ')+s,body:mirrorOn?mirrorBody(rec,p):`${p.label} • score técnico ${p.score}/100 • nível ${Number(p.level).toPrecision(7)} • preço ${Number(p.price).toPrecision(7)} • possível continuação ${p.side==='bull'?'da alta':'da baixa'}`,tag:'server-pullback-'+s+'-'+p.side,url:'./#urgentRadarCard',kind:'pullback',symbol:s});if(r.ok){sent++;userSent++}else failed++;}catch(e){}
+   for(const s of syms){if(userSent>=3)break;try{let rows=kcache.get(s);if(!rows){rows=await klines(s);kcache.set(s,rows)}const raw=detectPullback(rows);if(!raw)continue;const p=confirmPullback(state,s,raw);if((!p.confirmed&&p.score<82)||p.score<prof.pullbackScore)continue;const k=rec.id+':pullback:'+s+':'+p.side;if(!allowed(state,k,prof.pullbackCooldown))continue;const mirrorOn=rec?.mirror?.mode==='alerts';const r=await sendPush(req,rec,{title:mirrorOn?'🪞 Espelhamento: '+s:(p.side==='bull'?'↗️ Falha de pullback: ':'↘️ Falha de pullback: ')+s,body:mirrorOn?mirrorBody(rec,p):`${p.label} • score técnico ${p.score}/100 • nível ${Number(p.level).toPrecision(7)} • preço ${Number(p.price).toPrecision(7)} • possível continuação ${p.side==='bull'?'da alta':'da baixa'}`,tag:'server-pullback-'+s+'-'+p.side,url:'./#urgentRadarCard',kind:'pullback',symbol:s});if(r.ok){sent++;userSent++}else failed++;}catch(e){}
    }
   }
   state.prevPrices=newPrices;state.at=Date.now();state.source=snap.source;prune(state);await setMarketState(state);

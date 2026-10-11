@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V18.1 • Unified Engine</title>
+<title>Cripto Radar V18.3 • Commercial Polish</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -541,9 +541,32 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 @media(max-width:620px){.v181-rank-row{grid-template-columns:1fr 70px 82px!important}.v181-rank-row .v11-hide-mobile{display:none!important}}
 </style>
 
+
+<style>
+/* ===== V18.2 • Push Health ===== */
+.push-health-v182{margin-top:8px;padding:9px 10px;border:1px solid #285077;border-radius:11px;background:#081827;font-size:10px;color:#91a7bf;line-height:1.45}
+.push-health-v182 b{color:#d9ebff}.push-health-v182.ok{border-color:#286344;background:#0d241b;color:#91dcb0}.push-health-v182.warn{border-color:#665326;background:#2a220f;color:#e7cf84}
+</style>
+
+
+<style>
+/* ===== V18.3 • Commercial Polish ===== */
+:root{--cr-accent:#4f8cff;--cr-green:#37d692;--cr-amber:#f3c85d;--cr-red:#f0737c}
+.cr183-topbar{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:10px 0 12px;padding:10px 12px;border:1px solid #294663;border-radius:14px;background:linear-gradient(145deg,#0a192a,#07121f)}
+.cr183-fresh b{display:block;font-size:11px}.cr183-fresh span{display:block;font-size:9px;color:#8198b2;margin-top:2px}.cr183-fresh.ok b{color:#94e9bb}.cr183-fresh.warn b{color:#f0d17a}
+.cr183-conn{font-size:9px;font-weight:900;padding:6px 8px;border-radius:999px;border:1px solid #305578;color:#b9d9fa;background:#0b2238}.cr183-conn.off{border-color:#6a343d;background:#2b141a;color:#f4aab3}
+.cr183-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.cr183-card{padding:10px;border:1px solid #29445f;border-radius:13px;background:#081523}.cr183-card span{display:block;font-size:8px;color:#7890aa;text-transform:uppercase;font-weight:900}.cr183-card b{display:block;font-size:15px;margin-top:3px}.cr183-card small{display:block;font-size:8px;color:#7f94ab;margin-top:2px}
+.cr183-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.cr183-actions button{min-height:42px;padding:8px;font-size:9px;background:#10233b;border:1px solid #315378;box-shadow:none}.cr183-actions button.primary{background:linear-gradient(135deg,#2e78e8,#4f8cff);border-color:#69a5ff}
+.cr183-explain{margin-top:10px;padding:10px 11px;border:1px solid #2c4561;border-radius:12px;background:#091522;font-size:9px;color:#8ca1b8;line-height:1.48}.cr183-explain b{color:#dcecff}
+.cr183-offline{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);z-index:12000;display:none;padding:8px 12px;border:1px solid #72522c;border-radius:999px;background:#2b1c0c;color:#f0ce83;font-size:9px;font-weight:900;box-shadow:0 12px 30px #0008}.cr183-offline.show{display:block}
+.cr183-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 58px);transform:translateX(-50%) translateY(-12px);z-index:14000;opacity:0;pointer-events:none;min-width:min(360px,calc(100% - 28px));padding:10px 12px;border:1px solid #31577b;border-radius:13px;background:#081522;color:#dbeafe;font-size:10px;box-shadow:0 18px 45px #000b;transition:.2s}.cr183-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.cr183-statusline{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.cr183-chip{font-size:8px;padding:4px 6px;border-radius:999px;border:1px solid #314a63;background:#0b1724;color:#9db0c5}.cr183-chip.good{border-color:#2c6249;background:#10261c;color:#9be1b8}.cr183-chip.warn{border-color:#675426;background:#2a220f;color:#e6ce83}
+@media(max-width:620px){.cr183-grid,.cr183-actions{grid-template-columns:1fr 1fr}.cr183-actions button:last-child{grid-column:1/-1}.cr183-topbar{grid-template-columns:1fr auto}}
+</style>
+
 </head>
 <body>
-<div id="v18VersionBadge">V18.1 • UNIFIED ENGINE</div>
+<div id="v18VersionBadge">V18.3 • COMMERCIAL POLISH</div>
 <div id="v175VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#10263f;border:1px solid #3b6d9d;color:#cde5ff;font-size:8px;font-weight:950;letter-spacing:.5px">V18.1</div>
 
 <div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
@@ -928,6 +951,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
  <div class="notify-row"><button id="enableNotifications" type="button">📡 ATIVAR PUSH 24H</button><button id="testServerPush" type="button">🛰️ TESTAR PUSH</button><button id="testLockedPush" type="button">🔒 TESTAR BLOQUEADO</button><button id="testBackgroundNotifications" type="button">🧪 TESTAR LOCAL</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
  <div id="notifyServerStatus" class="notify-status" style="margin-top:6px">Push servidor: verificando…</div>
+<div id="pushHealthV182" class="push-health-v182">Verificando saúde do Push 24h…</div>
  <div class="small" style="margin-top:5px">Agendador externo: <b>/api/push-cron</b> • agora configurado a cada 1 min para alertas com o app fechado.</div>
  <div id="notifyBgStatus" class="notify-status" style="margin-top:6px">Segundo plano local: preparando…</div>
 </section>
@@ -960,6 +984,32 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   </div>
 </section>
 
+
+
+<section class="card" id="cr183Dashboard">
+  <div class="coin">📊 Painel de hoje</div>
+  <div class="small">Resumo rápido do mercado, carteira e funcionamento do Radar.</div>
+  <div class="cr183-topbar">
+    <div class="cr183-fresh" id="cr183Fresh"><b>Atualizando dados…</b><span>aguardando primeira leitura</span></div>
+    <div class="cr183-conn" id="cr183Conn">ONLINE</div>
+  </div>
+  <div class="cr183-grid">
+    <div class="cr183-card"><span>Regime</span><b id="cr183Regime">—</b><small id="cr183RegimeMeta">mercado</small></div>
+    <div class="cr183-card"><span>Carteira</span><b id="cr183Health">—</b><small id="cr183HealthMeta">saúde</small></div>
+    <div class="cr183-card"><span>Melhor sinal</span><b id="cr183Best">—</b><small id="cr183BestMeta">aguardando</small></div>
+  </div>
+  <div class="cr183-statusline">
+    <span class="cr183-chip" id="cr183Push">Push: verificando</span>
+    <span class="cr183-chip" id="cr183Data">Dados: verificando</span>
+    <span class="cr183-chip" id="cr183Engine">Motor V18.3</span>
+  </div>
+  <div class="cr183-actions">
+    <button class="primary" id="cr183Refresh" type="button">↻ ATUALIZAR AGORA</button>
+    <button id="cr183GoMarket" type="button">📈 VER MERCADO</button>
+    <button id="cr183GoWallet" type="button">👛 VER CARTEIRA</button>
+  </div>
+  <div class="cr183-explain" id="cr183Explain"><b>Leitura do Radar:</b> aguardando dados suficientes para gerar um resumo.</div>
+</section>
 
 <section class="card mi-card" id="marketIntelligenceCard">
   <div class="small">Carregando Inteligência de Mercado V18…</div>
@@ -3718,4 +3768,111 @@ body{padding-bottom:74px}
 </script>
 
 <script src="./market-intelligence.js"></script>
+
+<script>
+/* ===== V18.2 • Push Health Monitor ===== */
+(function(){
+ const box=()=>document.getElementById('pushHealthV182');
+ async function check(){
+   const b=box();if(!b)return;
+   try{
+     const [cfg,cron]=await Promise.all([
+       fetch('/api/push-config',{cache:'no-store'}).then(r=>r.json()),
+       fetch('/api/push-cron',{cache:'no-store'}).then(r=>r.json())
+     ]);
+     if(cfg?.ready&&cron?.ok){
+       b.className='push-health-v182 ok';
+       b.innerHTML='<b>Push 24h ativo</b> • agendador 1 min • '+(cron.subscriptions??0)+' aparelho(s) inscrito(s) • último ciclo: '+(cron.sent??0)+' enviado(s), '+(cron.failed??0)+' falha(s).';
+     }else{
+       b.className='push-health-v182 warn';
+       b.innerHTML='<b>Push requer atenção</b> • servidor ou armazenamento não respondeu como esperado.';
+     }
+   }catch(e){
+     b.className='push-health-v182 warn';
+     b.innerHTML='<b>Push requer atenção</b> • não foi possível confirmar o servidor agora.';
+   }
+ }
+ setTimeout(check,1200);setInterval(check,60000);
+})();
+</script>
+
+<div class="cr183-offline" id="cr183Offline">SEM INTERNET • usando dados em cache</div><div class="cr183-toast" id="cr183Toast"></div>
+
+<script>
+/* ===== V18.3 • Commercial UX Layer ===== */
+(function(){
+ const $=id=>document.getElementById(id);
+ let lastUpdate=0;
+ function toast(msg){
+   const e=$('cr183Toast');if(!e)return;e.textContent=msg;e.classList.add('show');clearTimeout(window.__cr183Toast);window.__cr183Toast=setTimeout(()=>e.classList.remove('show'),2300)
+ }
+ function bestSignal(){
+   try{
+     const u=window.CriptoRadarMarketIntelligence;
+     if(!u?.scoreAsset)return null;
+     const syms=['BTC','ETH','SOL','BNB','XRP','SUI','NEAR','APT','OP','LINK','ADA'];
+     return syms.map(s=>u.scoreAsset(s)).filter(x=>x&&x.ready).sort((a,b)=>(b.quality||0)-(a.quality||0))[0]||null;
+   }catch(e){return null}
+ }
+ function refreshDashboard(){
+   const now=Date.now(), online=navigator.onLine;
+   $('cr183Conn')?.classList.toggle('off',!online);
+   if($('cr183Conn'))$('cr183Conn').textContent=online?'ONLINE':'OFFLINE';
+   $('cr183Offline')?.classList.toggle('show',!online);
+   let snap=null, reg=null;
+   try{snap=window.CriptoRadarMarketIntelligence?.portfolioSnapshot?.()||null}catch(e){}
+   try{reg=(typeof radarMarketRegimeV5==='function'?radarMarketRegimeV5():typeof radarMarketRegime==='function'?radarMarketRegime():null)}catch(e){}
+   const best=bestSignal();
+   if($('cr183Regime'))$('cr183Regime').textContent=reg?.label||'—';
+   if($('cr183RegimeMeta'))$('cr183RegimeMeta').textContent=reg?.key==='bull'?'favorável':reg?.key==='bear'?'defensivo':'seletivo';
+   if($('cr183Health'))$('cr183Health').textContent=snap?.health==null?'—':snap.health+'/100';
+   if($('cr183HealthMeta'))$('cr183HealthMeta').textContent=snap?.health==null?'adicione a carteira':'risco '+String(snap.risk||'—').toLowerCase();
+   if($('cr183Best'))$('cr183Best').textContent=best?best.symbol:'—';
+   if($('cr183BestMeta'))$('cr183BestMeta').textContent=best?(best.quality+'/100 • '+best.statusLabel):'aguardando análise';
+   let msg='Aguardando dados suficientes.';
+   if(best&&reg)msg=`${best.symbol} lidera a leitura com ${best.quality}/100 (${String(best.statusLabel).toLowerCase()}). Mercado ${String(reg.label||'').toLowerCase()}.`;
+   if(snap?.health!=null)msg+=` Saúde da carteira: ${snap.health}/100, risco ${String(snap.risk||'').toLowerCase()}.`;
+   if($('cr183Explain'))$('cr183Explain').innerHTML='<b>Leitura do Radar:</b> '+msg;
+   if(lastUpdate){
+     const sec=Math.max(0,Math.round((now-lastUpdate)/1000));
+     $('cr183Fresh')?.classList.toggle('warn',sec>90);
+     if($('cr183Fresh'))$('cr183Fresh').className='cr183-fresh '+(sec>90?'warn':'ok');
+     if($('cr183Fresh'))$('cr183Fresh').innerHTML=`<b>${sec>90?'Dados podem estar desatualizados':'Dados atualizados'}</b><span>há ${sec}s</span>`;
+   }
+ }
+ async function checkServices(){
+   try{
+     const [cfg,cron]=await Promise.all([
+       fetch('/api/push-config',{cache:'no-store'}).then(r=>r.json()),
+       fetch('/api/push-cron',{cache:'no-store'}).then(r=>r.json())
+     ]);
+     const p=$('cr183Push');if(p){p.textContent=cfg?.ready&&cron?.ok?'Push: ativo':'Push: atenção';p.className='cr183-chip '+(cfg?.ready&&cron?.ok?'good':'warn')}
+   }catch(e){const p=$('cr183Push');if(p){p.textContent='Push: indisponível';p.className='cr183-chip warn'}}
+   try{
+     const r=await fetch('/api/market?kind=snapshot',{cache:'no-store'});const j=await r.json();
+     const d=$('cr183Data');if(d){d.textContent=j?.ok?'Dados: online':'Dados: atenção';d.className='cr183-chip '+(j?.ok?'good':'warn')}
+     if(j?.ok)lastUpdate=Date.now();
+   }catch(e){const d=$('cr183Data');if(d){d.textContent='Dados: offline';d.className='cr183-chip warn'}}
+   refreshDashboard();
+ }
+ async function hardRefresh(){
+   toast('Atualizando mercado e Radar…');
+   try{if(typeof refreshMarketNow==='function')await refreshMarketNow()}catch(e){}
+   try{if(typeof refreshRadarTechnicals==='function')await refreshRadarTechnicals()}catch(e){}
+   try{window.CriptoRadarMarketIntelligence?.render?.()}catch(e){}
+   lastUpdate=Date.now();await checkServices();toast('Atualização concluída');
+ }
+ document.addEventListener('DOMContentLoaded',()=>{
+   $('cr183Refresh')?.addEventListener('click',hardRefresh);
+   $('cr183GoMarket')?.addEventListener('click',()=>document.querySelector('[data-route="market"]')?.click());
+   $('cr183GoWallet')?.addEventListener('click',()=>document.querySelector('[data-route="wallet"]')?.click());
+   window.addEventListener('online',()=>{refreshDashboard();toast('Conexão restabelecida')});
+   window.addEventListener('offline',()=>{refreshDashboard();toast('Sem internet • usando cache')});
+   setTimeout(()=>{lastUpdate=Date.now();checkServices()},1200);
+ });
+ setInterval(refreshDashboard,5000);
+ setInterval(checkServices,60000);
+})();
+</script>
+
 </body></html>

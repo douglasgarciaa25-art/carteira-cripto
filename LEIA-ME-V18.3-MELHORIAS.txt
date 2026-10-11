@@ -1,0 +1,17 @@
+CRIPTO RADAR V18.3 — COMMERCIAL POLISH
+
+Mantém:
+- Market Intelligence V18
+- Motor unificado V18.1
+- Push Recovery V18.2
+
+Novo:
+- Painel "Hoje" com regime de mercado, saúde da carteira e melhor sinal.
+- Indicadores de serviço: Push, dados de mercado e motor.
+- Atualização manual em um toque.
+- Navegação rápida para Mercado e Carteira.
+- Aviso de offline com uso de cache.
+- Indicador de atualização dos dados.
+- Resumo textual automático da leitura atual.
+- Toasts de status para ações.
+- Visual mais próximo de aplicativo comercial.
