@@ -5,6 +5,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "market-intelligence.js",
+      "use": "@vercel/static"
+    },
+    {
       "src": "play-verify.js",
       "use": "@vercel/node"
     },

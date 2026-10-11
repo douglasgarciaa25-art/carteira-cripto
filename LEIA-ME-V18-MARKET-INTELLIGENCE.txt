@@ -1,0 +1,25 @@
+CRIPTO RADAR V18 — MARKET INTELLIGENCE
+
+NOVO MOTOR SUPLEMENTAR DE ANÁLISE
+- Score multidimensional por ativo:
+  tendência, momentum, liquidez, timing, risco e regime de mercado.
+- Não usa alta de 24h isoladamente como sinal.
+- Penaliza ativo esticado, risco alto, mercado defensivo e concentração.
+- Diferencia:
+  análise pendente / observar / candidata / compra confirmada / sinal forte / evitar.
+- Mede saúde da carteira:
+  concentração, diversificação, reserva, qualidade técnica e risco agregado.
+- Simulador de aporte em 3 cenários:
+  conservador / equilibrado / agressivo.
+- Objetivos:
+  proteção / equilíbrio / crescimento.
+- Divide aporte em:
+  reserva estratégica + ativos selecionados.
+- Plano de entrada em 3 etapas:
+  agora / correção / confirmação.
+- Evita concentração excessiva em um único ativo.
+- Mostra ranking técnico e o que evitar/esperar.
+- O módulo antigo de movimentação inteligente fica oculto para não gerar mensagens contraditórias.
+
+IMPORTANTE
+O V18 é informativo. Não executa ordens e não garante lucro.
