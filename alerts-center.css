@@ -1,0 +1,69 @@
+/* ===== Cripto Radar V18.9 — Central de Alertas ===== */
+#alertCenterCard{padding:0;overflow:hidden;border:1px solid #274568;background:linear-gradient(165deg,#0b1c30 0%,#081421 75%);box-shadow:0 18px 55px #0007}
+#alertCenterCard .ac-head{padding:22px 19px 15px;background:radial-gradient(circle at 105% -30%,rgba(49,115,230,.28),transparent 57%);border-bottom:1px solid #263b58}
+#alertCenterCard .ac-heading{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#alertCenterCard .ac-eyebrow{color:#65a9ff;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:1.7px}
+#alertCenterCard h2{font-weight:900;font-size:23px;letter-spacing:-.6px;margin:6px 0 5px;color:#f2f7ff}
+#alertCenterCard .ac-sub{font-size:12px;color:#98afca;line-height:1.5;margin:0}
+#alertCenterCard .ac-live{border:1px solid #345470;border-radius:99px;padding:7px 10px;display:flex;align-items:center;gap:7px;white-space:nowrap;color:#c3d8f1;font-size:10px;font-weight:850;background:#0b1d30}
+#alertCenterCard .ac-live i{width:8px;height:8px;background:#f8b34c;border-radius:50%;display:inline-block;box-shadow:0 0 0 3px #f8b34c22}
+#alertCenterCard .ac-live.ok i{background:#31d795;box-shadow:0 0 0 3px #31d79522}
+#alertCenterCard .ac-live.bad i{background:#f97066;box-shadow:0 0 0 3px #f9706622}
+#alertCenterCard .ac-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:18px}
+#alertCenterCard .ac-stat{padding:11px 8px;border:1px solid #29425d;border-radius:14px;background:#0b192b;min-width:0}
+#alertCenterCard .ac-stat span{display:block;font-size:10px;color:#9caec5}
+#alertCenterCard .ac-stat b{display:block;font-size:23px;font-weight:950;margin-top:2px;line-height:1.12}
+#alertCenterCard .ac-stat.danger b{color:#ff8078}#alertCenterCard .ac-stat.buy b{color:#48df9c}
+#alertCenterCard .ac-stat.warning b{color:#f4c868}#alertCenterCard .ac-stat.watch b{color:#8cbbff}
+#alertCenterCard .ac-content{padding:15px 17px 19px}
+#alertCenterCard .ac-top{display:flex;gap:7px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:13px}
+#alertCenterCard .ac-push{font-size:11px;color:#b7cce2;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#alertCenterCard .ac-push b{color:#f5faff}
+#alertCenterCard .ac-tools{display:flex;gap:7px;flex-wrap:wrap}
+#alertCenterCard button{cursor:pointer;border:1px solid #345477;background:#12283f;color:#d7e9fd;border-radius:11px;font-size:11px;font-weight:850;padding:9px 10px;box-shadow:none}
+#alertCenterCard button:focus-visible,#alertCenterCard input:focus-visible{outline:2px solid #8dbcff;outline-offset:2px}
+#alertCenterCard button.ac-blue{background:#2367de;color:white;border-color:#367eea}
+#alertCenterCard button.ac-muted{background:#0c1929;color:#aec6df}
+#alertCenterCard .ac-priority{padding:14px;border-radius:16px;border:1px solid #41546c;background:linear-gradient(110deg,#122339,#0b1726);margin:0 0 16px}
+#alertCenterCard .ac-priority.risk{border-color:#9a4545;background:linear-gradient(110deg,#301922,#0b1726)}
+#alertCenterCard .ac-priority.buy{border-color:#257754;background:linear-gradient(110deg,#123327,#0b1726)}
+#alertCenterCard .ac-priority.pending{border-color:#625126;background:linear-gradient(110deg,#332c1a,#0b1726)}
+#alertCenterCard .ac-priority .ac-p-eyebrow{font-size:10px;font-weight:950;color:#f4c269;letter-spacing:.55px}
+#alertCenterCard .ac-priority.risk .ac-p-eyebrow{color:#ff928a}#alertCenterCard .ac-priority.buy .ac-p-eyebrow{color:#50dc9e}
+#alertCenterCard .ac-priority h3{font-size:16px;margin:7px 0 4px}#alertCenterCard .ac-priority p{font-size:12px;color:#c0d1e5;line-height:1.5;margin:0}
+#alertCenterCard .ac-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+#alertCenterCard .ac-filter-row{display:flex;gap:6px;overflow-x:auto;padding:2px 0 7px;scrollbar-width:thin;min-width:0;flex:1}
+#alertCenterCard .ac-filter-row button{flex-shrink:0;padding:8px 11px;border-radius:100px;background:#0f2135;border:1px solid #2a405b;color:#a9bed6}
+#alertCenterCard .ac-filter-row button[aria-pressed=true]{background:#1c4f98;color:#fff;border-color:#367bf1}
+#alertCenterCard .ac-search{background:#0a1828;border:1px solid #2b4666;border-radius:10px;color:#eef6ff;padding:9px 11px;width:135px;max-width:100%;font-size:12px}
+#alertCenterCard .ac-count{color:#8fa8c2;font-size:11px;margin:0 0 9px}
+#alertCenterCard .ac-list{display:grid;gap:9px}
+#alertCenterCard .ac-item{border:1px solid #27415d;background:#0b1a2b;border-radius:16px;padding:13px 14px;position:relative;overflow:hidden}
+#alertCenterCard .ac-item:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#5689c4}
+#alertCenterCard .ac-item.ac-type-risk:before,#alertCenterCard .ac-item.ac-type-sell:before{background:#ef676c}
+#alertCenterCard .ac-item.ac-type-buy:before{background:#35d694}
+#alertCenterCard .ac-item.ac-type-watch:before{background:#edbb4f}
+#alertCenterCard .ac-item.ac-read{opacity:.69}
+#alertCenterCard .ac-item-head{display:flex;gap:8px;justify-content:space-between;align-items:flex-start}
+#alertCenterCard .ac-coin{font-weight:950;font-size:18px;line-height:1.15;color:#f3f8ff}
+#alertCenterCard .ac-source{display:block;font-size:10px;color:#88a2bf;margin-top:4px}
+#alertCenterCard .ac-tag{font-size:10px;font-weight:950;border-radius:99px;padding:7px 8px;background:#213c59;color:#acd3ff;text-align:center;max-width:62%;line-height:1.25}
+#alertCenterCard .ac-type-buy .ac-tag{background:#113e31;color:#64e8af}
+#alertCenterCard .ac-type-risk .ac-tag,#alertCenterCard .ac-type-sell .ac-tag{background:#4b232b;color:#ffa5a1}
+#alertCenterCard .ac-type-watch .ac-tag{background:#4c3b20;color:#ffe0a0}
+#alertCenterCard .ac-stats{margin:10px 0 0;display:flex;gap:7px;flex-wrap:wrap;font-size:10px;color:#9eb9d6}
+#alertCenterCard .ac-stats span{background:#10263f;border-radius:7px;padding:5px 8px}
+#alertCenterCard .ac-stats b{color:#dbeafd}
+#alertCenterCard .ac-reason{font-size:12px;line-height:1.5;color:#bfcede;margin:10px 0 8px;overflow-wrap:anywhere}
+#alertCenterCard .ac-action{font-size:11px;color:#91b7df;padding:8px 10px;border-radius:9px;background:#0e263d;border:1px solid #1f3a59}
+#alertCenterCard .ac-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:10px;color:#819cb7}
+#alertCenterCard .ac-foot button{padding:7px 9px;font-size:10px}
+#alertCenterCard .ac-empty{text-align:center;padding:33px 12px;color:#9eb5cc;font-size:12px;background:#0b1b2c;border:1px dashed #314967;border-radius:15px}
+#alertCenterCard .ac-empty .ac-ico{font-size:28px;margin-bottom:7px}
+#alertCenterCard .ac-hist-wrap{border-top:1px solid #213952;margin-top:15px;padding-top:13px}
+#alertCenterCard .ac-hist-head{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:7px}
+#alertCenterCard .ac-hist-head b{font-size:13px}
+#alertCenterCard .ac-hist-row{display:flex;justify-content:space-between;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid #1b3047;font-size:11px;color:#abc3da}
+#alertCenterCard .ac-hist-row b{color:#e4f1ff}#alertCenterCard .ac-hist-row span{font-size:10px;white-space:nowrap;color:#819ab3}
+#alertCenterCard .ac-disclaimer{font-size:10px;line-height:1.5;color:#768ea9;margin:13px 0 0}
+@media(max-width:580px){#alertCenterCard .ac-summary{grid-template-columns:repeat(2,1fr)}#alertCenterCard .ac-head{padding:17px 13px 14px}#alertCenterCard .ac-content{padding:13px}#alertCenterCard .ac-toolbar{display:block}#alertCenterCard .ac-search{width:100%;margin-top:3px}#alertCenterCard .ac-stat b{font-size:21px}}

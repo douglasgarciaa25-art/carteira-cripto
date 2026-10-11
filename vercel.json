@@ -1,6 +1,14 @@
 {
   "builds": [
     {
+      "src": "alerts-center.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "alerts-center.css",
+      "use": "@vercel/static"
+    },
+    {
       "src": "play-billing.js",
       "use": "@vercel/static"
     },

@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V18.8 • Confirmação Convergente</title>
+<title>Cripto Radar V18.9 • Confirmação Convergente</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -652,6 +652,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 @media(min-width:690px){.wd-kpis{grid-template-columns:repeat(4,1fr)}.wd-controls{grid-template-columns:minmax(150px,1fr) 180px 180px}.wd-controls #wdSearch{grid-column:auto}}
 @media(max-width:420px){#walletDashboardCard{padding:14px}.wd-kpi{padding:11px 9px}.wd-asset{padding:10px}.wd-token{min-width:30px;height:30px}.wd-asset-name strong{font-size:13px}.wd-asset-value strong{font-size:12px}.wd-asset-name small,.wd-asset-value small{font-size:9px}}
 </style>
+<link rel="stylesheet" href="./alerts-center.css">
 </head>
 <body>
 <div id="v18VersionBadge">V18.5 • CONFIRMED GREEN</div>
@@ -1038,6 +1039,43 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div class="copy-plan" id="copyMirrorPlan"></div>
   <div class="copy-actions"><button type="button" id="copyRefreshSignal">↻ Atualizar análise</button><span class="small" id="copyMirrorUpdated">—</span></div>
   <div class="small copy-note">A simulação usa stop, alvo e risco proporcional. Resultados projetados não são promessa de retorno. Revise o sinal antes de operar.</div>
+</section>
+
+<section class="card" id="alertCenterCard" aria-labelledby="acTitle">
+  <div class="ac-head">
+    <div class="ac-heading">
+      <div><div class="ac-eyebrow">RADAR PRO • CENTRAL INTELIGENTE</div><h2 id="acTitle">🚨 Central de Alertas</h2><p class="ac-sub">Compra, venda, risco e oportunidades da sua carteira em uma única tela.</p></div>
+      <div class="ac-live" id="acLive"><i aria-hidden="true"></i><span>Verificando mercado…</span></div>
+    </div>
+    <div class="ac-summary">
+      <div class="ac-stat danger"><span>Riscos / vendas</span><b id="acRiskCount">0</b></div>
+      <div class="ac-stat buy"><span>Compras confirmadas</span><b id="acBuyCount">0</b></div>
+      <div class="ac-stat warning"><span>Em observação</span><b id="acWatchCount">0</b></div>
+      <div class="ac-stat watch"><span>Não lidos</span><b id="acUnreadCount">0</b></div>
+    </div>
+  </div>
+  <div class="ac-content">
+    <div class="ac-top">
+      <div class="ac-push" id="acPushStatus">📡 Push: verificando permissão</div>
+      <div class="ac-tools"><button type="button" id="acEnablePush" class="ac-blue">Ativar Push</button><button type="button" id="acTestPush">Testar</button><button type="button" id="acRefresh">↻ Atualizar</button></div>
+    </div>
+    <div id="acPriority" class="ac-priority pending" aria-live="polite"><div class="ac-p-eyebrow">PRIORIDADE DO RADAR</div><h3>Aguardando a análise</h3><p>A Central exibirá apenas condições verificáveis dos dados disponíveis.</p></div>
+    <div class="ac-toolbar">
+      <div class="ac-filter-row" id="acFilters" aria-label="Filtrar alertas">
+        <button type="button" data-ac-filter="all" aria-pressed="true">Todos</button>
+        <button type="button" data-ac-filter="wallet" aria-pressed="false">Minha carteira</button>
+        <button type="button" data-ac-filter="buy" aria-pressed="false">Compras</button>
+        <button type="button" data-ac-filter="sell" aria-pressed="false">Vendas</button>
+        <button type="button" data-ac-filter="risk" aria-pressed="false">Riscos</button>
+        <button type="button" data-ac-filter="watch" aria-pressed="false">Observação</button>
+      </div>
+      <input id="acSearch" class="ac-search" type="search" autocomplete="off" aria-label="Buscar por moeda" placeholder="Buscar moeda…">
+    </div>
+    <div class="ac-count" id="acCount" aria-live="polite">Aguardando dados do Radar…</div>
+    <div class="ac-list" id="acList"></div>
+    <div class="ac-hist-wrap"><div class="ac-hist-head"><b>🕘 Histórico de mudanças</b><button type="button" id="acMarkAll" class="ac-muted">Marcar todos como lidos</button></div><div id="acHistory" aria-live="polite"><div class="ac-empty">Os sinais aparecerão aqui quando mudarem de estado.</div></div></div>
+    <p class="ac-disclaimer">O painel só registra dados observados enquanto esta página está aberta. Push 24h depende da assinatura do dispositivo e do agendador externo. Sinais são heurísticos, não garantem lucro e não executam ordens.</p>
+  </div>
 </section>
 
 <section class="card notify-card" id="notifyCard">
@@ -3677,7 +3715,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
   wallet:{title:'Carteira',ids:['walletDashboardCard','marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
   market:{title:'Mercado',ids:['marketIntelligenceCard','bt184Card','opportunitiesCard','marketRumorsCard','trendsCard']},
-  alerts:{title:'Alertas',ids:['copyMirrorCard','urgentRadarCard','notifyCard']},
+  alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard','copyMirrorCard']},
   history:{title:'Histórico',ids:['v171HistoryCard']},
   ai:{title:'IA Radar',paid:true,ids:['aiRadarCard']},
   security:{title:'Segurança',ids:['securityCard']},
@@ -3889,6 +3927,7 @@ body{padding-bottom:74px}
 
 <script src="./market-intelligence.js"></script>
 <script src="./wallet-dashboard.js"></script>
+<script src="./alerts-center.js"></script>
 
 <script>
 /* ===== V18.2 • Push Health Monitor ===== */

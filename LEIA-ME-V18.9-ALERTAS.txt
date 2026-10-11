@@ -1,0 +1,22 @@
+CRIPTO RADAR V18.9 — ALERTAS UNIFICADOS
+
+ALTERAÇÃO VISUAL E FUNCIONAL
+- Nova Central de Alertas, prioridade acima do alarme antigo.
+- Indicadores de riscos/vendas, compras confirmadas, candidatas e não lidos.
+- Filtros Todos / Minha Carteira / Compras / Vendas / Riscos / Observação.
+- Pesquisa de moeda e botão para marcar sinal como lido.
+- Histórico local persistido no navegador, com registro somente quando o estado muda.
+- Sinais alimentados pelo mesmo motor já existente (walletBuySignal, portfolioAIDecision e urgentSignal confirmado).
+- Confirmação de risco forte no alarmador continua exigindo 2 leituras.
+- Não aprova compra com dados desatualizados nem confunde candidata com compra confirmada.
+- Estado da permissão de notificações na interface; controles ativar/testar acionam o sistema Push existente.
+- Sem alteração nas credenciais do desenvolvedor e sem desativação dos recursos V18.8.
+
+PUBLICAÇÃO
+Extraia TODOS os arquivos do ZIP na raiz do repositório GitHub. NÃO crie pasta api.
+O vercel.json mapeia os endpoints de API na raiz e os novos arquivos .css/.js estáticos.
+Atualize a página após o deploy; o cache do Service Worker usa a chave V18.9.
+O ZIP NÃO contém chaves secretas do desenvolvedor ou configurações confidenciais.
+
+LIMITAÇÕES
+Não executa ordens. O histórico registra transições observadas na página, não uma prova de que o push remoto foi entregue. O envio de Push 24h depende do servidor, permissões do Android e agendador. Teste a publicação com sua conta antes do lançamento.
