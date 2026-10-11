@@ -1,0 +1,25 @@
+CRIPTO RADAR V18.4 — BACKTEST & HISTÓRICO DA IA
+
+Mantém:
+- Market Intelligence
+- Motor unificado
+- Push Recovery
+- Commercial Polish
+
+Novo:
+- Histórico local das mudanças de decisão por moeda.
+- Captura estado, score, preço, resumo e dimensões do sinal.
+- Mede desempenho após 15 min, 1h e 4h.
+- Taxa de acerto técnica.
+- Retorno médio observado.
+- Drawdown acumulado simplificado.
+- Resultado separado por:
+  Candidata
+  Compra Confirmada
+  Sinal Forte
+- Filtro por tipo de sinal e horizonte.
+- Registro máximo limitado para não crescer indefinidamente.
+
+Observação:
+O backtest é local/heurístico e depende dos dados observados pelo app.
+Não é garantia de retorno nem validação estatística profissional.

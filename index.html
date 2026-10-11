@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V18.3 • Commercial Polish</title>
+<title>Cripto Radar V18.4 • Backtest & IA History</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -564,9 +564,38 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 @media(max-width:620px){.cr183-grid,.cr183-actions{grid-template-columns:1fr 1fr}.cr183-actions button:last-child{grid-column:1/-1}.cr183-topbar{grid-template-columns:1fr auto}}
 </style>
 
+
+<style>
+/* ===== V18.4 • Backtest + IA History ===== */
+.bt184-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.bt184-kpi{padding:10px;border:1px solid #29455f;border-radius:13px;background:#081523}
+.bt184-kpi span{display:block;font-size:8px;color:#7f95ad;text-transform:uppercase;font-weight:900}
+.bt184-kpi b{display:block;font-size:17px;margin-top:3px}.bt184-kpi small{display:block;font-size:8px;color:#7b91a8;margin-top:2px}
+.bt184-section{margin-top:13px;padding-top:12px;border-top:1px solid #263d57}
+.bt184-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.bt184-head b{font-size:14px}.bt184-head span{display:block;font-size:9px;color:#8297ae;margin-top:2px}
+.bt184-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.bt184-controls select,.bt184-controls button{min-height:40px;border:1px solid #2f4e6e;border-radius:10px;background:#0a1928;color:#f1f6fb;padding:8px 9px;font-size:10px}
+.bt184-table{display:grid;gap:6px;margin-top:9px}
+.bt184-row{display:grid;grid-template-columns:68px 92px 74px 1fr auto;gap:8px;align-items:center;padding:9px 10px;border:1px solid #28425d;border-radius:11px;background:#081522}
+.bt184-row b{font-size:11px}.bt184-row span,.bt184-row em{font-size:8px;color:#879bb2}.bt184-row em{font-style:normal;text-align:right}
+.bt184-good{color:#8ee2b5!important}.bt184-bad{color:#efa5af!important}.bt184-warn{color:#ead07e!important}
+.bt184-history{display:grid;gap:7px;margin-top:9px;max-height:390px;overflow:auto;padding-right:2px}
+.bt184-event{padding:9px 10px;border:1px solid #29435e;border-radius:11px;background:#081522}
+.bt184-event-head{display:flex;justify-content:space-between;gap:8px}.bt184-event-head b{font-size:11px}.bt184-event-head span{font-size:8px;color:#7f94aa}
+.bt184-event p{margin:5px 0 0;font-size:9px;color:#8fa3b8;line-height:1.4}
+.bt184-badge{display:inline-block;padding:3px 5px;border-radius:999px;font-size:7px;font-weight:950;border:1px solid #334c64}
+.bt184-badge.good{background:#103525;border-color:#286247;color:#97e8ba}
+.bt184-badge.candidate{background:#392f12;border-color:#6f5c25;color:#ead27c}
+.bt184-badge.bad{background:#3e1820;border-color:#71323e;color:#efabb5}
+.bt184-badge.watch{background:#182637;color:#b6c7d7}
+.bt184-note{margin-top:9px;padding:9px 10px;border:1px solid #2b465f;border-radius:10px;background:#08131f;color:#8297ae;font-size:8px;line-height:1.45}
+@media(max-width:620px){.bt184-grid{grid-template-columns:1fr 1fr}.bt184-controls{grid-template-columns:1fr}.bt184-row{grid-template-columns:56px 78px 66px 1fr}.bt184-row em{grid-column:1/-1;text-align:left}}
+</style>
+
 </head>
 <body>
-<div id="v18VersionBadge">V18.3 • COMMERCIAL POLISH</div>
+<div id="v18VersionBadge">V18.4 • BACKTEST & IA HISTORY</div>
 <div id="v175VersionBadge" style="position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:13000;padding:5px 8px;border-radius:999px;background:#10263f;border:1px solid #3b6d9d;color:#cde5ff;font-size:8px;font-weight:950;letter-spacing:.5px">V18.1</div>
 
 <div class="security-gate" id="securityGate" aria-modal="true" role="dialog" aria-label="Segurança do Cripto Radar">
@@ -3556,7 +3585,7 @@ window.v8RunBacktest=run;
  const routes={
   home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
   wallet:{title:'Carteira',ids:['marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
-  market:{title:'Mercado',ids:['marketIntelligenceCard','opportunitiesCard','marketRumorsCard','trendsCard']},
+  market:{title:'Mercado',ids:['marketIntelligenceCard','bt184Card','opportunitiesCard','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['copyMirrorCard','urgentRadarCard','notifyCard']},
   history:{title:'Histórico',ids:['v171HistoryCard']},
   ai:{title:'IA Radar',paid:true,ids:['aiRadarCard']},
@@ -3872,6 +3901,204 @@ body{padding-bottom:74px}
  });
  setInterval(refreshDashboard,5000);
  setInterval(checkServices,60000);
+})();
+</script>
+
+
+<section class="card" id="bt184Card">
+  <div class="coin">📈 V18.4 • Backtest & Histórico da IA</div>
+  <div class="small">Mede como os sinais anteriores evoluíram e registra as mudanças de decisão do Radar.</div>
+
+  <div class="bt184-grid">
+    <div class="bt184-kpi"><span>Sinais avaliados</span><b id="bt184Evaluated">0</b><small>histórico local</small></div>
+    <div class="bt184-kpi"><span>Acerto técnico</span><b id="bt184HitRate">—</b><small>heurístico</small></div>
+    <div class="bt184-kpi"><span>Retorno médio</span><b id="bt184AvgReturn">—</b><small>após o sinal</small></div>
+    <div class="bt184-kpi"><span>Pior drawdown</span><b id="bt184Drawdown">—</b><small>histórico medido</small></div>
+  </div>
+
+  <div class="bt184-section">
+    <div class="bt184-head">
+      <div><b>Desempenho por tipo de sinal</b><span>Compra confirmada, sinal forte e candidatas.</span></div>
+    </div>
+    <div class="bt184-controls">
+      <select id="bt184Horizon">
+        <option value="15">15 min</option>
+        <option value="60" selected>1 hora</option>
+        <option value="240">4 horas</option>
+      </select>
+      <select id="bt184Filter">
+        <option value="all">Todos os sinais</option>
+        <option value="candidate">Candidatas</option>
+        <option value="confirmed">Confirmadas</option>
+        <option value="strong">Sinal forte</option>
+      </select>
+      <button id="bt184Recalc" type="button">↻ RECALCULAR</button>
+    </div>
+    <div class="bt184-table" id="bt184Performance"><div class="small">Aguardando dados suficientes…</div></div>
+  </div>
+
+  <div class="bt184-section">
+    <div class="bt184-head">
+      <div><b>Histórico de decisões da IA</b><span>Registra quando o status de uma moeda muda.</span></div>
+      <button id="bt184Clear" type="button" style="padding:6px 8px;font-size:8px">LIMPAR</button>
+    </div>
+    <div class="bt184-history" id="bt184History"><div class="small">Nenhuma mudança registrada ainda.</div></div>
+  </div>
+
+  <div class="bt184-note">
+    Backtest local e heurístico: usa dados observados pelo próprio aplicativo. Não representa promessa de retorno, não executa ordens e não substitui validação histórica profissional.
+  </div>
+</section>
+
+
+<script>
+/* ===== V18.4 • Local Signal Backtest & IA History ===== */
+(function(){
+'use strict';
+const KEY='crRadarV184SignalHistory';
+const MAX=700;
+const $=id=>document.getElementById(id);
+const now=()=>Date.now();
+const clean=s=>String(s||'').toUpperCase().replace(/USDT$/,'').replace(/[^A-Z0-9]/g,'');
+const pct=(a,b)=>a>0&&b>0?(b/a-1)*100:null;
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{"events":[]}')}catch(e){return {events:[]}}}
+function save(d){try{d.events=(d.events||[]).slice(-MAX);localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
+function price(sym){
+  try{
+    const m=walletMarketData?.[clean(sym)];
+    return Number(m?.priceBRL||m?.price||walletPrices?.[clean(sym)]||0);
+  }catch(e){return 0}
+}
+function score(sym){
+  try{return window.CriptoRadarMarketIntelligence?.scoreAsset?.(clean(sym))||null}catch(e){return null}
+}
+function symbols(){
+  const set=new Set(['BTC','ETH','SOL','BNB','XRP','SUI','NEAR','APT','OP','LINK','ADA']);
+  try{Object.keys(walletMarketData||{}).slice(0,80).forEach(x=>set.add(clean(x)))}catch(e){}
+  try{(printWallet||[]).forEach(x=>set.add(clean(x.symbol)))}catch(e){}
+  return [...set].filter(Boolean).slice(0,40);
+}
+function cls(state){
+  return state==='strong'||state==='confirmed'?'good':state==='candidate'?'candidate':state==='avoid'?'bad':'watch'
+}
+function humanState(s){
+  return s==='strong'?'SINAL FORTE':s==='confirmed'?'COMPRA CONFIRMADA':s==='candidate'?'CANDIDATA':s==='avoid'?'EVITAR':'OBSERVAR'
+}
+function capture(){
+  const d=load(), last={};
+  for(const e of d.events||[])last[e.symbol]=e;
+  for(const s of symbols()){
+    const a=score(s), px=price(s);
+    if(!a||!a.ready||!(px>0))continue;
+    const prev=last[s];
+    const state=String(a.status||'watch');
+    const material=!prev||prev.state!==state||Math.abs(Number(prev.score||0)-Number(a.quality||0))>=8;
+    if(!material)continue;
+    d.events.push({
+      id:s+'-'+now(),
+      symbol:s,
+      at:now(),
+      price:px,
+      score:Number(a.quality)||0,
+      state,
+      label:a.statusLabel||humanState(state),
+      summary:a.summary||'',
+      dimensions:a.dimensions||{},
+      positives:a.positives||[],
+      cautions:a.cautions||[],
+      outcome:null
+    });
+  }
+  save(d);
+}
+function updateOutcomes(){
+  const d=load(), horizon=Number($('bt184Horizon')?.value||60), ms=horizon*60000;
+  let changed=false;
+  for(const e of d.events||[]){
+    if(e.outcome&&e.outcome[horizon])continue;
+    if(now()-e.at<ms)continue;
+    const px=price(e.symbol);
+    if(!(px>0))continue;
+    const ret=pct(Number(e.price),px);
+    e.outcome=e.outcome||{};
+    e.outcome[horizon]={ret,price:px,at:now()};
+    changed=true;
+  }
+  if(changed)save(d);
+}
+function filteredEvents(){
+  const d=load(), hz=Number($('bt184Horizon')?.value||60), flt=$('bt184Filter')?.value||'all';
+  return (d.events||[]).filter(e=>{
+    if(!e.outcome?.[hz])return false;
+    if(flt==='all')return ['candidate','confirmed','strong'].includes(e.state);
+    return e.state===flt;
+  });
+}
+function metrics(){
+  const ev=filteredEvents(), hz=Number($('bt184Horizon')?.value||60);
+  const returns=ev.map(e=>Number(e.outcome?.[hz]?.ret)).filter(Number.isFinite);
+  const hits=ev.filter(e=>Number(e.outcome?.[hz]?.ret)>0).length;
+  const avg=returns.length?returns.reduce((a,b)=>a+b,0)/returns.length:null;
+  // simplistic cumulative drawdown on event returns
+  let equity=100,peak=100,maxdd=0;
+  for(const r of returns){equity*=1+r/100;peak=Math.max(peak,equity);maxdd=Math.min(maxdd,(equity/peak-1)*100)}
+  return {ev,hz,hits,avg,maxdd,hitRate:ev.length?hits/ev.length*100:null};
+}
+function renderPerformance(){
+  const m=metrics();
+  if($('bt184Evaluated'))$('bt184Evaluated').textContent=m.ev.length;
+  if($('bt184HitRate'))$('bt184HitRate').textContent=m.hitRate==null?'—':m.hitRate.toFixed(1)+'%';
+  if($('bt184AvgReturn'))$('bt184AvgReturn').textContent=m.avg==null?'—':(m.avg>=0?'+':'')+m.avg.toFixed(2)+'%';
+  if($('bt184Drawdown'))$('bt184Drawdown').textContent=m.ev.length?m.maxdd.toFixed(2)+'%':'—';
+  const box=$('bt184Performance');if(!box)return;
+  const groups={candidate:[],confirmed:[],strong:[]};
+  for(const e of m.ev)(groups[e.state]||=[]).push(e);
+  const rows=Object.entries(groups).map(([state,arr])=>{
+    if(!arr.length)return null;
+    const rs=arr.map(e=>Number(e.outcome[m.hz].ret)).filter(Number.isFinite);
+    const avg=rs.reduce((a,b)=>a+b,0)/(rs.length||1);
+    const hit=arr.filter(e=>Number(e.outcome[m.hz].ret)>0).length/arr.length*100;
+    return `<div class="bt184-row">
+      <b>${humanState(state)}</b>
+      <span>${arr.length} sinais</span>
+      <span class="${hit>=55?'bt184-good':hit<45?'bt184-bad':'bt184-warn'}">${hit.toFixed(1)}% acerto</span>
+      <span>retorno médio <b class="${avg>=0?'bt184-good':'bt184-bad'}">${avg>=0?'+':''}${avg.toFixed(2)}%</b></span>
+      <em>${m.hz} min</em>
+    </div>`;
+  }).filter(Boolean);
+  box.innerHTML=rows.join('')||'<div class="small">Ainda não há sinais antigos o suficiente para esse horizonte.</div>';
+}
+function renderHistory(){
+  const d=load(),box=$('bt184History');if(!box)return;
+  const ev=[...(d.events||[])].reverse().slice(0,60);
+  box.innerHTML=ev.map(e=>{
+    const dt=new Date(e.at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const why=e.summary||[...(e.positives||[]),...(e.cautions||[])].slice(0,2).join(' • ')||'mudança detectada pelo motor';
+    return `<div class="bt184-event">
+      <div class="bt184-event-head"><div><b>${e.symbol}</b> <span class="bt184-badge ${cls(e.state)}">${humanState(e.state)}</span></div><span>${dt}</span></div>
+      <p>${e.score}/100 • ${String(why).slice(0,180)}</p>
+    </div>`;
+  }).join('')||'<div class="small">Nenhuma mudança registrada ainda.</div>';
+}
+function run(){
+  capture();
+  updateOutcomes();
+  renderPerformance();
+  renderHistory();
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  $('bt184Recalc')?.addEventListener('click',run);
+  $('bt184Horizon')?.addEventListener('change',run);
+  $('bt184Filter')?.addEventListener('change',renderPerformance);
+  $('bt184Clear')?.addEventListener('click',()=>{
+    if(confirm('Limpar histórico local de sinais do V18.4?')){
+      save({events:[]});renderPerformance();renderHistory();
+    }
+  });
+  setTimeout(run,2200);
+});
+setInterval(run,30000);
+window.CriptoRadarBacktestV184={run,load,metrics};
 })();
 </script>
 
