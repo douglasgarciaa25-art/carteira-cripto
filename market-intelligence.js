@@ -262,43 +262,44 @@ function scenarioAllocation(amount,profile,objective){
     if(a.ready&&a.canBuy&&a.riskScore<78&&!pool.some(y=>y.symbol===a.symbol))pool.push(a);
   }
 
-  const reserveAmt=pool.length?amount*pp.reserve:amount;
-  const investable=Math.max(0,amount-reserveAmt);
+  const intendedInvest=Math.max(0,amount*(1-pp.reserve));
+  // O limite é da carteira FINAL, não apenas do dinheiro que está entrando.
+  // Um ativo já concentrado não pode receber mais até o patrimônio se diluir.
+  const futureTotal=snap.total+amount;
   let weighted=pool.map(a=>{
     const current=cw[a.symbol]||0;
-    const statusFactor=a.status==='strong'?1.25:a.status==='confirmed'?1.15:a.status==='candidate'?1.0:.72;
+    const currentValue=snap.rows.find(x=>x.symbol===a.symbol)?.value||0;
+    const maxByPortfolio=Math.max(0,futureTotal*pp.maxAsset-currentValue);
+    const cap=Math.max(0,Math.min(maxByPortfolio,amount*pp.maxAsset));
+    const statusFactor=a.status==='strong'?1.25:1.15;
     const coreFactor=core.has(a.symbol)?pp.btcEth:pp.growth*pp.altsPenalty;
     const riskFactor=clamp((105-a.riskScore*pp.riskPenalty)/100,.25,1.05);
     const timingFactor=clamp(a.dimensions.timing/75,.45,1.15);
     const diversificationFactor=clamp(1-current/(pp.maxAsset||.3),.18,1);
-    const raw=Math.pow(a.quality/100,2.0)*statusFactor*coreFactor*riskFactor*timingFactor*diversificationFactor;
-    return {a,raw,current};
-  }).filter(x=>x.raw>0);
-
-  // Top six prevents tiny meaningless allocations.
-  weighted.sort((a,b)=>b.raw-a.raw);
-  weighted=weighted.slice(0,6);
-  const sum=weighted.reduce((a,x)=>a+x.raw,0)||1;
-  let alloc=weighted.map(x=>({...x,weight:x.raw/sum}));
-
-  // Iterative cap at maxAsset of the new contribution.
-  for(let pass=0;pass<4;pass++){
-    let excess=0,free=0;
-    for(const x of alloc){
-      if(x.weight>pp.maxAsset){excess+=x.weight-pp.maxAsset;x.weight=pp.maxAsset}
-      else free+=x.weight;
+    const raw=Math.pow(a.quality/100,2)*statusFactor*coreFactor*riskFactor*timingFactor*diversificationFactor;
+    return {a,raw,current,cap,value:0};
+  }).filter(x=>x.raw>0&&x.cap>.001).sort((a,b)=>b.raw-a.raw).slice(0,6);
+  let remaining=intendedInvest;
+  for(let pass=0;pass<12&&remaining>.001;pass++){
+    const eligible=weighted.filter(x=>x.cap-x.value>.001);
+    if(!eligible.length)break;
+    const sum=eligible.reduce((t,x)=>t+x.raw,0);
+    let allocated=0;
+    for(const x of eligible){
+      const room=x.cap-x.value;
+      const add=Math.max(0,Math.min(room,remaining*x.raw/sum));
+      x.value+=add;allocated+=add;
     }
-    if(excess<.001||free<=0)break;
-    for(const x of alloc)if(x.weight<pp.maxAsset)x.weight+=excess*(x.weight/free);
+    if(allocated<.001)break;
+    remaining=Math.max(0,remaining-allocated);
   }
-  const normsum=alloc.reduce((a,x)=>a+x.weight,0)||1;
-  alloc=alloc.map(x=>{
-    const w=x.weight/normsum, value=Math.min(investable*w,amount*pp.maxAsset);
-    return {...x,weight:w,value,plan:entryPlan(x.a,statusForPlan(x.a),value)};
-  }).filter(x=>x.value>=Math.min(5,amount*.02));
-
-  const committed=alloc.reduce((sum,x)=>sum+x.value,0);
-  return {amount,profile,objective,params:pp,reserveAmt:Math.max(0,amount-committed),investable:committed,alloc,snapshot:snap};
+  const committed=weighted.reduce((sum,x)=>sum+x.value,0);
+  const alloc=weighted.map(x=>({...x,weight:committed>0?x.value/committed:0,
+    plan:entryPlan(x.a,statusForPlan(x.a),x.value)}))
+    .filter(x=>x.value>=Math.min(5,amount*.02));
+  const realCommit=alloc.reduce((sum,x)=>sum+x.value,0);
+  return {amount,profile,objective,params:pp,reserveAmt:Math.max(0,amount-realCommit),
+    investable:realCommit,alloc,snapshot:snap};
 }
 function statusForPlan(a){return a.status}
 function entryPlan(a,status,value){
@@ -423,7 +424,7 @@ function render(){
 }
 function scenarioCard(s,selected){
   const name=PROFILE[s.profile].label;
-  const tops=s.alloc.slice(0,3).map(x=>`${x.a.symbol} ${Math.round(x.weight*(1-s.params.reserve)*100)}%`).join(' • ')||'Aguardar';
+  const tops=s.alloc.slice(0,3).map(x=>`${x.a.symbol} ${Math.round(s.amount>0?x.value/s.amount*100:0)}%`).join(' • ')||'Aguardar';
   return `<button type="button" class="mi-scenario ${selected===s.profile?'active':''}" data-mi-profile="${s.profile}">
     <span>${name}</span><b>Reserva ${s.amount?Math.round(s.reserveAmt/s.amount*100):100}%</b><small>${esc(tops)}</small>
   </button>`;
@@ -439,7 +440,7 @@ function allocationHtml(s,entryMode){
     if(entryMode==='immediate'&&(x.a.status==='confirmed'||x.a.status==='strong'))p={...p,now:x.value*.65,pullback:x.value*.15,confirm:x.value*.20};
     return `<div class="mi-alloc-row">
       <div class="mi-alloc-main"><b>${esc(x.a.symbol)}</b><span class="mi-status ${statusClass(x.a.status)}">${esc(x.a.statusLabel)}</span></div>
-      <div class="mi-alloc-value"><b>${fmtBRL(x.value)}</b><span>${Math.round(x.weight*(1-s.params.reserve)*100)}% do aporte</span></div>
+      <div class="mi-alloc-value"><b>${fmtBRL(x.value)}</b><span>${Math.round(s.amount>0?x.value/s.amount*100:0)}% do aporte</span></div>
       <div class="mi-alloc-score"><b>${x.a.quality}/100</b><span>qualidade</span></div>
       <div class="mi-tranches">
         <span><i>Agora</i><b>${fmtBRL(p.now)}</b></span>

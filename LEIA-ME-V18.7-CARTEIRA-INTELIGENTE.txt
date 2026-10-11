@@ -1,0 +1,35 @@
+CRIPTO RADAR V18.7 — CARTEIRA INTELIGENTE (WEB/PWA)
+
+ESTA É A VERSÃO COMPLETA DO PROJETO, não apenas um patch.
+Todos os arquivos devem ficar JUNTOS, NA RAIZ do repositório GitHub. NÃO criar uma pasta api.
+
+O QUE MUDOU
+- Nova abertura da aba Carteira com indicadores de patrimônio estimado e cobertura de dados.
+- Valor por moeda, participação percentual, distribuição visual e filtro por ativo.
+- Classificação de risco de concentração e reserva em moedas estáveis.
+- Filtro de compra confirmada, moedas que exigem atenção e reserva estável.
+- Diagnóstico explicando o que falta para compra ser confirmada.
+- Registro opcional de preço médio de compra por moeda e cálculo de resultado NÃO REALIZADO.
+- Resultado total só soma ativos com preço médio informado; não inclui taxas nem impostos.
+- Exportação CSV no celular para consulta e cópia dos dados.
+- Simulação de aporte respeita os limites da carteira final; saldo não alocado fica em reserva.
+- Respeita os critérios de confirmação V18.6, que impedem compras baseadas somente em pontuação elevada.
+- Mudanças da carteira passam a atualizar o painel imediatamente.
+
+PUBLICAÇÃO
+1. Extraia este ZIP. Não envie o arquivo ZIP como se fosse um site pronto.
+2. Abra GitHub > repositório carteira-cripto > Add file > Upload files.
+3. Envie todos os ARQUIVOS EXTRAÍDOS na raiz, substituindo os correspondentes.
+4. Faça commit e aguarde o deploy da Vercel caso o repositório esteja conectado.
+5. No aplicativo instalado, feche e abra novamente. Se a versão antiga persistir, atualize a página com a internet ligada para o Service Worker renovar o cache.
+
+IMPORTANTE
+- O valor exibido é estimativa, pois depende das cotações recebidas.
+- Variação de 24h não é lucro. O lucro/prejuízo não realizado requer preço médio e será parcial quando os outros ativos ainda não tiverem custos cadastrados.
+- O preço médio fica no armazenamento LOCAL do navegador; ao limpar os dados do site ou trocar de aparelho, poderá perder esse cadastro. Exportar CSV cria um arquivo de apoio.
+- A IA é informativa e não executa ordens reais, nem garante ganhos.
+- A atualização do website afeta o Android TWA depois que o website for publicado e atualizado; não é necessário reinstalar um aplicativo TWA para ver alterações da interface do site.
+- As notificações PUSH 24h dependem de configuração do servidor/serviço. Elas não podem ser garantidas apenas pelo site.
+
+ARQUIVOS NOVOS: wallet-dashboard.js e este LEIA-ME.
+ARQUIVOS MODIFICADOS: index.html, market-intelligence.js, sw.js, package.json.

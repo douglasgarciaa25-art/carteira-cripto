@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V18.6 • Confirmação Convergente</title>
+<title>Cripto Radar V18.7 • Confirmação Convergente</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -605,6 +605,53 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 }
 </style>
 
+
+<style>
+/* ===== Cripto Radar V18.7 • Painel dedicado de carteira ===== */
+#walletDashboardCard{padding:18px;background:linear-gradient(155deg,#101e32,#081321);border:1px solid #365376;border-radius:24px;overflow:hidden}
+.wd-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.wd-eyebrow{font-size:10px;letter-spacing:1.3px;color:#7cb8ff;font-weight:900}
+.wd-head h2{font-size:24px;letter-spacing:-.5px;margin:2px 0;color:#f6faff}
+.wd-head p{font-size:12px;color:#91a6c1;line-height:1.5;margin:4px 0}
+.wd-live{padding:7px 10px;font-size:10px;font-weight:800;border:1px solid #365375;border-radius:999px;color:#b3cdf2;background:#132944}
+.wd-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+#walletDashboardCard button{cursor:pointer}#walletDashboardCard button:focus-visible,#walletDashboardCard input:focus-visible,#walletDashboardCard select:focus-visible{outline:2px solid #88b9ff;outline-offset:2px}
+.wd-actions button{background:#1a3151;border:1px solid #355980;border-radius:12px;font-size:12px;padding:10px 12px;color:#e7f1ff;font-weight:800}
+.wd-actions .wd-primary{background:#2775e8;color:#fff;border-color:#3683fe}
+.wd-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0}
+.wd-kpi{border:1px solid #304965;background:#091727;border-radius:16px;padding:13px 12px;min-width:0;display:flex;flex-direction:column;gap:5px}
+.wd-kpi small{font-size:10px;font-weight:750;color:#a9bdd8}.wd-kpi strong{font-size:clamp(16px,3.3vw,23px);line-height:1.12;overflow-wrap:anywhere;color:#f5f9ff}.wd-kpi span{font-size:10px;color:#899eb7;line-height:1.4}
+#walletDashboardCard .wd-up{color:#5fe6a0!important}#walletDashboardCard .wd-down{color:#fa958e!important}
+.wd-summary{padding:12px 13px;background:#152744;border:1px solid #334f76;border-radius:14px;display:flex;flex-direction:column;gap:4px;font-size:12px;line-height:1.45}.wd-summary span{color:#a9bedd}
+.wd-panel-title{font-weight:850;margin:17px 0 8px;font-size:15px}
+.wd-track{display:flex;height:13px;border-radius:999px;overflow:hidden;background:#1f334b}.wd-track>span{flex:0 0 auto;min-width:0}
+.wd-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:11px}.wd-legend span{font-size:10px;color:#b7cce6;display:inline-flex;gap:5px;align-items:center}.wd-legend i{width:8px;height:8px;border-radius:3px}
+.wd-warnings{margin-top:16px;border:1px solid #665339;border-radius:14px;padding:12px 13px;background:#261e1733;font-size:12px}.wd-warnings strong{color:#ffce79}.wd-warnings p{margin:6px 0 0;color:#c4cedc;line-height:1.5}
+.wd-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:11px 0}.wd-controls>*{min-width:0}
+.wd-controls input,.wd-controls select{border:1px solid #3a5577;border-radius:12px;background:#081827;color:#f7fbff;padding:11px 10px;font:inherit;font-size:12px}
+.wd-controls #wdSearch{grid-column:1/-1}
+.wd-asset{background:#0a1829;border:1px solid #2a405d;border-radius:14px;padding:12px 12px 9px;margin-bottom:9px}
+.wd-asset-toggle{display:flex;align-items:center;gap:10px;width:100%;background:transparent!important;border:0!important;padding:0!important;text-align:left;color:#f0f7ff!important}
+.wd-token{display:grid;place-items:center;min-width:37px;height:37px;border-radius:50%;border:1px solid #2c5683;background:linear-gradient(145deg,#244e7d,#122c49);font-weight:850;font-size:10px;color:#afdcff}
+.wd-asset-name{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.wd-asset-name strong{font-size:15px}.wd-asset-name small,.wd-asset-value small{font-size:10px;color:#9db3ce;white-space:normal}
+.wd-asset-value{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:0;text-align:right}
+.wd-asset-value strong{font-size:13px;overflow-wrap:anywhere}.wd-chevron{font-size:17px;color:#9bbfe5;margin-left:1px}
+.wd-weight{height:5px;background:#172c48;border-radius:10px;overflow:hidden;margin:10px 0 8px}.wd-weight>i{display:block;height:100%;background:linear-gradient(90deg,#3b83ed,#57c2de);border-radius:10px}
+.wd-asset-badge{display:flex;flex-wrap:wrap;gap:6px}.wd-badge{display:inline-block;border-radius:999px;font-weight:800;letter-spacing:.2px;font-size:9px;padding:5px 8px;line-height:1.2}
+.wd-positive{color:#87edb8;background:#123d2c}.wd-warning{color:#ffe2a0;background:#4f3916}.wd-negative{color:#ffb6aa;background:#52282a}.wd-muted{color:#bdd1ec;background:#22334e}.wd-reserve{color:#a5cdff;background:#203966}
+.wd-details{margin-top:12px;padding-top:11px;border-top:1px solid #31435d;font-size:12px;color:#baccdf}
+.wd-details p{margin:0 0 10px;line-height:1.5}.wd-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.wd-detail-grid span{display:flex;flex-direction:column;gap:3px;background:#122137;padding:9px;border-radius:9px;font-size:10px}.wd-detail-grid b{font-size:12px;color:#f5f9ff}
+.wd-cost-box{margin-top:12px}.wd-cost-box label{font-size:11px;display:block;font-weight:750;margin-bottom:5px}.wd-cost-input{display:flex;gap:6px;flex-wrap:wrap}
+.wd-cost-input input{flex:1;min-width:115px;padding:9px 8px;background:#0a1a2a;border:1px solid #385475;color:#f5faff;border-radius:9px;font-size:13px}
+.wd-cost-input button{font-size:11px;border-radius:9px;padding:9px 10px;background:#2676e5;color:#fff}.wd-cost-input button.wd-secondary{background:#23374e}
+.wd-cost-box small{display:block;margin-top:6px;font-size:10px;line-height:1.4}
+.wd-pnl-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:11px 0 0;font-size:11px}.wd-pnl-row b{font-size:13px}
+.wd-empty{background:#0b1d30;border:1px dashed #355274;border-radius:12px;padding:17px;font-size:12px;color:#b7cde5;line-height:1.5}
+.wd-note{font-size:10px;color:#8fa6c3;line-height:1.55;margin-top:14px}
+@media(min-width:690px){.wd-kpis{grid-template-columns:repeat(4,1fr)}.wd-controls{grid-template-columns:minmax(150px,1fr) 180px 180px}.wd-controls #wdSearch{grid-column:auto}}
+@media(max-width:420px){#walletDashboardCard{padding:14px}.wd-kpi{padding:11px 9px}.wd-asset{padding:10px}.wd-token{min-width:30px;height:30px}.wd-asset-name strong{font-size:13px}.wd-asset-value strong{font-size:12px}.wd-asset-name small,.wd-asset-value small{font-size:9px}}
+</style>
 </head>
 <body>
 <div id="v18VersionBadge">V18.5 • CONFIRMED GREEN</div>
@@ -1009,6 +1056,21 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </section>
 <section class="grid" id="coins"><div class="card"><div class="small">Buscando os melhores destaques…</div></div></section>
 
+
+<section class="card" id="walletDashboardCard" aria-label="Painel da carteira">
+ <div class="wd-head"><div><div class="wd-eyebrow">CARTEIRA INTELIGENTE • V18.7</div><h2>👛 Minha carteira</h2><p>Visão clara de patrimônio, riscos e decisões da IA.</p></div><span class="wd-live" id="wdUpdated">Analisando...</span></div>
+ <div class="wd-actions"><button id="wdCapture" class="wd-primary" type="button">＋ Adicionar ou atualizar</button><button id="wdSimulate" type="button">◈ Simular aporte</button><button id="wdRefresh" type="button">↻ Atualizar dados</button><button id="wdExport" type="button">↓ Exportar CSV</button></div>
+ <div id="wdBody">
+  <div id="wdKpis" class="wd-kpis" aria-live="polite"><div class="wd-empty">Carregando informações da carteira...</div></div>
+  <div id="wdSummary" class="wd-summary"></div>
+  <div class="wd-panel-title">Distribuição dos ativos</div><div id="wdDonut"></div>
+  <div id="wdWarnings" class="wd-warnings"></div>
+  <div class="wd-panel-title">Meus ativos</div>
+  <div class="wd-controls"><input id="wdSearch" type="search" placeholder="Buscar moeda..." aria-label="Buscar moeda"><select id="wdSort" aria-label="Ordenar ativos"><option value="value">Maior posição</option><option value="change">Maior alta 24h</option><option value="risk">Maior risco técnico</option><option value="pnl">Maior resultado</option><option value="alpha">Ordem alfabética</option></select><select id="wdFilter" aria-label="Filtrar ativos"><option value="all">Todos</option><option value="attention">Precisa atenção</option><option value="confirmed">Confirmadas</option><option value="stable">Reserva estável</option></select></div>
+  <div id="wdAssets"><div class="wd-empty">Analisando moedas cadastradas...</div></div>
+  <div id="wdNote" class="wd-note"></div>
+ </div>
+</section>
 
 <section class="card" id="aporteCard">
   <div class="coin">💰 Simulador de aporte</div>
@@ -1749,6 +1811,7 @@ function persistWallet(){
  try{
   localStorage.setItem('crWallet',JSON.stringify(printWallet));
   localStorage.setItem('crWalletSavedAt',new Date().toISOString());
+  try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(e){}
   return true;
  }catch(e){ return false; }
 }
@@ -3596,7 +3659,7 @@ window.v8RunBacktest=run;
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
   home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
-  wallet:{title:'Carteira',ids:['marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
+  wallet:{title:'Carteira',ids:['walletDashboardCard','marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
   market:{title:'Mercado',ids:['marketIntelligenceCard','bt184Card','opportunitiesCard','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['copyMirrorCard','urgentRadarCard','notifyCard']},
   history:{title:'Histórico',ids:['v171HistoryCard']},
@@ -3809,6 +3872,7 @@ body{padding-bottom:74px}
 </script>
 
 <script src="./market-intelligence.js"></script>
+<script src="./wallet-dashboard.js"></script>
 
 <script>
 /* ===== V18.2 • Push Health Monitor ===== */
