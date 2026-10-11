@@ -1,0 +1,35 @@
+CRIPTO RADAR V18.6 — PROJETO WEB COMPLETO
+=======================================
+
+PACOTE COMPLETO, NÃO É APENAS ATUALIZADOR.
+Todos os arquivos estão diretamente na raiz do ZIP; não existe pasta "api".
+
+CORREÇÕES V18.6
+- Motor técnico V5 e inteligência de mercado precisam concordar para a compra ficar verde.
+- A classificação apresenta condições que ainda faltam para confirmar a entrada.
+- Pontuação alta isolada não dispara indicação de compra.
+- Cotações sem atualização ou indicadores ausentes deixam o sinal pendente.
+- Simulação de aporte só direciona dinheiro para sinais confirmados; caso contrário, reserva.
+- Mantidas as telas, IA, carteira, recursos de notificação, ferramentas e configuração do V18.5.
+- Cache de serviço (sw.js) identificado como versão 18.6 para atualização do aplicativo instalado.
+
+COMO PUBLICAR NO GITHUB/VERCEL
+1. Faça backup do repositório e dos seus dados importantes antes de substituir arquivos.
+2. Extraia o ZIP. Selecione todos os arquivos extraídos, NÃO o ZIP fechado.
+3. Envie os arquivos para a RAIZ do repositório carteira-cripto no GitHub, substituindo os nomes existentes.
+4. Aguarde a nova implantação no Vercel e recarregue o app instalado.
+5. Teste carteira, gráficos, análise técnica e notificações antes de depender do Radar.
+
+VERSÃO ANDROID
+O pacote Android TWA é disponibilizado separadamente. O app Android aponta para
+https://carteira-cripto-pi.vercel.app e só mostrará a atualização depois da publicação do site.
+A compilação AAB/APK exige computador, ferramentas Android e sua chave de assinatura original.
+
+VALIDAÇÃO
+- Foram verificados a sintaxe JavaScript e os scripts embutidos no HTML.
+- Testes locais verificaram compras confirmadas, alta esticada, reserva de aporte e dados obsoletos.
+- NÃO foi feita validação em mercado real nem implantação no Vercel.
+
+AVISO
+Notas de confiança são classificações heurísticas, NÃO probabilidades de lucro.
+As análises não enviam ordens reais e não substituem decisão financeira individual.

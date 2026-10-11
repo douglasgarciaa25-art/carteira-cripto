@@ -5,6 +5,8 @@
 'use strict';
 
 const API = {};
+// Preserva o sinal técnico V5 como segunda opinião independente.
+const legacyBuySignal = typeof window.walletBuySignal === 'function' ? window.walletBuySignal : null;
 const $ = id => document.getElementById(id);
 const clamp = (n,a=0,b=100) => Math.max(a, Math.min(b, Number(n)||0));
 const n = v => Number(v);
@@ -248,20 +250,19 @@ function scenarioAllocation(amount,profile,objective){
   const ranked=rankedUniverse();
   const core=new Set(['BTC','ETH']);
   let pool=ranked.filter(x=>{
-    if(x.status==='avoid')return false;
-    if(x.quality<pp.candidateMin-5)return false;
+    if(!x.canBuy||!x.dataFresh)return false;
     if(x.riskScore>=78)return false;
-    return ['strong','confirmed','candidate','watch'].includes(x.status);
+    return ['strong','confirmed'].includes(x.status);
   }).slice(0,12);
 
   // Ensure high-quality wallet holdings are considered.
   for(const x of snap.rows){
     if(x.stable)continue;
     const a=x.analysis;
-    if(a.ready&&a.quality>=pp.candidateMin-4&&!pool.some(y=>y.symbol===a.symbol))pool.push(a);
+    if(a.ready&&a.canBuy&&a.riskScore<78&&!pool.some(y=>y.symbol===a.symbol))pool.push(a);
   }
 
-  const reserveAmt=amount*pp.reserve;
+  const reserveAmt=pool.length?amount*pp.reserve:amount;
   const investable=Math.max(0,amount-reserveAmt);
   let weighted=pool.map(a=>{
     const current=cw[a.symbol]||0;
@@ -292,11 +293,12 @@ function scenarioAllocation(amount,profile,objective){
   }
   const normsum=alloc.reduce((a,x)=>a+x.weight,0)||1;
   alloc=alloc.map(x=>{
-    const w=x.weight/normsum, value=investable*w;
+    const w=x.weight/normsum, value=Math.min(investable*w,amount*pp.maxAsset);
     return {...x,weight:w,value,plan:entryPlan(x.a,statusForPlan(x.a),value)};
   }).filter(x=>x.value>=Math.min(5,amount*.02));
 
-  return {amount,profile,objective,params:pp,reserveAmt,investable,alloc,snapshot:snap};
+  const committed=alloc.reduce((sum,x)=>sum+x.value,0);
+  return {amount,profile,objective,params:pp,reserveAmt:Math.max(0,amount-committed),investable:committed,alloc,snapshot:snap};
 }
 function statusForPlan(a){return a.status}
 function entryPlan(a,status,value){
@@ -423,14 +425,14 @@ function scenarioCard(s,selected){
   const name=PROFILE[s.profile].label;
   const tops=s.alloc.slice(0,3).map(x=>`${x.a.symbol} ${Math.round(x.weight*(1-s.params.reserve)*100)}%`).join(' • ')||'Aguardar';
   return `<button type="button" class="mi-scenario ${selected===s.profile?'active':''}" data-mi-profile="${s.profile}">
-    <span>${name}</span><b>Reserva ${Math.round(s.params.reserve*100)}%</b><small>${esc(tops)}</small>
+    <span>${name}</span><b>Reserva ${s.amount?Math.round(s.reserveAmt/s.amount*100):100}%</b><small>${esc(tops)}</small>
   </button>`;
 }
 function allocationHtml(s,entryMode){
   if(!s.alloc.length){
     return `<div class="mi-empty"><b>Sem alocação técnica agora</b><span>O motor prefere manter ${fmtBRL(s.amount)} em reserva até aparecer confluência suficiente.</span></div>`;
   }
-  const reservePct=Math.round(s.params.reserve*100);
+  const reservePct=s.amount?Math.round(s.reserveAmt/s.amount*100):100;
   let rows=s.alloc.map(x=>{
     let p=x.plan;
     if(entryMode==='confirmation')p={...p,now:0,pullback:x.value*.25,confirm:x.value*.75};
@@ -464,6 +466,7 @@ function assetCard(a){
     </div>
     <div class="mi-tags">${positives}${cautions}</div>
     <div class="mi-summary">${esc(a.summary)}</div>
+    ${(!a.canBuy&&a.missingConfirmations?.length)?`<div class="mi-summary"><b>Para confirmar:</b> ${esc(a.missingConfirmations.slice(0,3).join(' • '))}</div>`:''}
   </div>`;
 }
 function bind(){
@@ -511,6 +514,77 @@ function tick(){
   const sig=signature();
   if(sig!==lastSignature){lastSignature=sig;render()}
 }
+
+/* ===== V18.6 • Confirmação convergente e diagnóstico da entrada =====
+   Score NÃO é previsão de lucro. É necessário consenso com o motor V5.
+*/
+const baseScoreAsset = scoreAsset;
+scoreAsset = function(rawSymbol){
+  const s=norm(rawSymbol),a=baseScoreAsset(s),t=getTech(s),m=getMarket(s),r=regime();
+  let legacy=null;
+  try{if(legacyBuySignal)legacy=legacyBuySignal(s)}catch(e){}
+  const marketFresh=(()=>{
+    try{return typeof marketDataFresh==='function'?marketDataFresh(m):Boolean(m?.at&&Date.now()-Number(m.at)<120000)}
+    catch(e){return false}
+  })();
+  const missing=[];
+  const add=(condition,why)=>{if(condition&&!missing.includes(why))missing.push(why)};
+  if(!a.ready||!t||!marketFresh){
+    if(!a.ready||!t)missing.push('indicadores 15m, 4h e diário atualizados');
+    if(!marketFresh)missing.push('cotação e volume de mercado atualizados');
+    return {...a,status:'pending',statusLabel:'ANÁLISE PENDENTE',ready:false,dataFresh:false,canBuy:false,
+      missingConfirmations:missing,summary:'Dados insuficientes: '+missing.join('; ')+'.'};
+  }
+  const cfg=typeof radarModeCfg==='function'?radarModeCfg():{buy:70,adx:20,vol:1.08,riskMax:75};
+  const h4=t.h4?.structure?.key;
+  const dayTrend=Number(t.d1?.trend);
+  const v15=t.m15||{};
+  const vr=Number(v15.vr), adx=Number(v15.adx), rsi=Number(v15.rsi), vwap=Number(v15.vwapPct);
+  const rel=Number(t.relativeStrength), ch=Number(m?.change24h);
+  const vol=Number(m?.volume), risk=Number(a.riskScore);
+  const vp=volumePercentile(s);
+  add(!t.bull,'tendência de alta alinhada entre os tempos gráficos');
+  add(h4!=='bull','estrutura de alta HH/HL no gráfico 4h');
+  add(!Number.isFinite(dayTrend)||dayTrend<0,'tendência diária favorável');
+  add(r.key==='bear'||r.key==='wait','regime BTC/ETH favorável');
+  add(!Number.isFinite(adx)||adx<Math.max(16,Number(cfg.adx)-3),'força ADX suficiente no 15m');
+  add(!Number.isFinite(vr)||vr<Math.max(.85,Number(cfg.vol)-.15),'volume 15m confirmando a entrada');
+  add(!Number.isFinite(vol)||vol<=0||vp<.35,'liquidez de mercado suficiente');
+  add(!Number.isFinite(rsi)||rsi<38||rsi>=72,'RSI fora de extremo de compra/venda');
+  add(!Number.isFinite(vwap)||vwap< -1.5||vwap>4,'preço próximo de zona saudável do VWAP');
+  add(!Number.isFinite(ch)||ch>=12,'alta de 24h menos esticada (aguardar correção)');
+  add(!Number.isFinite(rel)||rel< -2,'força relativa ao BTC');
+  add(!Number.isFinite(risk)||risk>Number(cfg.riskMax),'risco dentro do perfil');
+  add(Number(a.quality)<85,'qualidade técnica mínima de 85/100');
+  add(!legacy||legacy.state!=='confirmed','confirmação final do motor técnico V5');
+  if(Array.isArray(legacy?.hardBlocks))for(const why of legacy.hardBlocks.slice(0,2))add(true,why);
+  if(Array.isArray(legacy?.softBlocks))for(const why of legacy.softBlocks.slice(0,2))add(true,why);
+  const confirmed=missing.length===0&&['strong','confirmed'].includes(a.status);
+  const status=confirmed?a.status:a.status==='avoid'?'avoid':a.quality>=70?'candidate':'watch';
+  const label=confirmed?(status==='strong'?'SINAL FORTE DE COMPRA':'COMPRA CONFIRMADA'):
+    status==='avoid'?'EVITAR ENTRADA':status==='candidate'?'CANDIDATA • AGUARDANDO':'OBSERVAR';
+  const next=missing.slice(0,4).join('; ');
+  const summary=confirmed?('Confluência confirmada no Radar V5 e no mercado; '+a.positives.slice(0,2).join(' e ')+'.'):
+    (status==='avoid'?'Entrada bloqueada. ':'Sem compra confirmada. ')+(next?'Falta confirmar: '+next+'.':'Aguardar nova leitura.');
+  return {...a,status,statusLabel:label,dataFresh:true,canBuy:confirmed,
+    missingConfirmations:missing,summary,cautions:[...new Set([...(a.cautions||[]),...missing])].slice(0,6)};
+};
+// Uma só decisão para carteira, alertas, oportunidades e simulações.
+if(legacyBuySignal){
+  window.walletBuySignal=function(rawSymbol){
+    const s=norm(rawSymbol),a=scoreAsset(s);
+    let old=null;try{old=legacyBuySignal(s)}catch(e){}
+    const core={score:a.quality,technicalReady:a.ready,hardBlocks:a.blocks||[],
+      softBlocks:a.missingConfirmations||[],why:a.summary};
+    if(!a.ready||!a.dataFresh)return {...core,label:'ANÁLISE PENDENTE',state:'pending',score:null};
+    if(a.canBuy)return {...core,label:a.statusLabel,state:'confirmed',hardBlocks:[],softBlocks:[],
+      why:a.summary+(old?.why?' • '+old.why:'')};
+    if(a.status==='avoid')return {...core,label:'EVITAR ENTRADA',state:'blocked'};
+    if(a.status==='candidate')return {...core,label:'CANDIDATA A COMPRA',state:'candidate'};
+    return {...core,label:'OBSERVAR',state:'watch'};
+  };
+}
+
 API.render=render;
 API.scoreAsset=scoreAsset;
 API.portfolioSnapshot=portfolioSnapshot;
