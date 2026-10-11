@@ -1,5 +1,5 @@
-const CACHE='cripto-radar-v19.2-market-i18n';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css'];
+const CACHE='cripto-radar-v19.3-responsive-android';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css','./layout-v193.css'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
 

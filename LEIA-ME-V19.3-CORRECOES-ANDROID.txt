@@ -1,0 +1,16 @@
+CRIPTO RADAR V19.3 — CORREÇÕES REAIS DO LAYOUT ANDROID
+
+BASE: V19.2, mantendo todas as funções de carteira, idioma, mercado, backtest, alertas, push e PRO.
+
+1. Botões do Push 24h: agora em duas colunas no celular, com área de toque adequada; textos não são mais quebrados letra por letra.
+2. Cabeçalho: deixa de flutuar sobre o conteúdo durante a rolagem em telas pequenas.
+3. Painel do backtest: antes ficava fora da área principal do aplicativo (fora da tag main), causando espaço vazio, exibição inesperada e seção embaixo da barra. Foi movido para dentro de main e respeita a rota Mercado.
+4. Separação de telas: painel de hoje e central rápida agora aparecem na tela Início, em vez de poluir as páginas Carteira/Alertas/Mercado.
+5. Barra inferior com espaçamento otimizado e rodapé protegido.
+6. Saúde do Push: servidor online com zero inscritos NÃO significa que o celular está apto a receber notificações; a tela agora apresenta aviso e instrui a testar o Push.
+7. Backtest com 20 ou menos observações informa que a amostra é insuficiente para concluir confiabilidade.
+8. Versionamento do visual e cache atualizado para V19.3.
+
+INSTALAÇÃO: Descompactar e enviar TODOS os arquivos para a raiz do repositório (sem pasta api). A publicação não foi feita automaticamente. Fechar e reabrir o aplicativo para obter o Service Worker novo.
+
+VALIDAÇÃO: checagens estáticas, sintaxe JS/JSON, integridade do ZIP e grade responsiva. Ainda é necessário testar Push real no telefone com o backend ativo.

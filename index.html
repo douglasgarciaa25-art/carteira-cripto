@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.2 • Mercado multilíngue</title>
+<title>Cripto Radar V19.3 • Mercado multilíngue</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -653,6 +653,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 @media(max-width:420px){#walletDashboardCard{padding:14px}.wd-kpi{padding:11px 9px}.wd-asset{padding:10px}.wd-token{min-width:30px;height:30px}.wd-asset-name strong{font-size:13px}.wd-asset-value strong{font-size:12px}.wd-asset-name small,.wd-asset-value small{font-size:9px}}
 </style>
 <link rel="stylesheet" href="./alerts-center.css">
+<link rel="stylesheet" href="./layout-v193.css?v=1930">
 </head>
 <body>
 
@@ -760,7 +761,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.1">V19.1</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.3">V19.3</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1257,6 +1258,53 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </section>
 
 
+<section class="card" id="bt184Card">
+  <div class="coin">📈 V18.4 • Backtest & Histórico da IA</div>
+  <div class="small">Mede como os sinais anteriores evoluíram e registra as mudanças de decisão do Radar.</div>
+
+  <div class="bt184-grid">
+    <div class="bt184-kpi"><span>Sinais avaliados</span><b id="bt184Evaluated">0</b><small>histórico local</small></div>
+    <div class="bt184-kpi"><span>Acerto técnico</span><b id="bt184HitRate">—</b><small>heurístico</small></div>
+    <div class="bt184-kpi"><span>Retorno médio</span><b id="bt184AvgReturn">—</b><small>após o sinal</small></div>
+    <div class="bt184-kpi"><span>Pior drawdown</span><b id="bt184Drawdown">—</b><small>histórico medido</small></div>
+  </div>
+
+  <p class="cr193-sample-note" id="cr193BacktestNotice">Resultados históricos exigem uma amostra maior para serem interpretados com confiança.</p>
+
+  <div class="bt184-section">
+    <div class="bt184-head">
+      <div><b>Desempenho por tipo de sinal</b><span>Compra confirmada, sinal forte e candidatas.</span></div>
+    </div>
+    <div class="bt184-controls">
+      <select id="bt184Horizon">
+        <option value="15">15 min</option>
+        <option value="60" selected>1 hora</option>
+        <option value="240">4 horas</option>
+      </select>
+      <select id="bt184Filter">
+        <option value="all">Todos os sinais</option>
+        <option value="candidate">Candidatas</option>
+        <option value="confirmed">Confirmadas</option>
+        <option value="strong">Sinal forte</option>
+      </select>
+      <button id="bt184Recalc" type="button">↻ RECALCULAR</button>
+    </div>
+    <div class="bt184-table" id="bt184Performance"><div class="small">Aguardando dados suficientes…</div></div>
+  </div>
+
+  <div class="bt184-section">
+    <div class="bt184-head">
+      <div><b>Histórico de decisões da IA</b><span>Registra quando o status de uma moeda muda.</span></div>
+      <button id="bt184Clear" type="button" style="padding:6px 8px;font-size:8px">LIMPAR</button>
+    </div>
+    <div class="bt184-history" id="bt184History"><div class="small">Nenhuma mudança registrada ainda.</div></div>
+  </div>
+
+  <div class="bt184-note">
+    Backtest local e heurístico: usa dados observados pelo próprio aplicativo. Não representa promessa de retorno, não executa ordens e não substitui validação histórica profissional.
+  </div>
+</section>
+
 <section class="card neo-feed" id="marketRumorsCard">
   <div class="neo-feed-head">
     <div><div class="neo-eyebrow">RADAR SOCIAL</div><div class="coin" id="marketRumorsTitle">Boatos e notícias do mercado</div></div>
@@ -1398,7 +1446,7 @@ async function refreshServerPushStatus(){
   if(!j?.ready){notifyServerStatus('Push servidor indisponível.');return;}
   const reg=await getRadarSW(),sub=await reg?.pushManager?.getSubscription?.();
   let scan='';if(st?.lastRunAt){const mins=Math.max(0,Math.round((Date.now()-Number(st.lastRunAt))/60000));scan=` • última varredura ${mins<1?'agora':mins+' min atrás'}`;}else scan=' • aguardando agendador externo';
-  notifyServerStatus(sub?'✓ Push 24h registrado neste aparelho'+scan:'Push servidor pronto • toque em ATIVAR PUSH 24H'+scan+'.');
+  notifyServerStatus(sub?'Assinatura Push encontrada neste navegador; confirme a entrega em TESTAR PUSH'+scan:'Push servidor disponível • toque em ATIVAR PUSH 24H'+scan+'.');
  }catch(e){notifyServerStatus('Push servidor: aguardando conexão.');}
 }
 async function enableRadarNotifications(){
@@ -3711,7 +3759,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
 (function(){
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
-  home:{title:'Início',ids:['homeDashboardCard','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
+  home:{title:'Início',ids:['v171CommandCard','homeDashboardCard','cr183Dashboard','v9Command','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
   wallet:{title:'Carteira',ids:['walletDashboardCard','marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
   market:{title:'Mercado',ids:['marketIntelligenceCard','bt184Card','opportunitiesCard','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard','copyMirrorCard']},
@@ -3940,8 +3988,13 @@ body{padding-bottom:74px}
        fetch('/api/push-cron',{cache:'no-store'}).then(r=>r.json())
      ]);
      if(cfg?.ready&&cron?.ok){
-       b.className='push-health-v182 ok';
-       b.innerHTML='<b>Push 24h ativo</b> • agendador 1 min • '+(cron.subscriptions??0)+' aparelho(s) inscrito(s) • último ciclo: '+(cron.sent??0)+' enviado(s), '+(cron.failed??0)+' falha(s).';
+       const registered=Number(cron.subscriptions);
+       const registrationsKnown=Number.isFinite(registered);
+       const hasRecipients=registrationsKnown && registered>0;
+       b.className='push-health-v182 '+(hasRecipients?'ok':'warn');
+       b.innerHTML=hasRecipients
+         ? '<b>Servidor Push funcionando</b> • '+registered+' aparelho(s) inscrito(s) • última execução: '+(Number(cron.sent)||0)+' enviado(s), '+(Number(cron.failed)||0)+' falha(s).'
+         : '<b>Servidor online, mas recebimento não confirmado</b> • '+(registrationsKnown?'0 aparelho(s) inscrito(s)':'quantidade de aparelhos desconhecida')+'. Toque em ATIVAR PUSH 24H e use TESTAR PUSH para verificar a entrega.';
      }else{
        b.className='push-health-v182 warn';
        b.innerHTML='<b>Push requer atenção</b> • servidor ou armazenamento não respondeu como esperado.';
@@ -4035,50 +4088,7 @@ body{padding-bottom:74px}
 </script>
 
 
-<section class="card" id="bt184Card">
-  <div class="coin">📈 V18.4 • Backtest & Histórico da IA</div>
-  <div class="small">Mede como os sinais anteriores evoluíram e registra as mudanças de decisão do Radar.</div>
 
-  <div class="bt184-grid">
-    <div class="bt184-kpi"><span>Sinais avaliados</span><b id="bt184Evaluated">0</b><small>histórico local</small></div>
-    <div class="bt184-kpi"><span>Acerto técnico</span><b id="bt184HitRate">—</b><small>heurístico</small></div>
-    <div class="bt184-kpi"><span>Retorno médio</span><b id="bt184AvgReturn">—</b><small>após o sinal</small></div>
-    <div class="bt184-kpi"><span>Pior drawdown</span><b id="bt184Drawdown">—</b><small>histórico medido</small></div>
-  </div>
-
-  <div class="bt184-section">
-    <div class="bt184-head">
-      <div><b>Desempenho por tipo de sinal</b><span>Compra confirmada, sinal forte e candidatas.</span></div>
-    </div>
-    <div class="bt184-controls">
-      <select id="bt184Horizon">
-        <option value="15">15 min</option>
-        <option value="60" selected>1 hora</option>
-        <option value="240">4 horas</option>
-      </select>
-      <select id="bt184Filter">
-        <option value="all">Todos os sinais</option>
-        <option value="candidate">Candidatas</option>
-        <option value="confirmed">Confirmadas</option>
-        <option value="strong">Sinal forte</option>
-      </select>
-      <button id="bt184Recalc" type="button">↻ RECALCULAR</button>
-    </div>
-    <div class="bt184-table" id="bt184Performance"><div class="small">Aguardando dados suficientes…</div></div>
-  </div>
-
-  <div class="bt184-section">
-    <div class="bt184-head">
-      <div><b>Histórico de decisões da IA</b><span>Registra quando o status de uma moeda muda.</span></div>
-      <button id="bt184Clear" type="button" style="padding:6px 8px;font-size:8px">LIMPAR</button>
-    </div>
-    <div class="bt184-history" id="bt184History"><div class="small">Nenhuma mudança registrada ainda.</div></div>
-  </div>
-
-  <div class="bt184-note">
-    Backtest local e heurístico: usa dados observados pelo próprio aplicativo. Não representa promessa de retorno, não executa ordens e não substitui validação histórica profissional.
-  </div>
-</section>
 
 
 <script>
@@ -4176,6 +4186,7 @@ function metrics(){
 }
 function renderPerformance(){
   const m=metrics();
+  const sample=$('cr193BacktestNotice');if(sample){sample.textContent=m.ev.length<20?'Amostra pequena ('+m.ev.length+' sinais no período/filtro): as taxas observadas ainda não permitem avaliar confiabilidade.':'Retornos históricos não garantem resultados futuros.';}
   if($('bt184Evaluated'))$('bt184Evaluated').textContent=m.ev.length;
   if($('bt184HitRate'))$('bt184HitRate').textContent=m.hitRate==null?'—':m.hitRate.toFixed(1)+'%';
   if($('bt184AvgReturn'))$('bt184AvgReturn').textContent=m.avg==null?'—':(m.avg>=0?'+':'')+m.avg.toFixed(2)+'%';

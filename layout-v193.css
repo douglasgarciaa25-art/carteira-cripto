@@ -1,0 +1,70 @@
+/* Cripto Radar V19.3 — correções a partir dos prints do Android (320–430 px). */
+:root{--cr193-stroke:#314f70}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-bottom:160px;scroll-padding-top:10px}
+body{overflow-x:clip;max-width:100%}
+#notifyCard,#alertCenterCard,#marketIntelligenceCard,#bt184Card,#marketRumorsCard{min-width:0}
+#notifyCard .notify-row{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px!important;align-items:stretch;margin:15px 0 12px!important;
+}
+#notifyCard .notify-row>button:not(#installApp){
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-width:0!important;max-width:none!important;width:100%!important;
+  min-height:57px!important;height:auto!important;
+  margin:0!important;padding:11px 9px!important;
+  font-size:12px!important;font-weight:850!important;line-height:1.35!important;
+  text-align:center!important;white-space:normal!important;
+  word-break:normal!important;overflow-wrap:normal!important;hyphens:none!important;
+  border-radius:14px!important;
+}
+#notifyCard .notify-row #enableNotifications{grid-column:1 / -1;min-height:50px!important}
+#notifyCard .notify-row #installApp{grid-column:1/-1}
+#notifyCard .small{line-height:1.6!important;overflow-wrap:break-word!important}
+#notifyCard .push-health-v182{font-size:12px!important;line-height:1.55!important;padding:12px!important;margin-top:10px!important}
+#notifyCard .notify-status{line-height:1.55!important;overflow-wrap:break-word!important;font-size:12px!important}
+#alertCenterCard .ac-tools{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%;gap:8px}
+#alertCenterCard .ac-tools button{min-width:0!important;font-size:11px!important;white-space:normal!important;word-break:normal!important}
+#marketRumorsCard .neo-feed-head{align-items:flex-start!important}
+#marketRumorsCard .neo-feed-head :is(.neo-live,.neo-feed-live,.neo-feed-badge,.neo-feed-tag){white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important}
+#bt184Card{margin:14px 0!important}
+#bt184Card .cr193-sample-note{font-size:11px;line-height:1.5;color:#b5c9e2;background:#0b2135;border:1px solid #2b4c6b;border-radius:10px;padding:9px 12px}
+#bt184Card .bt184-grid{gap:8px!important}
+.v171-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))!important;max-width:min(540px,calc(100vw - 12px))!important}
+.v171-bottom-nav button{min-width:0!important;max-width:100%!important}
+:where(#notifyCard,#marketIntelligenceCard,#bt184Card,#alertCenterCard){scroll-margin-top:15px;scroll-margin-bottom:140px}
+@media(max-width:759px){
+  main{padding-bottom:calc(155px + env(safe-area-inset-bottom,0px))!important}
+  /* A toolbar sticky cobria manchetes; em telas pequenas acompanha a rolagem. */
+  .app-toolbar{position:relative!important;top:auto!important;z-index:20!important;
+    display:grid!important;grid-template-columns:48px minmax(0,1fr) minmax(112px,120px)!important;
+    min-height:64px!important;padding:9px!important;align-items:center!important}
+  .app-toolbar .app-view-title{font-size:16px!important}
+  .app-toolbar .cr19-language-control{width:100%!important;min-width:0!important}
+  .app-toolbar .cr19-language-label{font-size:10px!important}
+  .app-toolbar .cr19-language-select{width:100%!important;font-size:12px!important}
+  .app-view-kicker{max-width:100%;font-size:10px!important}
+  .v171-bottom-nav{left:50%!important;bottom:calc(7px + env(safe-area-inset-bottom,0px))!important;
+    padding:6px!important;border-radius:19px!important}
+  .v171-bottom-nav button{min-height:64px!important;padding:8px 2px!important}
+  .v171-bottom-nav b{font-size:9px!important;letter-spacing:0!important;white-space:nowrap!important}
+  .v171-bottom-nav span{font-size:20px!important}
+  #notifyCard,#bt184Card{padding:15px!important}
+  .card .coin{overflow-wrap:break-word}
+  #marketRumorsCard .neo-feed-head{gap:8px!important;flex-wrap:wrap!important}
+  #marketRumorsCard .neo-feed-title{max-width:100%;min-width:0}
+}
+@media(max-width:345px){
+ .app-toolbar{grid-template-columns:43px minmax(0,1fr) 104px!important}
+ .app-toolbar .app-view-title{font-size:14px!important}
+ #notifyCard .notify-row>button:not(#installApp){font-size:11px!important;padding:10px 7px!important}
+ #alertCenterCard .ac-tools{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #alertCenterCard .ac-tools button:first-child{grid-column:1/-1}
+ .v171-bottom-nav b{font-size:8px!important}
+}
+@media(min-width:760px){
+ #notifyCard .notify-row{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ #notifyCard .notify-row #enableNotifications{grid-column:auto}
+ #notifyCard .notify-row #installApp{grid-column:auto}
+ #alertCenterCard .ac-tools{width:auto!important}
+}
