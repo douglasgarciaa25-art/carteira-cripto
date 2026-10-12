@@ -11,7 +11,7 @@
  };
  const lang=()=>{const x=String(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt-BR');return x.startsWith('en')?'en':x.startsWith('es')?'es':'pt-BR'};
  const t=()=>I18N[lang()];
- const state={conf:null,auth:null,user:null,connected:false,busy:false,latest:null,importedFor:null,lastFetched:0};
+ const state={conf:null,auth:null,user:null,connected:false,busy:false,latest:null,importedFor:null,lastFetched:0,lastSyncError:false};
  const autoKey=()=>state.user?'radar:binance:auto:'+state.user.id:'';
  const importKey=()=>state.user?'radar:binance:import:'+state.user.id:'';
  const hasAuto=()=>!!state.user&&localStorage.getItem(autoKey())==='on';
@@ -40,7 +40,7 @@
  function saveAuth(auth){
   if(auth?.access_token&&auth?.refresh_token){const stored={access_token:auth.access_token,refresh_token:auth.refresh_token,expires_at:Number(auth.expires_at)||Math.floor(Date.now()/1000)+Number(auth.expires_in||3600)};state.auth=stored;sessionStorage.setItem(SESSION_KEY,JSON.stringify(stored));return true}return false;
  }
- function clearAuth(){state.auth=null;state.user=null;state.connected=false;state.latest=null;sessionStorage.removeItem(SESSION_KEY);}
+ function clearAuth(){state.auth=null;state.user=null;state.connected=false;state.latest=null;window.CriptoRadarBinanceSnapshot=null;sessionStorage.removeItem(SESSION_KEY);}
  async function initializeConfig(){
   if(state.conf)return state.conf;
   const r=await fetch('./api/radar-auth-config',{cache:'no-store'});
@@ -66,6 +66,7 @@
  function detach(){
   state.importedFor=null;
   window.CriptoRadarBinanceActiveImport=false;
+  window.CriptoRadarBinanceSnapshot=null;
   if(Array.isArray(window.printWallet)){window.printWallet=manualWallet();if(typeof renderPrintWallet==='function')renderPrintWallet();try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(_){}}
  }
  async function loadUser(){
@@ -184,6 +185,141 @@
   if(code==='auth_config'||code==='request_failed')return t().notConfigured;
   return t().error;
  }
+ /* V19.7 • Ponte de carteira Binance → Radar (somente leitura; nenhuma ordem). */
+ const BINANCE_STABLE=new Set(['USDT','USDC','FDUSD','TUSD','USDP','DAI','USDE','USDS','PYUSD','BUSD','BRL','EUR','TRY']);
+ const B_DEC=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:8});
+ const B_BRL=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
+ const bEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function currentBinanceBalances(){return Array.isArray(state.latest?.balances)?state.latest.balances:[];}
+ function isImported(){return !!state.user&&state.importedFor===state.user.id&&window.CriptoRadarBinanceActiveImport===true;}
+ function bridgeSnapshot(){
+  if(!isImported()||!state.latest)return null;
+  const b=currentBinanceBalances();
+  const freeUSDT=b.find(x=>x.symbol==='USDT')?.free||0;
+  const lockedUSDT=b.find(x=>x.symbol==='USDT')?.locked||0;
+  return {source:'binance_spot',updatedAt:String(state.latest.updatedAt||''),freeUSDT:Number(freeUSDT)||0,lockedUSDT:Number(lockedUSDT)||0,
+   assets:b.map(x=>({symbol:x.symbol,qty:x.qty,free:x.free,locked:x.locked}))};
+ }
+ function activateBridge(){
+  const snap=bridgeSnapshot();
+  if(!snap){window.CriptoRadarBinanceSnapshot=null;return;}
+  // Sem API Key, Secret Key ou credenciais nesta fotografia. Dados apenas na sessão.
+  window.CriptoRadarBinanceSnapshot=snap;
+  try{window.dispatchEvent(new CustomEvent('criptoradar:binancesync',{detail:{source:snap.source,updatedAt:snap.updatedAt}}));}catch(_){}
+ }
+ function valueInBRL(symbol,qty){
+  const price=Number(window.walletPrices?.[symbol]);
+  return Number.isFinite(price)&&price>0?price*qty:null;
+ }
+ function bridgeCashValue(){
+  const snap=bridgeSnapshot();if(!snap)return null;
+  const p=Number(window.walletPrices?.USDT);
+  return Number.isFinite(p)&&p>0?snap.freeUSDT*p:null;
+ }
+ async function ensureUSDTPrice(){
+  // Somente cotação pública, nunca envia credenciais nem quantidades.
+  if(currentBinanceBalances().some(x=>x.symbol==='USDT')&&!(Number(window.walletPrices?.USDT)>0)){
+   try{
+    const response=await fetch('/api/market',{cache:'no-store',signal:AbortSignal.timeout(6000)});
+    if(response.ok){const data=await response.json();const usdbrl=Number(data?.usdbrl);
+     if(data?.ok&&Number.isFinite(usdbrl)&&usdbrl>0&&usdbrl<20&&window.walletPrices){window.walletPrices.USDT=usdbrl;}
+    }
+   }catch(_){}
+  }
+  renderInsights();
+ }
+ function freshSignal(symbol){
+  if(BINANCE_STABLE.has(symbol))return null;
+  try{
+   const m=window.CriptoRadarMarketIntelligence?.scoreAsset?.(symbol);
+   if(m?.ready&&m?.dataFresh===true){
+    return {symbol,quality:Number(m.quality)||0,status:String(m.status||''),confirmed:m.canBuy===true,
+     reason:String(m.summary||m.missingConfirmations?.[0]||'Aguardando sinais').slice(0,180),risk:Number(m.riskScore)||0};
+   }
+  }catch(_){}
+  return {symbol,quality:0,status:'pending',confirmed:false,reason:'Indicadores indisponíveis ou desatualizados',risk:0};
+ }
+ function bridgeSignals(){
+  const market=window.walletMarketData||{}, held=new Set(currentBinanceBalances().map(x=>x.symbol));
+  const base=['BTC','ETH','SOL','BNB','XRP','LINK'];
+  const candidates=[...new Set([...currentBinanceBalances().map(x=>x.symbol),...base,
+   ...(Array.isArray(window.latestOpportunities)?window.latestOpportunities.slice(0,10).map(x=>String(x?.symbol||'').toUpperCase()):[])])];
+  return candidates.filter(x=>/^[A-Z0-9]{2,18}$/.test(x)&&!BINANCE_STABLE.has(x)&&market[x])
+   .slice(0,22).map(freshSignal).filter(Boolean).sort((a,b)=>Number(b.confirmed)-Number(a.confirmed)||b.quality-a.quality)
+   .slice(0,6).map(x=>({...x,held:held.has(x.symbol)}));
+ }
+ function scenarioPreview(investable,price,sig,ratio,capPct){
+  const confirmed=sig.filter(x=>x.confirmed&&x.quality>=70&&x.risk<78),spend=investable*(1-ratio);
+  if(!confirmed.length||!Number.isFinite(price)||!(price>0))return {reserve:investable,items:[]};
+  const total=(Array.isArray(window.printWallet)?window.printWallet:[]).reduce((sum,x)=>{
+   const value=valueInBRL(String(x.symbol||'').toUpperCase(),Number(x.qty)||0);
+   return sum+(value||0);
+  },0);
+  // O dinheiro já está na carteira (USDT): nunca contar este valor como novo aporte.
+  let left=spend;
+  const items=[];
+  for(const a of confirmed.slice(0,4)){
+   const position=Array.isArray(window.printWallet)?window.printWallet.find(x=>x.symbol===a.symbol):null;
+   const current=valueInBRL(a.symbol,Number(position?.qty)||0)||0;
+   const maxSpend=Math.max(0,total*capPct-current);
+   const value=Math.max(0,Math.min(left,spend/Math.max(1,confirmed.length),maxSpend));
+   if(value>=Math.max(5,total*.005)){items.push({symbol:a.symbol,value});left-=value;}
+  }
+  const used=items.reduce((sum,x)=>sum+x.value,0);
+  return {reserve:Math.max(0,investable-used),items};
+ }
+ function insightsBox(){
+  const target=$('radarBinancePreview');if(!target)return null;
+  let box=$('radarBinanceInsights');
+  if(!box){box=document.createElement('section');box.id='radarBinanceInsights';box.setAttribute('aria-live','polite');
+    box.style.cssText='margin-top:16px;padding:14px;border:1px solid #275572;border-radius:16px;background:#061b2b;color:#d8edf9';
+    target.insertAdjacentElement('afterend',box);
+  }
+  return box;
+ }
+ function renderInsights(){
+  const box=insightsBox();if(!box)return;
+  if(!isImported()){
+   box.hidden=!state.connected;
+   if(state.connected)box.innerHTML='<b>🧠 IA + carteira Binance</b><p class="small">Clique em “Usar saldos na carteira” para liberar as análises baseadas nas suas posições reais.</p>';
+   return;
+  }
+  box.hidden=false;
+  const snap=bridgeSnapshot();if(!snap)return;
+  const updated=Date.parse(snap.updatedAt),age=Date.now()-updated,fresh=Number.isFinite(age)&&age>=-60000&&age<5*60*1000&&!state.lastSyncError;
+  const free=Math.max(0,snap.freeUSDT),locked=Math.max(0,snap.lockedUSDT),price=Number(window.walletPrices?.USDT),brl=bridgeCashValue();
+  const signals=bridgeSignals();
+  const safeBRL=brl==null?'cotação BRL aguardando':B_BRL.format(brl);
+  const status=fresh?'● Sincronizado':state.lastSyncError?'⚠ Falha na última sincronização':'⚠ Dados antigos — confira antes de agir';
+  let html='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><strong>🧠 Radar • Binance + IA</strong><span style="font-size:12px;color:'+(fresh?'#60e4b4':'#ffd28b')+'">'+status+'</span></div>';
+  html+='<p class="small" style="margin:9px 0">Fonte: <b>Binance Spot (somente leitura)</b> · Atualizado: '+bEsc(Number.isFinite(updated)?new Date(updated).toLocaleTimeString('pt-BR'):'—')+'</p>';
+  html+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><div style="flex:1;min-width:130px;border:1px solid #25506b;border-radius:10px;padding:10px"><small>USDT livre para simular</small><div style="font-weight:800">'+B_DEC.format(free)+' USDT</div><small>Estimativa '+bEsc(safeBRL)+'</small></div>';
+  html+='<div style="flex:1;min-width:130px;border:1px solid #25506b;border-radius:10px;padding:10px"><small>USDT bloqueado em ordens</small><div style="font-weight:800">'+B_DEC.format(locked)+' USDT</div><small>Não disponível para novas compras</small></div></div>';
+  const positions=snap.assets.filter(x=>!BINANCE_STABLE.has(x.symbol)&&x.qty>0);
+  html+='<p class="small">'+(positions.length?('Ativos investidos: '+positions.map(x=>bEsc(x.symbol)).join(', ')):'Nenhum criptoativo volátil nesta carteira Spot. O USDT está como reserva.')+'</p>';
+  html+='<div style="margin:13px 0 8px;font-weight:800">📊 Cruzamento com sinais técnicos do Radar</div>';
+  if(!signals.length)html+='<p class="small">Mercado ou indicadores ainda não disponíveis. Aguarde nova leitura.</p>';
+  else for(const s of signals){
+   const label=s.confirmed?'COMPRA TÉCNICA CONFIRMADA':s.status==='candidate'?'CANDIDATA • AGUARDAR':s.status==='avoid'?'EVITAR ENTRADA':'OBSERVAR / DADOS PENDENTES';
+   const color=s.confirmed?'#5be3a8':s.status==='avoid'?'#ffa1a9':'#ffdb91';
+   html+='<div style="padding:8px 0;border-bottom:1px solid #21415c;display:flex;justify-content:space-between;gap:8px"><div><b>'+bEsc(s.symbol)+'</b>'+(s.held?' <small>• carteira</small>':' <small>• mercado</small>')+'<div style="font-size:11px;max-width:460px;color:#b5cad9">'+bEsc(s.reason)+'</div></div><div style="white-space:nowrap;text-align:right;color:'+color+';font-size:11px;font-weight:800">'+label+'<div>'+(s.quality?Math.round(s.quality)+'/100':'—')+'</div></div></div>';
+  }
+  html+='<div style="margin:14px 0 6px;font-weight:800">💵 Cenários simulados com USDT livre</div>';
+  if(!fresh||brl==null){html+='<p class="small">Sem simulação de aporte: atualização ou cotação USDT/BRL pendente.</p>'}
+  else if(!signals.some(s=>s.confirmed)){html+='<p class="small">Nenhuma entrada tecnicamente confirmada agora. Cenários conservador, equilibrado e arrojado: manter a reserva e aguardar confirmação.</p>'}
+  else{
+   for(const [name,reserveRatio,maxAsset] of [['Conservador',.75,.25],['Equilibrado',.50,.30],['Arrojado',.30,.35]]){
+    const scenario=scenarioPreview(brl,price,signals,reserveRatio,maxAsset);
+    html+='<div style="border:1px solid #25506b;border-radius:9px;padding:9px;margin:7px 0"><strong>'+name+'</strong><div class="small">Reserva: '+B_BRL.format(scenario.reserve)+'</div>';
+    if(scenario.items.length)html+='<div style="font-size:12px">'+scenario.items.map(x=>bEsc(x.symbol)+' • '+B_BRL.format(x.value)).join(' | ')+'</div>';
+    else html+='<small>Aguardar sinal e concentração adequada; sem aplicação simulada.</small>';
+    html+='</div>';
+   }
+  }
+  html+='<p class="small" style="margin:12px 0 0">Previsões de alta/lateral/queda e plano geral: seção IA do Radar. São cenários incertos, não promessas de retorno. Simulação não faz ordens; valores mínimos e taxas da Binance precisam ser conferidos.</p>';
+  box.innerHTML=html;
+ }
+
  function renderBalances(){
   const el=$('radarBinancePreview');if(!el)return;
   el.replaceChildren();if(!state.latest)return;
@@ -197,16 +333,19 @@
   }
  }
  function useBalances(ask=true){
-  if(!state.user||!state.latest?.balances?.length)return false;
+  if(!state.user||!state.latest||!Array.isArray(state.latest.balances))return false;
   if(ask&&!confirm(t().confirm))return false;
   const next=state.latest.balances.map(x=>({symbol:x.symbol,qty:x.qty}));
   window.CriptoRadarBinanceActiveImport=true;
   state.importedFor=state.user.id;
   window.printWallet=next;
   if(typeof renderPrintWallet==='function')renderPrintWallet();
-  if(typeof updateWalletPrices==='function')Promise.resolve(updateWalletPrices()).catch(()=>{});
+  if(typeof updateWalletPrices==='function')Promise.resolve(updateWalletPrices()).then(()=>ensureUSDTPrice()).catch(()=>ensureUSDTPrice());
+  else Promise.resolve().then(()=>ensureUSDTPrice());
   try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(_){}
   sessionStorage.setItem(importKey(),'yes');
+  activateBridge();
+  renderInsights();
   if(ask&&localStorage.getItem(autoKey())===null)localStorage.setItem(autoKey(),'on');
   view();message(t().synced);return true;
  }
@@ -216,11 +355,11 @@
   try{
    const data=await callApi();
    const list=(Array.isArray(data.balances)?data.balances:[]).filter(x=>/^[A-Z0-9]{2,18}$/.test(String(x.symbol||''))&&Number.isFinite(Number(x.qty))&&Number(x.qty)>0).map(x=>({symbol:x.symbol,free:+x.free,locked:+x.locked,qty:+x.qty}));
-   state.latest={balances:list,updatedAt:data.updatedAt};state.lastFetched=Date.now();
+   state.latest={balances:list,updatedAt:data.updatedAt};state.lastFetched=Date.now();state.lastSyncError=false;
    renderBalances();if(!silent)message(list.length?t().ready(list.length):t().empty);
-   if(hasAuto()&&sessionStorage.getItem(importKey())==='yes'&&list.length)useBalances(false);
+   if(hasAuto()&&sessionStorage.getItem(importKey())==='yes')useBalances(false);
    return true;
-  }catch(e){if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);return false}
+  }catch(e){state.lastSyncError=true;if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);renderInsights();return false}
   finally{state.busy=false;view()}
  }
  async function status(){
@@ -276,6 +415,9 @@
   $('radarBinanceRestore')?.addEventListener('click',()=>{detach();if(state.user)sessionStorage.removeItem(importKey());message(t().manual);view()});
   $('radarBinanceAuto')?.addEventListener('change',e=>{if(state.user)localStorage.setItem(autoKey(),e.target.checked?'on':'off')});
   window.addEventListener('criptoradar:languagechange',renderText);
+  window.addEventListener('criptoradar:walletchange',renderInsights);
+  // Os motores de mercado e de IA já usam window.printWallet; reavaliar após novos preços.
+  window.setInterval(()=>{if(isVisible()&&isImported())renderInsights()},15000);
   document.addEventListener('visibilitychange',()=>{if(isVisible()&&hasAuto()&&Date.now()-state.lastFetched>120000)check(true)});
   window.setInterval(()=>{if(isVisible()&&hasAuto()&&Date.now()-state.lastFetched>120000)check(true)},120000);
   try{const stored=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(stored?.access_token&&stored?.refresh_token)state.auth=stored;

@@ -1,0 +1,37 @@
+CRIPTO RADAR — BINANCE + INTELIGÊNCIA DE CARTEIRA V19.7
+
+ARQUIVO PARA SUBSTITUIR NO GITHUB
+  binance-wallet.js
+
+COMO INSTALAR
+1. Extraia o ZIP.
+2. Acesse o repositório carteira-cripto no GitHub.
+3. Substitua o arquivo binance-wallet.js (NA RAIZ) pelo arquivo com o mesmo nome.
+4. Confirme o commit. O projeto ligado à Vercel deverá publicar automaticamente.
+5. Atualize o aplicativo no celular. Entre na conta Radar, consulte os saldos Binance e selecione "Usar saldos na carteira" (se ainda não estiver ativo). Deixe marcada a sincronização de 2 minutos.
+
+FUNCIONALIDADES
+- Usa os saldos da Binance Spot na carteira de sessão, preservando a carteira manual.
+- Atualiza a visão analítica de mercado, carteira e IA através do mecanismo já presente no Radar.
+- Mostra a reserva USDT livre/bloqueada, com conversão aproximada para reais se houver câmbio.
+- USDT e outras stablecoins não recebem sinais de compra/venda como ativo especulativo.
+- Cruza os ativos com o motor técnico do Radar e classifica sinais confirmados, candidatos e observação.
+- Simula cenários conservador, equilibrado e arrojado com USDT livre, SEM contar USDT como novo aporte.
+- Só simula alocações com confirmação técnica e cotações/horário válidos.
+- Detecta falha de atualização e evita apresentar simulação com saldo desatualizado.
+- A atualização automática funciona enquanto o app estiver aberto e a sessão ativa.
+- Não executa ordens, não faz trading automático, não acessa saques e não fornece previsões garantidas.
+
+IMPORTANTE
+- Não envie API Key e Secret Key por chat ou GitHub. A Binance deve permitir somente leitura.
+- A tela é baseada na última consulta Spot e não inclui necessariamente Earn, margem, futuros ou outras carteiras.
+- Previsões são cenários técnicos e NÃO representam probabilidades calibradas ou rentabilidade garantida.
+- Limites mínimos de ordem e taxas da Binance não são validados pela simulação.
+- Falha na conexão GitHub por permissão do conector: este ZIP ainda NÃO foi publicado automaticamente.
+
+PONTO DE SEGURANÇA IDENTIFICADO NO SERVIDOR DA IA
+No ai.js existente há armazenamento do campo carteira no registro global "radar:wallet:last".
+Antes de oferecer o Radar para vários usuários, esse registro deve ser retirado ou isolado com segurança por usuário, para evitar misturar saldos entre contas. Este pacote modifica só binance-wallet.js; NÃO corrige ainda essa linha do servidor.
+
+TESTES LOCAIS: sintaxe Node.js e testes simulados (saldo, reserva, sinal, cenários e dados antigos) passaram.
+VALIDAÇÃO PENDENTE: reconectar com dados reais após a publicação e conferir as telas no celular.
