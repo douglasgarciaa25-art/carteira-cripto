@@ -1,3 +1,4 @@
+const aiL10n=require('./ai-locale.js');
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const pct=n=>(Number(n)||0).toFixed(2);
 const BINANCE=['https://data-api.binance.vision','https://api.binance.com','https://api1.binance.com','https://api2.binance.com'];
@@ -130,16 +131,22 @@ module.exports=async(req,res)=>{
   // Só gira a fotografia de aprendizado após a janela mínima; evita "aprender" a cada 30 s e oscilar pesos sem base temporal.
   if(!prev||elapsed>=LEARNING_WINDOW_MS||elapsed<0||elapsed>=24*60*60*1000)await kv(['SET','radar:last',JSON.stringify({at,top:top.slice(0,5),weights:w,probabilities:probs})]);
   if(wallet.length)await kv(['SET','radar:wallet:last',JSON.stringify({at,wallet})]);
+  const requestLanguage=String(req.body?.language||req.headers?.['accept-language']||'pt-BR').trim();
+  const language=/^en/i.test(requestLanguage)?'en':/^es/i.test(requestLanguage)?'es':'pt-BR';
+  const l=aiL10n.locale(language),localizedPlan=aiL10n.formatPlan(plan,language);
   const q=String(req.body?.question||req.query?.question||'').trim().slice(0,500),ql=q.toLowerCase(),btc=all.find(x=>x.symbol==='BTC'),eth=all.find(x=>x.symbol==='ETH');
-  const marketLine='Mercado agora: BTC '+(btc?pct(btc.change24h):'—')+'%, ETH '+(eth?pct(eth.change24h):'—')+'% em 24h'+(g?' • capitalização global '+pct(g.market_cap_change_percentage_24h_usd)+'% em 24h':'')+(fg?' • medo/ganância '+fg.value+' ('+fg.value_classification+')':'')+'.';
-  const probLine=' Cenário estimado de curto prazo: alta '+probs.up+'%, lateral '+probs.sideways+'%, queda '+probs.down+'% (confiança '+probs.confidence+'/100).';
-  let answer=marketLine+probLine+' '+portfolioText(wallet,all)+(wallet.length?'\n'+portfolioPlanText(plan):'');
+  const marketLine=aiL10n.marketLine({btc,eth,g,fg},language),probLine=aiL10n.probabilityLine(probs,language),portfolioLine=aiL10n.portfolioLine(wallet,all,language),planLine=aiL10n.planLine(localizedPlan,language);
+  let answer=marketLine+probLine+' '+portfolioLine+(wallet.length?'\n'+planLine:'');
   const symbol=(q.toUpperCase().match(/\b[A-Z0-9]{2,10}\b/g)||[]).find(s=>all.some(x=>x.symbol===s));
-  if(symbol){const x=all.find(y=>y.symbol===symbol),held=wallet.find(y=>String(y.symbol).toUpperCase()===symbol);answer=symbol+': '+pct(x.change24h)+'% em 24h, volume US$ '+Math.round(x.volume).toLocaleString('pt-BR')+', liquidez no percentil '+x.liquidityPct+' e score '+x.score+'/100.'+(held?' Você possui '+held.qty+' '+symbol+(held.direction?'; o Radar está marcando '+held.direction+'.':'.'):' Esse ativo não aparece na carteira enviada nesta leitura.')+probLine}
-  if(/carteira|portf[oó]lio|tenho|meus ativos|wallet|holdings|my assets|mi cartera|mis activos/.test(ql))answer=portfolioText(wallet,all)+'\n'+portfolioPlanText(plan)+'\n'+marketLine+probLine;
-  if(/aprendeu|aprendizado|acerto|mem[oó]ria|learn|accuracy|hit rate|memory|memoria|aprendi[oó]/.test(ql))answer=learning.enabled?(learning.evaluated?'Memória ativa. Comparei '+learning.evaluated+' sinais de uma fotografia com pelo menos '+learning.windowMinutes+' minutos de intervalo; '+learning.hits+' avançaram. Os pesos são ajustados gradualmente.':'Memória ativa. A próxima avaliação só ocorre depois de uma janela mínima de '+learning.windowMinutes+' minutos para evitar aprendizado por ruído.'):'A análise está ativa, mas a memória permanente não está disponível nesta execução.';
-  if(/risco|perigo|risk|riesgo|danger|peligro/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?'Maior cautela entre os destaques: '+x.symbol+', movimento de '+pct(x.change24h)+'% em 24h. ':'')+marketLine+probLine}
-  if(/o que (fa[cç]o|fazer)|comprar|vender|aportar|what should i do|buy|sell|add funds|invertir|aportar|qu[eé] hago/.test(ql))answer=portfolioText(wallet,all)+'\n'+portfolioPlanText(plan)+'\n'+marketLine+probLine+' A IA não libera aporte quando o Radar ainda está em espera e não manda reduzir apenas por diferença de alocação.';
-  res.status(200).json({ok:true,at,answer,top,weights:w,learning,probabilities:probs,portfolioPlan:plan,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},contextReceived:{wallet:wallet.length,radar:radar.length}});
+  if(symbol){const x=all.find(y=>y.symbol===symbol),held=wallet.find(y=>String(y.symbol).toUpperCase()===symbol);
+    answer=symbol+': '+pct(x.change24h)+'% '+l.in24+', '+l.liquidity+' '+x.liquidityPct+', score '+x.score+'/100. '+
+      (held?l.has+' '+held.qty+' '+symbol+'. '+(held.direction?l.marked+' '+aiL10n.translateAction(held.direction,language)+'.':''):l.notHeld)+probLine;
+  }
+  if(/carteira|portf[oó]lio|tenho|meus ativos|wallet|holdings|my assets|mi cartera|mis activos/.test(ql))answer=portfolioLine+'\n'+planLine+'\n'+marketLine+probLine;
+  if(/aprendeu|aprendizado|acerto|mem[oó]ria|learn|accuracy|hit rate|memory|memoria|aprendi[oó]/.test(ql))answer=learning.enabled?(learning.evaluated?l.learningDone(learning.evaluated,learning.windowMinutes,learning.hits):l.learningWait(learning.windowMinutes)):l.learningOff;
+  if(/risco|perigo|risk|riesgo|danger|peligro/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?l.caution+': '+x.symbol+', '+l.movement+' '+pct(x.change24h)+'%. ':'')+marketLine+probLine}
+  if(/o que (fa[cç]o|fazer)|comprar|vender|aportar|what should i do|buy|sell|add funds|invertir|qu[eé] hago/.test(ql))answer=portfolioLine+'\n'+planLine+'\n'+marketLine+probLine+' '+l.warn;
+  answer+='\n'+l.note;
+  res.status(200).json({ok:true,language,at,answer,top,weights:w,learning,probabilities:probs,portfolioPlan:localizedPlan,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},contextReceived:{wallet:wallet.length,radar:radar.length}});
  }catch(e){res.status(503).json({ok:false,error:'Mercado indisponível',detail:String(e?.message||e),at:new Date().toISOString()})}
 };

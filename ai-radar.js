@@ -42,15 +42,17 @@ async function ask(q='',auto=false){
  if(auto&&(asking||Date.now()-lastManualAt<12000))return;
  if(!auto)lastManualAt=Date.now();
  asking=true;
+ const requestedLanguage=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';
  const st=document.getElementById('aiStatus'),box=document.getElementById('aiMessages'),inp=document.getElementById('aiQuestion');
  if(st)st.textContent='IA analisando mercado + carteira…';
  try{
   const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);
   let r;
-  try{r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,context:radarContext()}),signal:c.signal})}finally{clearTimeout(t)}
+  try{r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,context:radarContext(),language:requestedLanguage}),signal:c.signal})}finally{clearTimeout(t)}
   const j=await r.json();if(!r.ok||!j.ok)throw Error(j?.error||'IA indisponível');
+  if(requestedLanguage!==(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR'))return;
   let probs='';
-  if(j.probabilities)probs='<div class="ai-top"><span>📈 Alta '+j.probabilities.up+'%</span><span>↔️ Lateral '+j.probabilities.sideways+'%</span><span>📉 Queda '+j.probabilities.down+'%</span><span>Confiança '+j.probabilities.confidence+'/100</span></div>';
+  if(j.probabilities)probs='<div class="ai-top"><span>📈 '+(window.CriptoRadarI18n?.t('Alta')||'Alta')+' '+j.probabilities.up+'%</span><span>↔️ '+(window.CriptoRadarI18n?.t('Lateral')||'Lateral')+' '+j.probabilities.sideways+'%</span><span>📉 '+(window.CriptoRadarI18n?.t('Queda')||'Queda')+' '+j.probabilities.down+'%</span><span>'+(window.CriptoRadarI18n?.t('Confiança')||'Confiança')+' '+j.probabilities.confidence+'/100</span></div>';
   let plan='';
   if(j.portfolioPlan?.items?.length){
    const rows=j.portfolioPlan.items.slice(0,6).map(x=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #253955"><span><b>'+esc(x.symbol)+'</b><br><span class="small">'+esc(x.reason||'')+'</span></span><b>'+esc(x.action)+'</b></div>').join('');
@@ -62,7 +64,9 @@ async function ask(q='',auto=false){
   if(inp&&!auto&&q)inp.value='';
   if(!auto&&q&&!/^Analise o mercado e minha carteira agora$/i.test(q))speak(j.answer);
  }catch(e){if(st)st.textContent='IA temporariamente indisponível • nova tentativa automática';}
- finally{asking=false}
+ finally{asking=false;
+  if(requestedLanguage!==(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR')){lastManualAt=0;ask('Atualize a análise do mercado e da minha carteira',true)}
+ }
 }
 let voiceAuto=localStorage.getItem('aiRadarVoice')!=='off';
 function speak(t){
@@ -90,6 +94,9 @@ function addVoiceControls(){
 function init(){
  const b=document.getElementById('aiAsk'),i=document.getElementById('aiQuestion');if(i)i.placeholder='Pergunte sobre mercado, uma moeda ou sua carteira…';
  if(b)b.onclick=()=>ask(i?.value||'',false);if(i)i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();ask(i.value,false)}};addVoiceControls();
+ window.addEventListener('criptoradar:languagechange',()=>{lastManualAt=0;
+   if(!asking)ask('Atualize a análise do mercado e da minha carteira',true);
+ });
  ask('Analise o mercado e minha carteira agora',true);setInterval(()=>ask('Atualize a análise do mercado e da minha carteira',true),30000);
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();

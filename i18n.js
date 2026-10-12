@@ -3755,35 +3755,198 @@
     ]
   ]
 };
+  // V19.6: sentenças completas, nunca conjunções avulsas que criam mistura de idiomas.
+  // Chaves canônicas em português; tradução usada ANTES da inserção de cada resultado na tela.
+  const COMPLETE_V196={
+    en:{
+      'SIMULAÇÃO / ALERTA • NÃO EXECUTA ORDENS':'SIMULATION / ALERT • NO ORDERS ARE EXECUTED',
+      'Boatos e notícias do mercado':'Market rumors and news',
+      'Boatos que podem mexer com sua carteira':'Rumors that may affect your portfolio',
+      'Nenhuma informação confirmada disponível agora.':'No confirmed information is available right now.',
+      'Contexto de mercado':'Market context',
+      'O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.':'The market is monitored on the server and Android can receive alerts while the app is closed or the screen is locked.',
+      'Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'Server and scheduler are responding. This device has a local push subscription. Background delivery is only verified when a scheduled test arrives.',
+      'Segundo plano: Worker + SW prontos para alertas':'Background: worker and service worker ready for alerts',
+      'O Radar continua cruzando movimento, volume, liquidez e concentração.':'Radar continues analyzing price movement, volume, liquidity and concentration.',
+      'Sem risco forte confirmado':'No major risk confirmed',
+      'Sem oportunidade forte confirmada':'No strong opportunity confirmed',
+      'Carteira sem risco forte agora':'No major portfolio risk detected now',
+      'Nenhuma oportunidade forte confirmada agora':'No strong opportunity is confirmed now',
+      'O Radar continua verificando automaticamente.':'Radar continues checking automatically.',
+      'Preço e liquidez estão alinhados pelo Radar. Antes de aportar, confira se isso não aumenta demais a concentração.':'Radar price and liquidity conditions are aligned. Before adding funds, check portfolio concentration.',
+      'Há sinais favoráveis, mas ainda não suficientes para sugerir novo aporte.':'There are favorable signs, but not enough to support a new contribution.',
+      'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.':'The price has risen sharply, but a daily gain is not your personal profit. Review cost basis, fees and risk before deciding.',
+      'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.':'The price move is extended. Consider reviewing partial profit-taking while maintaining remaining exposure.',
+      'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Some signals are favorable, but confirmation is still partial.',
+      'Dados de mercado ainda insuficientes.':'Market data is still insufficient.',
+      'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Stable reference asset; no directional Radar signal.',
+      'Ação do Radar:':'Radar guidance:',
+      'Sem confirmação suficiente para comprar ou vender.':'Not enough confirmation to buy or sell.',
+      'Muito alta':'Very high', 'Média':'Medium','Baixa':'Low',
+      'Ainda sem dados recentes ou sinais verificáveis.':'No recent data or verifiable signals yet.',
+      'Dados recebidos':'Data received','Aguardando dados recentes':'Waiting for recent data',
+      'Nenhuma mudança registrada neste aparelho ainda.':'No changes recorded on this device yet.',
+      'Nenhum sinal corresponde ao filtro selecionado.':'No signals match the selected filter.',
+      'Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.':'No alerts match the current criteria. Market monitoring continues.',
+      'Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.':'Radar will display verifiable alerts when price and technical data are refreshed.',
+      'MAIOR PRIORIDADE AGORA':'HIGHEST PRIORITY NOW','STATUS DA CARTEIRA':'PORTFOLIO STATUS',
+      'Marcar como lido':'Mark as read','✓ Lido':'✓ Read','Lido':'Read','Novo sinal':'New signal',
+      'Orientação:':'Guidance:','Atualizado':'Updated','Tipo':'Type','Notificações:':'Notifications:',
+      'Push 24h: verificar servidor abaixo':'24h Push: check server below',
+      'Permitidas no navegador':'Allowed in browser','Bloqueadas no aparelho':'Blocked on device',
+      'Aguardando autorização':'Awaiting permission','Indisponíveis':'Unavailable',
+      'Aproximadamente':'Approximately','Representa cerca de':'Represents approximately',
+      'O que fazer agora':'What to do now',
+      'Sem ação urgente':'No urgent action',
+      'Conservador':'Conservative','Equilibrado':'Balanced','Agressivo':'Aggressive',
+      'Pontos de atenção':'Items to review',
+      'Distribuição monitorada pelo Radar.':'Radar is monitoring portfolio allocation.',
+      'Sua carteira está concentrada.':'Your portfolio is concentrated.',
+      'Ativos em alta':'Rising assets','Ativos em queda':'Falling assets',
+      'Mercado mais comprador':'Mostly buying market','Mercado mais vendedor':'Mostly selling market',
+      'Mercado misto':'Mixed market',
+      'Agendador externo:':'External scheduler:',
+      'Servidor e agendador respondendo.':'Server and scheduler are responding.',
+      'Este aparelho possui inscrição Push local.':'This device has a local Push subscription.',
+      'O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'Automatic delivery with the app closed is only verified when a scheduled test arrives.',
+      'Volume 24h:':'24h volume:', 'Liquidez:':'Liquidity:',
+      'Mercado mais comprador':'Mostly buying market',
+      'Sinais avaliados':'Signals evaluated','Taxa de acerto':'Hit rate',
+      'Aguardando confirmação de mercado':'Waiting for market confirmation',
+      'Você confirma':'You confirm',
+    },
+    es:{
+      'SIMULAÇÃO / ALERTA • NÃO EXECUTA ORDENS':'SIMULACIÓN / ALERTA • NO EJECUTA ÓRDENES',
+      'Boatos e notícias do mercado':'Rumores y noticias del mercado',
+      'Boatos que podem mexer com sua carteira':'Rumores que pueden afectar a tu cartera',
+      'Nenhuma informação confirmada disponível agora.':'No hay información confirmada disponible ahora.',
+      'Contexto de mercado':'Contexto del mercado',
+      'O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.':'El mercado continúa siendo vigilado en el servidor y Android puede recibir alertas con la aplicación cerrada o la pantalla bloqueada.',
+      'Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'El servidor y el programador responden. Este dispositivo tiene una suscripción push local. La entrega en segundo plano solo se verifica al recibir una prueba programada.',
+      'Segundo plano: Worker + SW prontos para alertas':'Segundo plano: worker y service worker listos para alertas',
+      'O Radar continua cruzando movimento, volume, liquidez e concentração.':'Radar continúa analizando movimiento de precios, volumen, liquidez y concentración.',
+      'Sem risco forte confirmado':'Sin riesgo importante confirmado',
+      'Sem oportunidade forte confirmada':'Sin oportunidad fuerte confirmada',
+      'Carteira sem risco forte agora':'Sin riesgo importante en la cartera ahora',
+      'Nenhuma oportunidade forte confirmada agora':'Ninguna oportunidad fuerte confirmada ahora',
+      'O Radar continua verificando automaticamente.':'Radar sigue comprobando automáticamente.',
+      'Preço e liquidez estão alinhados pelo Radar. Antes de aportar, confira se isso não aumenta demais a concentração.':'Las condiciones de precio y liquidez están alineadas. Antes de aportar, comprueba la concentración de tu cartera.',
+      'Há sinais favoráveis, mas ainda não suficientes para sugerir novo aporte.':'Hay señales favorables, pero no son suficientes para justificar un nuevo aporte.',
+      'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.':'El precio subió con fuerza, pero la ganancia diaria no equivale a tu beneficio personal. Revisa el coste, las comisiones y el riesgo.',
+      'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.':'El movimiento está extendido. Considera evaluar una toma parcial de beneficios y mantener el resto de la exposición.',
+      'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Hay señales favorables, pero la confirmación todavía es parcial.',
+      'Dados de mercado ainda insuficientes.':'Los datos de mercado aún son insuficientes.',
+      'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Activo estable de referencia; sin señal direccional de Radar.',
+      'Ação do Radar:':'Orientación de Radar:',
+      'Sem confirmação suficiente para comprar ou vender.':'No hay confirmación suficiente para comprar o vender.',
+      'Muito alta':'Muy alta','Média':'Media','Baixa':'Baja',
+      'Ainda sem dados recentes ou sinais verificáveis.':'Todavía no hay datos recientes ni señales verificables.',
+      'Dados recebidos':'Datos recibidos','Aguardando dados recentes':'Esperando datos recientes',
+      'Nenhuma mudança registrada neste aparelho ainda.':'Todavía no hay cambios registrados en este dispositivo.',
+      'Nenhum sinal corresponde ao filtro selecionado.':'Ninguna señal coincide con el filtro seleccionado.',
+      'Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.':'No hay alertas que cumplan los criterios actuales. El análisis sigue vigilando el mercado.',
+      'Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.':'Radar mostrará las alertas verificables cuando se actualicen los datos técnicos y los precios.',
+      'MAIOR PRIORIDADE AGORA':'MÁXIMA PRIORIDAD AHORA','STATUS DA CARTEIRA':'ESTADO DE LA CARTERA',
+      'Marcar como lido':'Marcar como leído','✓ Lido':'✓ Leído','Lido':'Leído','Novo sinal':'Nueva señal',
+      'Orientação:':'Orientación:','Atualizado':'Actualizado','Tipo':'Tipo','Notificações:':'Notificaciones:',
+      'Push 24h: verificar servidor abaixo':'Push 24 h: comprueba el servidor abajo',
+      'Permitidas no navegador':'Permitidas en el navegador','Bloqueadas no aparelho':'Bloqueadas en el dispositivo',
+      'Aguardando autorização':'Esperando autorización','Indisponíveis':'No disponibles',
+      'Aproximadamente':'Aproximadamente','Representa cerca de':'Representa aproximadamente',
+      'O que fazer agora':'Qué hacer ahora',
+      'Sem ação urgente':'Sin acción urgente',
+      'Conservador':'Conservador','Equilibrado':'Equilibrado','Agressivo':'Agresivo',
+      'Pontos de atenção':'Puntos de atención',
+      'Distribuição monitorada pelo Radar.':'Radar supervisa la distribución de la cartera.',
+      'Sua carteira está concentrada.':'Tu cartera está concentrada.',
+      'Ativos em alta':'Activos al alza','Ativos em queda':'Activos a la baja',
+      'Mercado mais comprador':'Mercado mayormente comprador','Mercado mais vendedor':'Mercado mayormente vendedor',
+      'Mercado misto':'Mercado mixto',
+      'Agendador externo:':'Programador externo:',
+      'Servidor e agendador respondendo.':'El servidor y el programador responden.',
+      'Este aparelho possui inscrição Push local.':'Este dispositivo tiene una suscripción Push local.',
+      'O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'La entrega automática con la aplicación cerrada solo se verifica al recibir una prueba programada.',
+      'Volume 24h:':'Volumen 24 h:','Liquidez:':'Liquidez:',
+      'Sinais avaliados':'Señales evaluadas','Taxa de acerto':'Tasa de aciertos',
+      'Aguardando confirmação de mercado':'Esperando confirmación del mercado',
+      'Você confirma':'Tú confirmas',
+    }
+  };
+  Object.assign(COMPLETE_V196.en,{
+    'Resultados históricos exigem uma amostra maior para serem interpretados com confiança.':'Historical results require a larger sample to be interpreted reliably.',
+    'Está entre os ativos em destaque nas buscas/tendências do mercado':'This asset is among the most searched or trending coins.',
+    'Cripto Radar V19.5.1 • Carteira e Idiomas':'Cripto Radar • Portfolio and languages',
+    'Volume 24h':'24h volume','Radar conectado':'Radar connected',
+    'Status geral':'Overall status','Análise ativa':'Analysis active'
+  });
+  Object.assign(COMPLETE_V196.es,{
+    'Use esta opção quando o OCR não reconhecer o print corretamente. Cole uma moeda por linha.':'Usa esta opción si el OCR no reconoce bien la captura. Escribe una moneda por línea.',
+    'Resultados históricos exigem uma amostra maior para serem interpretados com confiança.':'Se necesita una muestra mayor para interpretar los resultados históricos con confianza.',
+    'Está entre os ativos em destaque nas buscas/tendências do mercado':'Este activo está entre las monedas más buscadas o en tendencia.',
+    'Cripto Radar V19.5.1 • Carteira e Idiomas':'Cripto Radar • Cartera e idiomas',
+    'Volume 24h':'Volumen 24 h','Radar conectado':'Radar conectado',
+    'Status geral':'Estado general','Análise ativa':'Análisis activo'
+  });
+  for(const lang of ['en','es']) Object.assign(STRINGS[lang],COMPLETE_V196[lang]);
+  // Mensagens parametrizadas permanecem uma unidade, com valores substituídos antes do render.
+  const TEMPLATES_V196={
+    en:[
+      [/^Aproximadamente (\d+(?:[.,]\d+)?)% do valor da carteira está neste ativo\. Evite aumentar a posição sem avaliar o risco de concentração\.$/,m=>`About ${m[1]}% of the portfolio value is in this asset. Review concentration risk before increasing your position.`],
+      [/^Há (\d+) posições abaixo de 3% da carteira\. Veja se ainda fazem sentido na sua estratégia\.$/,m=>`There are ${m[1]} positions below 3% of your portfolio. Review whether they still fit your strategy.`],
+      [/^Representa cerca de (\d+(?:[.,]\d+)?)% da carteira\. Um novo aporte pode aumentar a concentração\.$/,m=>`It represents about ${m[1]}% of the portfolio. New funds may increase concentration.`],
+      [/^(.+) • ([0-9.,]+)% em 24h • (.+)$/,m=>`${m[1]} • ${m[2]}% in 24h • ${m[3]}`],
+      [/^Última análise: (.+?) • score = heurística do Radar, não probabilidade garantida\.$/,m=>`Last analysis: ${m[1]} • score is a Radar heuristic, not a guaranteed probability.`]
+    ],
+    es:[
+      [/^Aproximadamente (\d+(?:[.,]\d+)?)% do valor da carteira está neste ativo\. Evite aumentar a posição sem avaliar o risco de concentração\.$/,m=>`Aproximadamente el ${m[1]}% del valor de tu cartera está en este activo. Revisa el riesgo de concentración antes de aumentar la posición.`],
+      [/^Há (\d+) posições abaixo de 3% da carteira\. Veja se ainda fazem sentido na sua estratégia\.$/,m=>`Hay ${m[1]} posiciones por debajo del 3% de tu cartera. Revisa si aún encajan en tu estrategia.`],
+      [/^Representa cerca de (\d+(?:[.,]\d+)?)% da carteira\. Um novo aporte pode aumentar a concentração\.$/,m=>`Representa aproximadamente el ${m[1]}% de tu cartera. Un nuevo aporte puede aumentar la concentración.`],
+      [/^Última análise: (.+?) • score = heurística do Radar, não probabilidade garantida\.$/,m=>`Último análisis: ${m[1]} • la puntuación de Radar es una heurística, no una probabilidad garantizada.`]
+    ]
+  };
   const PHRASES={
     en:[['Falta confirmar:','Still required:'],[' do total',' of total'],[' da carteira',' of portfolio'],[' em 24h',' in 24h'],[' ativo(s)',' asset(s)'],[' sinal(is)',' signal(s)'],[' último ciclo',' last run'],[' preço médio',' average price'],[' cotação desatualizada',' stale quotation'],[' • Novo sinal',' • New signal'],['Nenhuma compra confirmada agora','No confirmed buy right now'],['CANDIDATA • AGUARDANDO','CANDIDATE • WAITING']],
     es:[['Falta confirmar:','Falta confirmar:'],[' do total',' del total'],[' da carteira',' de la cartera'],[' em 24h',' en 24 h'],[' ativo(s)',' activo(s)'],[' sinal(is)',' señal(es)'],[' último ciclo',' último ciclo'],[' preço médio',' precio medio'],[' cotação desatualizada',' cotización desactualizada'],[' • Novo sinal',' • Nueva señal'],['Nenhuma compra confirmada agora','Ninguna compra confirmada ahora']]
   };
+  // Tradução determinística e completa por frase, com prioridade para mensagens parametrizadas.
+  // Nunca substituir uma conjunção isolada dentro de uma frase desconhecida.
+  const reverseEN=new Map(),reverseES=new Map();
+  for(const [pt,en] of Object.entries(STRINGS.en))if(typeof en==='string'&&!reverseEN.has(en))reverseEN.set(en,pt);
+  for(const [pt,es] of Object.entries(STRINGS.es))if(typeof es==='string'&&!reverseES.has(es))reverseES.set(es,pt);
+  const safePhraseSets={};
+  for(const lang of ['en','es']){
+    const pairs=[...(V1951_PHRASES[lang]||[]),...(V195_PHRASES[lang]||[]),...(DYNAMIC_V192[lang]||[]),...(PHRASES[lang]||[]),...(FALLBACK[lang]||[])];
+    // Frases de 8+ caracteres são suficientemente específicas para não quebrar frases.
+    safePhraseSets[lang]=pairs.filter(([a])=>a.trim().length>=8).sort((a,b)=>b[0].length-a[0].length);
+  }
+  const EXACT_PARTIAL={};
+  for(const lang of ['en','es'])EXACT_PARTIAL[lang]=Object.entries(STRINGS[lang]).filter(([a])=>a.length>=15&&!a.includes('\n')).sort((a,b)=>b[0].length-a[0].length);
   function tr(original,lang){
-    if(lang==='pt-BR')return original;
-    const exact=STRINGS[lang]?.[original]; if(exact!==undefined)return exact;
-    let out=original;
-    // Mensagens dinâmicas podem conter números, moedas e valores; traduza apenas o texto humano.
-    // Do not translate a short Portuguese token inside another word (e.g., "alta" inside "Falta").
+    if(typeof original!=='string')return original==null?'':String(original);
+    if(!['en','es','pt-BR'].includes(lang))lang='pt-BR';
+    // Aceita chaves portuguesas e também rótulos ingleses gerados por módulos legados.
+    const canonical=reverseEN.get(original)||reverseES.get(original)||original;
+    if(lang==='pt-BR')return canonical;
+    const exact=STRINGS[lang]?.[canonical];if(exact!==undefined)return exact;
+    for(const [pattern,translate] of TEMPLATES_V196[lang]){
+      const match=canonical.match(pattern);if(match)return translate(match);
+    }
+    let out=canonical;
     const word=/[\p{L}\p{N}]/u;
-    const replaceRule=(input,source,target)=>{
+    function replaceRule(input,source,target){
       if(!input.includes(source))return input;
-      let out='',at=0,i;
+      let output='',at=0,i;
       while((i=input.indexOf(source,at))!==-1){
-        const prev=i>0?input[i-1]:'',next=input[i+source.length]||'';
-        const startInside=word.test(source[0])&&prev&&word.test(prev);
-        const endInside=word.test(source[source.length-1])&&next&&word.test(next);
-        out+=input.slice(at,i)+(startInside||endInside?source:target);
-        at=i+source.length;
+        const prev=i?input[i-1]:'',next=input[i+source.length]||'';
+        const collision=(word.test(source[0])&&!!prev&&word.test(prev))||(word.test(source[source.length-1])&&!!next&&word.test(next));
+        output+=input.slice(at,i)+(collision?source:target);at=i+source.length;
       }
-      return out+input.slice(at);
-    };
-    for(const [a,b] of V1951_PHRASES[lang]||[])out=replaceRule(out,a,b);
-    for(const [a,b] of V195_PHRASES[lang]||[])out=replaceRule(out,a,b);
-    for(const [a,b] of DYNAMIC_V192[lang]||[])out=replaceRule(out,a,b);
-    for(const [a,b] of PHRASES[lang]||[])out=replaceRule(out,a,b);
-    for(const [a,b] of FALLBACK[lang]||[])out=replaceRule(out,a,b);
-    if(lang==='en'&&/\bhá\s+\d/i.test(original))out=out.replace(/ago:\s*(\d+)\s*(seconds|minutes|hours|days)/i,'$1 $2 ago');
+      return output+input.slice(at);
+    }
+    for(const [a,b] of safePhraseSets[lang])out=replaceRule(out,a,b);
+    // Complete-sentence matches from canonical dictionaries, longest first. Do not replace
+    // connectors alone (e.g., ' e ' => ' and '), which caused mixed-language screenshots.
+    for(const [a,b] of EXACT_PARTIAL[lang]){if(out.includes(a))out=replaceRule(out,a,b)}
     return out;
   }
   const textState=new WeakMap(), attrState=new WeakMap();
@@ -3816,6 +3979,61 @@
     let n;while(n=w.nextNode())translateText(n,lang);
     root.querySelectorAll?.('[placeholder],[aria-label],[title],[alt],[data-label]').forEach(el=>translateAttrs(el,lang));
   }
+  // Antes de exibir HTML/textos produzidos pelos motores, converta-os ao idioma atual.
+  // Preserva os originais canônicos para mudanças de idioma sem reload.
+  const nativeInnerHTML=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
+  const nativeTextContent=Object.getOwnPropertyDescriptor(Node.prototype,'textContent');
+  const nativeReplaceChildren=Element.prototype.replaceChildren;
+  let preRendering=false;
+  function shouldLocalize(el){
+    const tag=el?.nodeType===1?el.tagName:'';
+    return !!tag&&!['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','OPTION','CODE','PRE','TEMPLATE','SVG','PATH'].includes(tag);
+  }
+  function translateFragment(fragment,lang,host){
+    const walker=document.createTreeWalker(fragment,NodeFilter.SHOW_TEXT);
+    let node;
+    while(node=walker.nextNode()){
+      const p=node.parentElement;
+      if(!(p?shouldLocalize(p):shouldLocalize(host)))continue;
+      const base=node.nodeValue||'';
+      const r={base,lastApplied:base}; textState.set(node,r);
+      const out=tr(base.trim(),lang),left=base.match(/^\s*/)?.[0]||'',right=base.match(/\s*$/)?.[0]||'';
+      const value=left+out+right;
+      if(base.trim()&&value!==base)node.nodeValue=value;
+      r.lastApplied=node.nodeValue||'';
+    }
+  }
+  function installPreRender(){
+    if(!nativeInnerHTML?.set||!nativeTextContent?.set)return;
+    Object.defineProperty(Element.prototype,'innerHTML',{
+      configurable:true,enumerable:nativeInnerHTML.enumerable,get:nativeInnerHTML.get,
+      set(value){
+        if(preRendering||!shouldLocalize(this)||typeof value!=='string'||!value){nativeInnerHTML.set.call(this,value);return}
+        try{
+          preRendering=true;
+          const range=document.createRange();
+          range.selectNodeContents(this);
+          const fragment=range.createContextualFragment(value);
+          translateFragment(fragment,resolve(selectedChoice()),this);
+          nativeReplaceChildren.call(this,...Array.from(fragment.childNodes));
+        }catch(err){nativeInnerHTML.set.call(this,value)}finally{preRendering=false}
+      }
+    });
+    Object.defineProperty(Node.prototype,'textContent',{
+      configurable:true,enumerable:nativeTextContent.enumerable,get:nativeTextContent.get,
+      set(value){
+        if(preRendering||typeof value!=='string'||!(this.nodeType===1&&shouldLocalize(this))){nativeTextContent.set.call(this,value);return}
+        const lang=resolve(selectedChoice()),translated=tr(value,lang);
+        preRendering=true;
+        try{
+          nativeTextContent.set.call(this,translated);
+          // Guardar texto original nos nós criados antes de mostrar o conteúdo.
+          if(this.firstChild?.nodeType===Node.TEXT_NODE)textState.set(this.firstChild,{base:value,lastApplied:translated});
+        }finally{preRendering=false}
+      }
+    });
+  }
+  installPreRender();
   function selectedChoice(){return localStorage.getItem(STORAGE_KEY)||'auto'}
   function syncSelectors(choice){
     bindSelectors(); document.querySelectorAll('[data-cr-language-select]').forEach(s=>{if(s.value!==choice)s.value=choice});
@@ -3824,7 +4042,7 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
-    document.title='Cripto Radar V19.5.1 • Radar PRO';
+    document.title='Cripto Radar V19.6 • Radar PRO';
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }
@@ -3839,6 +4057,6 @@
     }
   });
   function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt','data-label']})}
-  window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false)};
+  window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false),format:(key,vars={})=>t(key).replace(/\{([a-zA-Z0-9_]+)\}/g,(_,name)=>String(vars[name]??''))};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

@@ -1,0 +1,40 @@
+CRIPTO RADAR V19.6 — PROJETO COMPLETO
+Correção estrutural de idiomas: PT-BR, EN, ES
+
+O QUE MUDOU
+- Interface, análises de carteira, alertas e conteúdos dinâmicos conhecidos passam pelo mecanismo de tradução ANTES de entrar na tela.
+- Tradução de frases inteiras e padrões com números, em vez de substituir conjunções avulsas (que causava "português and inglês").
+- Preserva o texto-base e o reprocessa quando o idioma muda, sem precisar reiniciar.
+- O endpoint /api/ai passa a RECEBER o idioma escolhido e responde no mesmo idioma. Plano da carteira, motivos resumidos, cenários e alertas da IA são localizados no servidor.
+- Tradução adicional do feed Radar Social, status de Push, avisos de risco, carteira e frases parametrizadas.
+- Símbolos das moedas (BTC, SUI, etc.), preços, percentuais e nomes de indicadores são preservados.
+- Novo cache V19.6 para PWA e arquivos com revisão de versão.
+
+COMO INSTALAR
+1. Extraia o ZIP.
+2. Envie os arquivos que estão dentro dele para a RAIZ do repositório GitHub usado pela Vercel; não crie subpastas novas.
+3. Preserve variáveis de ambiente e segredos configurados no painel da Vercel. NÃO cole chaves privadas de proprietário em arquivos públicos.
+4. Aguarde o deploy e depois feche e abra o PWA ou atualize a página até aparecer V19.6.
+5. Teste PT-BR, EN e ES nas áreas Início, Carteira, Mercado, Alertas, Menu e IA. Recarregue e confirme a persistência do idioma.
+6. Para testar a IA do servidor, confira se a requisição /api/ai retorna language correspondente à seleção.
+
+VALIDAÇÃO LOCAL REALIZADA
+- Sintaxe de todos os arquivos JavaScript e scripts embutidos do index verificada.
+- Tradução de frases completas e texto dinâmico validada em navegador de testes, com troca PT/EN/ES.
+- Localização das respostas montadas pelo servidor testada isoladamente em PT/EN/ES.
+- Pacote ZIP verificado.
+
+LIMITAÇÕES IMPORTANTES
+- Ainda não foi feito deploy real na Vercel, teste completo em Android/PWA, nem teste da infraestrutura Push 24h.
+- Manchetes e textos arbitrários de provedores EXTERNOS podem vir no idioma original: traduções integrais de qualquer texto externo exigem serviço de tradução adicional e confirmação de custos/privacidade. Os conteúdos próprios conhecidos do Radar Social foram localizados.
+- Trechos gerados por novas funcionalidades que não utilizarem o mecanismo de idiomas devem ser adicionados ao catálogo de traduções.
+- Análises e scores não são recomendações financeiras, nem garantia de retorno.
+
+ARQUIVOS IMPORTANTES
+index.html — interface principal
+'i18n.js' — mecanismo de idiomas e tradução pré-exibição
+ai-radar.js — cliente IA envia idioma selecionado
+ai.js — endpoint da IA
+ai-locale.js — textos de IA localizados por idioma, executado no servidor
+sw.js — service worker/cache atualizado
+vercel.json — configuração para hospedagem
