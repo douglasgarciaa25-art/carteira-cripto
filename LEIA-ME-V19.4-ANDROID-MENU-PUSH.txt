@@ -1,0 +1,24 @@
+CRIPTO RADAR V19.4 • CORREÇÕES DO MENU E STATUS PUSH
+
+Base: Cripto Radar V19.3. Atualização pontual guiada pelos prints do Android.
+
+Correções:
+- Menu lateral passa na frente do cabeçalho e barra inferior, sem texto escondido.
+- Barra inferior/cabeçalho somem apenas enquanto menu está aberto.
+- Correção do selo V19.1 no menu: agora V19.4.
+- Botão fechar com área de toque maior, rolagem no menu e safe area Android.
+- Situação do Push diferencia: servidor/agendador respondendo, aparelho inscrito e entrega comprovada pelo teste agendado.
+- i18n deixa de forçar título antigo V19.2 ao mudar idioma.
+- Cache do service worker renovado para carregar layout-v194.css.
+
+PUBLICAÇÃO:
+1. Extraia os arquivos deste ZIP.
+2. Envie TODOS para a RAIZ do repositório GitHub, substituindo versões anteriores. Sem pasta api.
+3. Aguarde o deploy da Vercel terminar.
+4. Feche e reabra o PWA para ativar a versão V19.4.
+5. Abra MENU: o cabeçalho não deve tapar as opções; depois feche e verifique a barra inferior.
+6. Em Alertas, clique ATIVAR PUSH 24H e depois TESTAR BLOQUEADO com o app fechado e tela bloqueada para confirmar Push automático.
+
+IMPORTANTE:
+Receber uma notificação local ou a resposta HTTP positiva do servidor NÃO prova entrega com app fechado. A validação depende de notificação realmente recebida com tela bloqueada.
+O pacote preserva permissões, cobrança e acesso de desenvolvedor existentes. Não ativa planos pagos nem cancela assinaturas.

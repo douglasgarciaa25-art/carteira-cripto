@@ -1,0 +1,27 @@
+/* Cripto Radar V19.4 • Menu Android corrigido a partir dos prints reais. */
+:root{--drawer-layer:10040}
+/* V19.0 elevava toolbar para 4000 e dock para 6900, ambos acima do drawer (1100).
+   Uma camada própria resolve os dois conflitos e mantém o botão fechar acessível. */
+body.menu-open{overflow:hidden!important;overscroll-behavior:none!important}
+.app-menu-backdrop{z-index:10030!important;background:rgba(1,9,19,.76)!important;backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important}
+.app-drawer{z-index:var(--drawer-layer)!important;isolation:isolate!important;max-width:calc(100vw - 16px)!important;
+  width:min(390px,calc(100vw - 16px))!important;top:0!important;bottom:0!important;
+  padding-top:calc(12px + env(safe-area-inset-top,0px))!important;
+  padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))!important;
+  overflow-y:auto!important;overscroll-behavior:contain!important;
+  scrollbar-width:thin;box-shadow:22px 0 68px #000d!important}
+body.menu-open .app-toolbar,body.menu-open .v171-bottom-nav,
+body.menu-open .neo-dock,body.menu-open .quick-dock{visibility:hidden!important;pointer-events:none!important}
+.app-drawer-head{position:relative;z-index:1;gap:9px!important;padding:10px 6px 16px!important;min-width:0!important}
+.app-drawer-head>div:nth-child(2){min-width:0!important;flex:1!important}
+.app-drawer-title{font-size:18px!important;line-height:1.2!important;overflow-wrap:normal!important;word-break:normal!important}
+.app-drawer-close{position:relative!important;flex:none!important;min-width:44px!important;min-height:44px!important;width:44px!important;height:44px!important;border-radius:14px!important;
+  background:#173451!important;border:1px solid #4b789f!important;color:#f4faff!important}
+.app-drawer .language-box{margin:4px 0 15px!important;min-width:0!important}
+.app-drawer .language-box-head{min-width:0!important;display:flex!important;gap:10px!important}
+.app-drawer .language-box-head>div{min-width:0!important;flex:1!important}
+.app-drawer .app-nav-btn{max-width:100%;min-width:0!important}
+.app-drawer .app-nav-meta{overflow-wrap:break-word!important}
+.app-drawer .v17-version-chip{white-space:nowrap!important}
+@media(max-width:390px){.app-drawer{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important}}
+@media(prefers-reduced-motion:reduce){.app-drawer,.app-menu-backdrop{transition:none!important}}

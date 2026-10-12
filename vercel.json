@@ -5,6 +5,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "layout-v194.css",
+      "use": "@vercel/static"
+    },
+    {
       "src": "layout-v191.css",
       "use": "@vercel/static"
     },

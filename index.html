@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.3 • Mercado multilíngue</title>
+<title>Cripto Radar V19.4 • Menu e Push Android</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -693,7 +693,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.1 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.4 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -761,7 +761,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.3">V19.3</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.4">V19.4</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -3977,34 +3977,44 @@ body{padding-bottom:74px}
 <script src="./alerts-center.js"></script>
 
 <script>
-/* ===== V18.2 • Push Health Monitor ===== */
+/* ===== V19.4 • Push Health: servidor, inscrição local e entrega diferenciados ===== */
 (function(){
  const box=()=>document.getElementById('pushHealthV182');
  async function check(){
-   const b=box();if(!b)return;
-   try{
-     const [cfg,cron]=await Promise.all([
-       fetch('/api/push-config',{cache:'no-store'}).then(r=>r.json()),
-       fetch('/api/push-cron',{cache:'no-store'}).then(r=>r.json())
-     ]);
-     if(cfg?.ready&&cron?.ok){
-       const registered=Number(cron.subscriptions);
-       const registrationsKnown=Number.isFinite(registered);
-       const hasRecipients=registrationsKnown && registered>0;
-       b.className='push-health-v182 '+(hasRecipients?'ok':'warn');
-       b.innerHTML=hasRecipients
-         ? '<b>Servidor Push funcionando</b> • '+registered+' aparelho(s) inscrito(s) • última execução: '+(Number(cron.sent)||0)+' enviado(s), '+(Number(cron.failed)||0)+' falha(s).'
-         : '<b>Servidor online, mas recebimento não confirmado</b> • '+(registrationsKnown?'0 aparelho(s) inscrito(s)':'quantidade de aparelhos desconhecida')+'. Toque em ATIVAR PUSH 24H e use TESTAR PUSH para verificar a entrega.';
-     }else{
-       b.className='push-health-v182 warn';
-       b.innerHTML='<b>Push requer atenção</b> • servidor ou armazenamento não respondeu como esperado.';
-     }
-   }catch(e){
-     b.className='push-health-v182 warn';
-     b.innerHTML='<b>Push requer atenção</b> • não foi possível confirmar o servidor agora.';
+  const el=box();if(!el)return;
+  let cfg=null,cron=null;
+  try{
+   const [cfgResponse,cronResponse]=await Promise.all([
+    fetch('/api/push-config',{cache:'no-store'}),fetch('/api/push-cron',{cache:'no-store'})
+   ]);
+   cfg=cfgResponse.ok?await cfgResponse.json():null;
+   cron=cronResponse.ok?await cronResponse.json():null;
+  }catch(e){}
+  if(!cfg?.ready||!cron?.ok){
+   el.className='push-health-v182 warn';
+   el.textContent='Servidor Push indisponível ou agendador sem resposta. Verifique a conexão e tente novamente.';
+   return;
+  }
+  let localSubscribed=false;
+  try{
+   if('serviceWorker' in navigator && Notification.permission==='granted'){
+    const reg=await navigator.serviceWorker.getRegistration();
+    localSubscribed=Boolean(await reg?.pushManager?.getSubscription?.());
    }
+  }catch(e){}
+  const count=typeof cron.subscriptions==='number'&&Number.isFinite(cron.subscriptions)?cron.subscriptions:null;
+  const sent=typeof cron.sent==='number'&&Number.isFinite(cron.sent)?cron.sent:null;
+  const registrationText=localSubscribed?'Este aparelho possui inscrição Push local.':
+   'Este aparelho ainda não tem inscrição Push detectada; toque em ATIVAR PUSH 24H.';
+  const countText=count!==null?' • Inscrições no servidor: '+count+'.':'';
+  const sendText=sent!==null?' • Envios aceitos no último ciclo: '+sent+'.':'';
+  el.className='push-health-v182 '+(localSubscribed?'ok':'warn');
+  el.textContent='Servidor e agendador respondendo. '+registrationText+countText+sendText+
+   ' O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.';
  }
  setTimeout(check,1200);setInterval(check,60000);
+ window.addEventListener('focus',()=>setTimeout(check,350));
+ window.addEventListener('pageshow',()=>setTimeout(check,800));
 })();
 </script>
 
@@ -4245,4 +4255,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 
 <link rel="stylesheet" href="./design-v190.css?v=1901">
 <link rel="stylesheet" href="./layout-v191.css?v=1912">
+<link rel="stylesheet" href="./layout-v194.css?v=1940">
 </body></html>
