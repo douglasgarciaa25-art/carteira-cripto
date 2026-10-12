@@ -3217,7 +3217,7 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
-    document.title='Cripto Radar V19.4 • Radar PRO';
+    document.title='Cripto Radar V19.4.1 • Radar PRO';
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }

@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.4 • Menu e Push Android</title>
+<title>Cripto Radar V19.4.1 • Correção PRO</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -693,7 +693,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.4 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.4.1 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -761,7 +761,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.4">V19.4</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.4.1">V19.4.1</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -3742,7 +3742,7 @@ window.v8RunBacktest=run;
 })();
 </script>
 
-<script src="./i18n.js?v=1921"></script>
+<script src="./i18n.js?v=1941"></script>
 <style>
 .dev-owner-card{margin:12px 0 18px;padding:13px;border:1px solid #315d75;border-radius:15px;background:#0b2233;color:#e4efff}
 .dev-owner-card summary{cursor:pointer;font-weight:800;list-style:revert}.dev-owner-card p{line-height:1.5}
@@ -3789,7 +3789,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  }
  function setMode(mode,save=true){
   mode=mode==='professional'?'professional':'amateur';
-  if(mode==='professional'&&!window.CriptoRadarPro?.isActive?.()){window.CriptoRadarPro?.openPaywall?.('Modo Profissional');mode='amateur';}
+  if(mode==='professional'&&!window.CriptoRadarPro?.isActive?.()){if(save)window.CriptoRadarPro?.openPaywall?.('Modo Profissional');mode='amateur';}
   document.body.classList.toggle('mode-amateur',mode==='amateur');
   document.body.classList.toggle('mode-professional',mode==='professional');
   if(save)localStorage.setItem(MODE_KEY,mode);
@@ -3800,7 +3800,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  }
  function setRoute(route,save=true){
   const mode=getMode();
-  if(routes[route]?.paid&&!window.CriptoRadarPro?.isActive?.()){window.CriptoRadarPro?.openPaywall?.(routes[route].title);route='home';}
+  if(routes[route]?.paid&&!window.CriptoRadarPro?.isActive?.()){if(save)window.CriptoRadarPro?.openPaywall?.(routes[route].title);route='home';}
   if(!routes[route]||(routes[route].pro&&mode!=='professional'))route='home';
   [...document.body.classList].filter(x=>x.startsWith('route-')).forEach(x=>document.body.classList.remove(x));document.body.classList.add('route-'+route);
   if($('marketRumorsTitle'))$('marketRumorsTitle').textContent=route==='home'?'🗣️ Boatos que podem mexer com sua carteira':'🗣️ Boatos e notícias do mercado';

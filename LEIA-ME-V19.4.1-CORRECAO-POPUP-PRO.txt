@@ -1,0 +1,32 @@
+CRIPTO RADAR V19.4.1 — CORREÇÃO DA JANELA PRO AO RECARREGAR
+
+Base: V19.4 (projeto completo).
+Problema corrigido: ao abrir/recarregar o aplicativo, a restauração de
+modo e rota da sessão antiga abria a oferta PRO antes da verificação
+assíncrona de licença do desenvolvedor/assinatura.
+
+Correção aplicada:
+- Durante a restauração automática (save=false), o aplicativo NÃO abre
+  a janela de assinatura de recursos profissionais.
+- Se o usuário solicitar manualmente um recurso PRO sem licença
+  (save=true), a oferta permanece funcionando normalmente.
+- A confirmação da licença continua sendo feita no servidor; esta
+  alteração não concede acesso PRO sem verificação.
+- Cache do aplicativo atualizado para carregar a versão corrigida.
+
+PUBLICAÇÃO
+1. Extraia o ZIP deste projeto.
+2. No repositório do GitHub conectado à Vercel, substitua os arquivos
+   da RAIZ pelos do ZIP (não crie uma pasta 'api').
+3. Após a confirmação do deploy, abra/atualize o PWA no celular.
+4. Recarregue a página com o PRO de desenvolvedor já ativado.
+   A oferta não deve piscar durante a abertura.
+5. Teste também acessar um recurso PRO sem licença: a cobrança deve
+   continuar aparecendo após o toque do usuário.
+
+ATENÇÃO
+- Este ZIP NÃO inclui e NÃO precisa incluir chave de desenvolvedor.
+- Nunca publique a chave privada em GitHub ou em arquivo público.
+- As variáveis de ambiente já configuradas na Vercel permanecem lá.
+- A atualização ainda precisa ser publicada; testes em aparelho e
+  assinatura Google Play real ainda devem ser realizados.
