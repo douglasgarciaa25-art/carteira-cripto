@@ -1,0 +1,35 @@
+CRIPTO RADAR V19.5.1 — CORREÇÕES DE IDIOMA NO ANDROID
+
+Base: Cripto Radar V19.5, projeto completo, 67+ arquivos.
+
+O QUE FOI CORRIGIDO
+- Tradução contextual de manchetes de exemplo do Radar Social (BTC, SUI, LINK),
+  legendas do mercado e rótulos de informação/boato/confirmado.
+- Mensagens completas e indicadores de Push 24h, status do servidor e do agendador.
+- Resumo do Alarme Inteligente e detalhes de falhas de pullback,
+  com pontuação, confirmações, nível, preço e ação recomendada.
+- Traduções em inglês e espanhol das mensagens dinâmicas contempladas.
+- Remoção de tradução global de " e " isolado, que gerava trechos misturados
+  como "Boatos and notícias" e "Servidor and agendador".
+- Nova versão de cache (19.5.1) para atualizar instalações Android/PWA.
+
+IMPORTANTE
+- O idioma é aplicado ao conteúdo gerado pelo aplicativo e conhecido pelo dicionário.
+  Notícias de fontes externas não podem ser traduzidas genericamente sem serviço
+  de tradução externo; podem aparecer no idioma da fonte.
+- Esta atualização não altera compras, vendas, segurança, licenciamento, sinais,
+  operações financeiras ou a programação do Push.
+- Ter Push ativo no navegador não comprova que um alerta agendado chegou
+  com aplicativo fechado; teste a notificação real no Android.
+- Análise de mercado em tempo real requer fonte válida e conexão.
+
+PUBLICAÇÃO
+1. Extraia todo o ZIP e envie os arquivos à RAIZ do repositório GitHub.
+2. A Vercel deverá publicar o novo commit, preservando variáveis de ambiente.
+3. Atualize/reabra o app no Android; se exibir versão antiga, encerre/reabra o PWA.
+4. Selecione Inglês, Português e Espanhol; revise Mercado, Carteira e Alertas.
+5. Verifique o teste Push com a tela bloqueada.
+
+Não contém nenhuma chave privada do desenvolvedor.
+- Etiquetas criadas por CSS agora respeitam o idioma: SENTIMENTO,
+  indicador de espelhamento, importação por print e prévia dos ativos.

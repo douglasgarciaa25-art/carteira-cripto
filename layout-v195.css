@@ -64,3 +64,13 @@ main{padding-bottom:calc(114px + env(safe-area-inset-bottom,0px))!important}
 }
 @media(max-width:360px){.mi-controls{grid-template-columns:1fr!important}}
 @media(prefers-reduced-motion:reduce){.quick-dock.neo-dock,.mi-scenario{animation:none!important}}
+
+/* V19.5.1 — CSS-generated labels must follow the selected language too. */
+html[data-cr-language="en"] #marketRumorsCard .coin::after{content:"SENTIMENT"}
+html[data-cr-language="es"] #marketRumorsCard .coin::after{content:"SENTIMIENTO"}
+html[data-cr-language="en"] .copy-mirror-card::before{content:"SIMULATION / ALERTS • NO ORDERS PLACED"}
+html[data-cr-language="es"] .copy-mirror-card::before{content:"SIMULACIÓN / ALERTAS • NO EJECUTA ÓRDENES"}
+html[data-cr-language="en"] .wallet-extra::before{content:"NEW • PORTFOLIO SCREENSHOT"}
+html[data-cr-language="es"] .wallet-extra::before{content:"NUEVO • CARTERA POR CAPTURA"}
+html[data-cr-language="en"] .wallet-capture-v2 #walletPreview::before{content:"2 • REVIEW ASSETS"}
+html[data-cr-language="es"] .wallet-capture-v2 #walletPreview::before{content:"2 • REVISAR ACTIVOS"}

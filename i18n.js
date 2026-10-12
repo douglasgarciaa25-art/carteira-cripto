@@ -1961,10 +1961,6 @@
       "upside"
     ],
     [
-      " e ",
-      " and "
-    ],
-    [
       "Há",
       "There are"
     ]
@@ -3135,10 +3131,6 @@
       "subida"
     ],
     [
-      " e ",
-      " y "
-    ],
-    [
       "Há",
       "Hay"
     ]
@@ -3401,6 +3393,368 @@
       ['Direcionamento da minha carteira','Orientación de mi cartera'],['Melhores opções da sua carteira','Destacados de la cartera']
     ]
   };
+
+  // V19.5.1: translate complete UI and generated phrases BEFORE generic fragment rules.
+  // Avoid generic connective replacements (" e " => " and "), which generated mixed-language sentences.
+  Object.assign(STRINGS.en, {
+  "🗣️ Boatos e notícias do mercado": "🗣️ Market rumors and news",
+  "🗣️ Boatos que podem mexer com sua carteira": "🗣️ Rumors that may affect your portfolio",
+  "Boatos e notícias do mercado": "Market rumors and news",
+  "Boatos que podem mexer com sua carteira": "Rumors that may affect your portfolio",
+  "Notícias e rumores ficam separados do sinal técnico. Nada aqui vira compra ou venda sozinho.": "News and rumors are separate from technical signals. Neither triggers a buy or sell on its own.",
+  "Fluxos institucionais e ETFs seguem como catalisador observado para Bitcoin": "Institutional flows and ETFs remain potential catalysts for Bitcoin",
+  "Ecossistema Sui mantém anúncios e eventos como possíveis catalisadores": "Sui ecosystem announcements and events remain potential catalysts",
+  "Chainlink continua sensível a notícias de adoção institucional, integrações e derivativos": "Chainlink remains sensitive to institutional adoption, integration and derivatives news",
+  "Contexto de mercado": "Market context",
+  "Fonte pública": "Public source",
+  "ℹ️ MERCADO": "ℹ️ MARKET",
+  "⚠️ BOATO": "⚠️ RUMOR",
+  "✅ CONFIRMADO": "✅ CONFIRMED",
+  "🟢 possível impacto positivo • 🟡 incerto • 🔴 possível impacto negativo • ✅ confirmado": "🟢 potentially positive impact • 🟡 uncertain • 🔴 potentially negative impact • ✅ confirmed",
+  "possível impacto positivo": "potential positive impact",
+  "possível impacto negativo": "potential negative impact",
+  "incerto": "uncertain",
+  "confirmado": "confirmed",
+  "Nenhuma informação confirmada disponível agora.": "No confirmed information available right now.",
+  "Filtro do feed": "Feed filter",
+  "Agora o Radar usa Push 24h pelo servidor. O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.": "Radar now uses server-powered 24h Push. The market is checked outside your phone, and Android can receive alerts with the app closed or the screen locked.",
+  "✓ Notificações ativas neste aparelho.": "✓ Notifications enabled on this device.",
+  "Assinatura Push encontrada neste navegador; confirme a entrega em TESTAR PUSH • última varredura 1 min atrás": "Push subscription found in this browser. Confirm delivery using TEST PUSH • last check 1 minute ago",
+  "Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.": "Server and scheduler are responding. This device has a local Push subscription. Automatic delivery while the app is closed is only verified after a scheduled test arrives.",
+  "O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.": "Automatic delivery while the app is closed is only verified after a scheduled test arrives.",
+  "Servidor e agendador respondendo.": "Server and scheduler are responding.",
+  "Este aparelho possui inscrição Push local.": "This device has a local Push subscription.",
+  "Segundo plano: Worker + SW prontos para alertas": "Background: Worker + SW ready for alerts",
+  "Notificações ativas neste aparelho.": "Notifications enabled on this device.",
+  "Status geral": "Overall status",
+  "Carteira": "Portfolio",
+  "sem risco forte confirmado": "no major risk confirmed",
+  "sem oportunidade forte confirmada": "no strong opportunity confirmed",
+  "Carteira sem risco forte agora": "No major portfolio risk right now",
+  "O Radar continua cruzando movimento, volume, liquidez e concentração.": "Radar continues evaluating price movement, volume, liquidity and concentration.",
+  "Nenhuma oportunidade forte confirmada agora": "No strong opportunity confirmed right now",
+  "O Radar continua verificando automaticamente.": "Radar continues checking automatically.",
+  "Última análise:": "Last analysis:",
+  "heurística do Radar, não probabilidade garantida.": "Radar heuristic, not a guaranteed probability.",
+  "🔁 FALHA DE PULLBACK • 15 MIN": "🔁 PULLBACK FAILURE • 15 MIN",
+  "↩️ FALHA DE PULLBACK • 15 MIN": "↩️ PULLBACK FAILURE • 15 MIN",
+  "FALHA DE PULLBACK • 15 MIN": "PULLBACK FAILURE • 15 MIN",
+  "FALHA DE PULLBACK": "PULLBACK FAILURE",
+  "1/2 CONFIRMAÇÕES": "1/2 CONFIRMATIONS",
+  "✓ 2/2 CONFIRMADO": "✓ 2/2 CONFIRMED",
+  "O contra-movimento perdeu força após o rompimento.": "The countertrend move weakened after the breakout.",
+  "Nível testado": "Level tested",
+  "preço": "price",
+  "volume do rompimento": "breakout volume",
+  "Ação do Radar:": "Radar guidance:",
+  "PROTEGER POSIÇÃO • AGUARDAR NOVA ESTRUTURA": "PROTECT POSITION • WAIT FOR A NEW SETUP",
+  "OBSERVAR CONTINUAÇÃO • EVITAR ENTRAR ESTICADO": "WATCH CONTINUATION • AVOID CHASING THE MOVE",
+  "Nenhuma falha de pullback confirmada agora": "No pullback failure confirmed right now",
+  "O Radar procura rompimento, reteste do nível, rejeição e retomada com tendência/volume alinhados.": "Radar checks breakouts, retests, rejections and follow-through when trend and volume align.",
+  "Falha de pullback:": "Pullback failure:",
+  "score técnico": "technical score",
+  "nível": "level",
+  "RADAR SOCIAL": "SOCIAL RADAR",
+  "▶ Atualização automática": "▶ Automatic update",
+  "🔔 Ativar Push 24h": "🔔 Enable 24h Push",
+  "Agendador externo:": "External scheduler:",
+  "última varredura": "last check",
+  "último ciclo:": "last run:",
+  "Última análise": "Last analysis",
+  "Radar conectado": "Radar connected",
+  "Radar ao vivo": "Radar live",
+  "ANÁLISE ATIVA": "ANALYSIS ACTIVE",
+  "Confluência V5": "V5 confluence",
+  "continuação de alta": "bullish continuation",
+  "CONFIRMAÇÕES": "CONFIRMATIONS",
+  "Risco forte": "Major risk",
+  "Últimos alertas": "Recent alerts",
+  "AVALIAR REALIZAÇÃO": "CONSIDER TAKING PROFITS",
+  "⚠️ Revisar concentração em": "⚠️ Review concentration in",
+  "risco médio": "medium risk",
+  "risco baixo": "low risk",
+  "risco alto": "high risk",
+  "concentração": "concentration",
+  "Liquidez": "Liquidity",
+  "Tendência": "Trend"
+});
+  Object.assign(STRINGS.es, {
+  "🗣️ Boatos e notícias do mercado": "🗣️ Rumores y noticias del mercado",
+  "🗣️ Boatos que podem mexer com sua carteira": "🗣️ Rumores que pueden afectar a tu cartera",
+  "Boatos e notícias do mercado": "Rumores y noticias del mercado",
+  "Boatos que podem mexer com sua carteira": "Rumores que pueden afectar a tu cartera",
+  "Notícias e rumores ficam separados do sinal técnico. Nada aqui vira compra ou venda sozinho.": "Las noticias y rumores se separan de las señales técnicas. Por sí solos no activan compras ni ventas.",
+  "Fluxos institucionais e ETFs seguem como catalisador observado para Bitcoin": "Los flujos institucionales y los ETF siguen siendo posibles catalizadores para Bitcoin",
+  "Ecossistema Sui mantém anúncios e eventos como possíveis catalisadores": "Los anuncios y eventos del ecosistema Sui siguen siendo posibles catalizadores",
+  "Chainlink continua sensível a notícias de adoção institucional, integrações e derivativos": "Chainlink sigue siendo sensible a noticias de adopción institucional, integraciones y derivados",
+  "Contexto de mercado": "Contexto del mercado",
+  "Fonte pública": "Fuente pública",
+  "ℹ️ MERCADO": "ℹ️ MERCADO",
+  "⚠️ BOATO": "⚠️ RUMOR",
+  "✅ CONFIRMADO": "✅ CONFIRMADO",
+  "🟢 possível impacto positivo • 🟡 incerto • 🔴 possível impacto negativo • ✅ confirmado": "🟢 posible impacto positivo • 🟡 incierto • 🔴 posible impacto negativo • ✅ confirmado",
+  "possível impacto positivo": "posible impacto positivo",
+  "possível impacto negativo": "posible impacto negativo",
+  "incerto": "incierto",
+  "confirmado": "confirmado",
+  "Nenhuma informação confirmada disponível agora.": "No hay información confirmada disponible ahora.",
+  "Filtro do feed": "Filtro de noticias",
+  "Agora o Radar usa Push 24h pelo servidor. O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.": "Radar ahora usa Push 24h mediante el servidor. El mercado sigue vigilado fuera del móvil, y Android puede recibir alertas con la app cerrada o la pantalla bloqueada.",
+  "✓ Notificações ativas neste aparelho.": "✓ Notificaciones activas en este dispositivo.",
+  "Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.": "El servidor y el programador responden. Este dispositivo tiene suscripción Push local. La entrega con la app cerrada solo se verifica al recibir una prueba programada.",
+  "O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.": "La entrega con la app cerrada solo se verifica tras recibir una prueba programada.",
+  "Servidor e agendador respondendo.": "El servidor y el programador responden.",
+  "Este aparelho possui inscrição Push local.": "Este dispositivo tiene suscripción Push local.",
+  "Segundo plano: Worker + SW prontos para alertas": "Segundo plano: Worker + SW listos para alertas",
+  "Status geral": "Estado general",
+  "sem risco forte confirmado": "sin riesgo importante confirmado",
+  "sem oportunidade forte confirmada": "sin oportunidad fuerte confirmada",
+  "Carteira sem risco forte agora": "Cartera sin riesgo importante ahora",
+  "O Radar continua cruzando movimento, volume, liquidez e concentração.": "Radar sigue cruzando movimiento, volumen, liquidez y concentración.",
+  "Nenhuma oportunidade forte confirmada agora": "Ninguna oportunidad fuerte confirmada ahora",
+  "O Radar continua verificando automaticamente.": "Radar sigue verificando automáticamente.",
+  "Última análise:": "Último análisis:",
+  "heurística do Radar, não probabilidade garantida.": "heurística de Radar, no una probabilidad garantizada.",
+  "↩️ FALHA DE PULLBACK • 15 MIN": "↩️ FALLO DE RETROCESO • 15 MIN",
+  "FALHA DE PULLBACK": "FALLO DE RETROCESO",
+  "1/2 CONFIRMAÇÕES": "1/2 CONFIRMACIONES",
+  "✓ 2/2 CONFIRMADO": "✓ 2/2 CONFIRMADO",
+  "O contra-movimento perdeu força após o rompimento.": "El contramovimiento perdió fuerza después de la ruptura.",
+  "Nível testado": "Nivel probado",
+  "preço": "precio",
+  "volume do rompimento": "volumen de ruptura",
+  "Ação do Radar:": "Acción de Radar:",
+  "PROTEGER POSIÇÃO • AGUARDAR NOVA ESTRUTURA": "PROTEGER POSICIÓN • ESPERAR NUEVA ESTRUCTURA",
+  "OBSERVAR CONTINUAÇÃO • EVITAR ENTRAR ESTICADO": "VIGILAR CONTINUACIÓN • EVITAR PERSEGUIR EL PRECIO",
+  "Nenhuma falha de pullback confirmada agora": "Ningún fallo de retroceso confirmado ahora",
+  "O Radar procura rompimento, reteste do nível, rejeição e retomada com tendência/volume alinhados.": "Radar busca rupturas, retesteos, rechazos y continuación con tendencia y volumen alineados.",
+  "Falha de pullback:": "Fallo de retroceso:",
+  "score técnico": "puntuación técnica",
+  "nível": "nivel",
+  "RADAR SOCIAL": "RADAR SOCIAL",
+  "Radar conectado": "Radar conectado",
+  "Radar ao vivo": "Radar en vivo",
+  "ANÁLISE ATIVA": "ANÁLISIS ACTIVO",
+  "Confluência V5": "Confluencia V5",
+  "continuação de alta": "continuación alcista",
+  "CONFIRMAÇÕES": "CONFIRMACIONES",
+  "Risco forte": "Riesgo importante",
+  "Últimos alertas": "Alertas recientes",
+  "AVALIAR REALIZAÇÃO": "EVALUAR TOMA DE BENEFICIOS",
+  "⚠️ Revisar concentração em": "⚠️ Revisar concentración en",
+  "risco médio": "riesgo medio",
+  "risco baixo": "riesgo bajo",
+  "risco alto": "riesgo alto",
+  "concentração": "concentración",
+  "Liquidez": "Liquidez",
+  "Tendência": "Tendencia"
+});
+  const V1951_PHRASES={
+  "en": [
+    [
+      "O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.",
+      "The market is still monitored outside the phone and Android may receive alerts even with the app closed or screen locked."
+    ],
+    [
+      "Chainlink continua sensível a notícias de adoção institucional, integrações e derivativos",
+      "Chainlink remains sensitive to institutional adoption, integration and derivatives news"
+    ],
+    [
+      " O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.",
+      " Automatic delivery with the app closed is verified only after a scheduled test arrives."
+    ],
+    [
+      "Assinatura Push encontrada neste navegador; confirme a entrega em TESTAR PUSH",
+      "Push subscription found in this browser. Confirm delivery using TEST PUSH"
+    ],
+    [
+      "Fluxos institucionais e ETFs seguem como catalisador observado para Bitcoin",
+      "Institutional flows and ETFs remain potential catalysts for Bitcoin"
+    ],
+    [
+      "Ecossistema Sui mantém anúncios e eventos como possíveis catalisadores",
+      "Sui ecosystem announcements and events remain potential catalysts"
+    ],
+    [
+      "O Radar continua cruzando movimento, volume, liquidez e concentração.",
+      "Radar continues evaluating price movement, volume, liquidity and concentration."
+    ],
+    [
+      "O contra-movimento perdeu força após o rompimento. Nível testado ",
+      "The countertrend move weakened after the breakout. Tested level "
+    ],
+    [
+      "score = heurística do Radar, não probabilidade garantida.",
+      "score = a Radar heuristic, not a guaranteed probability."
+    ],
+    [
+      "OBSERVAR CONTINUAÇÃO • EVITAR ENTRAR ESTICADO",
+      "WATCH CONTINUATION • AVOID CHASING THE MOVE"
+    ],
+    [
+      "O Radar continua verificando automaticamente.",
+      "Radar continues checking automatically."
+    ],
+    [
+      "PROTEGER POSIÇÃO • AGUARDAR NOVA ESTRUTURA",
+      "PROTECT POSITION • WAIT FOR A NEW SETUP"
+    ],
+    [
+      "🔔 Notificações ativas neste aparelho.",
+      "🔔 Notifications active on this device."
+    ],
+    [
+      " • sem oportunidade forte confirmada",
+      " • no strong opportunity confirmed"
+    ],
+    [
+      " • possível continuação da baixa",
+      " • possible bearish continuation"
+    ],
+    [
+      " • possível continuação da alta",
+      " • possible bullish continuation"
+    ],
+    [
+      " • sem risco forte confirmado",
+      " • no major risk confirmed"
+    ],
+    [
+      " • volume do rompimento ",
+      " • breakout volume "
+    ],
+    [
+      " • última varredura ",
+      " • last check "
+    ],
+    [
+      " alerta(s) forte(s)",
+      " major alert(s)"
+    ],
+    [
+      "FALHA DE PULLBACK ",
+      "PULLBACK FAILURE "
+    ],
+    [
+      " • score técnico ",
+      " • technical score "
+    ],
+    [
+      " oportunidade(s)",
+      " opportunity(ies)"
+    ],
+    [
+      "Ação do Radar: ",
+      "Radar guidance: "
+    ],
+    [
+      " minutos atrás",
+      " minutes ago"
+    ],
+    [
+      " min atrás",
+      " min ago"
+    ],
+    [
+      " seg atrás",
+      " seconds ago"
+    ],
+    [
+      " ainda não",
+      " not yet"
+    ],
+    [
+      " • preço ",
+      " • price "
+    ],
+    [
+      " • nível ",
+      " • level "
+    ]
+  ],
+  "es": [
+    [
+      "O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.",
+      "El mercado continúa vigilado fuera del móvil y Android puede recibir alertas con la aplicación cerrada o la pantalla bloqueada."
+    ],
+    [
+      "Chainlink continua sensível a notícias de adoção institucional, integrações e derivativos",
+      "Chainlink sigue siendo sensible a noticias de adopción institucional, integraciones y derivados"
+    ],
+    [
+      "Assinatura Push encontrada neste navegador; confirme a entrega em TESTAR PUSH",
+      "Suscripción Push detectada en este navegador. Confirma la entrega con PROBAR PUSH"
+    ],
+    [
+      "Fluxos institucionais e ETFs seguem como catalisador observado para Bitcoin",
+      "Los flujos institucionales y los ETF siguen siendo posibles catalizadores para Bitcoin"
+    ],
+    [
+      "Ecossistema Sui mantém anúncios e eventos como possíveis catalisadores",
+      "Los anuncios y eventos del ecosistema Sui siguen siendo posibles catalizadores"
+    ],
+    [
+      "O contra-movimento perdeu força após o rompimento. Nível testado ",
+      "El contramovimiento perdió fuerza después de la ruptura. Nivel probado "
+    ],
+    [
+      "score = heurística do Radar, não probabilidade garantida.",
+      "puntuación = heurística de Radar, no probabilidad garantizada."
+    ],
+    [
+      "OBSERVAR CONTINUAÇÃO • EVITAR ENTRAR ESTICADO",
+      "VIGILAR CONTINUACIÓN • EVITAR PERSEGUIR EL PRECIO"
+    ],
+    [
+      "PROTEGER POSIÇÃO • AGUARDAR NOVA ESTRUTURA",
+      "PROTEGER POSICIÓN • ESPERAR NUEVA ESTRUCTURA"
+    ],
+    [
+      " • volume do rompimento ",
+      " • volumen de ruptura "
+    ],
+    [
+      " • última varredura ",
+      " • última comprobación "
+    ],
+    [
+      " alerta(s) forte(s)",
+      " alerta(s) importante(s)"
+    ],
+    [
+      "FALHA DE PULLBACK ",
+      "FALLO DE RETROCESO "
+    ],
+    [
+      " • score técnico ",
+      " • puntuación técnica "
+    ],
+    [
+      " oportunidade(s)",
+      " oportunidad(es)"
+    ],
+    [
+      "Ação do Radar: ",
+      "Acción de Radar: "
+    ],
+    [
+      " minutos atrás",
+      " minutos atrás"
+    ],
+    [
+      " min atrás",
+      " min atrás"
+    ],
+    [
+      " • preço ",
+      " • precio "
+    ],
+    [
+      " • nível ",
+      " • nivel "
+    ]
+  ]
+};
   const PHRASES={
     en:[['Falta confirmar:','Still required:'],[' do total',' of total'],[' da carteira',' of portfolio'],[' em 24h',' in 24h'],[' ativo(s)',' asset(s)'],[' sinal(is)',' signal(s)'],[' último ciclo',' last run'],[' preço médio',' average price'],[' cotação desatualizada',' stale quotation'],[' • Novo sinal',' • New signal'],['Nenhuma compra confirmada agora','No confirmed buy right now'],['CANDIDATA • AGUARDANDO','CANDIDATE • WAITING']],
     es:[['Falta confirmar:','Falta confirmar:'],[' do total',' del total'],[' da carteira',' de la cartera'],[' em 24h',' en 24 h'],[' ativo(s)',' activo(s)'],[' sinal(is)',' señal(es)'],[' último ciclo',' último ciclo'],[' preço médio',' precio medio'],[' cotação desatualizada',' cotización desactualizada'],[' • Novo sinal',' • Nueva señal'],['Nenhuma compra confirmada agora','Ninguna compra confirmada ahora']]
@@ -3424,6 +3778,7 @@
       }
       return out+input.slice(at);
     };
+    for(const [a,b] of V1951_PHRASES[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of V195_PHRASES[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of DYNAMIC_V192[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of PHRASES[lang]||[])out=replaceRule(out,a,b);
@@ -3469,7 +3824,7 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
-    document.title='Cripto Radar V19.5 • Radar PRO';
+    document.title='Cripto Radar V19.5.1 • Radar PRO';
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }
