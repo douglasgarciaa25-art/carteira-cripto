@@ -1,6 +1,9 @@
 {
   "builds": [
-    {"src":"home-v1965.css","use":"@vercel/static"},
+    {
+      "src": "home-v1965.css",
+      "use": "@vercel/static"
+    },
     {
       "src": "layout-v1964.css",
       "use": "@vercel/static"
@@ -152,12 +155,28 @@
     {
       "src": "termos.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "binance-wallet.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "binance-wallet.css",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/play-config",
       "dest": "/play-config.js"
+    },
+    {
+      "src": "/api/radar-auth-config",
+      "dest": "/play-config.js?_radar_api=auth-config"
+    },
+    {
+      "src": "/api/binance-wallet",
+      "dest": "/push-status.js?_radar_api=wallet"
     },
     {
       "src": "/api/owner-access",
