@@ -523,13 +523,9 @@ function bind(){
   }));
 }
 function updateHomeSummary(snap,reg,top){
-  try{
-    const market=$('v17MarketSummary'); if(market){
-      const cand=top.filter(x=>['candidate','confirmed','strong'].includes(x.status)).length;
-      market.textContent=`${reg.label||'Mercado'} • ${cand} sinal(is) úteis`;
-    }
-    const ai=$('v17AiSummary'); if(ai)ai.textContent=snap.health==null?'Aguardando carteira':`Saúde ${snap.health}/100 • risco ${snap.risk}`;
-  }catch(e){}
+  // V19.6.3: os indicadores detalhados permanecem em Mercado;
+  // somente a rotina HomeCompact atualiza o resumo da página Início.
+  try{window.CriptoRadarHomeCompact?.sync?.()}catch(e){}
 }
 
 let lastSignature='';

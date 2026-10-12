@@ -1,0 +1,56 @@
+[
+  {
+    "width": 360,
+    "checks": {
+      "home": true,
+      "mode_guide_hidden_home": true,
+      "wallet": true,
+      "market": true,
+      "market_detail_closed": true,
+      "alerts": true,
+      "history": true,
+      "settings": true,
+      "mode_guide_settings": true,
+      "candidate_not_confirmed": true,
+      "confirmed_only_with_explicit_state": true,
+      "language_change_updates_market": true,
+      "language_change_updates_title": true,
+      "no_horizontal_overflow": true,
+      "no_js_errors": true
+    },
+    "examples": {
+      "candidate": "Nenhuma compra confirmada",
+      "confirmed": "Confirmado: BAT",
+      "en_market": "Confirmed: BAT",
+      "en_wallet_title": "Portfolio"
+    },
+    "errors": []
+  },
+  {
+    "width": 412,
+    "checks": {
+      "home": true,
+      "mode_guide_hidden_home": true,
+      "wallet": true,
+      "market": true,
+      "market_detail_closed": true,
+      "alerts": true,
+      "history": true,
+      "settings": true,
+      "mode_guide_settings": true,
+      "candidate_not_confirmed": true,
+      "confirmed_only_with_explicit_state": true,
+      "language_change_updates_market": true,
+      "language_change_updates_title": true,
+      "no_horizontal_overflow": true,
+      "no_js_errors": true
+    },
+    "examples": {
+      "candidate": "Nenhuma compra confirmada",
+      "confirmed": "Confirmado: BAT",
+      "en_market": "Confirmed: BAT",
+      "en_wallet_title": "Portfolio"
+    },
+    "errors": []
+  }
+]

@@ -1,0 +1,151 @@
+{
+  "versao": "19.6.3",
+  "base": "19.6.2",
+  "rodadas": [
+    {
+      "rodada": 1,
+      "foco": "1 - Início sem repetições",
+      "checagens": [
+        {
+          "checagem": "Início contém somente um painel",
+          "ok": true
+        },
+        {
+          "checagem": "Quatro atalhos únicos",
+          "ok": true
+        },
+        {
+          "checagem": "Sem cartões secundários de moedas no início",
+          "ok": true
+        },
+        {
+          "checagem": "Patrimônio mostrado uma vez no painel inicial",
+          "ok": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 2,
+      "foco": "2 - Seções no local certo",
+      "checagens": [
+        {
+          "checagem": "Cada painel tem uma rota exclusiva",
+          "ok": true
+        },
+        {
+          "checagem": "Destaques em Mercado e recolhidos",
+          "ok": true
+        },
+        {
+          "checagem": "Destaques contêm ranking e dados originais",
+          "ok": true
+        },
+        {
+          "checagem": "Aporte e espelhamento pertencem à Carteira",
+          "ok": true
+        },
+        {
+          "checagem": "Alertas, notícias e histórico em áreas próprias",
+          "ok": true
+        },
+        {
+          "checagem": "Todas as seções existem na página",
+          "ok": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 3,
+      "foco": "3 - Uma única fonte de texto e confirmações",
+      "checagens": [
+        {
+          "checagem": "Resumo do mercado não é sobrescrito pelo motor",
+          "ok": true
+        },
+        {
+          "checagem": "Sem segundo timer que substitui os cartões",
+          "ok": true
+        },
+        {
+          "checagem": "Resumo exibe confirmação só com estado e nota mínima",
+          "ok": true
+        },
+        {
+          "checagem": "Cartões iniciais atualizados em um único bloco",
+          "ok": true
+        },
+        {
+          "checagem": "Atualização ligada à troca de idioma",
+          "ok": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 4,
+      "foco": "4 - Interface, histórico e títulos",
+      "checagens": [
+        {
+          "checagem": "Modo profissional somente em Configurações",
+          "ok": true
+        },
+        {
+          "checagem": "Traduções de títulos disponíveis",
+          "ok": true
+        },
+        {
+          "checagem": "Histórico oculto fora da rota",
+          "ok": true
+        },
+        {
+          "checagem": "Nenhum id HTML duplicado",
+          "ok": true
+        },
+        {
+          "checagem": "Destinos de botões têm rota",
+          "ok": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 5,
+      "foco": "5 - JavaScript, arquivos, Vercel e cache",
+      "checagens": [
+        {
+          "checagem": "Sintaxe de todos os JS e scripts inline",
+          "ok": true
+        },
+        {
+          "checagem": "Referências HTML locais existentes",
+          "ok": true
+        },
+        {
+          "checagem": "Builds da Vercel apontam para arquivos válidos",
+          "ok": true
+        },
+        {
+          "checagem": "Cache e pacote V19.6.3",
+          "ok": true
+        },
+        {
+          "checagem": "ZIP terá somente arquivos na raiz",
+          "ok": true
+        }
+      ],
+      "aprovada": true
+    }
+  ],
+  "total_checagens": 25,
+  "aprovadas": 25,
+  "scripts_js": 22,
+  "scripts_inline": 21,
+  "referencias_html": 14,
+  "configuracoes_vercel": 37,
+  "falhas_sintaxe": [],
+  "recursos_faltando": [],
+  "builds_faltando": [],
+  "limitacoes": "Auditoria de código e teste de navegação isolado; sem pagamentos reais, notificações em dispositivo ou consultas de mercado em produção."
+}

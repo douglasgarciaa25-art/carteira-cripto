@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.6.0 • Revisão de Push e Idiomas</title>
+<title>Cripto Radar V19.6.3 • Organização das Telas</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -654,6 +654,16 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </style>
 <link rel="stylesheet" href="./alerts-center.css">
 <link rel="stylesheet" href="./layout-v193.css?v=1930">
+<style id="v1963-hierarchy">
+/* V19.6.3 — hierarquia: controle de experiência só em Configurações. */
+.mode-guide{display:none!important}
+.route-settings .mode-guide{display:flex!important}
+.market-secondary-panel{border:1px solid #2c4b69;background:#0b1b2d;border-radius:17px;padding:13px 15px;margin:14px 0}
+.market-secondary-panel>summary{cursor:pointer;font-size:13px;font-weight:850;color:#c6defb;line-height:1.55}
+.market-secondary-panel[open]>summary{margin-bottom:12px}
+.market-secondary-panel #coins{margin-top:9px}
+@media(max-width:420px){.market-secondary-panel{padding:11px 12px}}
+</style>
 </head>
 <body>
 
@@ -693,7 +703,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.0 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.3 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -761,7 +771,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.0">V19.6.0</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.3">V19.6.3</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -770,20 +780,6 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
  <div><b id="modeGuideTitle">Modo Amador</b><div class="small" id="modeGuideText">Mostrando só o essencial para acompanhar sua carteira, alertas e oportunidades sem excesso de informação técnica.</div><span class="mode-chip" id="modeGuideChip">INTERFACE SIMPLIFICADA</span></div>
 
 </div>
-
-<section class="card v171-command" id="v171CommandCard">
-  <div class="v171-command-head">
-    <div><span class="v171-eyebrow">CENTRAL DO RADAR</span><h2>Visão rápida</h2></div>
-    <span class="v171-live"><i></i> AO VIVO</span>
-  </div>
-  <div class="v171-command-grid">
-    <button type="button" class="v171-command-item" data-route="wallet"><span>👛</span><small>Carteira</small><b id="v171Wallet">Carregando…</b></button>
-    <button type="button" class="v171-command-item" data-route="market"><span>📈</span><small>Mercado</small><b id="v171Market">Analisando…</b></button>
-    <button type="button" class="v171-command-item" data-route="alerts"><span>🚨</span><small>Alertas</small><b id="v171Alerts">Monitorando</b></button>
-    <button type="button" class="v171-command-item" data-route="ai"><span>🤖</span><small>IA Radar</small><b id="v171AI">Ativa</b></button>
-  </div>
-  <div class="v171-command-note">Informativo: o Cripto Radar não executa compras ou vendas automaticamente.</div>
-</section>
 
 <section class="card pro-sub-card" id="proSubscriptionCard" style="display:none">
   <div class="pro-sub-top"><div><div class="pro-sub-kicker">CRIPTO RADAR PRO</div><div class="pro-sub-title">Plano Anual</div><div class="small">Libere os recursos avançados e mantenha o Radar trabalhando 24h.</div></div><div><div class="pro-access-chip" id="proAccessChip">PLANO ANUAL</div><div class="pro-sub-price" data-pro-price>R$ 99,90/ano</div></div></div>
@@ -930,22 +926,11 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
     <button class="v17-home-card pro" data-route="ai" type="button"><div class="v17-home-icon">✦</div><small>IA Radar</small><b id="v17AiSummary">Análise em preparação</b><span>Leitura orientada da carteira</span></button>
   </div>
 
-  <div class="neo-status-grid">
-    <button class="neo-status-card" data-route="alerts" type="button">
-      <span class="neo-status-icon alert">!</span>
-      <span><small>Alarme</small><b id="homeAlarmState">Analisando…</b></span>
-      <em>›</em>
-    </button>
-    <button class="neo-status-card" data-route="market" type="button">
-      <span class="neo-status-icon trend">↗</span>
-      <span><small>Top oportunidade</small><b id="homeTopOpportunity">Buscando…</b></span>
-      <em>›</em>
-    </button>
-    <button class="neo-status-card" data-route="ai" type="button">
-      <span class="neo-status-icon ai">✦</span>
-      <span><small>IA Radar</small><b id="homeAiState">Iniciando…</b></span>
-      <em>›</em>
-    </button>
+  <!-- Dados compartilhados para os quatro cartões principais; não são blocos visuais duplicados. -->
+  <div id="homeSignalData" hidden aria-hidden="true">
+    <span id="homeAlarmState">Monitorando</span>
+    <span id="homeTopOpportunity">Aguardando confirmação</span>
+    <span id="homeAiState">Analisando mercado</span>
   </div>
 
   <div class="neo-advice">
@@ -953,13 +938,6 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
     <div class="neo-advice-text" id="homeActionText">O Radar está reunindo as primeiras leituras do mercado.</div>
   </div>
 
-  <div class="neo-quick-title"><b>Acesso rápido</b><span>toque para abrir</span></div>
-  <div class="home-shortcuts neo-shortcuts">
-    <button class="home-shortcut" data-route="wallet" type="button"><span class="home-shortcut-icon">◫</span><b>Carteira</b><span>Posições e aporte</span></button>
-    <button class="home-shortcut" data-route="market" type="button"><span class="home-shortcut-icon">⌁</span><b>Mercado</b><span>Ranking e tendências</span></button>
-    <button class="home-shortcut" data-route="alerts" type="button"><span class="home-shortcut-icon">⌁</span><b>Alertas</b><span>Risco e oportunidade</span></button>
-    <button class="home-shortcut" data-route="ai" type="button"><span class="home-shortcut-icon">✦</span><b>IA Radar</b><span>Leitura orientada</span></button>
-  </div>
   <div class="home-pro-tools">
     <button class="home-pro-tool" data-route="engine" type="button">Motor V10/V11</button>
     <button class="home-pro-tool" data-route="backtest" type="button">Backtest</button>
@@ -1073,13 +1051,15 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
     </div>
     <div class="ac-count" id="acCount" aria-live="polite">Aguardando dados do Radar…</div>
     <div class="ac-list" id="acList"></div>
-    <div class="ac-hist-wrap"><div class="ac-hist-head"><b>🕘 Histórico de mudanças</b><button type="button" id="acMarkAll" class="ac-muted">Marcar todos como lidos</button></div><div id="acHistory" aria-live="polite"><div class="ac-empty">Os sinais aparecerão aqui quando mudarem de estado.</div></div></div>
+    <details class="ac-hist-wrap secondary-panel-details"><summary>🕘 Histórico técnico de alterações de sinais</summary><div class="ac-hist-head"><b>Registros recentes</b><button type="button" id="acMarkAll" class="ac-muted">Marcar todos como lidos</button></div><div id="acHistory" aria-live="polite"><div class="ac-empty">Os sinais aparecerão aqui quando mudarem de estado.</div></div></details>
     <p class="ac-disclaimer">O painel só registra dados observados enquanto esta página está aberta. Push 24h depende da assinatura do dispositivo e do agendador externo. Sinais são heurísticos, não garantem lucro e não executam ordens.</p>
   </div>
 </section>
 
 <section class="card notify-card" id="notifyCard">
- <div class="coin">🔔 Notificações do Radar</div>
+ <details class="secondary-panel-details" id="pushAdvancedDetails">
+ <summary>🔔 Diagnóstico e testes avançados de notificações</summary>
+ <div class="coin">Notificações do Radar</div>
  <div class="small">Agora o Radar usa <b>Push 24h pelo servidor</b>. O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.</div>
  <div class="notify-row"><button id="enableNotifications" type="button">📡 ATIVAR PUSH 24H</button><button id="testServerPush" type="button">🛰️ TESTAR PUSH</button><button id="testLockedPush" type="button">🔒 TESTAR BLOQUEADO</button><button id="testBackgroundNotifications" type="button">🧪 TESTAR LOCAL</button><button id="installApp" type="button" style="display:none">📲 INSTALAR APP</button></div>
  <div id="notifyStatus" class="notify-status">Notificações ainda não ativadas.</div>
@@ -1087,6 +1067,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <div id="pushHealthV182" class="push-health-v182">Verificando saúde do Push 24h…</div>
  <div class="small" style="margin-top:5px">Agendador externo: <b>/api/push-cron</b> • requer programação externa para alertas com o app fechado.</div>
  <div id="notifyBgStatus" class="notify-status" style="margin-top:6px">Segundo plano local: preparando…</div>
+ </details>
 </section>
 
 <section class="card urgent-card" id="urgentRadarCard">
@@ -1094,13 +1075,6 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
  <div class="small">Cruza 1 min, 5 min, 15 min e 24h com volume, liquidez, peso na sua carteira e, quando disponível, funding/open interest/long-short. Também procura falha de pullback após rompimentos e exige 2 confirmações consecutivas nos sinais fortes para reduzir falso disparo.</div>
  <div id="urgentRadarList" class="urgent-list"><div class="small">Analisando sinais e buscando confirmações…</div></div>
 </section>
-
-<section class="card section-intro-card" id="highlightsCard" style="margin-bottom:12px">
-  <div class="coin">⭐ Destaques agora</div>
-  <div class="small">As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.</div>
-</section>
-<section class="grid" id="coins"><div class="card"><div class="small">Buscando os melhores destaques…</div></div></section>
-
 
 <section class="card" id="walletDashboardCard" aria-label="Painel da carteira">
  <div class="wd-head"><div><div class="wd-eyebrow">CARTEIRA INTELIGENTE • V18.7</div><h2>👛 Minha carteira</h2><p>Visão clara de patrimônio, riscos e decisões da IA.</p></div><span class="wd-live" id="wdUpdated">Analisando...</span></div>
@@ -1122,9 +1096,10 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div class="small">Informe quanto deseja investir. O Radar compara sua carteira, o mercado e os riscos para simular cenários conservador, equilibrado e agressivo.</div>
   <div class="cr191-aporte-form" role="group" aria-label="Simular aporte">
     <label class="cr191-aporte-input" for="aporte"><span>Valor do novo aporte (R$)</span><input id="aporte" type="number" value="100" min="1" step="0.01" inputmode="decimal" aria-label="Valor do aporte em reais"></label>
-    <button id="cr191AnalyzeAporte" class="cr191-aporte-btn" type="button" onclick="window.CriptoRadarMarketIntelligence?.render(); document.getElementById('marketIntelligenceCard')?.scrollIntoView({behavior:'smooth',block:'start'})"><span aria-hidden="true">↗</span> Analisar aporte</button>
+    <button id="cr191AnalyzeAporte" class="cr191-aporte-btn" type="button" onclick="window.CriptoRadarMarketIntelligence?.render?.(); window.crRadarOpenView?.('market')"><span aria-hidden="true">↗</span> Analisar aporte</button>
   </div>
-  <div id="allocation" style="display:none"></div>
+  <div class="small aporte-location-note">A análise técnica detalhada será exibida na seção Mercado.</div>
+ <div id="allocation" style="display:none"></div>
   <div id="smartAllocation" class="smart-allocation" style="display:none">
     <div class="smart-allocation-title">🤖 Movimentação inteligente da carteira</div>
     <div class="small">A IA/Radar considera todas as moedas que você já possui e as melhores oportunidades atuais para sugerir onde manter, reduzir ou direcionar um novo aporte. É uma análise informativa e não garante lucro.</div>
@@ -1164,8 +1139,8 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </section>
 
 <section class="card" id="opportunitiesCard">
-  <div class="coin">🏆 Melhores oportunidades agora</div>
-  <div class="small">Top 5 dinâmico do mercado analisado. As moedas entram, saem e mudam de posição automaticamente conforme força de 24h, liquidez e volume.</div>
+  <div class="coin">📊 Movimentos relevantes do mercado (24h)</div>
+  <div class="small">Lista dinâmica baseada em variação de 24h, liquidez e volume. Não equivale a recomendação de compra confirmada.</div>
   <div id="opportunities" style="margin-top:10px">Buscando oportunidades…</div>
   <div class="small" style="margin-top:10px">🆕 entrou no Top 5 • ⬆️ subiu • ⬇️ caiu • ➖ manteve posição. O ranking é informativo e não garante retorno.</div>
 </section>
@@ -1244,6 +1219,9 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
     <div class="wallet-tools"><button id="addWalletRow" type="button">+ Adicionar linha</button><button id="saveWallet" type="button">✓ CONFIRMAR E ATUALIZAR</button></div>
   </div>
 
+  <details class="wallet-secondary-details" id="walletLegacyDetails">
+    <summary>Consultar análises complementares da carteira</summary>
+    <p class="wallet-secondary-help">Informações detalhadas do painel anterior. O patrimônio e os ativos já aparecem no resumo principal acima.</p>
   <div class="wallet-value-card">
     <div class="wallet-value-head"><div class="small">Valor aproximado da carteira</div><div class="small">Atualização automática</div></div>
     <div id="walletTotal" class="wallet-total">Carregando…</div>
@@ -1255,6 +1233,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div id="walletBuyAlerts" class="buy-alert-box" style="display:none"></div>
   <div id="walletOpportunities" class="wallet-opps"></div>
   <div id="walletTable" aria-label="Posições da carteira"></div>
+  </details>
 </section>
 
 
@@ -1305,6 +1284,18 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   </div>
 </section>
 
+<details id="marketTopMoversDetails" class="card market-secondary-panel app-view-section route-hidden">
+ <summary>📈 Ver três destaques do mercado (lista complementar)</summary>
+ <p class="small">O ranking técnico completo permanece acima. Abra esta lista apenas para comparar os três destaques de variação de preço.</p>
+<section class="card section-intro-card" id="highlightsCard" style="margin-bottom:12px">
+  <div class="coin">⭐ Três movimentos de preço em destaque</div>
+  <div class="small">As 3 moedas com melhor pontuação do Radar aparecem aqui. Não são moedas fixas: entram, saem e mudam de posição automaticamente.</div>
+</section>
+<section class="grid" id="coins"><div class="card"><div class="small">Buscando os melhores destaques…</div></div></section>
+
+
+
+</details>
 <section class="card neo-feed" id="marketRumorsCard">
   <div class="neo-feed-head">
     <div><div class="neo-eyebrow">RADAR SOCIAL</div><div class="coin" id="marketRumorsTitle">Boatos e notícias do mercado</div></div>
@@ -1391,7 +1382,7 @@ async function getRadarSW(){
  if(radarSWPromise)return radarSWPromise;
  radarSWPromise=(async()=>{
   try{
-   const reg=await navigator.serviceWorker.register('./sw.js?v=1959',{updateViaCache:'none'});
+   const reg=await navigator.serviceWorker.register('./sw.js?v=1963',{updateViaCache:'none'});
    try{await reg.update()}catch(e){}
    return await navigator.serviceWorker.ready;
   }catch(e){radarSWPromise=null;return null}
@@ -2805,7 +2796,7 @@ const renderUrgentRadarBeforePullback=renderUrgentRadar;renderUrgentRadar=functi
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{refreshRadarTechnicals()},1800)}); // V5 UI ocultada na V8 limpa
 </script>
 
-<script src="./ai-radar.js?v=1959"></script>
+<script src="./ai-radar.js?v=1963"></script>
 
 <script>
 function renderSmartAllocation(){
@@ -3536,21 +3527,56 @@ window.v8RunBacktest=run;
 
 
 <script>
-/* ===== Home Dashboard Sync ===== */
+/* ===== Home Dashboard Sync: painel compacto e fonte única ===== */
 (function(){
  const $=id=>document.getElementById(id);
- function firstText(root,sel){const e=root?.querySelector?.(sel);return String(e?.textContent||'').replace(/\s+/g,' ').trim()}
- function cleanOpportunity(t){if(!t)return 'Buscando…';return t.replace(/^[🏆⭐\s]*/,'').replace(/\s+/g,' ').trim().slice(0,28)}
- function syncHome(){
-  const wallet=String($('walletTotal')?.textContent||'').trim();if(wallet&&wallet!=='Carregando…')$('homeWalletValue').textContent=wallet;
-  const urgent=$('urgentRadarList'),u=firstText(urgent,'.urgent-title')||String(urgent?.textContent||'').trim();
-  const alarm=$('homeAlarmState');if(alarm&&u){alarm.textContent=/CRÍTICO|RISCO|ALERTA/i.test(u)?u.replace(/^[^A-ZÀ-Ú0-9]*/,'').slice(0,24):/Nenhum sinal|NORMAL/i.test(u)?'Normal':'Monitorando';alarm.className='home-metric-value '+(/CRÍTICO|RISCO/i.test(u)?'risk':/ALERTA|ATENÇÃO/i.test(u)?'warn':'ok')}
-  const opp=firstText($('opportunities'),'.row b')||firstText($('coins'),'.coin');if(opp&&$('homeTopOpportunity'))$('homeTopOpportunity').textContent=cleanOpportunity(opp);
-  const ai=String($('aiStatus')?.textContent||'').replace(/^●\s*/,'').trim();if(ai&&$('homeAiState'))$('homeAiState').textContent=ai.replace(/\s*•.*/,'').slice(0,22);
-  const action=$('homeActionText');if(action){if(/CRÍTICO|RISCO/i.test(u))action.textContent='Há sinal de risco na carteira. Abra Alertas e revise a posição antes de pensar em novo aporte.';else if(/ALERTA|ATENÇÃO/i.test(u))action.textContent='Existe movimento em observação. Aguarde confirmação do Radar antes de agir.';else if(opp)action.textContent='Sem risco urgente na carteira. Acompanhe '+cleanOpportunity(opp)+' e os boatos abaixo antes de qualquer decisão.';else action.textContent='Sem risco urgente detectado. O Radar continua atualizando mercado, carteira e IA.'}
+ const clean=s=>String(s||'').replace(/\s+/g,' ').trim();
+ const i18n=(pt,en,es)=>{const l=String(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt').toLowerCase();return l.startsWith('en')?en:l.startsWith('es')?es:pt};
+ function candidate(){
+   try{
+     if(typeof latestOpportunities!=='undefined'&&Array.isArray(latestOpportunities)){
+       const confirmed=latestOpportunities.find(x=>{
+         const state=clean(x?.signalState||x?.state||x?.status).toLowerCase();
+         const score=Number(x?.score??x?.confidence??0);
+         return ['confirmed','strong','good','confirmado','confirmada'].includes(state)&&Number.isFinite(score)&&score>=72;
+       });
+       const symbol=clean(confirmed?.symbol).toUpperCase().replace(/USDT$/,'');
+       if(/^[A-Z0-9]{2,12}$/.test(symbol)&&!['USDT','USDC','FDUSD','DAI'].includes(symbol))return symbol;
+     }
+   }catch(e){}
+   return '';
  }
- function observe(id){const e=$(id);if(!e)return;new MutationObserver(syncHome).observe(e,{subtree:true,childList:true,characterData:true,attributes:true})}
- ['walletTotal','urgentRadarList','opportunities','coins','aiStatus'].forEach(observe);setInterval(syncHome,5000);setTimeout(syncHome,800);
+ function status(){
+   const root=$('urgentRadarList');
+   const summary=root?.querySelector('.urgent-summary-box:nth-child(2) b');
+   const sentence=clean(summary?.textContent);
+   const n=Number((sentence.match(/^\d+/)||[])[0]||0);
+   const riskSection=[...(root?.querySelectorAll('.urgent-section')||[])].find(e=>/RISCO NA SUA CARTEIRA/i.test(e.querySelector('.urgent-section-title')?.textContent||''));
+   const possible=Number(riskSection?.querySelectorAll('.urgent-item').length||0)>0;
+   const loading=!root?.querySelector('.urgent-summary');
+   return {confirmed:n>0,possible,loading};
+ }
+ function syncHome(){
+   const wallet=clean($('walletTotal')?.textContent);if(wallet&&wallet!=='Carregando…'&&$('homeWalletValue'))$('homeWalletValue').textContent=wallet;
+   const alarm=$('homeAlarmState'),s=status();
+   if(alarm){
+     alarm.textContent=s.confirmed?i18n('Risco confirmado','Confirmed risk','Riesgo confirmado'):s.possible?i18n('Risco em observação','Risk under review','Riesgo en observación'):s.loading?i18n('Monitorando','Monitoring','Monitoreando'):i18n('Sem risco forte confirmado','No confirmed major risk','Sin riesgo fuerte confirmado');
+     alarm.className='home-metric-value '+(s.confirmed?'risk':s.possible?'warn':'ok');
+   }
+   const sym=candidate(),opp=$('homeTopOpportunity');if(opp)opp.textContent=sym?i18n('Sinal confirmado: ','Confirmed: ','Confirmado: ')+sym:i18n('Aguardando confirmação','Awaiting confirmation','Esperando confirmación');
+   const ai=clean($('aiStatus')?.textContent).replace(/^●\s*/,'').replace(/\s*•.*/,'');if($('homeAiState'))$('homeAiState').textContent=ai?ai.slice(0,32):i18n('Analisando mercado','Analyzing the market','Analizando el mercado');
+   // Fonte única dos cartões: não ler rankings parcialmente formatados nem ecoar textos antigos.
+   const cardWallet=$('v17WalletSummary');if(cardWallet)cardWallet.textContent=i18n('Ver posições','View holdings','Ver posiciones');
+   const cardMarket=$('v17MarketSummary');if(cardMarket)cardMarket.textContent=sym?i18n('Confirmado: ','Confirmed: ','Confirmado: ')+sym:i18n('Nenhuma compra confirmada','No confirmed buy','Ninguna compra confirmada');
+   const cardAlerts=$('v17AlertSummary');if(cardAlerts)cardAlerts.textContent=alarm?.textContent||i18n('Verificando riscos','Checking risks','Verificando riesgos');
+   const cardAi=$('v17AiSummary');if(cardAi)cardAi.textContent=i18n('Análise disponível','Analysis available','Análisis disponible');
+   const action=$('homeActionText');if(action){
+     action.textContent=s.confirmed?i18n('Existe risco forte confirmado na carteira. Consulte Alertas antes de realizar novo aporte.','A major portfolio risk is confirmed. Review Alerts before adding funds.','Hay un riesgo fuerte confirmado en la cartera. Revise Alertas antes de aportar.'):s.possible?i18n('Há um risco em observação, ainda sem confirmação forte. Acompanhe a central de Alertas.','A risk is under review, without strong confirmation. Check Alerts.','Hay un riesgo en observación, todavía sin confirmación fuerte. Consulte Alertas.'):s.loading?i18n('O Radar está analisando os dados da carteira e do mercado.','Radar is analyzing portfolio and market data.','Radar está analizando la cartera y el mercado.'):i18n('Confira oportunidades confirmadas em Mercado antes de decidir sobre novos aportes.','Review confirmed market opportunities before deciding on new contributions.','Revise oportunidades confirmadas en Mercado antes de decidir nuevos aportes.');
+   }
+ }
+ function observe(id){const el=$(id);if(el)new MutationObserver(syncHome).observe(el,{subtree:true,childList:true,characterData:true})}
+ ['walletTotal','urgentRadarList','aiStatus'].forEach(observe);setInterval(syncHome,5000);setTimeout(syncHome,800);window.addEventListener('criptoradar:languagechange',syncHome);
+ window.CriptoRadarHomeCompact={sync:syncHome,candidate,status};
 })();
 </script>
 
@@ -3692,6 +3718,22 @@ window.v8RunBacktest=run;
 .v17-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.v17-setting{border:1px solid #28405d;border-radius:16px;background:#0a1624;padding:13px}.v17-setting h3{font-size:13px;margin:0 0 4px}.v17-setting p{font-size:10px;color:#8498b3;margin:0 0 9px;line-height:1.4}.v17-setting select,.v17-setting input{width:100%;min-height:43px;border:1px solid #31506f;background:#071522;color:#eef5ff;border-radius:11px;padding:0 10px;font-weight:800;outline:none}.v17-setting input{padding:10px}.v17-settings-status{margin-top:10px;padding:10px 12px;border-radius:12px;background:#0d2132;border:1px solid #255478;color:#bfe1ff;font-size:11px}.v17-legal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}.v17-legal a{display:block;text-decoration:none;color:#d9e9ff;border:1px solid #2c4665;border-radius:13px;padding:11px;background:#0a1726;font-size:11px;font-weight:900;text-align:center}.v17-warning{margin-top:12px;padding:11px 12px;border-radius:13px;border:1px solid #715928;background:#2a230f66;color:#f2d58f;font-size:10px;line-height:1.5}.app-nav-section.v17-label{color:#6f8ead}.v17-version-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;background:#102039;border:1px solid #2d4a6d;color:#a9c8ee;font-size:9px;font-weight:900;margin-top:5px}
 .mode-amateur [data-v17-advanced]{display:none!important}.mode-professional .v17-home-card{min-height:118px}.mode-professional .v17-home-card span{display:block}.mode-amateur .v17-home-card span{display:none}.mode-amateur .v17-home-grid{grid-template-columns:1fr 1fr}.mode-amateur .home-pro-tools{display:none!important}.mode-professional .home-pro-tools{display:flex!important}.mode-professional .mode-guide{border-color:#6b54a8;background:linear-gradient(145deg,#1b1730,#0e1827)}
 @media(max-width:680px){.v17-home-grid{grid-template-columns:1fr 1fr}.v17-plan-grid,.v17-settings-grid{grid-template-columns:1fr}.v17-legal{grid-template-columns:1fr}.v17-title{font-size:21px}}
+
+/* V19.6.3 — informações secundárias só sob demanda; mantém os elementos e cálculos existentes. */
+.secondary-panel-details>summary{cursor:pointer;font-size:13px;font-weight:850;color:#bad6f4;line-height:1.5;padding:6px 2px;list-style:revert}
+.secondary-panel-details[open]>summary{margin-bottom:12px}
+.notify-card .secondary-panel-details>.coin{margin-bottom:6px}
+.ac-hist-wrap.secondary-panel-details{border:1px solid #29445f;border-radius:13px;padding:10px;margin-top:10px}
+
+.wallet-secondary-details{margin-top:14px;padding:10px 12px;border:1px solid #294766;border-radius:15px;background:#081626}
+.wallet-secondary-details>summary{cursor:pointer;font-size:13px;font-weight:850;color:#c4dcf7;list-style:revert;padding:5px 2px;line-height:1.5}
+.wallet-secondary-details[open]>summary{margin-bottom:10px}
+.wallet-secondary-help{font-size:11px;color:#8ba2bc;line-height:1.5;margin-bottom:12px}
+.aporte-location-note{margin-top:8px;color:#91b7da}
+#homeDashboardCard .v17-home-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+#homeDashboardCard .v17-home-card{max-width:100%;min-width:0;overflow-wrap:anywhere}
+#homeDashboardCard .v17-home-card b{overflow-wrap:anywhere}
+@media(max-width:380px){#homeDashboardCard .v17-home-grid{gap:8px;padding:9px!important}#homeDashboardCard .v17-home-card{padding:9px!important;min-height:136px!important}}
 </style>
 
 
@@ -3749,7 +3791,7 @@ window.v8RunBacktest=run;
 })();
 </script>
 
-<script src="./i18n.js?v=1959"></script>
+<script src="./i18n.js?v=1963"></script>
 <style>
 .dev-owner-card{margin:12px 0 18px;padding:13px;border:1px solid #315d75;border-radius:15px;background:#0b2233;color:#e4efff}
 .dev-owner-card summary{cursor:pointer;font-weight:800;list-style:revert}.dev-owner-card p{line-height:1.5}
@@ -3766,11 +3808,11 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
 (function(){
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
-  home:{title:'Início',ids:['v171CommandCard','homeDashboardCard','cr183Dashboard','v9Command','urgentRadarCard','highlightsCard','coins','marketRumorsCard']},
-  wallet:{title:'Carteira',ids:['walletDashboardCard','marketIntelligenceCard','aporteCard','copyMirrorCard','walletCaptureCard']},
-  market:{title:'Mercado',ids:['marketIntelligenceCard','bt184Card','opportunitiesCard','marketRumorsCard','trendsCard']},
-  alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard','copyMirrorCard']},
-  history:{title:'Histórico',ids:['v171HistoryCard']},
+  home:{title:'Início',ids:['homeDashboardCard']},
+  wallet:{title:'Carteira',ids:['walletDashboardCard','walletCaptureCard','aporteCard','copyMirrorCard']},
+  market:{title:'Mercado',ids:['marketIntelligenceCard','opportunitiesCard','marketTopMoversDetails','marketRumorsCard','trendsCard']},
+  alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard']},
+  history:{title:'Histórico',ids:['v171HistoryCard','bt184Card']},
   ai:{title:'IA Radar',paid:true,ids:['aiRadarCard']},
   security:{title:'Segurança',ids:['securityCard']},
   settings:{title:'Configurações',ids:['settingsCard']},
@@ -3778,7 +3820,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   engine:{paid:true,title:'Motor profissional',pro:true,ids:['v10CoreCard','v11LiveCard']},
   backtest:{paid:true,title:'Backtest & Calibração',pro:true,ids:['v8BacktestCard']},
   paper:{paid:true,title:'Paper Trading',pro:true,ids:['v7ValidationCard']},
-  system:{paid:true,title:'Sistema & Fontes',pro:true,ids:['sourcesCard','protectionCard','importantCard']}
+  system:{paid:true,title:'Sistema & Fontes',pro:true,ids:['sourcesCard','protectionCard','importantCard','cr183Dashboard']}
  };
  const allIds=[...new Set(Object.values(routes).flatMap(r=>r.ids))];
  const $=id=>document.getElementById(id);
@@ -3810,11 +3852,15 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   if(routes[route]?.paid&&!window.CriptoRadarPro?.isActive?.()){if(save)window.CriptoRadarPro?.openPaywall?.(routes[route].title);route='home';}
   if(!routes[route]||(routes[route].pro&&mode!=='professional'))route='home';
   [...document.body.classList].filter(x=>x.startsWith('route-')).forEach(x=>document.body.classList.remove(x));document.body.classList.add('route-'+route);
-  if($('marketRumorsTitle'))$('marketRumorsTitle').textContent=route==='home'?'🗣️ Boatos que podem mexer com sua carteira':'🗣️ Boatos e notícias do mercado';
+  if($('marketRumorsTitle'))$('marketRumorsTitle').textContent='🗣️ Boatos e notícias do mercado';
   allIds.forEach(id=>{const el=$(id);if(el){el.classList.add('app-view-section','route-hidden');el.classList.remove('route-visible')}});
   (routes[route].ids||[]).forEach(id=>{const el=$(id);if(el){el.classList.remove('route-hidden');el.classList.add('route-visible')}});
   document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route));
-  if($('appViewTitle'))$('appViewTitle').textContent=routes[route].title;
+  if($('appViewTitle')){
+    const lang=String(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt').toLowerCase();
+    const headings={home:['Início','Home','Inicio'],wallet:['Carteira','Portfolio','Cartera'],market:['Mercado','Market','Mercado'],alerts:['Alertas','Alerts','Alertas'],history:['Histórico','History','Historial'],ai:['IA Radar','Radar AI','IA Radar'],security:['Segurança','Security','Seguridad'],settings:['Configurações','Settings','Configuración'],pro:['PRO Anual','Annual PRO','PRO Anual'],engine:['Motor profissional','Professional engine','Motor profesional'],backtest:['Backtest e calibração','Backtest and calibration','Backtest y calibración'],paper:['Simulação','Paper trading','Simulación'],system:['Sistema e fontes','System and sources','Sistema y fuentes']};
+    const names=headings[route];$('appViewTitle').textContent=names?names[lang.startsWith('en')?1:lang.startsWith('es')?2:0]:routes[route].title;
+  }
   if(save)localStorage.setItem(ROUTE_KEY,route);
   closeMenu();
   setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),10);
@@ -3831,13 +3877,19 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
  const stored=localStorage.getItem(MODE_KEY);if(!stored)choice?.classList.add('show');
  setMode(stored||'amateur',false);setRoute(localStorage.getItem(ROUTE_KEY)||'home',false);
+ // O histórico é declarado depois deste script; inicialize-o após o HTML estar completo.
+ document.addEventListener('DOMContentLoaded',()=>{
+  const hist=$('v171HistoryCard');if(hist)hist.classList.add('app-view-section');
+  setRoute(localStorage.getItem(ROUTE_KEY)||'home',false);
+ },{once:true});
  window.crRadarSetMode=setMode;window.crRadarOpenView=setRoute;
+ window.addEventListener('criptoradar:languagechange',()=>setRoute(localStorage.getItem(ROUTE_KEY)||'home',false));
  window.addEventListener('criptoradar:prochange',e=>{if(e.detail?.active){setMode(getMode(),false);setRoute(localStorage.getItem(ROUTE_KEY)||'home',false)}else if(getMode()==='professional'){setMode('amateur');setRoute('home')}});
 })();
 </script>
 
 
-<section class="card v171-history-card" id="v171HistoryCard">
+<section class="card v171-history-card app-view-section route-hidden" id="v171HistoryCard">
   <div class="v171-history-head">
     <div><div class="v171-eyebrow">REGISTRO LOCAL</div><div class="coin">🕘 Histórico do Radar</div>
     <div class="small">Alertas e oportunidades importantes salvos neste aparelho.</div></div>
@@ -3863,13 +3915,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  function render(){const st=read();if($('v17AlertFrequency'))$('v17AlertFrequency').value=st.alertFrequency;if($('v17RiskLevel'))$('v17RiskLevel').value=st.riskLevel;if($('v17Favorites'))$('v17Favorites').value=(st.favorites||[]).join(', ');window.CriptoRadarSettings=st}
  ['v17AlertFrequency','v17RiskLevel','v17Favorites'].forEach(id=>$(id)?.addEventListener('change',save));$('v17Favorites')?.addEventListener('blur',save);
  $('v17FinancialNotice')?.addEventListener('click',e=>{e.preventDefault();$('v17FinancialNoticeBox')?.scrollIntoView({behavior:'smooth',block:'center'})});
- function syncHome(){
-  const wallet=String(document.getElementById('homeWalletValue')?.textContent||'').trim();if(wallet&&wallet!=='Carregando…'&&$('v17WalletSummary'))$('v17WalletSummary').textContent=wallet;
-  const market=String(document.getElementById('homeTopOpportunity')?.textContent||'').trim();if(market&&$('v17MarketSummary'))$('v17MarketSummary').textContent=market;
-  const alarm=String(document.getElementById('homeAlarmState')?.textContent||'').trim();if(alarm&&$('v17AlertSummary'))$('v17AlertSummary').textContent=alarm;
-  const ai=String(document.getElementById('homeAiState')?.textContent||'').trim();if(ai&&$('v17AiSummary'))$('v17AiSummary').textContent=ai;
- }
- render();setTimeout(syncHome,1200);setInterval(syncHome,4000);
+ render();
 })();
 </script>
 
@@ -3979,9 +4025,9 @@ body{padding-bottom:74px}
 })();
 </script>
 
-<script src="./market-intelligence.js?v=1959"></script>
-<script src="./wallet-dashboard.js?v=1959"></script>
-<script src="./alerts-center.js?v=1959"></script>
+<script src="./market-intelligence.js?v=1963"></script>
+<script src="./wallet-dashboard.js?v=1963"></script>
+<script src="./alerts-center.js?v=1963"></script>
 
 <script>
 /* ===== V19.4 • Push Health: servidor, inscrição local e entrega diferenciados ===== */
@@ -4268,5 +4314,15 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 <link rel="stylesheet" href="./design-v190.css?v=1901">
 <link rel="stylesheet" href="./layout-v191.css?v=1912">
 <link rel="stylesheet" href="./layout-v194.css?v=1940">
-<link rel="stylesheet" href="./layout-v195.css?v=1959">
+<link rel="stylesheet" href="./layout-v195.css?v=1963">
+<style id="homeCompact1962">
+/* V19.6.3: dashboard single-card group, readable values, no text clipping */
+#homeDashboardCard .v17-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px!important}
+#homeDashboardCard .v17-home-card{min-width:0;width:100%;height:auto!important;min-height:148px!important;overflow-wrap:anywhere;text-align:left}
+#homeDashboardCard .v17-home-card b{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden!important}
+#homeDashboardCard .neo-advice{margin-top:5px!important}
+#homeDashboardCard .neo-balance-head{gap:10px;flex-wrap:wrap}
+#homeDashboardCard .neo-balance{overflow-wrap:anywhere}
+@media(max-width:390px){#homeDashboardCard .v17-home-grid{gap:9px;padding:10px!important}#homeDashboardCard .v17-home-card{padding:12px!important;min-height:130px!important}#homeDashboardCard .v17-home-card small{font-size:12px!important}#homeDashboardCard .v17-home-card b{font-size:17px!important}}
+</style>
 </body></html>

@@ -1,0 +1,12 @@
+CRIPTO RADAR V19.6.3 — CINCO RODADAS DE CORREÇÃO
+Base: V19.6.2.
+
+1. Tela inicial: mantém apenas o painel com quatro atalhos. Os cartões de moedas e destaques saíram da página inicial.
+2. Mercado: lista de três destaques movida para área Mercado e recolhida por padrão, sem repetir o ranking principal.
+3. Mensagens: removidas atualizações concorrentes dos cartões de Mercado e IA, com texto explícito para sinais realmente confirmados e status traduzidos.
+4. Interface: descrição de modo profissional fica em Configurações, não em todas as telas; cabeçalhos das rotas são localizados na troca do idioma.
+5. Publicação: versão e cache atualizados e auditoria estática + simulação de navegação móvel registradas no relatório JSON.
+
+LIMITES: não foram executados pagamentos reais nem notificações no Android com app fechado. IA/mercado com APIs reais também requer validação no ambiente publicado. Não é possível garantir ausência total de erros só com testes locais.
+
+INSTALAÇÃO: extraia o ZIP completo na raiz do GitHub e aguarde publicação Vercel. Evite enviar os arquivos dentro de subpasta.

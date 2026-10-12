@@ -1,0 +1,15 @@
+CRIPTO RADAR V19.6.1 — TELA INICIAL SEM REPETIÇÕES
+Base: V19.6.0.
+
+Correções:
+1. Removida a Central do Radar duplicada na tela inicial.
+2. Mantidos apenas os quatro cartões Carteira, Mercado, Alertas e IA, junto do patrimônio.
+3. Removidos os três status repetidos e os quatro atalhos redundantes.
+4. Diagnóstico V18.3 movido para Sistema (modo PRO), alarme detalhado somente em Alertas.
+5. Leitura de risco não confunde a expressão negativa «sem risco forte» com alerta positivo.
+6. Ranking só mostra símbolo de moeda válido, caso contrário informa falta de sinal.
+7. Cartões mais legíveis no Android, com textos quebrados e sem truncamento lateral.
+8. Nova versão de cache PWA para forçar atualização.
+
+Testes locais: verificados existência/contagem das seções, rotas, sintaxe de arquivos .js e scripts inline, integridade ZIP.
+Limitacao: layout e sinais no dispositivo Android real exigem validação após a publicação.

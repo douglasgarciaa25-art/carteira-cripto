@@ -1,0 +1,45 @@
+CRIPTO RADAR V19.6.2 — CINCO RODADAS DE ORGANIZAÇÃO
+Base: V19.6.1. Pacote completo com todos os arquivos na raiz.
+
+RODADA 1 — TELA INICIAL
+- Preservados apenas os 4 cartões principais (Carteira, Mercado, Alertas, IA).
+- Patrimônio exibido uma vez; o cartão Carteira passa a convidar a consultar posições.
+- Boatos/notícias removidos da tela inicial e concentrados em Mercado.
+- Texto do Radar ajustado para orientar sem repetir a mensagem do alarme.
+
+RODADA 2 — SEÇÃO CORRETA
+- Inteligência e notícias: Mercado.
+- Espelhamento Inteligente: Carteira (não mais em Alertas).
+- Backtest/histórico local V18.4: Histórico, sem misturar com oportunidades de Mercado.
+- Nenhum painel principal pertence a duas rotas simultaneamente.
+
+RODADA 3 — REPETIÇÕES SECUNDÁRIAS
+- Análises antigas da carteira preservadas em um painel recolhido opcional.
+- Testes avançados Push recolhidos em Alertas; botões principais seguem acessíveis na Central.
+- Histórico técnico recente de alertas recolhido; histórico completo fica na própria área Histórico.
+- Ranking de movimentação de 24h renomeado para não se confundir com recomendações confirmadas.
+
+RODADA 4 — ROTAS E BOTÕES
+- Corrigida a inicialização tardia do painel Histórico, que podia aparecer fora da página.
+- Botão Analisar aporte agora abre a análise detalhada na seção Mercado.
+- Conferidos os identificadores das seções e destinos de navegação.
+
+RODADA 5 — INTEGRIDADE E RESPONSIVIDADE
+- Revisados scripts JavaScript inline e externos, links de CSS/JS, configuração Vercel e cache PWA.
+- Testado o roteamento isolado em navegador Chromium com telas de 360 e 412 pixels.
+- Nenhum erro encontrado nas verificações executadas. Os limites reais de redes, Android,
+  Push com app fechado, pagamentos e tradução externa ainda exigem validação no aparelho.
+
+RESULTADO
+5 rodadas, 23 testes automatizados de estrutura/integridade aprovados.
+Roteamento isolado aprovado nas larguras de 360 e 412 px. Os módulos de mercado,
+notificações e pagamentos não foram testados ao vivo, nem a renderização integral
+em produção. Não se afirma ausência absoluta de defeitos.
+
+INSTALAÇÃO
+1. Extraia o ZIP; todos os arquivos devem ficar na raiz do repositório GitHub.
+2. Atualize o repositório e confirme a publicação da nova versão na Vercel.
+3. Reinicie o aplicativo e confira as áreas Início, Carteira, Mercado, Alertas e Histórico.
+4. Se ainda aparecer a versão antiga, atualize o cache/Service Worker no navegador.
+
+A publicação na Vercel não foi realizada nesta auditoria.

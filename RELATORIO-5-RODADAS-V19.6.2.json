@@ -1,0 +1,140 @@
+{
+  "versao": "19.6.2",
+  "base": "19.6.1",
+  "rodadas": [
+    {
+      "rodada": 1,
+      "foco": "1. Página inicial sem dados e cartões duplicados",
+      "testes": [
+        {
+          "teste": "Apenas um grupo de quatro cartões",
+          "aprovado": true
+        },
+        {
+          "teste": "O patrimônio aparece no topo, sem repetir o valor no cartão Carteira",
+          "aprovado": true
+        },
+        {
+          "teste": "Boatos ficam exclusivamente em Mercado",
+          "aprovado": true
+        },
+        {
+          "teste": "Sem atalhos antigos de acesso rápido",
+          "aprovado": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 2,
+      "foco": "2. Informações alocadas na seção correta",
+      "testes": [
+        {
+          "teste": "Nenhuma seção pertence simultaneamente a duas rotas",
+          "aprovado": true
+        },
+        {
+          "teste": "Central técnica e notícias pertencem a Mercado",
+          "aprovado": true
+        },
+        {
+          "teste": "Espelhamento e aporte pertencem à Carteira",
+          "aprovado": true
+        },
+        {
+          "teste": "Backtest histórico local fica em Histórico",
+          "aprovado": true
+        },
+        {
+          "teste": "Todas as seções roteadas existem no documento",
+          "aprovado": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 3,
+      "foco": "3. Duplicações e detalhes secundários",
+      "testes": [
+        {
+          "teste": "A análise legada da carteira está recolhida por padrão",
+          "aprovado": true
+        },
+        {
+          "teste": "Valores, análises e posições continuam disponíveis",
+          "aprovado": true
+        },
+        {
+          "teste": "Diagnóstico Push complementar recolhido por padrão",
+          "aprovado": true
+        },
+        {
+          "teste": "Histórico técnico de alertas recolhido por padrão",
+          "aprovado": true
+        },
+        {
+          "teste": "Nenhum identificador HTML repetido",
+          "aprovado": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 4,
+      "foco": "4. Navegação e destino das ações",
+      "testes": [
+        {
+          "teste": "Histórico começa oculto fora da rota Histórico",
+          "aprovado": true
+        },
+        {
+          "teste": "Histórico é inicializado quando o DOM termina",
+          "aprovado": true
+        },
+        {
+          "teste": "Simular aporte leva à análise de Mercado",
+          "aprovado": true
+        },
+        {
+          "teste": "Sem botão de acesso apontando para rota inexistente",
+          "aprovado": true
+        }
+      ],
+      "aprovada": true
+    },
+    {
+      "rodada": 5,
+      "foco": "5. Layout, scripts, recursos e publicação",
+      "testes": [
+        {
+          "teste": "Todos os scripts são sintaticamente válidos",
+          "aprovado": true
+        },
+        {
+          "teste": "Todos os arquivos locais referenciados existem",
+          "aprovado": true
+        },
+        {
+          "teste": "Todos os arquivos da configuração Vercel existem",
+          "aprovado": true
+        },
+        {
+          "teste": "Versão do pacote e cache atualizados",
+          "aprovado": true
+        },
+        {
+          "teste": "CSS dos cartões usa grid responsivo",
+          "aprovado": true
+        }
+      ],
+      "aprovada": true
+    }
+  ],
+  "total_testes": 23,
+  "testes_aprovados": 23,
+  "scripts_js": 22,
+  "scripts_inline": 21,
+  "recursos_html_local": 14,
+  "arquivos_vercel": 37,
+  "observacao": "Testes estáticos e roteamento visual isolado em Chromium 360/412px. A execução integral do aplicativo no navegador foi bloqueada pelo ambiente; verificar no Android publicado. Serviços Push/PRO externos não foram testados."
+}
