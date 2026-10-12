@@ -1,0 +1,32 @@
+CRIPTO RADAR V19.6.4 — MELHORIAS GERAIS DE LAYOUT (5 RODADAS)
+
+Base: V19.6.3. Projeto completo, com os arquivos na raiz do ZIP.
+
+Rodada 1 — Identidade visual e tipografia:
+   Superfícies, bordas, contrastes, ritmo de espaços, foco visível e botões.
+Rodada 2 — Início:
+   Cabeçalho, status, patrimônio, hierarquia de 4 cartões e texto sem cortes.
+Rodada 3 — Carteira, Mercado, Alertas e configurações:
+   Organização dos controles, dados densos, legibilidade e quebra de linha.
+Rodada 4 — Navegação Android / desktop:
+   Corrigido conflito de ordem do CSS que escondia a barra inferior, drawer e áreas seguras.
+Rodada 5 — Responsividade / acessibilidade / publicação:
+   Teste de larguras 320, 360, 412, 768 e 1280px; modo de movimento reduzido;
+   CSS incluído no build Vercel e pré-cache do service worker.
+
+TESTES
+  40 verificações estáticas e de renderização sem JavaScript externo, todas aprovadas.
+  Sintaxe dos scripts JS verificada com Node.js.
+  Veja RELATORIO-V19.6.4-5-RODADAS.json para os detalhes.
+  Esses testes NÃO certificam toda a execução da aplicação em produção.
+
+INSTALAÇÃO
+  1. Descompacte e coloque TODOS os arquivos na raiz do repositório GitHub.
+  2. Faça commit e confira o deploy da Vercel.
+  3. Abra novamente o PWA e confirme o carregamento da V19.6.4.
+  4. Verifique Início, Carteira, Mercado, Alertas e Menu no Android.
+
+LIMITAÇÕES
+  A integração de Push em segundo plano, as assinaturas PRO e o aplicativo
+  publicado não foram testados nestas rodadas; essas integrações não mudaram.
+  A V19.6.4 foca na camada visual, preservando cálculos e regras de operação.

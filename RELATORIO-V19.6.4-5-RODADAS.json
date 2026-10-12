@@ -1,0 +1,317 @@
+{
+  "versao": "19.6.4",
+  "tipo": "Auditoria CSS/HTML render estático (não é E2E na Vercel)",
+  "rodadas": 5,
+  "testes": 40,
+  "aprovados": 40,
+  "falhas": [],
+  "viewport_resultados": [
+    {
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": "grid",
+      "dock": "none",
+      "cols": 2,
+      "cards": 4,
+      "cardsInViewport": true,
+      "bodyContentRight": 309,
+      "hidden": "none",
+      "navButtons": 5
+    },
+    {
+      "viewport": 360,
+      "scrollWidth": 360,
+      "nav": "grid",
+      "dock": "none",
+      "cols": 2,
+      "cards": 4,
+      "cardsInViewport": true,
+      "bodyContentRight": 349,
+      "hidden": "none",
+      "navButtons": 5
+    },
+    {
+      "viewport": 412,
+      "scrollWidth": 412,
+      "nav": "grid",
+      "dock": "none",
+      "cols": 2,
+      "cards": 4,
+      "cardsInViewport": true,
+      "bodyContentRight": 401,
+      "hidden": "none",
+      "navButtons": 5
+    },
+    {
+      "viewport": 768,
+      "scrollWidth": 768,
+      "nav": "none",
+      "dock": "flex",
+      "cols": 4,
+      "cards": 4,
+      "cardsInViewport": true,
+      "bodyContentRight": 752,
+      "hidden": "none",
+      "navButtons": 5
+    },
+    {
+      "viewport": 1280,
+      "scrollWidth": 1280,
+      "nav": "none",
+      "dock": "flex",
+      "cols": 4,
+      "cards": 4,
+      "cardsInViewport": true,
+      "bodyContentRight": 1163,
+      "hidden": "none",
+      "navButtons": 5
+    }
+  ],
+  "testes_detalhados": [
+    {
+      "rodada": 1,
+      "verificacao": "Arquivo visual exclusivo da versão",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 1,
+      "verificacao": "CSS sem erros de sintaxe",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 1,
+      "verificacao": "Tratamento de foco acessível",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 1,
+      "verificacao": "Consistência de cores e espaçamentos",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Página inicial: quatro cartões principais",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Página inicial: sem dados internos duplicados visíveis",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Valores e textos com quebra de linha",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 3,
+      "verificacao": "Carteira preservada",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 3,
+      "verificacao": "Mercado preservado",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 3,
+      "verificacao": "Alertas preservados",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 3,
+      "verificacao": "Controles da carteira responsivos",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação móvel única",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Drawer preservado e refinado",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "CSS final prevalece sobre regras antigas",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Regra impede exibição de rotas ocultas",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Movimento reduzido acessível",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Arquivo incluído no precache",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Arquivo incluído no build Vercel",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Versão do pacote correta",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sintaxe JavaScript do projeto",
+      "resultado": "PASSOU",
+      "detalhe": "arquivos checados: 21; erros: "
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Visibilidade dos cartões em 320px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação correta em 320px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sem rolagem horizontal em 320px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Histórico oculto em 320px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Visibilidade dos cartões em 360px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação correta em 360px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sem rolagem horizontal em 360px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Histórico oculto em 360px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Visibilidade dos cartões em 412px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação correta em 412px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sem rolagem horizontal em 412px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Histórico oculto em 412px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Visibilidade dos cartões em 768px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação correta em 768px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sem rolagem horizontal em 768px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Histórico oculto em 768px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 2,
+      "verificacao": "Visibilidade dos cartões em 1280px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 4,
+      "verificacao": "Navegação correta em 1280px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Sem rolagem horizontal em 1280px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    },
+    {
+      "rodada": 5,
+      "verificacao": "Histórico oculto em 1280px",
+      "resultado": "PASSOU",
+      "detalhe": ""
+    }
+  ],
+  "pendencias_externas": [
+    "Interface publicada na Vercel",
+    "Teste do aplicativo Android/PWA real",
+    "Notificações Push e integração dos serviços externos"
+  ]
+}
