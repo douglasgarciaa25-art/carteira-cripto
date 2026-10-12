@@ -1,0 +1,42 @@
+CRIPTO RADAR V19.6.6 — BINANCE SPOT READ-ONLY
+================================================
+O que foi integrado
+- Consultar saldos SPOT, somando 'free' e 'locked'.
+- Visualizar os ativos no aplicativo antes de importá-los.
+- Importar para a carteira do Radar (substitui a carteira manual após confirmação).
+- Backup local da carteira anterior e botão de restauração.
+- Sincronização automática de 2 em 2 minutos SOMENTE enquanto o aplicativo está aberto/visível.
+- Não suporta Earn, Funding, Futures ou Margin nesta edição.
+- Não realiza compras, vendas, transferência ou saques.
+
+COMO ATIVAR, SEM EXPOR SEGREDOS:
+1. Entre na Binance pelo site/app oficial e gere uma chave API com SOMENTE leitura
+   (Enable Reading / USER_DATA). DESATIVE Trading, Margin, Futures, Transfers,
+   Withdrawals e qualquer outra permissão desnecessária. Se possível, restrinja por IP,
+   considerando que funções serverless Vercel podem exigir IP fixo/egress estável.
+2. Entre em Vercel > seu Projeto > Settings > Environment Variables.
+3. Adicione BINANCE_API_KEY e BINANCE_API_SECRET como variáveis secretas.
+   NÃO COLOQUE valores no GitHub, arquivo .env público, ChatGPT ou navegador.
+4. Mantenha RADAR_OWNER_ACCESS_CODE e RADAR_OWNER_SESSION_SECRET configuradas,
+   de modo que só sua sessão de desenvolvedor possa consultar os saldos.
+5. Faça redeploy na Vercel. Abra o Radar e entre na área Acesso de Desenvolvedor.
+6. Na aba Carteira, clique 'Consultar saldos', confira as posições e clique
+   'Usar saldos na carteira'. O app guarda cópia local e habilita atualização automática.
+7. Se precisar, use 'Restaurar carteira anterior'. Se trocar de aparelho, a cópia não acompanha.
+
+ATENÇÃO DE SEGURANÇA
+- Esta implementação é de INSTÂNCIA ÚNICA/PROPRIETÁRIO. A chave na Vercel refere-se
+  à conta Binance configurada para este projeto, NÃO a cada usuário do app.
+- Para vender o app permitindo conexões Binance para múltiplos usuários, será
+  necessário OAuth/autorização por usuário ou armazenamento cifrado segregado
+  com autenticação individual. NÃO use uma chave global compartilhada entre clientes.
+- Para segurança adicional, considere revogar imediatamente as chaves se suspeitar
+  de exposição. Nunca compartilhe prints com API Secret.
+- A API privada pode ser indisponível por restrições regionais, geográficas ou
+  por falha de credenciais/permissões. O app mantém o último estado salvo nesse caso.
+- Valorização em BRL usa as cotações existentes do Radar e pode ficar pendente
+  para ativos sem cotação na fonte.
+
+ARQUIVOS ADICIONAIS: binance-wallet-api.js, binance-wallet.js, binance-wallet.css.
+Os demais arquivos do projeto V19.6.5 foram mantidos, exceto referências de versão,
+Service Worker, integração de UI, owner-access export e vercel.json.

@@ -1,0 +1,29 @@
+/* V19.6.6 — conexão Binance (somente Spot, leitura privada) */
+#radarBinanceCard{border:1px solid rgba(46,179,133,.36);background:linear-gradient(145deg,#0c2230,#071823);border-radius:22px;max-width:100%;overflow:hidden}
+#radarBinanceCard .radar-binance-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#radarBinanceCard .radar-binance-badge{display:inline-flex;align-items:center;white-space:nowrap;border:1px solid #2a775f;border-radius:99px;color:#9aefcd;font-size:11px;padding:5px 9px}
+#radarBinanceCard .radar-binance-actions{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+#radarBinanceCard .radar-binance-actions button{flex:1 1 150px;min-height:44px;padding:11px 14px;border-radius:12px;background:#153b59;color:#edf7ff;border:1px solid #3476a6;font-weight:750;cursor:pointer}
+#radarBinanceCard .radar-binance-actions button:first-child{background:linear-gradient(120deg,#1a7765,#1e976f);border-color:#35ad87}
+#radarBinanceCard .radar-binance-actions button:disabled{opacity:.4;cursor:not-allowed}
+#radarBinanceCard #radarBinanceStatus{padding:11px 12px;border:1px solid #2a5165;border-radius:12px;font-size:13px;line-height:1.5}
+#radarBinanceCard #radarBinanceStatus.error{border-color:#a14b57;color:#ffa6ae}
+#radarBinanceCard .radar-binance-auto{display:flex;align-items:flex-start;gap:9px;margin:14px 0;font-size:13px;line-height:1.4;cursor:pointer}
+#radarBinanceCard .radar-binance-auto input{margin-top:3px;accent-color:#45c799;width:17px;height:17px;flex-shrink:0}
+#radarBinanceCard #radarBinancePreview{margin-top:10px;max-height:255px;overflow:auto;overscroll-behavior:contain}
+#radarBinanceCard .radar-binance-line{display:flex;justify-content:space-between;gap:15px;align-items:center;border-bottom:1px solid #2b4655;padding:8px 0;font-size:13px}
+#radarBinanceCard .radar-binance-line span{font-variant-numeric:tabular-nums}
+#radarBinanceRestore{background:transparent;border:0;color:#92c5f2;text-decoration:underline;font-size:12px;cursor:pointer}
+@media(max-width:390px){#radarBinanceCard .radar-binance-head{flex-direction:column}}
+/* V19.6.7 — login and per-user Binance connection */
+#radarBinanceCard [hidden]{display:none!important}
+#radarBinanceCard .radar-binance-auth-card{display:grid;gap:10px;padding:13px;background:rgba(9,24,39,.75);border-radius:14px;border:1px solid rgba(85,145,175,.32);margin:12px 0}
+#radarBinanceCard .radar-binance-auth-card input{width:100%;min-width:0;box-sizing:border-box;min-height:45px;border:1px solid #47728c;border-radius:10px;padding:10px;background:#102536;color:#fff;font-size:16px}
+#radarBinanceCard .radar-binance-auth-card input:focus{outline:2px solid #54c4ae;outline-offset:1px}
+#radarBinanceCard .radar-binance-auth-card label{font-size:12px;color:#c7deef;font-weight:650}
+#radarBinanceCard .radar-binance-auth-card button{padding:11px 12px;min-height:44px;border-radius:10px;font-weight:750;background:#16795e;border:1px solid #40aa8a;color:#fff;cursor:pointer}
+#radarBinanceCard .radar-binance-auth-card button.secondary{background:#173149;border-color:#416985}
+#radarBinanceCard .radar-binance-user{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+#radarBinanceCard .radar-binance-user button,#radarBinanceDisconnect{border:1px solid #57839b;border-radius:10px;background:#213950;color:#e4f5ff;padding:9px 11px;cursor:pointer}
+#radarBinanceCard .radar-binance-help{font-size:12px;line-height:1.5;color:#a8d3e9}
+#radarBinanceCard .radar-binance-help a{color:#80e6e0;text-decoration:underline}

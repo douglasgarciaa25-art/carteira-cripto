@@ -45,3 +45,6 @@ module.exports=async function handler(req,res){
  res.setHeader('Set-Cookie',cookieLine(mint(),LIFE));
  return res.status(200).json({ok:true,owner:true,role:'developer'});
 };
+
+// Checagem de sessão para endpoints privados. Não expõe a credencial no navegador.
+module.exports.isOwnerRequest=req=>configured()&&valid(cookies(req)[COOKIE]);

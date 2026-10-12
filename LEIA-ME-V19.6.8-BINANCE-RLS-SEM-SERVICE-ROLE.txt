@@ -1,0 +1,35 @@
+CRIPTO RADAR V19.6.8 — MULTIUSUÁRIO VIA SUPABASE AUTH E RLS
+=================================================================
+Base: V19.6.7 integral. Atualizada a integração para NÃO depender de uma chave service_role no servidor.
+
+INTEGRAÇÃO (MODO MAIS RESTRITIVO AINDA SEM SERVICE_ROLE)
+- O backend valida o JWT do usuário chamando /auth/v1/user via chave pública Supabase.
+- Requisições PostgREST usam EXCLUSIVAMENTE o JWT autenticado do cliente; NUNCA um bypass da RLS.
+- RLS no banco obriga auth.uid() = user_id em SELECT/INSERT/UPDATE/DELETE.
+- A chave pública do Supabase pode estar no cliente, como previsto no Supabase Auth.
+- O conteúdo recuperável pelo usuário no banco é apenas ciphertext AES-256-GCM; o segredo de cifragem fica SÓ na Vercel.
+- A Binance é validada para permitir somente leitura, impedindo cadastrar chaves com trading/saques.
+- O cliente pode recuperar seus próprios registros cifrados por API, mas NÃO consegue decifrá-los.
+- A integridade dos blobs cifra também é checada pelo AES-GCM; corrupção faz as operações falharem fechadas.
+
+SETUP NECESSÁRIO UMA VEZ:
+1. Supabase: execute o SQL-BINANCE-MULTIUSUARIO.sql nesse projeto.
+2. Supabase Auth: ajuste Site URL/Redirect URLs, confirmação de e-mail e SMTP customizado.
+3. Vercel em PRODUCTION: SUPABASE_URL, SUPABASE_ANON_KEY (publishable/anon) e
+   RADAR_BINANCE_ENCRYPTION_KEY (segredo aleatório de 32 bytes Base64, somente servidor).
+4. Não precisa SUPABASE_SERVICE_ROLE_KEY e NÃO deve usar as chaves globais da Binance.
+5. Suba TODOS os arquivos na raiz do GitHub. Teste o deploy na Vercel.
+6. Somente após validação com dois e-mails e chaves Binance de teste, autorize distribuição.
+
+ATENÇÃO SEGURANÇA:
+Apenas leitura Spot. O saldo é exibido durante a sessão; não há ordens automáticas.
+Revise o restante do app (CSP/XSS, outros módulos, logs), SMTP, LGPD e integrações PRO antes de vender.
+Não houve teste de integração com Binance real neste pacote.
+Se a chave de cifragem for perdida, as credenciais dos clientes não poderão ser recuperadas e
+as conexões terão de ser refeitas. NÃO a troque em atualizações comuns.
+
+VERCEL HOBBY / 12 FUNÇÕES:
+Para respeitar o limite de 12 funções do plano Hobby, /api/radar-auth-config usa
+play-config.js e /api/binance-wallet usa push-status.js como adaptadores HTTP.
+Os handlers originais para Play e Push continuam a funcionar.
+Uma publicação de teste da versão inicial revelou o limite; este pacote o corrige.

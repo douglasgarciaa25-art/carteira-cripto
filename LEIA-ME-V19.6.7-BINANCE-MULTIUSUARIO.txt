@@ -1,0 +1,57 @@
+ATENÇÃO: HISTÓRICO DA V19.6.7. Para configuração atual da V19.6.8 leia LEIA-ME-V19.6.8-BINANCE-RLS-SEM-SERVICE-ROLE.txt. Não configure SUPABASE_SERVICE_ROLE_KEY para o módulo novo.
+
+CRIPTO RADAR V19.6.7 — BINANCE SPOT MULTIUSUÁRIO
+================================================
+
+IMPLEMENTADO NO CÓDIGO (sem conexão ou publicação em produção):
+- Cadastro e login individual por e-mail/senha via Supabase Auth, com confirmação de e-mail.
+- Conexão de API Key e Secret de Binance POR USUÁRIO, sem GitHub ou painel Vercel para o cliente.
+- Verificação obrigatória das permissões da chave pela Binance (rejeita trading/saques/transferências).
+- Credenciais protegidas com AES-256-GCM no backend; nunca incluídas em respostas, localStorage ou arquivo HTML.
+- Registros vinculados ao ID autenticado, sem permissão de leitura direta por outros clientes.
+- Consulta de saldos somente Spot e cache criptografado privado para reduzir requisições.
+- Importação de saldos somente para a sessão no navegador. Carteira manual local permanece salva.
+- Ao sair da sessão, o app restaura imediatamente a carteira manual.
+- Tradução do novo módulo em português, inglês e espanhol.
+- Manutenção dos demais componentes de mercado, PRO e alertas da V19.6.6.
+- Após a primeira importação, a sincronização é habilitada por padrão (configurável).
+
+PREPARAR PARA PRODUÇÃO — UMA ÚNICA VEZ PELO ADMINISTRADOR:
+1. Escolher um projeto Supabase para a área comercial. Recomendado SEPARADO do projeto Scheduler existente.
+2. Em Supabase > SQL Editor, executar o arquivo SQL-BINANCE-MULTIUSUARIO.sql.
+3. Em Supabase Auth, habilitar confirmação de e-mail, proteção por taxa e SMTP de produção.
+4. Configurar Site URL/Redirect URLs para o domínio oficial do aplicativo.
+5. No PROJETO Vercel CORRETO, criar:
+   SUPABASE_URL = https://SEU-PROJETO.supabase.co
+   SUPABASE_ANON_KEY = chave pública (anon ou publishable) desse projeto
+   SUPABASE_SERVICE_ROLE_KEY = chave secreta service_role, APENAS no servidor
+   RADAR_BINANCE_ENCRYPTION_KEY = 32 bytes ALEATÓRIOS codificados em Base64
+6. Para gerar a chave de criptografia UMA VEZ no terminal seguro:
+   node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
+   Guarde-a fora do GitHub. Perdê-la exige que usuários reconectem sua Binance.
+7. Evite configurar BINANCE_API_KEY/BINANCE_API_SECRET globais; NÃO serão usadas pelo novo módulo.
+8. Descompacte este ZIP e faça commit dos arquivos NA RAIZ do GitHub; faça redeploy na Vercel.
+9. Teste com dois usuários de e-mails diferentes, com chaves de leitura distintas, antes de vender.
+10. Revise LGPD, política de privacidade, plano de resposta a incidentes, custos e termos de uso.
+
+FLUXO PARA QUEM COMPRA:
+Carteira > Binance > Criar conta/Entrar > Criar API Key somente leitura na Binance >
+Colar API Key e Secret no aplicativo > Conectar > Consultar saldos > Usar saldos na carteira.
+O cliente NÃO acessa GitHub ou Vercel. Binance ainda exige geração da chave no site oficial;
+conexão automática por autorização OAuth depende de parceria/credenciamento específico.
+
+SEGURANÇA E LIMITAÇÕES:
+- A implementação NÃO envia ordens, não retira fundos e não inclui Futuros, Funding ou Earn.
+- Tokens da sessão Radar ficam em sessionStorage (saindo do aplicativo pode exigir novo login).
+- Carteira manual antiga fica em crWallet; dados importados da Binance não ficam em localStorage.
+- O uso de sessionStorage reduz persistência do login, mas não impede roubo por XSS.
+  É indispensável auditar TODOS os scripts existentes, CSP e bibliotecas antes de produção.
+- O cadastro Supabase é específico do módulo Binance. A ativação automática de assinaturas PRO/Google Play POR USUÁRIO ainda exige uma integração própria de pagamentos.
+- Nenhuma ligação real a contas Binance foi testada nesta versão. Ainda requer testes de ponta a ponta,
+  homologação de segurança, auditoria LGPD, suporte, revogação e monitoração de abuso.
+- O banco existente Supabase 'Cripto Radar Scheduler' NÃO FOI MODIFICADO.
+- NÃO foi efetuado deploy, conexão de credenciais, criação real de usuário nem cobrança PRO.
+
+TESTES LOCAIS (COM DADOS FALSOS):
+  node testes-binance-multiusuario.js
+Testam isolamento A/B, criptografia, autenticação, recusa de permissões, exclusão e cache.

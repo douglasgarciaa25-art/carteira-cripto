@@ -12,3 +12,13 @@ module.exports = async function handler(req,res){
     backendReady
   });
 };
+
+// CriptoRadar shared auth configuration endpoint (Vercel Hobby function limit).
+const radarLegacyPlayConfigHandler = module.exports;
+module.exports = function sharedPlayOrAuthConfig(req,res){
+  const raw=String(req.url||'');
+  const route=String(req.query?._radar_api||'');
+  if (route==='auth-config' || /\/api\/radar-auth-config(?:\?|$)/.test(raw) || /[?&]_radar_api=auth-config(?:&|$)/.test(raw))
+    return require('./radar-public-config')(req,res);
+  return radarLegacyPlayConfigHandler(req,res);
+};

@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.6.5 • Página inicial renovada</title>
+<title>Cripto Radar V19.6.8 • Página inicial renovada</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -664,6 +664,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 .market-secondary-panel #coins{margin-top:9px}
 @media(max-width:420px){.market-secondary-panel{padding:11px 12px}}
 </style>
+<link rel="stylesheet" href="./binance-wallet.css?v=1967">
 </head>
 <body>
 
@@ -703,7 +704,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.5 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.8 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -771,7 +772,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.5">V19.6.5</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.6">V19.6.8</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1152,6 +1153,33 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 
 
+<section class="card" id="radarBinanceCard" aria-label="Binance Spot">
+ <div class="radar-binance-head"><div><h2>🔗 <span data-radar-binance-t="title">Binance • Minha carteira</span></h2><p class="small" data-radar-binance-t="desc">Cada pessoa conecta sua própria conta, somente leitura.</p></div><span class="radar-binance-badge">🔒 READ ONLY</span></div>
+ <div id="radarBinanceAuth" class="radar-binance-auth-card">
+  <strong data-radar-binance-t="account">Conta Radar</strong>
+  <label for="radarBinanceEmail" data-radar-binance-t="email">E-mail</label><input id="radarBinanceEmail" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="E-mail" data-radar-binance-placeholder="email">
+  <label for="radarBinancePassword" data-radar-binance-t="password">Senha (mínimo 8 caracteres)</label><input id="radarBinancePassword" type="password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Senha" data-radar-binance-placeholder="password">
+  <div class="radar-binance-actions"><button type="button" id="radarBinanceSignin" data-radar-binance-t="signin">Entrar</button><button type="button" id="radarBinanceSignup" class="secondary" data-radar-binance-t="signup">Criar conta</button></div>
+ </div>
+ <div id="radarBinanceProfile" class="radar-binance-auth-card" hidden>
+  <div class="radar-binance-user"><strong id="radarBinanceAccountLabel"></strong><button type="button" id="radarBinanceLogout" data-radar-binance-t="logout">Sair da conta</button></div><p class="small" id="radarBinanceConnectedLabel"></p>
+  <button type="button" id="radarBinanceDisconnect" data-radar-binance-t="disconnect" hidden>Desconectar Binance</button>
+ </div>
+ <div id="radarBinanceLink" class="radar-binance-auth-card" hidden>
+  <strong data-radar-binance-t="connect">Conectar minha Binance</strong>
+  <p class="radar-binance-help" data-radar-binance-t="keys">Crie a chave na Binance com somente leitura. Nunca informe senha ou 2FA.</p>
+  <a class="radar-binance-help" href="https://www.binance.com/en/my/settings/api-management" target="_blank" rel="noopener noreferrer" data-radar-binance-t="tutorial">Como criar uma chave de somente leitura na Binance</a>
+  <label for="radarBinanceApiKey" data-radar-binance-t="apikey">Binance API Key (somente leitura)</label><input id="radarBinanceApiKey" type="text" autocapitalize="off" autocomplete="off" spellcheck="false" maxlength="160">
+  <label for="radarBinanceApiSecret" data-radar-binance-t="apisecret">Binance Secret Key</label><input id="radarBinanceApiSecret" type="password" autocomplete="new-password" spellcheck="false" maxlength="160">
+  <button type="button" id="radarBinanceConnect" data-radar-binance-t="connect">Conectar minha Binance</button>
+ </div>
+ <div class="radar-binance-actions"><button id="radarBinanceCheck" type="button" disabled data-radar-binance-t="check">Consultar saldos</button><button id="radarBinanceImport" type="button" disabled data-radar-binance-t="import">Usar saldos na carteira</button></div>
+ <div id="radarBinanceStatus" role="status" aria-live="polite"></div><div id="radarBinancePreview" aria-live="polite"></div>
+ <label class="radar-binance-auto"><input type="checkbox" id="radarBinanceAuto" disabled><span data-radar-binance-t="auto">Sincronizar a cada 2 minutos com o app aberto</span></label>
+ <p class="small" data-radar-binance-t="keep">A carteira manual ficará preservada neste aparelho.</p>
+ <button id="radarBinanceRestore" type="button" hidden data-radar-binance-t="backup">Voltar à carteira manual</button>
+</section>
+
 <section class="card wallet-extra wallet-capture-v2" id="walletCaptureCard">
   <div class="wallet-feature-row">
     <div class="wallet-feature-badge">✨ NOVO • CARTEIRA POR PRINT</div>
@@ -1365,7 +1393,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 <section class="card" id="protectionCard">
   <div class="coin">Proteção</div>
-  <div class="small">Somente dados públicos de mercado. Não solicita login, senha, 2FA ou chave API e não envia ordens. O Radar apenas acompanha preços, volume e variação para montar os destaques.</div>
+  <div class="small">A consulta privada da Binance Spot é opcional e somente para leitura, protegida pelo acesso do desenvolvedor. As chaves ficam exclusivamente nas variáveis de ambiente Vercel, nunca no navegador. O Radar não executa ordens nem saques.</div>
 </section>
 
 <section class="card" id="importantCard">
@@ -1890,6 +1918,12 @@ const WALLET_BRL=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}
 const walletStable=new Set(['USDT','USDC','FDUSD','TUSD','USDP','DAI','USDE','USDS','PYUSD','BUSD','BRL','EUR','TRY']);
 function loadSavedWallet(){
  try{
+  if(localStorage.getItem('crRadarBinanceImportedV1966')==='yes'){
+    const prior=JSON.parse(localStorage.getItem('crRadarBinanceManualBackupV1966')||'null');
+    if(Array.isArray(prior))localStorage.setItem('crWallet',JSON.stringify(prior));
+    localStorage.removeItem('crRadarBinanceImportedV1966');
+    localStorage.removeItem('crRadarBinanceAutoSyncV1966');
+  }
   const raw=localStorage.getItem('crWallet');
   const data=raw?JSON.parse(raw):[];
   return Array.isArray(data)?data.filter(x=>x&&x.symbol&&Number.isFinite(Number(x.qty))).map(x=>({symbol:String(x.symbol).toUpperCase(),qty:Number(x.qty)})):[];
@@ -1897,6 +1931,8 @@ function loadSavedWallet(){
 }
 function persistWallet(){
  try{
+  // Saldos sincronizados são temporários: não misturar contas no mesmo aparelho.
+  if(window.CriptoRadarBinanceActiveImport){try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(e){}return true;}
   localStorage.setItem('crWallet',JSON.stringify(printWallet));
   localStorage.setItem('crWalletSavedAt',new Date().toISOString());
   try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(e){}
@@ -3817,7 +3853,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
   home:{title:'Início',ids:['homeDashboardCard']},
-  wallet:{title:'Carteira',ids:['walletDashboardCard','walletCaptureCard','aporteCard','copyMirrorCard']},
+  wallet:{title:'Carteira',ids:['walletDashboardCard','radarBinanceCard','walletCaptureCard','aporteCard','copyMirrorCard']},
   market:{title:'Mercado',ids:['marketIntelligenceCard','opportunitiesCard','marketTopMoversDetails','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard']},
   history:{title:'Histórico',ids:['v171HistoryCard','bt184Card']},
@@ -4335,4 +4371,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 </style>
 <link rel="stylesheet" href="./layout-v1964.css?v=1964">
 <link rel="stylesheet" href="./home-v1965.css?v=1965">
+<script defer src="./binance-wallet.js?v=1967"></script>
 </body></html>
