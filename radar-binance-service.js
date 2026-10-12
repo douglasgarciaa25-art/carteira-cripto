@@ -3,7 +3,14 @@
 const crypto = require('node:crypto');
 const BINANCE = 'https://api.binance.com';
 const isStr = x => typeof x === 'string' && x.length > 0;
-class ApiError extends Error { constructor(status, code) { super(code); this.status=status; this.code=code; } }
+class ApiError extends Error {
+ constructor(status,code,details={}){
+  super(code);this.status=status;this.code=code;
+  // Numeric Binance error and affected stage only; never expose credentials or raw messages.
+  if(Number.isInteger(details.binanceCode)&&details.binanceCode<0)this.binanceCode=details.binanceCode;
+  if(['permissions','balances'].includes(details.stage))this.stage=details.stage;
+ }
+}
 function env(){
  const url=String(process.env.SUPABASE_URL||'').replace(/\/+$/,'');
  const publicKey=String(process.env.SUPABASE_ANON_KEY||process.env.SUPABASE_PUBLISHABLE_KEY||'');
@@ -49,7 +56,7 @@ async function db(method,userId,body,conf=env(),token){
  if(method==='POST')url.searchParams.set('on_conflict','user_id');
  let r;
  try{r=await fetch(url.toString(),{method,headers:{apikey:conf.publicKey,Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:method==='POST'?'resolution=merge-duplicates,return=minimal':'return=minimal'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(8500),cache:'no-store'})}catch(_){throw new ApiError(503,'database_unavailable')}
- if(!r.ok)throw new ApiError(503,r.status===404?'database_schema_missing':'database_unavailable');
+ if(!r.ok)throw new ApiError(503,r.status===404?'database_schema_missing':[401,403].includes(r.status)?'database_permission_denied':'database_unavailable');
  return method==='GET'?(await r.json())[0]||null:null;
 }
 const decimal=v=>{
@@ -60,8 +67,23 @@ async function signedRequest(path,key,secret,offset=0){
  const q=new URLSearchParams({timestamp:String(Date.now()+offset),recvWindow:'5000'}).toString();
  const signature=crypto.createHmac('sha256',secret).update(q).digest('hex');
  let r,body;
- try{r=await fetch(BINANCE+path+'?'+q+'&signature='+signature,{method:'GET',headers:{'X-MBX-APIKEY':key,Accept:'application/json'},signal:AbortSignal.timeout(9000),cache:'no-store'});body=await r.json()}catch(_){throw new ApiError(502,'binance_unavailable')}
- if(!r.ok){const code=Number(body?.code);throw new ApiError(r.status===429?429:502,code===-2015?'binance_api_key_invalid':code===-1021?'binance_clock_invalid':code===-1022?'binance_signature_invalid':'binance_unavailable')}
+ try{
+  r=await fetch(BINANCE+path+'?'+q+'&signature='+signature,{method:'GET',headers:{'X-MBX-APIKEY':key,Accept:'application/json'},signal:AbortSignal.timeout(9000),cache:'no-store'});
+  body=await r.json().catch(()=>null);
+ }catch(_){throw new ApiError(502,'binance_unavailable')}
+ const stage=path.includes('apiRestrictions')?'permissions':'balances';
+ if(!r.ok){
+  const code=Number.isInteger(body?.code)?body.code:null;
+  let status=502,reason='binance_request_rejected';
+  if(r.status===429||r.status===418||code===-1003){status=429;reason='binance_rate_limited'}
+  else if(code===-2015){status=403;reason='binance_key_ip_or_permission'}
+  else if(code===-2014){status=400;reason='binance_key_format_invalid'}
+  else if(code===-1021)reason='binance_clock_invalid';
+  else if(code===-1022)reason='binance_signature_invalid';
+  else if(r.status===403){status=403;reason='binance_access_forbidden'}
+  throw new ApiError(status,reason,{binanceCode:code,stage});
+ }
+ if(!body||typeof body!=='object')throw new ApiError(502,'binance_invalid_response',{stage});
  return body;
 }
 async function offset(){

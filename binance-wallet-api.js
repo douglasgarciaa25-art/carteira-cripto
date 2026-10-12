@@ -46,6 +46,9 @@ module.exports=async function handler(req,res){
  }catch(err){
   const status=err instanceof lib.ApiError?err.status:500;
   const error=err instanceof lib.ApiError?err.code:'internal_error';
-  return lib.respond(res,status,{ok:false,error});
+  return lib.respond(res,status,{ok:false,error,
+   ...(Number.isInteger(err?.binanceCode)?{binanceCode:err.binanceCode}:{}),
+   ...(['permissions','balances'].includes(err?.stage)?{stage:err.stage}:{})
+  });
  }
 };

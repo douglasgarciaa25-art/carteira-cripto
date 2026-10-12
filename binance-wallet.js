@@ -79,12 +79,109 @@
   const token=await requireToken();
   const url='./api/binance-wallet'+(action?'?action='+encodeURIComponent(action):'');
   const r=await fetch(url,{method,headers:{Authorization:'Bearer '+token,Accept:'application/json',...(data?{'Content-Type':'application/json'}:{})},body:data?JSON.stringify(data):undefined,cache:'no-store',credentials:'same-origin'});
-  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok){const e=new Error(String(j.error||'request_failed'));e.status=r.status;throw e}return j;
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.ok){
+   // Only accept structured error codes, never show raw server messages.
+   const code=typeof j.error==='string'&&/^[a-z][a-z0-9_]{2,64}$/.test(j.error)?j.error:r.status===404?'endpoint_unavailable':'http_'+r.status;
+   const e=new Error(code);e.status=r.status;
+   if(Number.isInteger(j.binanceCode)&&j.binanceCode<0)e.binanceCode=j.binanceCode;
+   if(['permissions','balances'].includes(j.stage))e.stage=j.stage;
+   throw e;
+  }
+  return j;
  }
+ const DIAGNOSTICS={
+  'pt-BR':{
+   binance_key_ip_or_permission:'Binance: chave API inválida, IP não autorizado ou permissão insuficiente. Verifique a API Spot, leitura e restrições de IP.',
+   binance_api_key_invalid:'Binance: chave inválida, IP não autorizado ou permissão insuficiente.',
+   binance_key_format_invalid:'Binance: formato da API Key inválido.',
+   binance_clock_invalid:'Binance: o horário da solicitação não foi aceito. É necessário conferir o relógio do servidor.',
+   binance_signature_invalid:'Binance: assinatura incorreta. Confira se a API Key e a Secret Key pertencem ao mesmo par.',
+   binance_rate_limited:'Binance: muitas requisições. Tente novamente mais tarde.',
+   binance_access_forbidden:'Binance: acesso bloqueado. Confira restrições da conta ou região.',
+   binance_request_rejected:'Binance recusou a solicitação. Anote o código exibido.',
+   binance_unavailable:'Não foi possível comunicar com a Binance neste momento.',
+   binance_invalid_response:'A Binance retornou uma resposta inesperada.',
+   read_access_required:'Binance: ative somente a permissão Enable Reading, de leitura.',
+   read_only_key_required:'Binance: a chave deve ser somente leitura; desative negociação, saques e transferências.',
+   invalid_api_credentials:'API Key ou Secret Key em formato inválido. Copie as credenciais da área de gerenciamento de API da Binance.',
+   database_permission_denied:'Radar: o banco recusou a permissão para salvar sua conexão.',
+   database_schema_missing:'Radar: tabela da Binance não encontrada no banco Supabase.',
+   database_unavailable:'Radar: banco de dados temporariamente indisponível.',
+   auth_service_unavailable:'Radar: serviço de autenticação indisponível.',
+   service_not_configured:'Radar: a conexão ainda não está configurada na Vercel.',
+   encryption_not_configured:'Radar: chave de criptografia não configurada na Vercel.',
+   encrypted_data_invalid:'Radar: dados salvos não puderam ser decifrados. Será necessário reconectar.',
+   origin_forbidden:'Radar: origem não autorizada. Abra pelo endereço oficial do aplicativo.',
+   endpoint_unavailable:'Radar: função de conexão não encontrada no servidor.',
+   binance_not_connected:'Nenhuma conta Binance conectada.',
+   http_500:'Radar: erro interno no servidor.',
+   http_502:'Radar: falha de comunicação no servidor.',
+   http_503:'Radar: serviço temporariamente indisponível.'
+  },
+  en:{
+   binance_key_ip_or_permission:'Binance: invalid API key, unauthorized IP, or insufficient permissions. Check Spot reading access and allowed IPs.',
+   binance_api_key_invalid:'Binance: invalid key, IP restriction, or insufficient permissions.',
+   binance_key_format_invalid:'Binance: invalid API key format.',
+   binance_clock_invalid:'Binance: request timestamp rejected. Check server time.',
+   binance_signature_invalid:'Binance: invalid signature. Use API Key and Secret Key from the same pair.',
+   binance_rate_limited:'Binance: too many requests. Retry later.',
+   binance_access_forbidden:'Binance: access forbidden. Check account or regional restrictions.',
+   binance_request_rejected:'Binance: request rejected. Note the displayed error code.',
+   binance_unavailable:'Binance is currently unavailable.',
+   binance_invalid_response:'Binance returned an unexpected response.',
+   read_access_required:'Binance: enable only reading permission.',
+   read_only_key_required:'Binance: disable trading, withdrawals, and transfers. A read-only key is required.',
+   invalid_api_credentials:'Invalid API Key or Secret Key format.',
+   database_permission_denied:'Radar: database permission was denied for your account.',
+   database_schema_missing:'Radar: Binance database table is missing.',
+   database_unavailable:'Radar: database unavailable.',
+   auth_service_unavailable:'Radar: login service is unavailable.',
+   service_not_configured:'Radar: server-side connection not configured.',
+   encryption_not_configured:'Radar: server-side encryption not configured.',
+   encrypted_data_invalid:'Radar: stored credentials could not be decrypted. Reconnect the account.',
+   origin_forbidden:'Radar: unauthorized site origin.',
+   endpoint_unavailable:'Radar: Vercel connection endpoint not found.',
+   binance_not_connected:'No Binance account connected.',
+   http_500:'Radar: internal server error.',
+   http_502:'Radar: gateway error.',
+   http_503:'Radar: service temporarily unavailable.'
+  },
+  es:{
+   binance_key_ip_or_permission:'Binance: clave inválida, IP no autorizada o permisos insuficientes. Compruebe la lectura Spot y la IP.',
+   binance_api_key_invalid:'Binance: clave, IP o permisos no autorizados.',
+   binance_key_format_invalid:'Binance: formato de clave API inválido.',
+   binance_clock_invalid:'Binance: hora de solicitud inválida. Revise el reloj del servidor.',
+   binance_signature_invalid:'Binance: firma incorrecta. Compruebe que API Key y Secret Key sean del mismo par.',
+   binance_rate_limited:'Binance: demasiadas solicitudes. Intente más tarde.',
+   binance_access_forbidden:'Binance: acceso bloqueado. Revise restricciones de la cuenta.',
+   binance_request_rejected:'Binance: solicitud rechazada. Anote el código mostrado.',
+   binance_unavailable:'Binance no está disponible.',
+   binance_invalid_response:'Respuesta inesperada de Binance.',
+   read_access_required:'Binance: active solo el permiso de lectura.',
+   read_only_key_required:'Binance: desactive operaciones, retiros y transferencias.',
+   invalid_api_credentials:'Formato inválido de API Key o Secret Key.',
+   database_permission_denied:'Radar: acceso denegado a la base de datos.',
+   database_schema_missing:'Radar: falta la tabla de Binance.',
+   database_unavailable:'Radar: base de datos no disponible.',
+   auth_service_unavailable:'Radar: servicio de acceso no disponible.',
+   service_not_configured:'Radar: conexión no configurada en el servidor.',
+   encryption_not_configured:'Radar: cifrado no configurado.',
+   encrypted_data_invalid:'Radar: credenciales guardadas ilegibles. Vuelva a conectar.',
+   origin_forbidden:'Radar: origen no autorizado.',
+   endpoint_unavailable:'Radar: función no encontrada en Vercel.',
+   binance_not_connected:'Ninguna cuenta Binance conectada.',
+   http_500:'Radar: error interno del servidor.',
+   http_502:'Radar: error de conexión con el servidor.',
+   http_503:'Radar: servicio no disponible.'
+  }
+ };
  function friendlyError(err){
-  if(String(err?.message||'').includes('not_configured'))return t().notConfigured;
-  if(/read_only_key_required|read_access_required/.test(err?.message||''))return t().readOnly;
-  if(/login_required|session_invalid|email_confirmation_required/.test(err?.message||''))return t().authError;
+  const code=String(err?.message||'');
+  if(/^(login_required|session_invalid|email_confirmation_required|auth_rejected)$/.test(code))return t().authError;
+  const detail=(DIAGNOSTICS[lang()]||DIAGNOSTICS['pt-BR'])[code];
+  if(detail)return detail+(Number.isInteger(err?.binanceCode)&&err.binanceCode<0?' (Código Binance: '+err.binanceCode+')':'');
+  if(code==='auth_config'||code==='request_failed')return t().notConfigured;
   return t().error;
  }
  function renderBalances(){
