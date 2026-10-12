@@ -1,0 +1,26 @@
+CRIPTO RADAR V19.5.4 — AUDITORIA E CORREÇÕES
+Base: ZIP V19.5.3 completo enviado no chat.
+
+CORREÇÕES:
+- Vercel: arquivo layout-v195.css incluído nos builds. Antes, o HTML
+  referenciava o arquivo, mas ele não era disponibilizado no deploy.
+- Traduções EN/ES: revisão de frases financeiras dinâmicas, incluindo
+  risco alto, liquidez baixa, confirmação, sinais, mercado e carteira.
+- Corrigido o uso incorreto de "ago:" e frases com conectivos portugueses.
+- Tradução especial para resumos de saúde/risco com pontuação.
+- Status do Service Worker em EN/ES e idioma preservado ao refazer inscrição
+  push automaticamente após troca de assinatura.
+- Cache do app atualizado (V19.5.4).
+
+TESTE/PUBLICAÇÃO:
+Extrair todos os arquivos diretamente na raiz do repositório GitHub;
+Vercel deve publicar uma nova versão. Fechar/reabrir PWA instalado e
+verificar idiomas, carteira, alertas, tradução de análise e SW.
+Não houve publicação automática nem teste ponta a ponta em Android.
+
+LIMITAÇÕES:
+- As análises geradas pelo servidor /api/ai já recebem o idioma selecionado.
+- Tradução local usa um glossário determinístico; frases desconhecidas,
+  manchetes externas e textos livres exigem API de tradução para garantia
+  universal. Não adicionamos serviço pago nem chave externa.
+- Não foram alterados cálculos de mercado, carteira, segurança PRO ou cobrança.

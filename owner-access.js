@@ -18,7 +18,7 @@ function valid(token){
    return p.role==='developer'&&Number.isInteger(p.iat)&&Number.isInteger(p.exp)&&p.iat<=now&&p.exp>now&&p.exp-p.iat<=LIFE;
  }catch(e){return false}
 }
-function cookies(req){const h=req.headers?.cookie||'';return Object.fromEntries(h.split(';').map(x=>x.trim()).filter(Boolean).map(x=>{const k=x.indexOf('=');return [x.slice(0,k),decodeURIComponent(x.slice(k+1))]}))}
+function cookies(req){const h=String(req.headers?.cookie||'');const out={};for(const field of h.split(';')){const k=field.indexOf('=');if(k<=0)continue;const name=field.slice(0,k).trim();if(name!==COOKIE)continue;try{out[name]=decodeURIComponent(field.slice(k+1).trim())}catch(e){out[name]=''}}return out}
 function cookieLine(value,maxAge){const secure=(process.env.VERCEL==='1'||process.env.NODE_ENV==='production')?'; Secure':'';return `${COOKIE}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure}`}
 module.exports=async function handler(req,res){
  res.setHeader('Cache-Control','no-store');

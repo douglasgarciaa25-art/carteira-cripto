@@ -4,9 +4,11 @@
 const $=id=>document.getElementById(id);
 const STORE='crRadarWalletCostV187';
 const STABLE=new Set(['USDT','USDC','FDUSD','TUSD','USDP','DAI','USDE','USDS','PYUSD','BUSD','BRL','EUR','TRY']);
-const money=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
-const numBR=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:8});
-const pct=v=>`${v>0?'+':''}${v.toFixed(2)}%`;
+const money={format:n=>new Intl.NumberFormat(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2}).format(n)};
+const numBR={format:n=>new Intl.NumberFormat(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{maximumFractionDigits:8}).format(n)};
+const locale=()=>window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';
+const dec=(v,d=1)=>new Intl.NumberFormat(locale(),{minimumFractionDigits:d,maximumFractionDigits:d}).format(v);
+const pct=v=>`${v>0?'+':''}${dec(v,2)}%`;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const symbol=v=>{try{return normalizeWalletSymbol(v)}catch(e){return String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}};
 const sane=v=>Number.isFinite(Number(v))?Number(v):0;
@@ -56,8 +58,8 @@ function snapshot(){
   const warnings=[];
   if(unpriced.length)warnings.push(`${unpriced.length} ativo(s) sem cotação: não incluídos no valor total`);
   if(staleValue>0)warnings.push('Há cotações desatualizadas no valor estimado');
-  if(concentration>=45)warnings.push(`${big.s} ocupa ${concentration.toFixed(1)}% da carteira: concentração elevada`);
-  else if(concentration>=30)warnings.push(`${big.s} ocupa ${concentration.toFixed(1)}% da carteira: acompanhar concentração`);
+  if(concentration>=45)warnings.push(`${big.s} ocupa ${dec(concentration)}% da carteira: concentração elevada`);
+  else if(concentration>=30)warnings.push(`${big.s} ocupa ${dec(concentration)}% da carteira: acompanhar concentração`);
   if(ranked.length>0&&stableValue/Math.max(total,.01)<.05)warnings.push('Reserva de moedas estáveis abaixo de 5% da carteira');
   const riskRows=rows.filter(r=>r.caution);
   if(riskRows.length)warnings.push(`${riskRows.length} ativo(s) com bloqueio ou risco técnico elevado`);
@@ -84,7 +86,7 @@ function rowHtml(r){
  return `<article class="wd-asset">
    <button type="button" class="wd-asset-toggle" data-wd-open="${esc(r.s)}" aria-expanded="${openSymbol===r.s}">
     <span class="wd-token">${esc(r.s.slice(0,3))}</span>
-    <span class="wd-asset-name"><strong>${esc(r.s)}</strong><small>${numBR.format(r.qty)} un. • ${r.share.toFixed(1).replace('.',',')}% do total</small></span>
+    <span class="wd-asset-name"><strong>${esc(r.s)}</strong><small>${numBR.format(r.qty)} un. • ${dec(r.share)}% do total</small></span>
     <span class="wd-asset-value"><strong>${r.hasPrice?money.format(r.value):'Sem cotação'}</strong><small class="${r.hasChange?(r.change>=0?'wd-up':'wd-down'):''}">${r.hasChange?pct(r.change)+' em 24h':r.isFresh?'Variação indisponível':'Dados não atualizados'}</small></span>
     <span class="wd-chevron" aria-hidden="true">${openSymbol===r.s?'⌃':'⌄'}</span>
    </button>
@@ -114,16 +116,16 @@ function paint(){
   ['Valor estimado',total>0?money.format(total):rows.length?'Sem preços válidos':money.format(0),snap.staleValue>0?'Inclui cotação desatualizada':'Posições cadastradas'],
   ['Mudança estimada em 24h',hasEnoughData?`${change24>=0?'+':''}${money.format(change24)}`:'—',hasEnoughData?pct(change24/prior*100)+' • '+Math.round(deltaCoverage*100)+'% dos ativos em valor':'Dados 24h insuficientes'],
   ['Resultado não realizado',hasTracked?`${trackedPnL>=0?'+':''}${money.format(trackedPnL)}`:'—',hasTracked?`${pct(trackedPnL/trackedInvestment*100)} • ${Math.round(pnlCoverage*100)}% da carteira rastreada`:'Cadastre os preços médios'],
-  ['Reserva estável',money.format(stableValue),`${stablePct.toFixed(1).replace('.',',')}% da carteira`]
+  ['Reserva estável',money.format(stableValue),`${dec(stablePct)}% da carteira`]
  ];
  $('wdKpis').innerHTML=indicators.map((x,i)=>`<div class="wd-kpi"><small>${esc(x[0])}</small><strong class="${i===1&&hasEnoughData?(change24>=0?'wd-up':'wd-down'):i===2&&hasTracked?(trackedPnL>=0?'wd-up':'wd-down'):''}">${esc(x[1])}</strong><span>${esc(x[2])}</span></div>`).join('');
  $('wdUpdated').textContent=snap.staleValue||snap.unpriced.length?'⚠️ Dados parciais':'● Atualização de mercado';
  const risky=snap.concentration>=45;
- $('wdSummary').innerHTML=rows.length?`<strong>${rows.length} ativo(s) • ${snap.priced.length} com cotação</strong><span>${big?`Maior posição: ${esc(big.s)} (${big.share.toFixed(1).replace('.',',')}%). `:''}${risky?'Sua carteira está concentrada.': 'Distribuição monitorada pelo Radar.'}</span>`:
+ $('wdSummary').innerHTML=rows.length?`<strong>${rows.length} ativo(s) • ${snap.priced.length} com cotação</strong><span>${big?`Maior posição: ${esc(big.s)} (${dec(big.share)}%). `:''}${risky?'Sua carteira está concentrada.': 'Distribuição monitorada pelo Radar.'}</span>`:
   '<strong>Sua carteira está vazia.</strong><span>Importe um print ou adicione moedas manualmente para começar.</span>';
  const groups=[...sortRows(rows)].filter(r=>r.hasPrice&&r.value>0).slice(0,10);
  const shade=['#4d8dff','#40c9a2','#f7b955','#be8fff','#f07c8c','#5bd5df','#7f9ed2','#bdc95b','#df9d5a','#a7b4cb'];
- $('wdDonut').innerHTML=total>0?`<div class="wd-track" role="img" aria-label="Distribuição percentual da carteira">${groups.map((r,i)=>`<span style="width:${r.share.toFixed(3)}%;background:${shade[i]}"></span>`).join('')}</div><div class="wd-legend">${groups.map((r,i)=>`<span><i style="background:${shade[i]}"></i>${esc(r.s)} ${r.share.toFixed(1).replace('.',',')}%</span>`).join('')}</div>`:
+ $('wdDonut').innerHTML=total>0?`<div class="wd-track" role="img" aria-label="Distribuição percentual da carteira">${groups.map((r,i)=>`<span style="width:${r.share.toFixed(3)}%;background:${shade[i]}"></span>`).join('')}</div><div class="wd-legend">${groups.map((r,i)=>`<span><i style="background:${shade[i]}"></i>${esc(r.s)} ${dec(r.share)}%</span>`).join('')}</div>`:
   '<div class="wd-empty">Sem posições precificadas para mostrar a distribuição.</div>';
  $('wdWarnings').innerHTML=snap.warnings.length?`<strong>⚠️ Pontos de atenção</strong>${snap.warnings.slice(0,4).map(w=>`<p>${esc(w)}</p>`).join('')}`:
   `<strong>🛡️ Monitoramento da carteira</strong><p>${rows.length?'Sem alertas de concentração extrema ou de dados ausentes nesta leitura.':'Adicione seus ativos para iniciar o monitoramento.'}</p>`;
@@ -131,6 +133,7 @@ function paint(){
   (filter==='stable'&&r.stable)||(filter==='confirmed'&&r.confirmed)||(filter==='attention'&&(r.caution||r.share>=30||!r.isFresh)));
  $('wdAssets').innerHTML=visible.length?visible.map(rowHtml).join(''):'<div class="wd-empty">Nenhuma moeda corresponde a este filtro.</div>';
  $('wdNote').textContent='Valor e variação de 24h são estimativas de mercado. Resultado não realizado usa apenas posições com preço médio cadastrado; não inclui taxas ou impostos. Pontuação técnica não é probabilidade de lucro.';
+ for(const id of ['wdKpis','wdUpdated','wdSummary','wdDonut','wdWarnings','wdAssets','wdNote'])window.CriptoRadarI18n?.localizeNode?.($(id));
 }
 function signature(){
  try{
@@ -173,6 +176,7 @@ function bind(){
 }
 document.addEventListener('DOMContentLoaded',bind);
 window.addEventListener('criptoradar:walletchange',()=>{try{tick(true)}catch(e){}});
+window.addEventListener('criptoradar:languagechange',()=>{try{tick(true)}catch(e){}});
 setInterval(()=>{try{tick()}catch(e){}},6000);
 window.CriptoRadarWalletV187={snapshot,render:()=>tick(true)};
 })();

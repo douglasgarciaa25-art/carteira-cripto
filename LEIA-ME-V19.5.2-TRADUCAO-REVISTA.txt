@@ -1,0 +1,42 @@
+CRIPTO RADAR V19.5.2 — TRADUÇÃO REVISTA (BASE V19.5.1)
+
+ESTA VERSÃO É CONSTRUÍDA A PARTIR DO ZIP V19.5.1 ENVIADO PELO USUÁRIO.
+Mantém as regras de trading simulado, carteira, alertas, assinatura PRO
+anual e acesso seguro do desenvolvedor. Não contém chaves privadas.
+
+MELHORIAS
+1. Catálogo de traduções completas por mensagem e moldes dinâmicos
+   que preservam valores financeiros, códigos das moedas e pontuações.
+2. Troca português / inglês / espanhol sem precisar recarregar a página.
+3. Market Intelligence: resumo produzido em três idiomas com os mesmos
+   dados técnicos e distribuição de aporte.
+4. Carteira e Central de Alertas: conteúdo traduzido no mesmo ciclo em
+   que é exibido; evita partes da tela em idiomas diferentes.
+5. IA Radar: o idioma agora é enviado ao /api/ai; o servidor monta as
+   respostas e o plano de carteira no idioma solicitado e o painel
+   atualiza quando o idioma muda, mesmo durante uma análise.
+6. Alertas Push: continua enviando o idioma salvo no contexto da
+   assinatura ao servidor; as traduções de notificações já presentes
+   na V19.5.1 permanecem em vigor.
+7. Valores em BRL continuam em reais, agora com formatação de números
+   conforme idioma do aparelho selecionado em painéis revisados.
+8. Versão do service worker/cache atualizada para evitar arquivo antigo.
+
+LIMITES CONHECIDOS
+• Manchetes/notícias de terceiros podem permanecer no idioma da fonte;
+  uma tradução automática universal exigiria um serviço externo.
+• Mensagens incomuns produzidas por motores legados ou provedores
+  externos ainda podem precisar de traduções adicionais.
+• Não transforma o site em app nativo Android: mantém o PWA existente.
+• Não altera assinaturas Google Play e NÃO libera PRO gratuitamente.
+
+INSTALAÇÃO
+1. EXTRAIA ESTE ZIP.
+2. Envie TODOS os arquivos para a RAIZ do repositório GitHub ligado à
+   Vercel, substituindo os da versão anterior. Não crie pasta 'api'.
+3. Aguarde o deploy Vercel; feche/abra o PWA para renovar o cache.
+4. Escolha EN, ES e PT. Confira telas Início, Carteira, Mercado,
+   Simulador de Aporte, Alertas e IA Radar; envie uma pergunta à IA.
+5. Verifique o idioma de uma notificação Push de teste no Android.
+
+STATUS: PACOTE PREPARADO LOCALMENTE; NÃO PUBLICADO NA VERCEL.

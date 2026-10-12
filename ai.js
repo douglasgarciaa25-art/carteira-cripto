@@ -1,4 +1,3 @@
-const aiL10n=require('./ai-locale.js');
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const pct=n=>(Number(n)||0).toFixed(2);
 const BINANCE=['https://data-api.binance.vision','https://api.binance.com','https://api1.binance.com','https://api2.binance.com'];
@@ -101,6 +100,55 @@ function portfolioPlanText(plan){
  const rows=plan.items.slice(0,5).map(x=>x.symbol+': '+x.action+(x.confidence?' ('+x.confidence+'/100)':'')).join('; ');
  return plan.summary+' '+rows+'.'+(plan.reserve?' '+plan.reserve:'');
 }
+
+// V19.5.2: API answers are COMPOSED in the requested language, not word-substituted.
+// Keep actions and numeric analytics in their original structured fields until output.
+function responseLanguage(req){
+ const requested=String(req?.body?.language||req?.body?.context?.language||req?.query?.lang||req?.headers?.['accept-language']||'pt-BR').toLowerCase();
+ return requested.startsWith('en')?'en':requested.startsWith('es')?'es':'pt-BR';
+}
+const SERVER_LOCALES={
+ en:{market:'Market now',daily:'over 24h',global:'global market cap change',fear:'fear/greed',estimate:'Estimated short-term outlook',rise:'rise',flat:'sideways',fall:'decline',confidence:'confidence',portfolio:'Portfolio',part:'of portfolio',approx:'estimated value',noWallet:'No portfolio was provided for this analysis.',current:'Current priority is risk management',positions:'positions',reduce:'require review or potential reduction before increasing exposure.',buys:'portfolio positions have confirmed buy signals according to Radar.',external:'There are confirmed external market opportunities to monitor, but no portfolio contribution is approved.',noBuy:'No buys are confirmed. The AI keeps new funds in reserve rather than forcing an entry.',reserve:'💵 New funds: keep in reserve until technical confirmation.',price:'price',volume:'volume',liquidity:'liquidity percentile',score:'technical score',notHeld:'This asset is not in the portfolio provided for this analysis.',held:'Your position',risk:'Highest caution among leading assets',change:'24h move',noMemory:'Analysis is active, but persistent learning storage is not configured.',memoryWait:'Learning memory is active. The next evaluation takes place after a minimum',minutes:'minutes to avoid noise.',memoryCompared:'Learning memory: compared',signals:'signals at intervals of at least',advanced:'advanced. Weights are adjusted gradually.',check:'New investments require independent confirmation of liquidity, trend and risk.',more:'The AI does not approve contributions without confirmed signals or recommend reductions solely on allocation differences.',badData:'WAIT FOR DATA',watch:'WAIT',hold:'HOLD / REVIEW',add:'CONFIRMED BUY / REVIEW CONTRIBUTION',cut:'REVIEW REDUCTION',profit:'REVIEW PROFIT TAKING',reasonData:'Market data are not current enough for a new entry.',reasonWait:'Technical confirmation is still missing; review trend, liquidity and risk before acting.',reasonAdd:'Confirm position size, liquidity and concentration before contributing.',reasonReduce:'Review position size, concentration, liquidity and transaction costs before changing exposure.',riskStatus:'Reviewing risk and concentration.',horizon:'short term'},
+ es:{market:'Mercado ahora',daily:'en 24 h',global:'cambio de capitalización global',fear:'miedo/codicia',estimate:'Escenario estimado a corto plazo',rise:'subida',flat:'lateral',fall:'caída',confidence:'confianza',portfolio:'Cartera',part:'de la cartera',approx:'valor aproximado',noWallet:'No se ha enviado ninguna cartera para este análisis.',current:'La prioridad actual es gestionar el riesgo',positions:'posiciones',reduce:'requieren revisión o posible reducción antes de aumentar la exposición.',buys:'posiciones de la cartera tienen compras confirmadas según Radar.',external:'Hay oportunidades de mercado externas confirmadas para observar, pero ningún aporte a la cartera está autorizado.',noBuy:'No hay compras confirmadas. La IA mantiene los nuevos fondos en reserva en lugar de forzar una entrada.',reserve:'💵 Nuevos fondos: mantener en reserva hasta recibir confirmación técnica.',price:'volumen',volume:'volumen',liquidity:'percentil de liquidez',score:'puntuación técnica',notHeld:'Este activo no aparece en la cartera enviada para este análisis.',held:'Tu posición',risk:'Mayor precaución entre los activos destacados',change:'movimiento en 24 h',noMemory:'El análisis está activo, pero el almacenamiento de aprendizaje persistente no está configurado.',memoryWait:'La memoria de aprendizaje está activa. La próxima evaluación se realiza después de al menos',minutes:'minutos para evitar ruido.',memoryCompared:'Memoria de aprendizaje: se compararon',signals:'señales con un intervalo mínimo de',advanced:'avanzaron. Los pesos se ajustan gradualmente.',check:'Los nuevos aportes requieren confirmación independiente de liquidez, tendencia y riesgo.',more:'La IA no autoriza aportes sin señales confirmadas ni recomienda reducciones solo por diferencias de asignación.',badData:'ESPERAR DATOS',watch:'ESPERAR',hold:'MANTENER / REVISAR',add:'COMPRA CONFIRMADA / EVALUAR APORTE',cut:'REVISAR REDUCCIÓN',profit:'EVALUAR TOMA DE BENEFICIOS',reasonData:'Los datos de mercado no están suficientemente actualizados para una nueva entrada.',reasonWait:'Aún falta confirmación técnica; revisa tendencia, liquidez y riesgo antes de actuar.',reasonAdd:'Comprueba tamaño de posición, liquidez y concentración antes de aportar.',reasonReduce:'Revisa tamaño de posición, concentración, liquidez y comisiones antes de cambiar la exposición.',riskStatus:'Revisar riesgo y concentración.',horizon:'corto plazo'}
+};
+function localizedAI(req,{wallet,all,top,btc,eth,g,fg,probs,plan,learning,q}){
+ const lang=responseLanguage(req);if(lang==='pt-BR')return null;
+ const L=SERVER_LOCALES[lang], p=n=>pct(n);
+ const marketLine=`${L.market}: BTC ${btc?p(btc.change24h):'—'}%, ETH ${eth?p(eth.change24h):'—'}% ${L.daily}`+(g?` • ${L.global} ${p(g.market_cap_change_percentage_24h_usd)}% ${L.daily}`:'')+(fg?` • ${L.fear} ${fg.value}`:'')+'.';
+ const probLine=`${L.estimate}: ${L.rise} ${probs.up}%, ${L.flat} ${probs.sideways}%, ${L.fall} ${probs.down}% (${L.confidence} ${probs.confidence}/100).`;
+ const value=wallet.reduce((v,w)=>v+(Number(w.valueBRL)||0),0);
+ const prices=new Map(all.map(x=>[x.symbol,x]));
+ const holdings=wallet.slice().sort((a,b)=>(b.valueBRL||0)-(a.valueBRL||0)).slice(0,6).map(x=>{
+   const share=value?100*(x.valueBRL||0)/value:0,move=prices.get(x.symbol)?.change24h??x.change24h;
+   return `${x.symbol} ${share.toFixed(0)}% ${L.part}, ${p(move)}% ${L.daily}`;
+ }).join('; ');
+ const walletLine=wallet.length?`${L.portfolio}: ${holdings}${value?' • '+L.approx+' R$ '+value.toLocaleString(lang==='en'?'en-US':'es-ES',{maximumFractionDigits:2}):''}.`:L.noWallet;
+ const counts=plan.counts||{}, confirmed=plan.confirmedMarket?.length||0;
+ const summary=counts.reductions?`${L.current}: ${counts.reductions} ${L.positions} ${L.reduce}`:
+   counts.buys?`${counts.buys} ${L.buys}`:confirmed?`${L.external}`:L.noBuy;
+ const reserve=counts.buys?'':L.reserve;
+ const items=plan.items.map(item=>{
+   const action=String(item.action||'').toUpperCase();
+   let translatedAction=L.watch, reason=L.reasonWait;
+   if(/AGUARDAR DADOS/.test(action)){translatedAction=L.badData;reason=L.reasonData;}
+   else if(/VENDER|REDUZIR|REALIZAR/.test(action)){translatedAction=/REALIZAR/.test(action)?L.profit:L.cut;reason=L.reasonReduce;}
+   else if(/APORTAR|COMPRA CONFIRMADA/.test(action)){translatedAction=L.add;reason=L.reasonAdd;}
+   else if(/MANTER/.test(action)){translatedAction=L.hold;reason=L.reasonWait;}
+   return {...item,action:translatedAction,reason};
+ });
+ const localizedPlan={...plan,summary,reserve,items};
+ const planLine=items.length?summary+' '+items.slice(0,5).map(x=>x.symbol+': '+x.action+(x.confidence?' ('+x.confidence+'/100)':'')).join('; ')+'. '+reserve:summary;
+ const ql=String(q||'').toLowerCase();
+ let answer=marketLine+' '+probLine+' '+walletLine+'\n'+planLine;
+ const symbol=(String(q||'').toUpperCase().match(/\b[A-Z0-9]{2,10}\b/g)||[]).find(x=>all.some(a=>a.symbol===x));
+ if(symbol){const x=all.find(a=>a.symbol===symbol);answer=`${symbol}: ${p(x.change24h)}% ${L.daily}, ${L.volume} US$ ${Math.round(x.volume).toLocaleString(lang==='en'?'en-US':'es-ES')}, ${L.liquidity} ${x.liquidityPct}, ${L.score} ${x.score}/100. `+(wallet.some(w=>w.symbol===symbol)?`${L.held}: ${wallet.find(w=>w.symbol===symbol).qty} ${symbol}.`:L.notHeld)+' '+probLine;}
+ if(/carteira|portf[oó]lio|tenho|meus ativos|wallet|holdings|my assets|mi cartera|mis activos|portfolio|my coins/.test(ql))answer=walletLine+'\n'+planLine+'\n'+marketLine+' '+probLine;
+ if(/aprendeu|aprendizado|acerto|mem[oó]ria|learn|accuracy|hit rate|memory|memoria|aprendi[oó]/.test(ql))answer=learning.enabled?(learning.evaluated?`${L.memoryCompared} ${learning.evaluated} ${L.signals} ${learning.windowMinutes} ${L.minutes} (${learning.hits} ${L.advanced})`:`${L.memoryWait} ${learning.windowMinutes} ${L.minutes}`):L.noMemory;
+ if(/risco|perigo|risk|riesgo|danger|peligro/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?`${L.risk}: ${x.symbol}, ${L.change} ${p(x.change24h)}%. `:'')+marketLine+' '+probLine;}
+ if(/o que (fa[cç]o|fazer)|comprar|vender|aportar|what should i do|buy|sell|add funds|invertir|aportar|qu[eé] hago|should i invest|que debo hacer/.test(ql))answer=walletLine+'\n'+planLine+'\n'+marketLine+' '+probLine+' '+L.more;
+ return {answer,portfolioPlan:localizedPlan,horizon:L.horizon,language:lang};
+}
+
 module.exports=async(req,res)=>{
  res.setHeader('Cache-Control','no-store, max-age=0, must-revalidate');
  res.setHeader('Content-Type','application/json; charset=utf-8');
@@ -131,22 +179,17 @@ module.exports=async(req,res)=>{
   // Só gira a fotografia de aprendizado após a janela mínima; evita "aprender" a cada 30 s e oscilar pesos sem base temporal.
   if(!prev||elapsed>=LEARNING_WINDOW_MS||elapsed<0||elapsed>=24*60*60*1000)await kv(['SET','radar:last',JSON.stringify({at,top:top.slice(0,5),weights:w,probabilities:probs})]);
   if(wallet.length)await kv(['SET','radar:wallet:last',JSON.stringify({at,wallet})]);
-  const requestLanguage=String(req.body?.language||req.headers?.['accept-language']||'pt-BR').trim();
-  const language=/^en/i.test(requestLanguage)?'en':/^es/i.test(requestLanguage)?'es':'pt-BR';
-  const l=aiL10n.locale(language),localizedPlan=aiL10n.formatPlan(plan,language);
   const q=String(req.body?.question||req.query?.question||'').trim().slice(0,500),ql=q.toLowerCase(),btc=all.find(x=>x.symbol==='BTC'),eth=all.find(x=>x.symbol==='ETH');
-  const marketLine=aiL10n.marketLine({btc,eth,g,fg},language),probLine=aiL10n.probabilityLine(probs,language),portfolioLine=aiL10n.portfolioLine(wallet,all,language),planLine=aiL10n.planLine(localizedPlan,language);
-  let answer=marketLine+probLine+' '+portfolioLine+(wallet.length?'\n'+planLine:'');
+  const marketLine='Mercado agora: BTC '+(btc?pct(btc.change24h):'—')+'%, ETH '+(eth?pct(eth.change24h):'—')+'% em 24h'+(g?' • capitalização global '+pct(g.market_cap_change_percentage_24h_usd)+'% em 24h':'')+(fg?' • medo/ganância '+fg.value+' ('+fg.value_classification+')':'')+'.';
+  const probLine=' Cenário estimado de curto prazo: alta '+probs.up+'%, lateral '+probs.sideways+'%, queda '+probs.down+'% (confiança '+probs.confidence+'/100).';
+  let answer=marketLine+probLine+' '+portfolioText(wallet,all)+(wallet.length?'\n'+portfolioPlanText(plan):'');
   const symbol=(q.toUpperCase().match(/\b[A-Z0-9]{2,10}\b/g)||[]).find(s=>all.some(x=>x.symbol===s));
-  if(symbol){const x=all.find(y=>y.symbol===symbol),held=wallet.find(y=>String(y.symbol).toUpperCase()===symbol);
-    answer=symbol+': '+pct(x.change24h)+'% '+l.in24+', '+l.liquidity+' '+x.liquidityPct+', score '+x.score+'/100. '+
-      (held?l.has+' '+held.qty+' '+symbol+'. '+(held.direction?l.marked+' '+aiL10n.translateAction(held.direction,language)+'.':''):l.notHeld)+probLine;
-  }
-  if(/carteira|portf[oó]lio|tenho|meus ativos|wallet|holdings|my assets|mi cartera|mis activos/.test(ql))answer=portfolioLine+'\n'+planLine+'\n'+marketLine+probLine;
-  if(/aprendeu|aprendizado|acerto|mem[oó]ria|learn|accuracy|hit rate|memory|memoria|aprendi[oó]/.test(ql))answer=learning.enabled?(learning.evaluated?l.learningDone(learning.evaluated,learning.windowMinutes,learning.hits):l.learningWait(learning.windowMinutes)):l.learningOff;
-  if(/risco|perigo|risk|riesgo|danger|peligro/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?l.caution+': '+x.symbol+', '+l.movement+' '+pct(x.change24h)+'%. ':'')+marketLine+probLine}
-  if(/o que (fa[cç]o|fazer)|comprar|vender|aportar|what should i do|buy|sell|add funds|invertir|qu[eé] hago/.test(ql))answer=portfolioLine+'\n'+planLine+'\n'+marketLine+probLine+' '+l.warn;
-  answer+='\n'+l.note;
-  res.status(200).json({ok:true,language,at,answer,top,weights:w,learning,probabilities:probs,portfolioPlan:localizedPlan,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},contextReceived:{wallet:wallet.length,radar:radar.length}});
- }catch(e){res.status(503).json({ok:false,error:'Mercado indisponível',detail:String(e?.message||e),at:new Date().toISOString()})}
+  if(symbol){const x=all.find(y=>y.symbol===symbol),held=wallet.find(y=>String(y.symbol).toUpperCase()===symbol);answer=symbol+': '+pct(x.change24h)+'% em 24h, volume US$ '+Math.round(x.volume).toLocaleString('pt-BR')+', liquidez no percentil '+x.liquidityPct+' e score '+x.score+'/100.'+(held?' Você possui '+held.qty+' '+symbol+(held.direction?'; o Radar está marcando '+held.direction+'.':'.'):' Esse ativo não aparece na carteira enviada nesta leitura.')+probLine}
+  if(/carteira|portf[oó]lio|tenho|meus ativos|wallet|holdings|my assets|mi cartera|mis activos/.test(ql))answer=portfolioText(wallet,all)+'\n'+portfolioPlanText(plan)+'\n'+marketLine+probLine;
+  if(/aprendeu|aprendizado|acerto|mem[oó]ria|learn|accuracy|hit rate|memory|memoria|aprendi[oó]/.test(ql))answer=learning.enabled?(learning.evaluated?'Memória ativa. Comparei '+learning.evaluated+' sinais de uma fotografia com pelo menos '+learning.windowMinutes+' minutos de intervalo; '+learning.hits+' avançaram. Os pesos são ajustados gradualmente.':'Memória ativa. A próxima avaliação só ocorre depois de uma janela mínima de '+learning.windowMinutes+' minutos para evitar aprendizado por ruído.'):'A análise está ativa, mas a memória permanente não está disponível nesta execução.';
+  if(/risco|perigo|risk|riesgo|danger|peligro/.test(ql)){const x=[...top].sort((a,b)=>Math.abs(b.change24h)-Math.abs(a.change24h))[0];answer=(x?'Maior cautela entre os destaques: '+x.symbol+', movimento de '+pct(x.change24h)+'% em 24h. ':'')+marketLine+probLine}
+  if(/o que (fa[cç]o|fazer)|comprar|vender|aportar|what should i do|buy|sell|add funds|invertir|aportar|qu[eé] hago/.test(ql))answer=portfolioText(wallet,all)+'\n'+portfolioPlanText(plan)+'\n'+marketLine+probLine+' A IA não libera aporte quando o Radar ainda está em espera e não manda reduzir apenas por diferença de alocação.';
+  const localization=localizedAI(req,{wallet,all,top,btc,eth,g,fg,probs,plan,learning,q});
+  res.status(200).json({ok:true,at,answer:localization?.answer||answer,language:localization?.language||'pt-BR',top,weights:w,learning,probabilities:{...probs,horizon:localization?.horizon||probs.horizon},portfolioPlan:localization?.portfolioPlan||plan,market:{btc24h:btc?.change24h??null,eth24h:eth?.change24h??null,globalCap24h:g?.market_cap_change_percentage_24h_usd??null,fearGreed:fg?{value:+fg.value,label:fg.value_classification}:null},contextReceived:{wallet:wallet.length,radar:radar.length}});
+ }catch(e){res.status(503).json({ok:false,error:responseLanguage(req)==='en'?'Market unavailable':responseLanguage(req)==='es'?'Mercado no disponible':'Mercado indisponível',detail:String(e?.message||e),at:new Date().toISOString()})}
 };

@@ -1,4 +1,4 @@
-const CACHE='cripto-radar-v19.6-pre-render-language';
+const CACHE='cripto-radar-v19.5.6-multicycle-audit';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css','./layout-v193.css','./layout-v194.css','./layout-v195.css'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
@@ -7,7 +7,7 @@ self.addEventListener('install',e=>e.waitUntil((async()=>{
   const c=await caches.open(CACHE);await c.addAll(CORE);await self.skipWaiting();
 })()));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{
-  const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();
+  const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('cripto-radar-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();
 })()));
 self.addEventListener('fetch',e=>{
   if(e.request.method!=='GET')return;
@@ -90,21 +90,32 @@ async function scanPullbacks(cfg,assets,watch){
   const held=(cfg?.context?.wallet||[]).map(x=>cleanSymbol(x.symbol)).filter(Boolean),top=[...assets].sort((a,b)=>(b.volume||0)-(a.volume||0)).slice(0,12).map(x=>cleanSymbol(x.symbol));
   const syms=[...new Set([...held,'BTC','ETH','SOL','BNB','LINK','SUI',...top])].filter(s=>watch.has(s)).slice(0,8);let sent=0;
   const jobs=await Promise.allSettled(syms.map(async s=>{const rows=await fetchKlines(s,'15m',80),raw=detectPullback(rows);if(!raw)return null;return{symbol:s,...await confirmPullback(s,raw)}}));
-  for(const j of jobs){if(j.status!=='fulfilled'||!j.value)continue;const x=j.value;if(!x.confirmed||x.score<72)continue;const bull=x.side==='bull',mirror=cfg?.mirror||{},mirrorOn=mirror.mode==='alerts';let title=(bull?'↗️':'↘️')+' Falha de pullback: '+x.symbol;let body=`${x.label} • score técnico ${x.score}/100 • nível ${x.level.toPrecision(7)} • preço ${x.price.toPrecision(7)} • ${bull?'possível continuação da alta':'possível continuação da baixa'}`;if(mirrorOn){const cap=Number(cfg?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;title='🪞 Espelhamento: '+x.symbol;body=`${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}await notifyMarket((mirrorOn?'mirror-':'pullback-')+x.side+'-'+x.symbol,title,body);sent++;if(sent>=2)break}
+  for(const j of jobs){if(j.status!=='fulfilled'||!j.value)continue;const x=j.value;if(!x.confirmed||x.score<72)continue;const bull=x.side==='bull',mirror=cfg?.mirror||{},mirrorOn=mirror.mode==='alerts';let title=(bull?'↗️':'↘️')+' Falha de pullback: '+x.symbol;let body=`${x.label} • score técnico ${x.score}/100 • nível ${x.level.toPrecision(7)} • preço ${x.price.toPrecision(7)} • ${bull?'possível continuação da alta':'possível continuação da baixa'}`;if(mirrorOn){const cap=Number(cfg?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;title='🪞 Espelhamento: '+x.symbol;body=`${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}await notifyMarket((mirrorOn?'mirror-':'pullback-')+x.side+'-'+x.symbol,title,body,localeOf(cfg));sent++;if(sent>=2)break}
   return sent;
 }
-async function notifyMarket(key,title,body){
+function localeOf(cfg){const lang=String(cfg?.language||'pt-BR').toLowerCase();return lang.startsWith('en')?'en':lang.startsWith('es')?'es':'pt-BR'}
+function msg(locale,pt,en,es){return locale==='en'?en:locale==='es'?es:pt}
+function localizeBackgroundText(raw,locale){
+ if(locale==='pt-BR')return raw;
+ const rows=locale==='en'?[
+ ['Falha de pullback:','Failed pullback:'],['Espelhamento:','Mirroring:'],['score técnico','technical score'],['nível','level'],['preço','price'],['possível continuação da alta','possible upward continuation'],['possível continuação da baixa','possible downward continuation'],['simulação','simulation'],['risco','risk'],['alvo técnico','technical target'],['Alta rápida:','Rapid rise:'],['Queda rápida:','Rapid drop:'],['Movimento forte:','Strong move:'],['Atenção no mercado:','Market alert:'],['desde a última checagem','since last check'],['em 24h','over 24h'],['liquidez','liquidity'],['fonte','source'],['mercado','market'],['direto','direct'],['oportunidade em','opportunity in'],['Sinal confirmado pelo Radar.','Signal confirmed by Radar.'],['ALTA','UP'],['BAIXA','DOWN']
+ ]:[
+ ['Falha de pullback:','Fallo de retroceso:'],['Espelhamento:','Replicación:'],['score técnico','puntuación técnica'],['nível','nivel'],['preço','precio'],['possível continuação da alta','posible continuación alcista'],['possível continuação da baixa','posible continuación bajista'],['simulação','simulación'],['risco','riesgo'],['alvo técnico','objetivo técnico'],['Alta rápida:','Subida rápida:'],['Queda rápida:','Caída rápida:'],['Movimento forte:','Movimiento fuerte:'],['Atenção no mercado:','Atención al mercado:'],['desde a última checagem','desde la última revisión'],['em 24h','en 24 h'],['liquidez','liquidez'],['fonte','fuente'],['oportunidade em','oportunidad en'],['Sinal confirmado pelo Radar.','Señal confirmada por Radar.'],['ALTA','ALZA'],['BAIXA','BAJA']
+ ];
+ let out=String(raw||'');for(const [pt,target] of rows){if(out.includes(pt))out=out.split(pt).join(target)}return out;
+}
+async function notifyMarket(key,title,body,language='pt-BR'){
   if(!(await cooldownAllowed(key, key.startsWith('fast-')?20:60)))return;
-  await self.registration.showNotification(title,{body,icon:'./icon-192.png',badge:'./badge-96.png',tag:key,renotify:true,data:{url:'./'},vibrate:[180,80,180]});
+  await self.registration.showNotification(localizeBackgroundText(title,language),{body:localizeBackgroundText(body,language),icon:'./icon-192.png',badge:'./badge-96.png',tag:key,renotify:true,data:{url:'./'},vibrate:[180,80,180]});
 }
 async function scanConfiguredSignals(cfg){
   const opps=Array.isArray(cfg?.context?.opportunities)?cfg.context.opportunities:[];
   const good=opps.filter(x=>/good|confirm|forte|compra/i.test(String(x?.signalState||x?.signal||''))).slice(0,2);
-  for(const x of good){const s=cleanSymbol(x.symbol);if(!s)continue;await notifyMarket('ctx-'+s,'🚀 Radar: oportunidade em '+s,String(x.reason||x.signal||'Sinal confirmado pelo Radar.').slice(0,220))}
+  for(const x of good){const s=cleanSymbol(x.symbol);if(!s)continue;await notifyMarket('ctx-'+s,'🚀 Radar: oportunidade em '+s,String(x.reason||x.signal||'Sinal confirmado pelo Radar.').slice(0,220),localeOf(cfg))}
 }
 async function runMarketScan(reason='background'){
   const cfg=(await dbGet('config'))||{};
-  if(!cfg.enabled||!cfg.notifications){await broadcast('SW ativo • notificações desativadas');return}
+  if(!cfg.enabled||!cfg.notifications){await broadcast(msg(localeOf(cfg),'SW ativo • notificações desativadas','SW active • notifications disabled','SW activo • notificaciones desactivadas'));return}
   try{
     await scanConfiguredSignals(cfg);
     const snap=await fetchMarketSnapshot(),assets=Array.isArray(snap.assets)?snap.assets:[];
@@ -118,36 +129,36 @@ async function runMarketScan(reason='background'){
     for(const x of candidates){
       if(sent>=3)break;const s=cleanSymbol(x.symbol),price=Number(x.last),change24=Number(x.change24h)||0,old=Number(prev.prices?.[s]);const move=pct(old,price);
       if(Number.isFinite(move)&&Math.abs(move)>=1.15){
-        const up=move>0;await notifyMarket('fast-'+(up?'up-':'down-')+s,(up?'🚀 Alta rápida: ':'🔴 Queda rápida: ')+s,`${fmtPct(move)} desde a última checagem • 24h ${fmtPct(change24)} • fonte ${snap.source||'mercado'}`);sent++;continue;
+        const up=move>0;await notifyMarket('fast-'+(up?'up-':'down-')+s,(up?'🚀 Alta rápida: ':'🔴 Queda rápida: ')+s,`${fmtPct(move)} desde a última checagem • 24h ${fmtPct(change24)} • fonte ${snap.source||'mercado'}`,localeOf(cfg));sent++;continue;
       }
       if(Math.abs(change24)>=7.5){
-        const up=change24>0;await notifyMarket('24h-'+(up?'up-':'down-')+s,(up?'🟢 Movimento forte: ':'🔴 Atenção no mercado: ')+s,`${fmtPct(change24)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`);sent++;
+        const up=change24>0;await notifyMarket('24h-'+(up?'up-':'down-')+s,(up?'🟢 Movimento forte: ':'🔴 Atenção no mercado: ')+s,`${fmtPct(change24)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,localeOf(cfg));sent++;
       }
     }
     const pullbackSent=await scanPullbacks(cfg,assets,watch).catch(()=>0);sent+=pullbackSent;
     const prices={};for(const x of assets){const s=cleanSymbol(x.symbol),p=Number(x.last);if(s&&p>0)prices[s]=p}
     await dbSet('marketPrev',{at:now,prices});await dbSet('lastScan',{at:now,reason,source:snap.source||'mercado',sent,pullbackSent});
-    await broadcast(`mercado + pullback checados • ${new Date(now).toLocaleTimeString('pt-BR')} • ${sent} alerta(s)`);
-  }catch(e){await dbSet('lastScan',{at:Date.now(),reason,error:String(e?.message||e)});await broadcast('SW ativo • mercado indisponível nesta checagem')}
+    await broadcast(msg(localeOf(cfg),`mercado + pullback checados • ${new Date(now).toLocaleTimeString('pt-BR')} • ${sent} alerta(s)`,`market + pullback checked • ${new Date(now).toLocaleTimeString('en-US')} • ${sent} alert(s)`,`mercado + retroceso revisados • ${new Date(now).toLocaleTimeString('es-ES')} • ${sent} alerta(s)`));
+  }catch(e){await dbSet('lastScan',{at:Date.now(),reason,error:String(e?.message||e)});await broadcast(msg(localeOf(cfg),'SW ativo • mercado indisponível nesta checagem','SW active • market unavailable for this scan','SW activo • mercado no disponible en esta revisión'))}
 }
 
 self.addEventListener('message',e=>{
   const d=e.data||{};
-  if(d.type==='RADAR_CONFIG')e.waitUntil((async()=>{await dbSet('config',d.payload||{});await broadcast('Worker + SW prontos para alertas')})());
+  if(d.type==='RADAR_CONFIG')e.waitUntil((async()=>{await dbSet('config',d.payload||{});await broadcast(msg(localeOf(d.payload),'Worker + SW prontos para alertas','Worker + SW ready for alerts','Worker + SW listos para alertas'))})());
   if(d.type==='RADAR_RUN_NOW')e.waitUntil(runMarketScan(d.reason||'manual'));
 });
 self.addEventListener('sync',e=>{if(e.tag===SYNC_TAG)e.waitUntil(runMarketScan('sync'))});
 self.addEventListener('periodicsync',e=>{if(e.tag===BG_TAG)e.waitUntil(runMarketScan('periodic-sync'))});
 self.addEventListener('push',e=>e.waitUntil((async()=>{
   let d={};try{d=e.data?.json?.()||{}}catch(_){d={body:e.data?.text?.()||''}}
-  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||(d.lang==='en'?'New market alert.':d.lang==='es'?'Nueva alerta del mercado.':'Novo alerta do mercado.'),icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,requireInteraction:!!d.requireInteraction,vibrate:[180,80,180],data:{url:d.url||'./',kind:d.kind||'market',symbol:d.symbol||null},actions:[{action:'open',title:d.lang==='en'?'Open Radar':'Abrir Radar'}]});
+  await self.registration.showNotification(d.title||'Cripto Radar',{body:d.body||(d.lang==='en'?'New market alert.':d.lang==='es'?'Nueva alerta del mercado.':'Novo alerta do mercado.'),icon:'./icon-192.png',badge:'./badge-96.png',tag:d.tag||'radar-push',renotify:true,requireInteraction:!!d.requireInteraction,vibrate:[180,80,180],data:{url:d.url||'./',kind:d.kind||'market',symbol:d.symbol||null},actions:[{action:'open',title:d.lang==='en'?'Open Radar':d.lang==='es'?'Abrir Radar':'Abrir Radar'}]});
 })()));
 self.addEventListener('pushsubscriptionchange',e=>e.waitUntil((async()=>{
   try{
     const cfg=await fetch('./api/push-config',{cache:'no-store'}).then(r=>r.json());if(!cfg?.publicKey)return;
     const pad='='.repeat((4-cfg.publicKey.length%4)%4),b64=(cfg.publicKey+pad).replace(/-/g,'+').replace(/_/g,'/'),raw=atob(b64),key=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)key[i]=raw.charCodeAt(i);
     const sub=await self.registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
-    await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON()})});
+    await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),language:localeOf(await dbGet('config'))})});
   }catch(_){ }
 })()));
 self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(async ws=>{const url=e.notification.data?.url||'./';if(ws[0]){await ws[0].focus();try{ws[0].navigate(url)}catch(_){ }return}return clients.openWindow(url)}))});

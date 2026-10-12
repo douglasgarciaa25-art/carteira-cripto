@@ -1,21 +1,15 @@
-CRIPTO RADAR — AGENDADOR EXTERNO (SEM SUBPASTAS)
+CRIPTO RADAR — AGENDADOR EXTERNO • V19.5.6
 
-Use qualquer serviço de cron/monitor HTTP que aceite uma URL pública.
+A URL de varredura é https://carteira-cripto-pi.vercel.app/api/push-cron
+Método GET • agendar a cada 1 minuto (mínimo) • timeout recomendado 60s.
+A chamada deve ser feita por agendador externo, mesmo quando o app estiver fechado.
 
-URL para chamar:
-https://carteira-cripto-pi.vercel.app/api/push-cron
+SEGURANÇA RECOMENDADA
+1. Defina uma variável CRON_SECRET aleatória e longa nas configurações do projeto Vercel. Não publique o valor no código.
+2. Configure no serviço de cron um cabeçalho HTTP Authorization: Bearer SEU_SEGREDO.
+3. Com CRON_SECRET configurado, requisições sem token recebem 401.
+4. Se o serviço de agendamento não suporta cabeçalhos HTTP, não ative a variável até trocar de serviço. Sem CRON_SECRET, o endpoint permanece público (com limitação via bloqueio de varredura).
 
-Configuração:
-- Método: GET
-- Frequência: a cada 1 minuto
-- Timeout: 60 s
-- Considerar sucesso: HTTP 200
-
-Exemplos de serviços compatíveis: cron-job.org, UptimeRobot ou Better Stack.
-
-Depois de configurar, abra:
-https://carteira-cripto-pi.vercel.app/api/push-status
-
-O campo lastRunISO/ageSeconds confirma se a varredura está realmente sendo executada.
-
-IMPORTANTE: nenhum arquivo deste pacote precisa ficar em .github/workflows.
+STATUS: https://carteira-cripto-pi.vercel.app/api/push-status
+- lastRunISO confirma a última varredura, inclusive quando não há assinantes.
+- Um status 'ok' não comprova entrega no Android: use TESTAR BLOQUEADO, feche o app e aguarde o agendador.

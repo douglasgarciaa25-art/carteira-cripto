@@ -1,0 +1,32 @@
+CRIPTO RADAR V19.5.6 — RELATÓRIO DE VALIDAÇÃO
+
+AUDITORIAS E CORREÇÕES REALIZADAS
+1. Corrigido bloqueio de atualização automática do tradutor em blocos dinâmicos.
+2. Corrigidos erros confirmados na tradução espanhola: Carteira, Tendência e Liquidez.
+3. Revalidada troca de idioma PT-BR / EN / ES com inserções DOM (Chromium isolado).
+4. Agendador agora atualiza o registro de execução mesmo com zero assinantes.
+5. Agendador registra tentativas que falharam na consulta ao mercado.
+6. Diagnóstico diferencia execução recente, execução com falha e ausência de execução.
+7. Cooldown Push passa a ser salvo apenas depois de entrega aceita pelo provedor.
+8. Alertas originados de análises locais antigas não são reciclados indefinidamente.
+9. CRON_SECRET opcional para autenticar solicitações ao agendador (instruções no AGENDADOR-EXTERNO.txt).
+10. Service Worker limpa somente caches do Cripto Radar, sem afetar outras PWAs.
+11. Cache, versão e referências dos scripts atualizados.
+12. Conferência de sintaxe de 42 scripts JS, rotas e 37 alvos de publicação.
+13. Testes em Node para autenticação do cron, execução com/sem assinantes, falhas de mercado e retentativas.
+14. IDs HTML únicos, assets referenciados existentes e pacote ZIP sem subpastas.
+
+PENDÊNCIAS EXTERNAS, NÃO CORRIGÍVEIS SEM CREDENCIAIS/ACESSO REAL
+- Assinatura Android App Links: substituir impressão digital fictícia em assetlinks.json
+  pela SHA-256 real do certificado fornecido pelo Google Play Console.
+- Garantir KV Upstash, VAPID, agendador externo e permissões Push no Android;
+  um status HTTP 200 ou envio aceito não comprova exibição da notificação.
+- Verificação real da assinatura Google Play e do acesso do desenvolvedor dependem
+  de credenciais de produção configuradas em ambiente seguro na Vercel.
+- Tradução automática de notícias arbitrárias de terceiros exige serviço externo.
+- Não foi possível navegar na página inteira em Chromium neste ambiente:
+  protocolo local bloqueado por administrador. Foram testados os componentes
+  isolados, não um deploy funcional no Android.
+- Necessário publicar no GitHub/Vercel e conferir o aparelho real após deploy.
+
+NÃO INSIRA SEGREDOS NESTE ZIP/GITHUB.

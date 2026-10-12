@@ -3755,200 +3755,795 @@
     ]
   ]
 };
-  // V19.6: sentenças completas, nunca conjunções avulsas que criam mistura de idiomas.
-  // Chaves canônicas em português; tradução usada ANTES da inserção de cada resultado na tela.
-  const COMPLETE_V196={
-    en:{
-      'SIMULAÇÃO / ALERTA • NÃO EXECUTA ORDENS':'SIMULATION / ALERT • NO ORDERS ARE EXECUTED',
-      'Boatos e notícias do mercado':'Market rumors and news',
-      'Boatos que podem mexer com sua carteira':'Rumors that may affect your portfolio',
-      'Nenhuma informação confirmada disponível agora.':'No confirmed information is available right now.',
-      'Contexto de mercado':'Market context',
-      'O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.':'The market is monitored on the server and Android can receive alerts while the app is closed or the screen is locked.',
-      'Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'Server and scheduler are responding. This device has a local push subscription. Background delivery is only verified when a scheduled test arrives.',
-      'Segundo plano: Worker + SW prontos para alertas':'Background: worker and service worker ready for alerts',
-      'O Radar continua cruzando movimento, volume, liquidez e concentração.':'Radar continues analyzing price movement, volume, liquidity and concentration.',
-      'Sem risco forte confirmado':'No major risk confirmed',
-      'Sem oportunidade forte confirmada':'No strong opportunity confirmed',
-      'Carteira sem risco forte agora':'No major portfolio risk detected now',
-      'Nenhuma oportunidade forte confirmada agora':'No strong opportunity is confirmed now',
-      'O Radar continua verificando automaticamente.':'Radar continues checking automatically.',
-      'Preço e liquidez estão alinhados pelo Radar. Antes de aportar, confira se isso não aumenta demais a concentração.':'Radar price and liquidity conditions are aligned. Before adding funds, check portfolio concentration.',
-      'Há sinais favoráveis, mas ainda não suficientes para sugerir novo aporte.':'There are favorable signs, but not enough to support a new contribution.',
-      'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.':'The price has risen sharply, but a daily gain is not your personal profit. Review cost basis, fees and risk before deciding.',
-      'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.':'The price move is extended. Consider reviewing partial profit-taking while maintaining remaining exposure.',
-      'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Some signals are favorable, but confirmation is still partial.',
-      'Dados de mercado ainda insuficientes.':'Market data is still insufficient.',
-      'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Stable reference asset; no directional Radar signal.',
-      'Ação do Radar:':'Radar guidance:',
-      'Sem confirmação suficiente para comprar ou vender.':'Not enough confirmation to buy or sell.',
-      'Muito alta':'Very high', 'Média':'Medium','Baixa':'Low',
-      'Ainda sem dados recentes ou sinais verificáveis.':'No recent data or verifiable signals yet.',
-      'Dados recebidos':'Data received','Aguardando dados recentes':'Waiting for recent data',
-      'Nenhuma mudança registrada neste aparelho ainda.':'No changes recorded on this device yet.',
-      'Nenhum sinal corresponde ao filtro selecionado.':'No signals match the selected filter.',
-      'Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.':'No alerts match the current criteria. Market monitoring continues.',
-      'Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.':'Radar will display verifiable alerts when price and technical data are refreshed.',
-      'MAIOR PRIORIDADE AGORA':'HIGHEST PRIORITY NOW','STATUS DA CARTEIRA':'PORTFOLIO STATUS',
-      'Marcar como lido':'Mark as read','✓ Lido':'✓ Read','Lido':'Read','Novo sinal':'New signal',
-      'Orientação:':'Guidance:','Atualizado':'Updated','Tipo':'Type','Notificações:':'Notifications:',
-      'Push 24h: verificar servidor abaixo':'24h Push: check server below',
-      'Permitidas no navegador':'Allowed in browser','Bloqueadas no aparelho':'Blocked on device',
-      'Aguardando autorização':'Awaiting permission','Indisponíveis':'Unavailable',
-      'Aproximadamente':'Approximately','Representa cerca de':'Represents approximately',
-      'O que fazer agora':'What to do now',
-      'Sem ação urgente':'No urgent action',
-      'Conservador':'Conservative','Equilibrado':'Balanced','Agressivo':'Aggressive',
-      'Pontos de atenção':'Items to review',
-      'Distribuição monitorada pelo Radar.':'Radar is monitoring portfolio allocation.',
-      'Sua carteira está concentrada.':'Your portfolio is concentrated.',
-      'Ativos em alta':'Rising assets','Ativos em queda':'Falling assets',
-      'Mercado mais comprador':'Mostly buying market','Mercado mais vendedor':'Mostly selling market',
-      'Mercado misto':'Mixed market',
-      'Agendador externo:':'External scheduler:',
-      'Servidor e agendador respondendo.':'Server and scheduler are responding.',
-      'Este aparelho possui inscrição Push local.':'This device has a local Push subscription.',
-      'O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'Automatic delivery with the app closed is only verified when a scheduled test arrives.',
-      'Volume 24h:':'24h volume:', 'Liquidez:':'Liquidity:',
-      'Mercado mais comprador':'Mostly buying market',
-      'Sinais avaliados':'Signals evaluated','Taxa de acerto':'Hit rate',
-      'Aguardando confirmação de mercado':'Waiting for market confirmation',
-      'Você confirma':'You confirm',
-    },
-    es:{
-      'SIMULAÇÃO / ALERTA • NÃO EXECUTA ORDENS':'SIMULACIÓN / ALERTA • NO EJECUTA ÓRDENES',
-      'Boatos e notícias do mercado':'Rumores y noticias del mercado',
-      'Boatos que podem mexer com sua carteira':'Rumores que pueden afectar a tu cartera',
-      'Nenhuma informação confirmada disponível agora.':'No hay información confirmada disponible ahora.',
-      'Contexto de mercado':'Contexto del mercado',
-      'O mercado continua sendo verificado fora do celular e o Android pode receber os alertas mesmo com o app fechado ou a tela bloqueada.':'El mercado continúa siendo vigilado en el servidor y Android puede recibir alertas con la aplicación cerrada o la pantalla bloqueada.',
-      'Servidor e agendador respondendo. Este aparelho possui inscrição Push local. O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'El servidor y el programador responden. Este dispositivo tiene una suscripción push local. La entrega en segundo plano solo se verifica al recibir una prueba programada.',
-      'Segundo plano: Worker + SW prontos para alertas':'Segundo plano: worker y service worker listos para alertas',
-      'O Radar continua cruzando movimento, volume, liquidez e concentração.':'Radar continúa analizando movimiento de precios, volumen, liquidez y concentración.',
-      'Sem risco forte confirmado':'Sin riesgo importante confirmado',
-      'Sem oportunidade forte confirmada':'Sin oportunidad fuerte confirmada',
-      'Carteira sem risco forte agora':'Sin riesgo importante en la cartera ahora',
-      'Nenhuma oportunidade forte confirmada agora':'Ninguna oportunidad fuerte confirmada ahora',
-      'O Radar continua verificando automaticamente.':'Radar sigue comprobando automáticamente.',
-      'Preço e liquidez estão alinhados pelo Radar. Antes de aportar, confira se isso não aumenta demais a concentração.':'Las condiciones de precio y liquidez están alineadas. Antes de aportar, comprueba la concentración de tu cartera.',
-      'Há sinais favoráveis, mas ainda não suficientes para sugerir novo aporte.':'Hay señales favorables, pero no son suficientes para justificar un nuevo aporte.',
-      'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.':'El precio subió con fuerza, pero la ganancia diaria no equivale a tu beneficio personal. Revisa el coste, las comisiones y el riesgo.',
-      'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.':'El movimiento está extendido. Considera evaluar una toma parcial de beneficios y mantener el resto de la exposición.',
-      'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Hay señales favorables, pero la confirmación todavía es parcial.',
-      'Dados de mercado ainda insuficientes.':'Los datos de mercado aún son insuficientes.',
-      'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Activo estable de referencia; sin señal direccional de Radar.',
-      'Ação do Radar:':'Orientación de Radar:',
-      'Sem confirmação suficiente para comprar ou vender.':'No hay confirmación suficiente para comprar o vender.',
-      'Muito alta':'Muy alta','Média':'Media','Baixa':'Baja',
-      'Ainda sem dados recentes ou sinais verificáveis.':'Todavía no hay datos recientes ni señales verificables.',
-      'Dados recebidos':'Datos recibidos','Aguardando dados recentes':'Esperando datos recientes',
-      'Nenhuma mudança registrada neste aparelho ainda.':'Todavía no hay cambios registrados en este dispositivo.',
-      'Nenhum sinal corresponde ao filtro selecionado.':'Ninguna señal coincide con el filtro seleccionado.',
-      'Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.':'No hay alertas que cumplan los criterios actuales. El análisis sigue vigilando el mercado.',
-      'Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.':'Radar mostrará las alertas verificables cuando se actualicen los datos técnicos y los precios.',
-      'MAIOR PRIORIDADE AGORA':'MÁXIMA PRIORIDAD AHORA','STATUS DA CARTEIRA':'ESTADO DE LA CARTERA',
-      'Marcar como lido':'Marcar como leído','✓ Lido':'✓ Leído','Lido':'Leído','Novo sinal':'Nueva señal',
-      'Orientação:':'Orientación:','Atualizado':'Actualizado','Tipo':'Tipo','Notificações:':'Notificaciones:',
-      'Push 24h: verificar servidor abaixo':'Push 24 h: comprueba el servidor abajo',
-      'Permitidas no navegador':'Permitidas en el navegador','Bloqueadas no aparelho':'Bloqueadas en el dispositivo',
-      'Aguardando autorização':'Esperando autorización','Indisponíveis':'No disponibles',
-      'Aproximadamente':'Aproximadamente','Representa cerca de':'Representa aproximadamente',
-      'O que fazer agora':'Qué hacer ahora',
-      'Sem ação urgente':'Sin acción urgente',
-      'Conservador':'Conservador','Equilibrado':'Equilibrado','Agressivo':'Agresivo',
-      'Pontos de atenção':'Puntos de atención',
-      'Distribuição monitorada pelo Radar.':'Radar supervisa la distribución de la cartera.',
-      'Sua carteira está concentrada.':'Tu cartera está concentrada.',
-      'Ativos em alta':'Activos al alza','Ativos em queda':'Activos a la baja',
-      'Mercado mais comprador':'Mercado mayormente comprador','Mercado mais vendedor':'Mercado mayormente vendedor',
-      'Mercado misto':'Mercado mixto',
-      'Agendador externo:':'Programador externo:',
-      'Servidor e agendador respondendo.':'El servidor y el programador responden.',
-      'Este aparelho possui inscrição Push local.':'Este dispositivo tiene una suscripción Push local.',
-      'O recebimento automático com o app fechado só é confirmado ao receber um teste agendado.':'La entrega automática con la aplicación cerrada solo se verifica al recibir una prueba programada.',
-      'Volume 24h:':'Volumen 24 h:','Liquidez:':'Liquidez:',
-      'Sinais avaliados':'Señales evaluadas','Taxa de acerto':'Tasa de aciertos',
-      'Aguardando confirmação de mercado':'Esperando confirmación del mercado',
-      'Você confirma':'Tú confirmas',
-    }
-  };
-  Object.assign(COMPLETE_V196.en,{
-    'Resultados históricos exigem uma amostra maior para serem interpretados com confiança.':'Historical results require a larger sample to be interpreted reliably.',
-    'Está entre os ativos em destaque nas buscas/tendências do mercado':'This asset is among the most searched or trending coins.',
-    'Cripto Radar V19.5.1 • Carteira e Idiomas':'Cripto Radar • Portfolio and languages',
-    'Volume 24h':'24h volume','Radar conectado':'Radar connected',
-    'Status geral':'Overall status','Análise ativa':'Analysis active'
-  });
-  Object.assign(COMPLETE_V196.es,{
-    'Use esta opção quando o OCR não reconhecer o print corretamente. Cole uma moeda por linha.':'Usa esta opción si el OCR no reconoce bien la captura. Escribe una moneda por línea.',
-    'Resultados históricos exigem uma amostra maior para serem interpretados com confiança.':'Se necesita una muestra mayor para interpretar los resultados históricos con confianza.',
-    'Está entre os ativos em destaque nas buscas/tendências do mercado':'Este activo está entre las monedas más buscadas o en tendencia.',
-    'Cripto Radar V19.5.1 • Carteira e Idiomas':'Cripto Radar • Cartera e idiomas',
-    'Volume 24h':'Volumen 24 h','Radar conectado':'Radar conectado',
-    'Status geral':'Estado general','Análise ativa':'Análisis activo'
-  });
-  for(const lang of ['en','es']) Object.assign(STRINGS[lang],COMPLETE_V196[lang]);
-  // Mensagens parametrizadas permanecem uma unidade, com valores substituídos antes do render.
-  const TEMPLATES_V196={
-    en:[
-      [/^Aproximadamente (\d+(?:[.,]\d+)?)% do valor da carteira está neste ativo\. Evite aumentar a posição sem avaliar o risco de concentração\.$/,m=>`About ${m[1]}% of the portfolio value is in this asset. Review concentration risk before increasing your position.`],
-      [/^Há (\d+) posições abaixo de 3% da carteira\. Veja se ainda fazem sentido na sua estratégia\.$/,m=>`There are ${m[1]} positions below 3% of your portfolio. Review whether they still fit your strategy.`],
-      [/^Representa cerca de (\d+(?:[.,]\d+)?)% da carteira\. Um novo aporte pode aumentar a concentração\.$/,m=>`It represents about ${m[1]}% of the portfolio. New funds may increase concentration.`],
-      [/^(.+) • ([0-9.,]+)% em 24h • (.+)$/,m=>`${m[1]} • ${m[2]}% in 24h • ${m[3]}`],
-      [/^Última análise: (.+?) • score = heurística do Radar, não probabilidade garantida\.$/,m=>`Last analysis: ${m[1]} • score is a Radar heuristic, not a guaranteed probability.`]
-    ],
-    es:[
-      [/^Aproximadamente (\d+(?:[.,]\d+)?)% do valor da carteira está neste ativo\. Evite aumentar a posição sem avaliar o risco de concentração\.$/,m=>`Aproximadamente el ${m[1]}% del valor de tu cartera está en este activo. Revisa el riesgo de concentración antes de aumentar la posición.`],
-      [/^Há (\d+) posições abaixo de 3% da carteira\. Veja se ainda fazem sentido na sua estratégia\.$/,m=>`Hay ${m[1]} posiciones por debajo del 3% de tu cartera. Revisa si aún encajan en tu estrategia.`],
-      [/^Representa cerca de (\d+(?:[.,]\d+)?)% da carteira\. Um novo aporte pode aumentar a concentração\.$/,m=>`Representa aproximadamente el ${m[1]}% de tu cartera. Un nuevo aporte puede aumentar la concentración.`],
-      [/^Última análise: (.+?) • score = heurística do Radar, não probabilidade garantida\.$/,m=>`Último análisis: ${m[1]} • la puntuación de Radar es una heurística, no una probabilidad garantizada.`]
-    ]
-  };
   const PHRASES={
     en:[['Falta confirmar:','Still required:'],[' do total',' of total'],[' da carteira',' of portfolio'],[' em 24h',' in 24h'],[' ativo(s)',' asset(s)'],[' sinal(is)',' signal(s)'],[' último ciclo',' last run'],[' preço médio',' average price'],[' cotação desatualizada',' stale quotation'],[' • Novo sinal',' • New signal'],['Nenhuma compra confirmada agora','No confirmed buy right now'],['CANDIDATA • AGUARDANDO','CANDIDATE • WAITING']],
     es:[['Falta confirmar:','Falta confirmar:'],[' do total',' del total'],[' da carteira',' de la cartera'],[' em 24h',' en 24 h'],[' ativo(s)',' activo(s)'],[' sinal(is)',' señal(es)'],[' último ciclo',' último ciclo'],[' preço médio',' precio medio'],[' cotação desatualizada',' cotización desactualizada'],[' • Novo sinal',' • Nueva señal'],['Nenhuma compra confirmada agora','Ninguna compra confirmada ahora']]
   };
-  // Tradução determinística e completa por frase, com prioridade para mensagens parametrizadas.
-  // Nunca substituir uma conjunção isolada dentro de uma frase desconhecida.
-  const reverseEN=new Map(),reverseES=new Map();
-  for(const [pt,en] of Object.entries(STRINGS.en))if(typeof en==='string'&&!reverseEN.has(en))reverseEN.set(en,pt);
-  for(const [pt,es] of Object.entries(STRINGS.es))if(typeof es==='string'&&!reverseES.has(es))reverseES.set(es,pt);
-  const safePhraseSets={};
-  for(const lang of ['en','es']){
-    const pairs=[...(V1951_PHRASES[lang]||[]),...(V195_PHRASES[lang]||[]),...(DYNAMIC_V192[lang]||[]),...(PHRASES[lang]||[]),...(FALLBACK[lang]||[])];
-    // Frases de 8+ caracteres são suficientemente específicas para não quebrar frases.
-    safePhraseSets[lang]=pairs.filter(([a])=>a.trim().length>=8).sort((a,b)=>b[0].length-a[0].length);
+
+  /* V19.5.2: validated whole-message translations. These override the old phrase fragments. */
+  const V1952_EXACT={
+  "en": {
+    "Comprar / aportar": "Buy / add funds",
+    "Nenhum bloqueio forte entre os ativos analisados agora.": "No major restrictions among the assets analyzed right now.",
+    "Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.": "Combines trend, momentum, volume, liquidity, VWAP, relative strength vs BTC, risk, market regime and portfolio composition.",
+    "Compare perfis antes de decidir como distribuir capital novo.": "Compare profiles before deciding how to allocate new funds.",
+    "Todos os perfis estão em espera porque não há compras tecnicamente confirmadas. Os perfis mudam limites e riscos, mas não inventam sinais.": "All profiles are on hold because there are no technically confirmed buys. Profiles change limits and risk settings; they do not invent signals.",
+    "Reserva + ativos priorizados com limite de concentração.": "Reserve plus prioritized assets with concentration limits.",
+    "Qualidade do sinal, não previsão de lucro.": "Signal quality, not a profit forecast.",
+    "Ativos com risco, timing ruim ou bloqueios técnicos.": "Assets with risk, poor entry timing or technical restrictions.",
+    "Simulação informativa. O Cripto Radar não executa ordens, não garante lucro e não substitui avaliação financeira individual.": "For information only. Cripto Radar does not place orders, guarantee returns or replace individual financial assessment.",
+    "Valor e variação de 24h são estimativas de mercado. Resultado não realizado usa apenas posições com preço médio cadastrado; não inclui taxas ou impostos. Pontuação técnica não é probabilidade de lucro.": "Value and 24h changes are market estimates. Unrealized P&L only includes positions with a recorded average purchase price; fees and taxes are excluded. A technical score is not a probability of profit.",
+    "Ativos sob observação (não são compras)": "Assets on watch (not buy signals)",
+    "A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.": "Choosing a profile does not authorize unconfirmed buys, so all three scenarios may hold 100% in reserve.",
+    "Aguarde nova leitura do mercado ou atualize os dados. Não há aporte obrigatório.": "Wait for the next market reading or refresh the data. No purchase is required.",
+    "Ainda não há dados técnicos suficientes e atualizados para liberar uma entrada.": "There is not enough current technical data to confirm an entry.",
+    "Exemplo do que falta para avançar:": "Examples of outstanding requirements:",
+    "As entradas só entram na divisão após confirmação.": "Assets are added to the allocation only after confirmation.",
+    "Simulação inteligente de aporte": "Smart contribution simulation",
+    "Divisão sugerida —": "Suggested allocation —",
+    "Ranking técnico do mercado": "Technical market ranking",
+    "O que evitar ou esperar": "What to avoid or wait for",
+    "Central de Mercado & Aporte": "Market & Contribution Center",
+    "Leitura da IA/Radar": "AI/Radar assessment",
+    "Saúde da carteira": "Portfolio health",
+    "Reserva atual": "Current reserve",
+    "análise ativa": "analysis active",
+    "Defensivo": "Defensive",
+    "Favorável": "Favorable",
+    "Seletivo": "Selective",
+    "carteira vazia": "empty portfolio",
+    "Aporte": "Contribution",
+    "Objetivo": "Goal",
+    "Entrada": "Entry",
+    "Parcelada": "Phased",
+    "Só após confirmação": "Only after confirmation",
+    "Mais imediata": "More immediate",
+    "Proteção": "Protection",
+    "Equilíbrio": "Balance",
+    "Crescimento": "Growth",
+    "Conservador": "Conservative",
+    "Equilibrado": "Balanced",
+    "Agressivo": "Aggressive",
+    "qualidade": "quality",
+    "Agora": "Now",
+    "Correção": "Pullback",
+    "Confirmação": "Confirmation",
+    "Reserva estratégica": "Strategic reserve",
+    "Tendência": "Trend",
+    "Liquidez": "Liquidity",
+    "Risco": "Risk",
+    "Para confirmar:": "To confirm:",
+    "Aguardar": "Wait",
+    "mercado": "market",
+    "Saúde": "Health",
+    "Risco técnico": "Technical risk",
+    "Pontos de atenção": "Points to review",
+    "Distribuição monitorada pelo Radar.": "Radar is tracking the allocation.",
+    "Sua carteira está concentrada.": "Your portfolio is concentrated.",
+    "Sua carteira está vazia.": "Your portfolio is empty.",
+    "Importe um print ou adicione moedas manualmente para começar.": "Import a screenshot or add coins manually to begin.",
+    "Sem posições precificadas para mostrar a distribuição.": "No priced positions available to show the allocation.",
+    "Sem alertas de concentração extrema ou de dados ausentes nesta leitura.": "No extreme concentration or missing-data alerts in this reading.",
+    "Adicione seus ativos para iniciar o monitoramento.": "Add your assets to start monitoring.",
+    "Nenhuma moeda corresponde a este filtro.": "No coins match this filter.",
+    "Monitoramento da carteira": "Portfolio monitoring",
+    "Atualização de mercado": "Market update",
+    "Inclui cotação desatualizada": "Includes stale quotes",
+    "Posições cadastradas": "Recorded positions",
+    "Dados 24h insuficientes": "Insufficient 24h data",
+    "Cadastre os preços médios": "Enter average purchase prices",
+    "Sem preços válidos": "No valid prices",
+    "Sem cotação": "No quote available",
+    "Variação indisponível": "Change unavailable",
+    "Dados não atualizados": "Data not updated",
+    "Preço atual": "Current price",
+    "Quantidade": "Quantity",
+    "Qualidade técnica": "Technical quality",
+    "Preço médio de compra (R$ por unidade)": "Average purchase price (BRL per unit)",
+    "Opcional e salvo apenas neste aparelho; ajuste se comprar ou vender ativos.": "Optional and saved only on this device. Update it when you buy or sell assets.",
+    "Resultado não realizado": "Unrealized P&L",
+    "(sem preço médio)": "(without average purchase price)",
+    "Pendente": "Pending",
+    "Atualizando…": "Updating…",
+    "↻ Atualizar dados": "↻ Refresh data",
+    "Nenhum sinal corresponde ao filtro selecionado.": "No signals match the selected filter.",
+    "Ainda sem dados recentes ou sinais verificáveis.": "No recent data or verifiable signals yet.",
+    "Nenhuma mudança registrada neste aparelho ainda.": "No changes have been recorded on this device yet.",
+    "Esperando confluência adicional.": "Waiting for additional technical alignment.",
+    "Aguardar fechamento das confirmações técnicas.": "Wait for technical confirmations to complete.",
+    "Confluência validada pelo Radar.": "Radar has validated technical alignment.",
+    "Confira valor do aporte e limite de concentração.": "Review contribution amount and concentration limit.",
+    "Aguardar confirmação, sem aporte automático.": "Wait for confirmation; no automatic contribution.",
+    "Conferir posição, risco e taxas antes de decidir.": "Review position, risk and fees before deciding.",
+    "Revisar proteção e concentração antes de movimentar.": "Review protection and concentration before making changes.",
+    "Minha carteira": "My portfolio",
+    "Marcar como lido": "Mark as read",
+    "✓ Lido": "✓ Read",
+    " • Lido": " • Read",
+    " • Novo sinal": " • New signal",
+    "Orientação:": "Guidance:",
+    "Atualizado": "Updated",
+    "Tipo": "Type",
+    "Notificações:": "Notifications:",
+    "Permitidas no navegador": "Allowed in browser",
+    "Bloqueadas no aparelho": "Blocked on device",
+    "Aguardando autorização": "Waiting for permission",
+    "Indisponíveis": "Unavailable",
+    "Push 24h: verificar servidor abaixo": "24h Push: check server status below",
+    "Dados recebidos": "Data received",
+    "Aguardando dados recentes": "Waiting for recent data",
+    "Nenhum sinal confirmado agora": "No confirmed signals right now",
+    "Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.": "No alerts meet the current criteria. Analysis continues monitoring the market.",
+    "Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.": "Radar will show verifiable alerts when price and technical data are updated.",
+    "MAIOR PRIORIDADE AGORA": "TOP PRIORITY NOW",
+    "STATUS DA CARTEIRA": "PORTFOLIO STATUS",
+    "RISCO CRÍTICO": "CRITICAL RISK",
+    "QUEDA FORTE CONFIRMADA": "SHARP DECLINE CONFIRMED",
+    "AVALIAR REALIZAÇÃO": "REVIEW PROFIT TAKING",
+    "REVISAR REDUÇÃO": "REVIEW REDUCTION",
+    "REVISAR RISCO": "REVIEW RISK",
+    "REVISAR PROTEÇÃO": "REVIEW PROTECTION",
+    "REVISAR ENTRADA": "REVIEW ENTRY",
+    "RISCO": "RISK",
+    "VENDA / PROTEÇÃO": "SELL / PROTECTION",
+    "CANDIDATA • AGUARDANDO": "CANDIDATE • WAITING",
+    "CONFIRMAÇÃO NECESSÁRIA": "CONFIRMATION REQUIRED",
+    "OBSERVAR": "WATCH",
+    "EVITAR ENTRADA": "AVOID ENTRY",
+    "ANÁLISE PENDENTE": "ANALYSIS PENDING",
+    "COMPRA CONFIRMADA": "CONFIRMED BUY",
+    "SINAL FORTE": "STRONG SIGNAL",
+    "CANDIDATA A COMPRA": "BUY CANDIDATE",
+    "risco técnico baixo": "low technical risk",
+    "risco técnico elevado": "high technical risk",
+    "mercado geral defensivo": "broader market is defensive",
+    "regime geral favorável": "favorable overall market regime",
+    "volume confirmando": "volume confirms the move",
+    "volume abaixo do ideal": "volume below ideal levels",
+    "preço próximo de zona técnica": "price near a technical zone",
+    "RSI em faixa saudável": "RSI in a healthy range",
+    "RSI já aquecido": "RSI already elevated",
+    "RSI esticado": "RSI overstretched",
+    "momentum ainda fraco": "momentum still weak",
+    "força relativa acima do BTC": "relative strength above BTC",
+    "fraqueza relativa ao BTC": "relative weakness against BTC",
+    "estrutura 4h HH/HL": "4h HH/HL structure",
+    "estrutura 4h baixista": "bearish 4h structure",
+    "tendência 1d positiva": "positive daily trend",
+    "tendência 1d desfavorável": "unfavorable daily trend",
+    "distante do VWAP": "far from VWAP",
+    "abaixo do VWAP; reversão ainda não confirmada": "below VWAP; reversal not yet confirmed",
+    "movimento 24h muito esticado": "24h move is heavily extended",
+    "alta 24h acelerada": "accelerating 24h rally",
+    "queda 24h relevante": "significant 24h drop",
+    "estrutura 4h ainda mista; falta confirmação": "4h structure remains mixed; confirmation is missing",
+    "movimento 24h já avançado; evitar perseguir preço": "24h move is already extended; avoid chasing price",
+    "liquidez e preço monitorados": "liquidity and price monitored",
+    "faltam indicadores multi-timeframe": "multi-timeframe indicators are missing",
+    "Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.": "Waiting for structure, trend and technical indicators before classifying the entry."
+  },
+  "es": {
+    "Comprar / aportar": "Comprar / aportar",
+    "Nenhum bloqueio forte entre os ativos analisados agora.": "No hay bloqueos importantes entre los activos analizados ahora.",
+    "Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.": "Combina tendencia, impulso, volumen, liquidez, VWAP, fuerza relativa frente a BTC, riesgo, régimen de mercado y composición de la cartera.",
+    "Compare perfis antes de decidir como distribuir capital novo.": "Compara perfiles antes de decidir cómo distribuir nuevos fondos.",
+    "Todos os perfis estão em espera porque não há compras tecnicamente confirmadas. Os perfis mudam limites e riscos, mas não inventam sinais.": "Todos los perfiles están en espera porque no hay compras confirmadas técnicamente. Los perfiles cambian límites y riesgos, pero no inventan señales.",
+    "Reserva + ativos priorizados com limite de concentração.": "Reserva y activos priorizados con límites de concentración.",
+    "Qualidade do sinal, não previsão de lucro.": "Calidad de la señal, no previsión de ganancias.",
+    "Ativos com risco, timing ruim ou bloqueios técnicos.": "Activos con riesgo, oportunidad de entrada desfavorable o bloqueos técnicos.",
+    "Simulação informativa. O Cripto Radar não executa ordens, não garante lucro e não substitui avaliação financeira individual.": "Simulación informativa. Cripto Radar no ejecuta órdenes, no garantiza ganancias ni sustituye la evaluación financiera individual.",
+    "Valor e variação de 24h são estimativas de mercado. Resultado não realizado usa apenas posições com preço médio cadastrado; não inclui taxas ou impostos. Pontuação técnica não é probabilidade de lucro.": "El valor y las variaciones de 24 h son estimaciones de mercado. El resultado no realizado solo incluye posiciones con precio medio registrado; no incluye comisiones ni impuestos. La puntuación técnica no es una probabilidad de ganancia.",
+    "Ativos sob observação (não são compras)": "Activos en observación (no son señales de compra)",
+    "A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.": "Elegir un perfil no autoriza compras sin confirmar, por eso los tres escenarios pueden mantener el 100 % en reserva.",
+    "Aguarde nova leitura do mercado ou atualize os dados. Não há aporte obrigatório.": "Espera una nueva lectura del mercado o actualiza los datos. No es obligatorio aportar.",
+    "Ainda não há dados técnicos suficientes e atualizados para liberar uma entrada.": "Todavía no hay suficientes datos técnicos actualizados para confirmar una entrada.",
+    "Exemplo do que falta para avançar:": "Ejemplos de requisitos pendientes:",
+    "As entradas só entram na divisão após confirmação.": "Los activos solo se incluyen en la distribución tras la confirmación.",
+    "Simulação inteligente de aporte": "Simulación inteligente de aportes",
+    "Divisão sugerida —": "Distribución sugerida —",
+    "Ranking técnico do mercado": "Clasificación técnica del mercado",
+    "O que evitar ou esperar": "Qué evitar o cuándo esperar",
+    "Central de Mercado & Aporte": "Centro de mercado y aportes",
+    "Leitura da IA/Radar": "Evaluación IA/Radar",
+    "Saúde da carteira": "Salud de la cartera",
+    "Reserva atual": "Reserva actual",
+    "análise ativa": "análisis activo",
+    "Defensivo": "Defensivo",
+    "Favorável": "Favorable",
+    "Seletivo": "Selectivo",
+    "carteira vazia": "cartera vacía",
+    "Aporte": "Aporte",
+    "Objetivo": "Objetivo",
+    "Entrada": "Entrada",
+    "Parcelada": "Por etapas",
+    "Só após confirmação": "Solo tras confirmación",
+    "Mais imediata": "Más inmediata",
+    "Proteção": "Protección",
+    "Equilíbrio": "Equilibrio",
+    "Crescimento": "Crecimiento",
+    "Conservador": "Conservador",
+    "Equilibrado": "Equilibrado",
+    "Agressivo": "Agresivo",
+    "qualidade": "calidad",
+    "Agora": "Ahora",
+    "Correção": "Retroceso",
+    "Confirmação": "Confirmación",
+    "Reserva estratégica": "Reserva estratégica",
+    "Tendência": "Tendencia",
+    "Liquidez": "Liquidez",
+    "Risco": "Riesgo",
+    "Para confirmar:": "Para confirmar:",
+    "Aguardar": "Esperar",
+    "mercado": "mercado",
+    "Saúde": "Salud",
+    "Risco técnico": "Riesgo técnico",
+    "Pontos de atenção": "Puntos de atención",
+    "Distribuição monitorada pelo Radar.": "Radar supervisa la distribución.",
+    "Sua carteira está concentrada.": "Tu cartera está concentrada.",
+    "Sua carteira está vazia.": "Tu cartera está vacía.",
+    "Importe um print ou adicione moedas manualmente para começar.": "Importa una captura de pantalla o añade monedas manualmente para empezar.",
+    "Sem posições precificadas para mostrar a distribuição.": "No hay posiciones con precio para mostrar la distribución.",
+    "Sem alertas de concentração extrema ou de dados ausentes nesta leitura.": "No hay alertas por concentración extrema ni datos ausentes en esta lectura.",
+    "Adicione seus ativos para iniciar o monitoramento.": "Añade tus activos para empezar el seguimiento.",
+    "Nenhuma moeda corresponde a este filtro.": "Ninguna moneda coincide con este filtro.",
+    "Monitoramento da carteira": "Seguimiento de la cartera",
+    "Atualização de mercado": "Actualización del mercado",
+    "Inclui cotação desatualizada": "Incluye cotizaciones desactualizadas",
+    "Posições cadastradas": "Posiciones registradas",
+    "Dados 24h insuficientes": "Datos de 24 h insuficientes",
+    "Cadastre os preços médios": "Registra los precios medios de compra",
+    "Sem preços válidos": "Sin precios válidos",
+    "Sem cotação": "Sin cotización",
+    "Variação indisponível": "Variación no disponible",
+    "Dados não atualizados": "Datos sin actualizar",
+    "Preço atual": "Precio actual",
+    "Quantidade": "Cantidad",
+    "Qualidade técnica": "Calidad técnica",
+    "Preço médio de compra (R$ por unidade)": "Precio medio de compra (BRL por unidad)",
+    "Opcional e salvo apenas neste aparelho; ajuste se comprar ou vender ativos.": "Opcional y guardado solo en este dispositivo. Actualízalo al comprar o vender activos.",
+    "Resultado não realizado": "Resultado no realizado",
+    "(sem preço médio)": "(sin precio medio de compra)",
+    "Pendente": "Pendiente",
+    "Atualizando…": "Actualizando…",
+    "↻ Atualizar dados": "↻ Actualizar datos",
+    "Nenhum sinal corresponde ao filtro selecionado.": "Ninguna señal coincide con el filtro seleccionado.",
+    "Ainda sem dados recentes ou sinais verificáveis.": "Todavía no hay datos recientes ni señales verificables.",
+    "Nenhuma mudança registrada neste aparelho ainda.": "Todavía no se han registrado cambios en este dispositivo.",
+    "Esperando confluência adicional.": "Esperando confluencia técnica adicional.",
+    "Aguardar fechamento das confirmações técnicas.": "Esperar a que se completen las confirmaciones técnicas.",
+    "Confluência validada pelo Radar.": "Radar ha validado la confluencia técnica.",
+    "Confira valor do aporte e limite de concentração.": "Revisa el importe del aporte y el límite de concentración.",
+    "Aguardar confirmação, sem aporte automático.": "Esperar confirmación; sin aportes automáticos.",
+    "Conferir posição, risco e taxas antes de decidir.": "Revisa posición, riesgo y comisiones antes de decidir.",
+    "Revisar proteção e concentração antes de movimentar.": "Revisa la protección y concentración antes de hacer cambios.",
+    "Minha carteira": "Mi cartera",
+    "Marcar como lido": "Marcar como leído",
+    "✓ Lido": "✓ Leído",
+    " • Lido": " • Leído",
+    " • Novo sinal": " • Nueva señal",
+    "Orientação:": "Orientación:",
+    "Atualizado": "Actualizado",
+    "Tipo": "Tipo",
+    "Notificações:": "Notificaciones:",
+    "Permitidas no navegador": "Permitidas en el navegador",
+    "Bloqueadas no aparelho": "Bloqueadas en el dispositivo",
+    "Aguardando autorização": "Esperando autorización",
+    "Indisponíveis": "No disponibles",
+    "Push 24h: verificar servidor abaixo": "Push 24 h: comprueba el estado del servidor abajo",
+    "Dados recebidos": "Datos recibidos",
+    "Aguardando dados recentes": "Esperando datos recientes",
+    "Nenhum sinal confirmado agora": "No hay señales confirmadas ahora",
+    "Sem alertas que atendam aos critérios atuais. A análise continua monitorando o mercado.": "Ninguna alerta cumple los criterios actuales. El análisis sigue vigilando el mercado.",
+    "Quando preço e dados técnicos forem atualizados, o Radar mostrará os alertas verificáveis.": "Radar mostrará alertas verificables cuando se actualicen los precios y los datos técnicos.",
+    "MAIOR PRIORIDADE AGORA": "MÁXIMA PRIORIDAD AHORA",
+    "STATUS DA CARTEIRA": "ESTADO DE LA CARTERA",
+    "RISCO CRÍTICO": "RIESGO CRÍTICO",
+    "QUEDA FORTE CONFIRMADA": "CAÍDA FUERTE CONFIRMADA",
+    "AVALIAR REALIZAÇÃO": "EVALUAR TOMA DE BENEFICIOS",
+    "REVISAR REDUÇÃO": "REVISAR REDUCCIÓN",
+    "REVISAR RISCO": "REVISAR RIESGO",
+    "REVISAR PROTEÇÃO": "REVISAR PROTECCIÓN",
+    "REVISAR ENTRADA": "REVISAR ENTRADA",
+    "RISCO": "RIESGO",
+    "VENDA / PROTEÇÃO": "VENTA / PROTECCIÓN",
+    "CANDIDATA • AGUARDANDO": "CANDIDATA • EN ESPERA",
+    "CONFIRMAÇÃO NECESSÁRIA": "CONFIRMACIÓN NECESARIA",
+    "OBSERVAR": "OBSERVAR",
+    "EVITAR ENTRADA": "EVITAR ENTRADA",
+    "ANÁLISE PENDENTE": "ANÁLISIS PENDIENTE",
+    "COMPRA CONFIRMADA": "COMPRA CONFIRMADA",
+    "SINAL FORTE": "SEÑAL FUERTE",
+    "CANDIDATA A COMPRA": "CANDIDATA A COMPRA",
+    "risco técnico baixo": "riesgo técnico bajo",
+    "risco técnico elevado": "riesgo técnico elevado",
+    "mercado geral defensivo": "mercado general defensivo",
+    "regime geral favorável": "régimen general favorable",
+    "volume confirmando": "volumen confirma el movimiento",
+    "volume abaixo do ideal": "volumen inferior al ideal",
+    "preço próximo de zona técnica": "precio cerca de una zona técnica",
+    "RSI em faixa saudável": "RSI en un rango saludable",
+    "RSI já aquecido": "RSI ya elevado",
+    "RSI esticado": "RSI sobreextendido",
+    "momentum ainda fraco": "impulso aún débil",
+    "força relativa acima do BTC": "fuerza relativa superior a BTC",
+    "fraqueza relativa ao BTC": "debilidad relativa frente a BTC",
+    "estrutura 4h HH/HL": "estructura 4 h HH/HL",
+    "estrutura 4h baixista": "estructura bajista de 4 h",
+    "tendência 1d positiva": "tendencia diaria positiva",
+    "tendência 1d desfavorável": "tendencia diaria desfavorable",
+    "distante do VWAP": "lejos del VWAP",
+    "abaixo do VWAP; reversão ainda não confirmada": "por debajo del VWAP; reversión aún no confirmada",
+    "movimento 24h muito esticado": "movimiento de 24 h muy extendido",
+    "alta 24h acelerada": "subida acelerada en 24 h",
+    "queda 24h relevante": "caída importante en 24 h",
+    "estrutura 4h ainda mista; falta confirmação": "estructura de 4 h aún mixta; falta confirmación",
+    "movimento 24h já avançado; evitar perseguir preço": "movimiento de 24 h ya avanzado; evita perseguir el precio",
+    "liquidez e preço monitorados": "liquidez y precio monitorizados",
+    "faltam indicadores multi-timeframe": "faltan indicadores de varios marcos temporales",
+    "Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.": "Esperando estructura, tendencia e indicadores técnicos antes de clasificar la entrada."
   }
-  const EXACT_PARTIAL={};
-  for(const lang of ['en','es'])EXACT_PARTIAL[lang]=Object.entries(STRINGS[lang]).filter(([a])=>a.length>=15&&!a.includes('\n')).sort((a,b)=>b[0].length-a[0].length);
+};
+  Object.assign(STRINGS.en,V1952_EXACT.en);
+  Object.assign(STRINGS.es,V1952_EXACT.es);
+  Object.assign(STRINGS.en,{
+  "1 hora": "1 hour",
+  "Motor V10/V11": "V10/V11 Engine",
+  "📈 Alta": "📈 Rise",
+  "↔️ Lateral": "↔️ Sideways",
+  "📉 Queda": "📉 Decline",
+  "Alta": "Rise",
+  "Lateral": "Sideways",
+  "Queda": "Decline",
+  "Confiança": "Confidence",
+  "Plano unificado da carteira": "Unified portfolio plan",
+  "● IA ativa": "● AI active",
+  "memória ativa": "learning memory active",
+  "memória permanente não configurada": "persistent learning not configured",
+  "IA analisando mercado + carteira…": "AI analyzing market and portfolio…",
+  "IA indisponível": "AI unavailable",
+  "IA temporariamente indisponível • nova tentativa automática": "AI temporarily unavailable • retrying automatically",
+  "🔊 Voz ligada": "🔊 Voice on",
+  "🔇 Voz desligada": "🔇 Voice off",
+  "🎙️ Falar": "🎙️ Speak",
+  "🎙️ Voz não suportada": "🎙️ Voice not supported",
+  "🔴 Ouvindo…": "🔴 Listening…",
+  "Pergunte sobre mercado, uma moeda ou sua carteira…": "Ask about the market, a coin or your portfolio…",
+  "Reserva de moedas estáveis abaixo de 5% da carteira": "Stablecoin reserve is below 5% of the portfolio",
+  "Há cotações desatualizadas no valor estimado": "Estimated portfolio value includes stale quotes"
+});
+  Object.assign(STRINGS.es,{
+  "Automático (dispositivo)": "Automático (dispositivo)",
+  "Principal": "Principal",
+  "Configurações": "Configuración",
+  "PRO Anual": "PRO anual",
+  "Iniciando…": "Iniciando…",
+  "Segundo plano: iniciando…": "Segundo plano: iniciando…",
+  "Idioma": "Idioma",
+  "1 hora": "1 hora",
+  "Buscando…": "Buscando…",
+  "Inicializando diagnóstico…": "Iniciando diagnóstico…",
+  "Verificando mercado…": "Verificando el mercado…",
+  "Segundo plano local: preparando…": "Segundo plano local: preparando…",
+  "Compras confirmadas": "Compras confirmadas",
+  "📲 INSTALAR APP": "📲 INSTALAR APLICACIÓN",
+  "◈ Simular aporte": "◈ Simular aporte",
+  "↓ Exportar CSV": "↓ Exportar CSV",
+  "Push: verificando": "Push: comprobando",
+  "Motor V18.3": "Motor V18.3",
+  "📈 VER MERCADO": "📈 VER MERCADO",
+  "Buscando oportunidades…": "Buscando oportunidades…",
+  "Use esta opção quando o OCR não reconhecer o print corretamente. Cole uma moeda por linha.": "Usa esta opción cuando el OCR no reconozca la captura correctamente. Pega una moneda por línea.",
+  "Resultados históricos exigem uma amostra maior para serem interpretados com confiança.": "Los resultados históricos necesitan una muestra mayor para interpretarse con confianza.",
+  "Slippage %/lado": "Deslizamiento %/lado",
+  "Capital simulado (US$)": "Capital simulado (US$)",
+  "↻ RECALCULAR": "↻ RECALCULAR",
+  "RADAR SOCIAL": "RADAR SOCIAL",
+  "Registro local": "Registro local",
+  "Verificando Google Play Billing…": "Verificando la facturación de Google Play…",
+  "Idioma da interface": "Idioma de la interfaz",
+  "Confirmadas": "Confirmadas",
+  "1 minuto": "1 minuto",
+  "5 minutos": "5 minutos",
+  "15 minutos": "15 minutos",
+  "30 minutos": "30 minutos",
+  "Motor V10/V11": "Motor V10/V11",
+  "⚡ Radar Pro • Central": "⚡ Radar Pro • Centro",
+  "Sua carteira ainda está vazia.": "Tu cartera todavía está vacía.",
+  "Sua carteira ainda não foi enviada para a IA nesta leitura.": "Tu cartera todavía no se ha enviado a la IA en esta lectura.",
+  "📈 Alta": "📈 Subida",
+  "↔️ Lateral": "↔️ Lateral",
+  "📉 Queda": "📉 Caída",
+  "Alta": "Subida",
+  "Lateral": "Lateral",
+  "Queda": "Caída",
+  "Confiança": "Confianza",
+  "Plano unificado da carteira": "Plan unificado de la cartera",
+  "● IA ativa": "● IA activa",
+  "memória ativa": "memoria activa",
+  "memória permanente não configurada": "memoria permanente no configurada",
+  "IA analisando mercado + carteira…": "IA analizando mercado y cartera…",
+  "IA indisponível": "IA no disponible",
+  "IA temporariamente indisponível • nova tentativa automática": "IA temporalmente no disponible • nuevo intento automático",
+  "🔊 Voz ligada": "🔊 Voz activada",
+  "🔇 Voz desligada": "🔇 Voz desactivada",
+  "🎙️ Falar": "🎙️ Hablar",
+  "🎙️ Voz não suportada": "🎙️ Voz no compatible",
+  "🔴 Ouvindo…": "🔴 Escuchando…",
+  "Pergunte sobre mercado, uma moeda ou sua carteira…": "Pregunta por el mercado, una moneda o tu cartera…",
+  "Realizar parte do lucro": "Tomar una parte de las ganancias",
+  "Reserva de moedas estáveis abaixo de 5% da carteira": "Reserva de monedas estables por debajo del 5 % de la cartera",
+  "Há cotações desatualizadas no valor estimado": "Hay cotizaciones desactualizadas en el valor estimado",
+  "Atualização de mercado": "Actualización del mercado",
+  "Verificando dados": "Comprobando datos"
+});
+  Object.assign(STRINGS.en,{"Alto": "High", "Baixo": "Low", "Médio": "Medium", "Regime": "Market regime", "Bloqueadas no aparelho": "Blocked on device", "Permitidas no navegador": "Allowed in browser", "Aguardando autorização": "Waiting for permission", "Notificações:": "Notifications:", "Em correção": "On pullback", "Na confirmação": "On confirmation", "Mercado geral": "Overall market", "Tendência": "Trend", "Liquidez": "Liquidity", "Carteira": "Portfolio", "Radar Social": "Radar Social", "A IA usa a mesma decisão para carteira, aporte e oportunidades: sem confirmação técnica, não mostra “aportar” nem “oportunidade confirmada”.": "AI applies the same criteria to portfolio, contributions and opportunities: without technical confirmation, it does not show a confirmed buying opportunity.", "Dados recebidos": "Data received", "Carteira vazia": "Empty portfolio"});
+  Object.assign(STRINGS.es,{"Alto": "Alto", "Baixo": "Bajo", "Médio": "Medio", "Regime": "Régimen de mercado", "Bloqueadas no aparelho": "Bloqueadas en el dispositivo", "Permitidas no navegador": "Permitidas en el navegador", "Aguardando autorização": "Esperando autorización", "Notificações:": "Notificaciones:", "Em correção": "En retroceso", "Na confirmação": "Tras confirmación", "Mercado geral": "Mercado general", "Tendência": "Tendencia", "Liquidez": "Liquidez", "Carteira": "Cartera", "Radar Social": "Radar Social", "A IA usa a mesma decisão para carteira, aporte e oportunidades: sem confirmação técnica, não mostra “aportar” nem “oportunidade confirmada”.": "La IA aplica los mismos criterios a cartera, aportes y oportunidades: sin confirmación técnica, no muestra oportunidades de compra confirmadas.", "Dados recebidos": "Datos recibidos", "Carteira vazia": "Cartera vacía"});
+  Object.assign(STRINGS.en,{
+    'Alto risco':'High risk','Médio risco':'Medium risk','Baixo risco':'Low risk',
+    'risco Alto':'high risk','risco Médio':'medium risk','risco Baixo':'low risk'
+  });
+  Object.assign(STRINGS.es,{
+    'Alto risco':'riesgo alto','Médio risco':'riesgo medio','Baixo risco':'riesgo bajo',
+    'risco Alto':'riesgo alto','risco Médio':'riesgo medio','risco Baixo':'riesgo bajo'
+  });
+  const V1952_SAFE_PHRASES={
+    en:[['A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.','Profile choice cannot override buy confirmation. All three scenarios may hold 100% in reserve.'],['Aguardando dados técnicos suficientes…','Waiting for sufficient technical data…'],['Bloqueadas no aparelho','Blocked on device'],['Permitidas no navegador','Allowed in browser'],['Aguardando autorização','Waiting for permission'],[' un.',' units']],
+    es:[['A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.','Elegir un perfil no autoriza compras sin confirmar, por lo que los tres escenarios pueden mantener el 100 % en reserva.'],['Aguardando dados técnicos suficientes…','Esperando suficientes datos técnicos…'],['Bloqueadas no aparelho','Bloqueadas en el dispositivo'],['Permitidas no navegador','Permitidas en el navegador'],['Aguardando autorização','Esperando autorización']]
+  };
+  const V1952_PATTERNS={
+    en:[
+      [/^(\d+) ativo\(s\) \u2022 (\d+) com cota\u00e7\u00e3o$/, '$1 asset(s) • $2 with prices'],
+      [/^(\d+) sinal\(is\) exibido\(s\) \u2022 (\d+) ativo\(s\) em acompanhamento( \u2022 filtrado)?$/, '$1 signals shown • $2 assets monitored$3'],
+      [/^(\d+) ativo\(s\) monitorado\(s\) n\u00e3o passaram pelos crit\u00e9rios obrigat\u00f3rios de compra\.$/, '$1 monitored assets did not meet the mandatory buy criteria.'],
+      [/^Reserva de (R\$\s?[\d.,]+) \(100%\) \u2014 aguardando confirma\u00e7\u00e3o$/, 'Reserve of $1 (100%) — awaiting confirmation'],
+      [/^Reserva (\d+)%$/, 'Reserve $1%'],
+      [/^(\d+) ativo\(s\) sem cota\u00e7\u00e3o: n\u00e3o inclu\u00eddos no valor total$/, '$1 assets without quotes: excluded from total value'],
+      [/^(\d+) ativo\(s\) com bloqueio ou risco t\u00e9cnico elevado$/, '$1 assets with restrictions or high technical risk'],
+      [/^(.+?) ocupa ([\d,.]+)% da carteira: concentra\u00e7\u00e3o elevada$/, '$1 makes up $2% of the portfolio: high concentration'],
+      [/^(.+?) ocupa ([\d,.]+)% da carteira: acompanhar concentra\u00e7\u00e3o$/, '$1 makes up $2% of the portfolio: review concentration'],
+      [/^([\d,.]+)% da carteira$/, '$1% of portfolio'],
+      [/^([\d,.]+)% do total$/, '$1% of total'],
+      [/^([\d,.]+)% do aporte$/, '$1% of contribution'],
+      [/^([\d,.]+)% da carteira rastreada$/, '$1% of portfolio tracked'],
+      [/^([\d,.]+)% dos ativos em valor$/, '$1% of assets by value'],
+      [/^(\d+) min$/, '$1 min'],
+      [/^Sa\u00fade (\d+\/100) \u2022 risco (.+)$/, 'Health $1 • $2 risk'],
+      [/^(.+) risco$/, '$1 risk'],
+      [/^Maior posi\u00e7\u00e3o: (\w+) \(([\d,.]+)%\)\.$/, 'Largest position: $1 ($2%).'],
+      [/^(\w+): boa base t\u00e9cnica, mas ainda merece confirma\u00e7\u00e3o de (.+)\.$/, '$1: promising technical setup, but confirmation is still needed for $2.'],
+      [/^(\w+): cen\u00e1rio incompleto; aguardar melhora antes de elevar a exposi\u00e7\u00e3o\.$/, '$1: incomplete setup; wait for improvement before increasing exposure.'],
+      [/^Movimento confirmado em duas leituras; score de risco (\d+\/100)\.$/, 'Move confirmed in two readings; risk score $1.'],
+      [/^(.+?) \u2022 (\d+) sinal\(is\) \u00fateis$/, '$1 • $2 useful signals'],
+      [/^Atualizado (.+)$/, 'Updated $1'],
+      [/^Dados recebidos \u2022 (.+)$/, 'Data received • $1']
+    ],
+    es:[
+      [/^(\d+) ativo\(s\) \u2022 (\d+) com cota\u00e7\u00e3o$/, '$1 activo(s) • $2 con cotización'],
+      [/^(\d+) sinal\(is\) exibido\(s\) \u2022 (\d+) ativo\(s\) em acompanhamento( \u2022 filtrado)?$/, '$1 señales mostradas • $2 activos bajo seguimiento$3'],
+      [/^(\d+) ativo\(s\) monitorado\(s\) n\u00e3o passaram pelos crit\u00e9rios obrigat\u00f3rios de compra\.$/, '$1 activos monitorizados no cumplieron los criterios obligatorios de compra.'],
+      [/^Reserva de (R\$\s?[\d.,]+) \(100%\) \u2014 aguardando confirma\u00e7\u00e3o$/, 'Reserva de $1 (100 %) — esperando confirmación'],
+      [/^Reserva (\d+)%$/, 'Reserva $1 %'],
+      [/^(\d+) ativo\(s\) sem cota\u00e7\u00e3o: n\u00e3o inclu\u00eddos no valor total$/, '$1 activos sin cotización: excluidos del valor total'],
+      [/^(\d+) ativo\(s\) com bloqueio ou risco t\u00e9cnico elevado$/, '$1 activos con restricciones o riesgo técnico elevado'],
+      [/^(.+?) ocupa ([\d,.]+)% da carteira: concentra\u00e7\u00e3o elevada$/, '$1 representa el $2 % de la cartera: concentración elevada'],
+      [/^(.+?) ocupa ([\d,.]+)% da carteira: acompanhar concentra\u00e7\u00e3o$/, '$1 representa el $2 % de la cartera: revisar concentración'],
+      [/^([\d,.]+)% da carteira$/, '$1 % de la cartera'],
+      [/^([\d,.]+)% do total$/, '$1 % del total'],
+      [/^([\d,.]+)% do aporte$/, '$1 % del aporte'],
+      [/^([\d,.]+)% da carteira rastreada$/, '$1 % de la cartera registrada'],
+      [/^([\d,.]+)% dos ativos em valor$/, '$1 % de los activos por valor'],
+      [/^Sa\u00fade (\d+\/100) \u2022 risco (.+)$/, 'Salud $1 • riesgo $2'],
+      [/^(.+) risco$/, 'riesgo $1'],
+      [/^Maior posi\u00e7\u00e3o: (\w+) \(([\d,.]+)%\)\.$/, 'Mayor posición: $1 ($2 %).'],
+      [/^(\w+): boa base t\u00e9cnica, mas ainda merece confirma\u00e7\u00e3o de (.+)\.$/, '$1: base técnica prometedora, pero aún requiere confirmación de $2.'],
+      [/^(\w+): cen\u00e1rio incompleto; aguardar melhora antes de elevar a exposi\u00e7\u00e3o\.$/, '$1: escenario incompleto; espera a una mejora antes de aumentar la exposición.'],
+      [/^Movimento confirmado em duas leituras; score de risco (\d+\/100)\.$/, 'Movimiento confirmado en dos lecturas; puntuación de riesgo $1.'],
+      [/^(.+?) \u2022 (\d+) sinal\(is\) \u00fateis$/, '$1 • $2 señales útiles'],
+      [/^Atualizado (.+)$/, 'Actualizado $1'],
+      [/^Dados recebidos \u2022 (.+)$/, 'Datos recibidos • $1']
+    ]
+  };
+
+  /* V19.5.4: terminology fixes. Whole sentences first; only known Portuguese
+     market terms are translated in mixed dynamic templates. External news and
+     arbitrary user-generated prose are NOT machine translated. */
+  const V1954_EXACT={
+    en:{
+      'Destaques do mercado':'Market highlights',
+      'Risco do mercado':'Market risk',
+      'Servidor e agendador':'Server and scheduler',
+      'Mercado geral • em tempo real':'Overall market • live',
+      'Mercado geral':'Overall market',
+      'Inteligência de mercado • Sinais confirmados':'Market intelligence • Confirmed signals',
+      'Inteligência de mercado':'Market intelligence',
+      'Notificações locais':'Local notifications',
+      'Análise da carteira':'Portfolio analysis',
+      'Análise crítica de risco de compra.':'Critical buy-risk analysis.',
+      'Análise da carteira: Aguardando sinais':'Portfolio analysis: Waiting for signals',
+      'Risco alto e liquidez baixa':'High risk and low liquidity',
+      'Falta confirmar: volume, liquidez e tendência.':'Still required: volume, liquidity and trend.',
+      'Entrada bloqueada. Falta confirmar: volume, liquidez e tendência.':'Entry blocked. Still required: volume, liquidity and trend.',
+      'Mercado em alta, mas as compras estão bloqueadas.':'The market is rising, but buy signals remain blocked.',
+      'Não foi possível analisar a carteira.':'Could not analyze the portfolio.',
+      'Reserva estável':'Stablecoin reserve',
+      'O Radar detectou pressão de venda confirmada por liquidez. Considere reduzir exposição após revisar o mercado.':'Radar detected selling pressure supported by liquidity. Review your exposure before making changes.',
+      'Pontos de atenção: BTC em queda':'Points to review: BTC declining',
+      'Atualização do mercado e da carteira pendente.':'Market and portfolio update pending.'
+    },
+    es:{
+      'Destaques do mercado':'Destacados del mercado',
+      'Risco do mercado':'Riesgo del mercado',
+      'Servidor e agendador':'Servidor y programador',
+      'Mercado geral • em tempo real':'Mercado general • en tiempo real',
+      'Mercado geral':'Mercado general',
+      'Inteligência de mercado • Sinais confirmados':'Inteligencia de mercado • Señales confirmadas',
+      'Inteligência de mercado':'Inteligencia de mercado',
+      'Notificações locais':'Notificaciones locales',
+      'Análise da carteira':'Análisis de cartera',
+      'Análise crítica de risco de compra.':'Análisis crítico del riesgo de compra.',
+      'Análise da carteira: Aguardando sinais':'Análisis de cartera: Esperando señales',
+      'Risco alto e liquidez baixa':'Riesgo alto y liquidez baja',
+      'Falta confirmar: volume, liquidez e tendência.':'Falta confirmar: volumen, liquidez y tendencia.',
+      'Entrada bloqueada. Falta confirmar: volume, liquidez e tendência.':'Entrada bloqueada. Falta confirmar: volumen, liquidez y tendencia.',
+      'Mercado em alta, mas as compras estão bloqueadas.':'El mercado está subiendo, pero las compras siguen bloqueadas.',
+      'Não foi possível analisar a carteira.':'No se pudo analizar la cartera.',
+      'Reserva estável':'Reserva de monedas estables',
+      'O Radar detectou pressão de venda confirmada por liquidez. Considere reduzir exposição após revisar o mercado.':'Radar detectó presión vendedora respaldada por liquidez. Revisa tu exposición antes de realizar cambios.',
+      'Pontos de atenção: BTC em queda':'Puntos de atención: BTC a la baja',
+      'Atualização do mercado e da carteira pendente.':'Actualización de mercado y cartera pendiente.'
+    }
+  };
+  const V1954_PHRASES={
+    en:[
+      ['Entrada bloqueada.', 'Entry blocked.'],
+      ['Notificações locais:', 'Local notifications:'],
+      ['alertas ativos', 'active alerts'],
+      ['Alta confirmada com ', 'Rally confirmed with '],
+      ['Cotação', 'Quote'],
+      ['cotação', 'quote'],
+      [' com ', ' with '],
+      ['Falta confirmar:', 'Still required:'],
+      ['em tempo real', 'in real time'],
+      ['Mercado indisponível', 'Market unavailable'],
+      ['nova tentativa em', 'retry in'],
+      ['Última atualização:', 'Last update:'],
+      ['Atualização do mercado', 'Market update'],
+      ['Atualização da carteira', 'Portfolio update'],
+      ['Mercado em alta', 'Rising market'],
+      ['compras estão bloqueadas', 'buys remain blocked'],
+      ['Dados técnicos suficientes', 'Sufficient technical data'],
+      ['sinais confirmados', 'confirmed signals'],
+      ['estrutura fraca', 'weak market structure'],
+      ['tendência positiva', 'positive trend'],
+      ['tendência negativa', 'negative trend'],
+      ['risco controlado', 'controlled risk'],
+      ['risco alto', 'high risk'],
+      ['risco médio', 'medium risk'],
+      ['risco baixo', 'low risk'],
+      ['liquidez baixa', 'low liquidity'],
+      ['liquidez alta', 'high liquidity'],
+      ['queda forte', 'sharp decline'],
+      ['alta confirmada', 'confirmed rally'],
+      ['sinais de compra', 'buy signals'],
+      ['sinais de venda', 'sell signals'],
+      ['compra confirmada', 'confirmed buy'],
+      ['análise de risco', 'risk analysis'],
+      ['concentração elevada', 'high concentration'],
+      ['Concentração', 'Concentration'], ['concentração', 'concentration'],
+      ['Pontos de atenção', 'Points to review'],
+      ['Inteligência de mercado', 'Market intelligence'],
+      ['análise da carteira', 'portfolio analysis'],
+      ['Análise da carteira', 'Portfolio analysis'],
+      ['Análise crítica', 'Critical analysis'],
+      ['Movimentação inteligente', 'Smart allocation'],
+      ['Destaques do mercado', 'Market highlights'],
+      ['mercado geral', 'overall market'],
+      ['Servidor', 'Server'],['agendador', 'scheduler'],
+      ['liquidez', 'liquidity'],['tendência', 'trend'],['Tendência', 'Trend'],
+      ['estrutura', 'structure'],['Volume', 'Volume'],['volume', 'volume'],
+      ['risco', 'risk'],['Risco', 'Risk'],['mercado', 'market'],['Mercado', 'Market'],
+      ['carteira', 'portfolio'],['Carteira', 'Portfolio'],
+      ['compra', 'buy'],['compras', 'buys'],['venda', 'sell'],
+      ['sinal', 'signal'],['sinais', 'signals'],['confirmar', 'confirm'],
+      ['confirmados', 'confirmed'],['confirmadas', 'confirmed'],
+      ['ativos', 'assets'],['ativo', 'asset'],['alertas', 'alerts'],['alerta', 'alert'],
+      ['moedas', 'coins'],['moeda', 'coin'],['reserva', 'reserve'],
+      ['bloqueadas', 'blocked'],['bloqueados', 'blocked'],['pendente', 'pending'],
+      ['Análise', 'Analysis'],['análise', 'analysis'],
+      ['Dados', 'Data'],['dados', 'data'],['alta', 'rise'],['queda', 'decline'],
+      ['baixa', 'low'],['forte', 'strong'],['positivo', 'positive'],['negativo', 'negative'],
+      ['controlado', 'controlled'],['fraca', 'weak'],['elevada', 'high'],
+      ['última', 'last'],['Última', 'Last'],['tempo', 'time'],['real', 'real'],
+      ['atualização', 'update'],['Atualização', 'Update'],
+      ['do ', 'of the '],['da ', 'of the '],['dos ', 'of the '],['das ', 'of the '],
+      ['de ', 'of '],['em ', 'in '],['na ', 'in the '],['no ', 'in the '],
+      [' e ', ' and '],[' ou ', ' or ']
+    ],
+    es:[
+      ['Entrada bloqueada.', 'Entrada bloqueada.'],
+      ['Notificações locais:', 'Notificaciones locales:'],
+      ['alertas ativos', 'alertas activos'],
+      ['Alta confirmada com ', 'Subida confirmada con '],
+      ['Cotação', 'Cotización'],
+      ['cotação', 'cotización'],
+      [' com ', ' con '],
+      ['Falta confirmar:', 'Falta confirmar:'],
+      ['em tempo real', 'en tiempo real'],
+      ['Mercado indisponível', 'Mercado no disponible'],
+      ['nova tentativa em', 'nuevo intento en'],
+      ['Última atualização:', 'Última actualización:'],
+      ['Atualização do mercado', 'Actualización del mercado'],
+      ['Atualização da carteira', 'Actualización de la cartera'],
+      ['Mercado em alta', 'Mercado alcista'],
+      ['compras estão bloqueadas', 'compras siguen bloqueadas'],
+      ['Dados técnicos suficientes', 'Datos técnicos suficientes'],
+      ['sinais confirmados', 'señales confirmadas'],
+      ['estrutura fraca', 'estructura débil'],
+      ['tendência positiva', 'tendencia positiva'],
+      ['tendência negativa', 'tendencia negativa'],
+      ['risco controlado', 'riesgo controlado'],
+      ['risco alto', 'riesgo alto'],
+      ['risco médio', 'riesgo medio'],
+      ['risco baixo', 'riesgo bajo'],
+      ['liquidez baixa', 'liquidez baja'],
+      ['liquidez alta', 'liquidez alta'],
+      ['queda forte', 'caída fuerte'],
+      ['alta confirmada', 'subida confirmada'],
+      ['sinais de compra', 'señales de compra'],
+      ['sinais de venda', 'señales de venta'],
+      ['compra confirmada', 'compra confirmada'],
+      ['análise de risco', 'análisis de riesgo'],
+      ['concentração elevada', 'concentración elevada'],
+      ['Concentração', 'Concentración'], ['concentração', 'concentración'],
+      ['Pontos de atenção', 'Puntos de atención'],
+      ['Inteligência de mercado', 'Inteligencia de mercado'],
+      ['análise da carteira', 'análisis de la cartera'],
+      ['Análise da carteira', 'Análisis de la cartera'],
+      ['Análise crítica', 'Análisis crítico'],
+      ['Movimentação inteligente', 'Gestión inteligente'],
+      ['Destaques do mercado', 'Destacados del mercado'],
+      ['mercado geral', 'mercado general'],
+      ['agendador', 'programador'],['Servidor', 'Servidor'],
+      ['volume', 'volumen'],['Volume', 'Volumen'],
+      ['tendência', 'tendencia'],['Tendência', 'Tendencia'],
+      ['estrutura', 'estructura'],['Estrutura', 'Estructura'],
+      ['risco', 'riesgo'],['Risco', 'Riesgo'],
+      ['carteira', 'cartera'],['Carteira', 'Cartera'],
+      ['sinal', 'señal'],['sinais', 'señales'],['confirmar', 'confirmar'],
+      ['confirmados', 'confirmados'],['confirmadas', 'confirmadas'],
+      ['ativos', 'activos'],['ativo', 'activo'],['alertas', 'alertas'],['alerta', 'alerta'],
+      ['moedas', 'monedas'],['moeda', 'moneda'],
+      ['bloqueadas', 'bloqueadas'],['bloqueados', 'bloqueados'],['pendente', 'pendiente'],
+      ['Análise', 'Análisis'],['análise', 'análisis'],
+      ['Dados', 'Datos'],['dados', 'datos'],['alta', 'alza'],['queda', 'caída'],
+      ['baixa', 'baja'],['forte', 'fuerte'],
+      ['atualização', 'actualización'],['Atualização', 'Actualización'],
+      ['concentração', 'concentración'],['Última', 'Última'],
+      ['do ', 'del '],['da ', 'de la '],['dos ', 'de los '],['das ', 'de las '],
+      ['em ', 'en '],['na ', 'en la '],
+      [' e ', ' y '],[' ou ', ' o ']
+    ]
+  };
+  Object.assign(STRINGS.en,V1954_EXACT.en);
+  Object.assign(STRINGS.es,V1954_EXACT.es);
   function tr(original,lang){
-    if(typeof original!=='string')return original==null?'':String(original);
-    if(!['en','es','pt-BR'].includes(lang))lang='pt-BR';
-    // Aceita chaves portuguesas e também rótulos ingleses gerados por módulos legados.
-    const canonical=reverseEN.get(original)||reverseES.get(original)||original;
-    if(lang==='pt-BR')return canonical;
-    const exact=STRINGS[lang]?.[canonical];if(exact!==undefined)return exact;
-    for(const [pattern,translate] of TEMPLATES_V196[lang]){
-      const match=canonical.match(pattern);if(match)return translate(match);
+    if(lang==='pt-BR')return original;
+    const exact=STRINGS[lang]?.[original]; if(exact!==undefined)return exact;
+    // The Push status is assembled from several sentences; translate each
+    // complete message first to avoid unsafe word-by-word mixed-language output.
+    if(original.startsWith('Servidor Push disponível. ')){
+      return original.split(/(?<=\.)\s+/).map(part=>tr(part,lang)).join(' ');
     }
-    let out=canonical;
+
+    for(const [pattern,output] of V1955_DIAGNOSTIC_TEMPLATES[lang]||[])if(pattern.test(original))return original.replace(pattern,output);
+    const riskHealth=original.match(/^Saúde (\d+\/100) • risco (alto|médio|baixo)$/i);
+    if(riskHealth){const level=riskHealth[2].toLowerCase();return lang==='en'
+      ?'Health '+riskHealth[1]+' • '+({alto:'high',médio:'medium',baixo:'low'}[level]||level)+' risk'
+      :'Salud '+riskHealth[1]+' • riesgo '+({alto:'alto',médio:'medio',baixo:'bajo'}[level]||level);}
+    const thereAre=original.match(/^(Na carteira|No mercado|Na análise) há (\d+) (ativos?|moedas?|alertas?|sinais?) e (\d+) (ativos?|moedas?|alertas?|sinais?)\.$/i);
+    if(thereAre){const terms=lang==='en'?{ativo:'asset',ativos:'assets',moeda:'coin',moedas:'coins',alerta:'alert',alertas:'alerts',sinal:'signal',sinais:'signals'}:{ativo:'activo',ativos:'activos',moeda:'moneda',moedas:'monedas',alerta:'alerta',alertas:'alertas',sinal:'señal',sinais:'señales'};
+      const where=lang==='en'?({'Na carteira':'In the portfolio','No mercado':'In the market','Na análise':'In the analysis'}[thereAre[1]]||'In the portfolio'):({'Na carteira':'En la cartera','No mercado':'En el mercado','Na análise':'En el análisis'}[thereAre[1]]||'En la cartera');
+      return where+(lang==='en'?' there are ':' hay ')+thereAre[2]+' '+terms[thereAre[3]]+(lang==='en'?' and ':' y ')+thereAre[4]+' '+terms[thereAre[5]]+'.';}
+    // Score summaries are assembled from known technical terms: preserve the asset symbol.
+    const blocked=original.match(/^([A-Z0-9]{2,16}): (evitar entrada|observar|compra confirmada|sinal forte|candidata a compra) por (.+)\.$/i);
+    if(blocked){
+      const reasons=blocked[3].split(/ e (?=(?:risco|estrutura|mercado|volume|tendência|preço|RSI|VWAP))/i).map(x=>tr(x,lang)).join(lang==='en'?' and ':' y ');
+      return blocked[1]+': '+tr(blocked[2].toUpperCase(),lang).toLowerCase()+(lang==='en'?' because ':' debido a ')+reasons+'.';
+    }
+    const positive=original.match(/^([A-Z0-9]{2,16}): confluência forte; (.+)\.$/);
+    if(positive){
+      const reasons=positive[2].split(/ e (?=(?:risco|estrutura|mercado|volume|tendência|preço|RSI|força|regime))/i).map(x=>tr(x,lang)).join(lang==='en'?' and ':' y ');
+      return positive[1]+': '+(lang==='en'?'strong technical alignment; ':'fuerte confluencia técnica; ')+reasons+'.';
+    }
+    for(const [regex,replacement] of V1952_PATTERNS[lang]||[]){
+      if(regex.test(original)) return original.replace(regex,replacement).replace(/ • filtrado$/,(lang==='en'?' • filtered':' • filtrado'));
+    }
+    let out=original;
+    // Mensagens dinâmicas podem conter números, moedas e valores; traduza apenas o texto humano.
+    // Do not translate a short Portuguese token inside another word (e.g., "alta" inside "Falta").
     const word=/[\p{L}\p{N}]/u;
-    function replaceRule(input,source,target){
+    const replaceRule=(input,source,target)=>{
       if(!input.includes(source))return input;
-      let output='',at=0,i;
+      let out='',at=0,i;
       while((i=input.indexOf(source,at))!==-1){
-        const prev=i?input[i-1]:'',next=input[i+source.length]||'';
-        const collision=(word.test(source[0])&&!!prev&&word.test(prev))||(word.test(source[source.length-1])&&!!next&&word.test(next));
-        output+=input.slice(at,i)+(collision?source:target);at=i+source.length;
+        const prev=i>0?input[i-1]:'',next=input[i+source.length]||'';
+        const startInside=word.test(source[0])&&prev&&word.test(prev);
+        const endInside=word.test(source[source.length-1])&&next&&word.test(next);
+        out+=input.slice(at,i)+(startInside||endInside?source:target);
+        at=i+source.length;
       }
-      return output+input.slice(at);
+      return out+input.slice(at);
+    };
+    for(const [a,b] of V1952_SAFE_PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of V1951_PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of V195_PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of V1954_PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of DYNAMIC_V192[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of PHRASES[lang]||[])out=replaceRule(out,a,b);
+    for(const [a,b] of FALLBACK[lang]||[])out=replaceRule(out,a,b);
+    if(lang==='en'){
+      if(/\bhá\s+\d/i.test(original))out=out.replace(/ago:\s*(\d+)\s*(seconds|minutes|hours|days)/i,'$1 $2 ago');
+      out=out.replace(/\bWaiting (\d+)\b/g,'Waiting for $1');
+      out=out.replace(/\b(portfolio|market) ago:\s*(\d+)\b/gi,'$1 has $2');
     }
-    for(const [a,b] of safePhraseSets[lang])out=replaceRule(out,a,b);
-    // Complete-sentence matches from canonical dictionaries, longest first. Do not replace
-    // connectors alone (e.g., ' e ' => ' and '), which caused mixed-language screenshots.
-    for(const [a,b] of EXACT_PARTIAL[lang]){if(out.includes(a))out=replaceRule(out,a,b)}
     return out;
   }
+  // Exact translations for template labels, including versioned market headings.
+  Object.assign(STRINGS.en,{
+    'Valor do aporte':'Contribution amount',
+    'V19.5.4 • INTELIGÊNCIA DE MERCADO':'V19.5.4 • MARKET INTELLIGENCE',
+    'V19.5.6 • INTELIGÊNCIA DE MERCADO':'V19.5.6 • MARKET INTELLIGENCE',
+    'ATUALIZAÇÃO EM TEMPO REAL':'LIVE UPDATE',
+    'STATUS DA CARTEIRA':'PORTFOLIO STATUS'
+  });
+  Object.assign(STRINGS.es,{
+    'Valor do aporte':'Importe del aporte',
+    'V19.5.4 • INTELIGÊNCIA DE MERCADO':'V19.5.4 • INTELIGENCIA DE MERCADO',
+    'V19.5.6 • INTELIGÊNCIA DE MERCADO':'V19.5.6 • INTELIGENCIA DE MERCADO',
+    'ATUALIZAÇÃO EM TEMPO REAL':'ACTUALIZACIÓN EN TIEMPO REAL',
+    'STATUS DA CARTEIRA':'ESTADO DE LA CARTERA'
+  });
+  // V19.5.3 — polished labels in both interfaces, before generic word substitutions.
+  Object.assign(STRINGS.en, {"Perfil de aporte": "Contribution profile", "Aporte Perfil": "Contribution profile", "Reserva 100%": "100% in reserve", "Status da carteira": "Portfolio status", "Registro local": "Local history", "REGISTRO LOCAL": "LOCAL HISTORY", "Mercado geral": "Overall market", "Alertas de mercado": "Market alerts", "Candidatas": "Candidates", "Oportunidades": "Opportunities", "Confirmados": "Confirmed", "Informações": "Information", "Atualização em tempo real": "Live market update", "Compras confirmadas": "Confirmed buys", "Sem dados suficientes": "Not enough data", "Análise pendente": "Analysis pending", "Símbolo": "Symbol", "Objetivo": "Goal", "Perfil": "Profile", "Aporte": "Contribution", "Notificações locais": "Local notifications", "Local": "Local", "Detalhes": "Details", "Vender": "Sell", "Comprar": "Buy", "Atualizar": "Refresh", "Conservador": "Conservative", "Equilibrado": "Balanced", "Agressivo": "Aggressive", "Ativo": "Asset", "Ativos": "Assets", "Preço": "Price", "Variação": "Change", "Prioridade": "Priority", "Visão do mercado": "Market overview", "Alerta ativado": "Alert enabled", "Mercado indisponível": "Market unavailable", "Atualizando carteira…": "Updating portfolio…", "Aguardando atualização…": "Waiting for an update…", "⚠️ Pontos de atenção": "⚠️ Needs attention", "Aguardando dados técnicos suficientes…": "Waiting for sufficient technical data…", "Nova análise": "New analysis", "Aguardando confirmação": "Awaiting confirmation"});
+  Object.assign(STRINGS.es, {"Área protegida": "Zona protegida", "Desbloquear Radar": "Desbloquear Radar", "Entrar": "Iniciar sesión", "Usar PIN": "Usar el PIN", "PIN de 4 a 6 números": "PIN de 4 a 6 dígitos", "Principal": "Inicio", "Configurações": "Configuración", "Iniciando…": "Iniciando…", "Segundo plano: iniciando…": "Segundo plano: iniciando…", "Compras confirmadas": "Compras confirmadas", "Idioma": "Idioma", "Auto": "Automático", "Buscando…": "Buscando…", "Confirmadas": "Confirmadas", "Segundo plano local: preparando…": "Segundo plano local: preparando…", "◈ Simular aporte": "◈ Simular aportación", "↓ Exportar CSV": "↓ Exportar CSV", "📈 VER MERCADO": "📈 VER MERCADO", "Aporte": "Aportación", "Aporte Perfil": "Perfil de aportación", "Perfil de aporte": "Perfil de aportación", "Simular aporte": "Simular aportación", "Simulação inteligente de aporte": "Simulación inteligente de aportaciones", "Reserva 100%": "100 % en reserva", "Perfil": "Perfil", "Radar Social": "Radar social", "Registro local": "Historial local", "REGISTRO LOCAL": "HISTORIAL LOCAL", "Entrar no radar": "Entrar al Radar", "Mercado geral": "Mercado general", "Candidatas": "Candidatas", "Alertas de mercado": "Alertas del mercado", "Atualização em tempo real": "Actualización en tiempo real", "Motor": "Motor", "Última leitura": "Última lectura", "Iniciando": "Iniciando", "Sem dados suficientes": "Datos insuficientes", "Análise pendente": "Análisis pendiente", "Símbolo": "Símbolo", "Objetivo": "Objetivo", "Ativo": "Activo", "Ativos": "Activos", "Preço": "Precio", "Variação": "Variación", "Prioridade": "Prioridad", "Visão do mercado": "Panorama del mercado", "Alerta ativado": "Alerta activada", "Mercado indisponível": "Mercado no disponible", "Atualizando carteira…": "Actualizando cartera…", "Aguardando atualização…": "Esperando actualización…", "⚠️ Pontos de atenção": "⚠️ Puntos de atención", "Aguardando dados técnicos suficientes…": "Esperando suficientes datos técnicos…", "Nova análise": "Nuevo análisis", "Aguardando confirmação": "Esperando confirmación", "Notificações locais": "Notificaciones locales", "Detalhes": "Detalles", "Vender": "Vender", "Comprar": "Comprar", "Atualizar": "Actualizar", "Local": "Local", "Reserva estável": "Reserva de monedas estables", "Oportunidades": "Oportunidades", "Confirmados": "Confirmados", "Monitoramento ativo": "Monitoreo activo", "Frase misturada": "Frase mezclada", "Tendência": "Tendencia", "Liquidez": "Liquidez", "Importante": "Importante", "Período": "Periodo"});
+  Object.assign(STRINGS.en,{'🔒 Teste agendado. Feche o app e bloqueie o celular; ele será enviado na próxima execução do agendador externo (se estiver ativo).':'🔒 Test scheduled. Close the app and lock your phone; the message will be sent on the next external scheduler run (if active).'});
+  Object.assign(STRINGS.es,{'🔒 Teste agendado. Feche o app e bloqueie o celular; ele será enviado na próxima execução do agendador externo (se estiver ativo).':'🔒 Prueba programada. Cierra la app y bloquea el móvil; el mensaje se enviará en la próxima ejecución del programador externo (si está activo).'});
+  // V19.5.5: complete health/status messages; do not translate isolated words
+  // from a composed diagnostics sentence. Dynamic count fields use templates.
+  Object.assign(STRINGS.en,{
+    'Servidor Push indisponível. Verifique a conexão e o armazenamento do servidor.':'Push server unavailable. Check your connection and server storage.',
+    'Servidor Push disponível.':'Push server available.',
+    'Agendador executou, mas a última varredura do mercado falhou.':'Scheduler ran, but the last market scan failed.',
+    'Inscrição Push deste aparelho detectada.':'Push subscription detected on this device.',
+    'Inscrição Push não detectada neste aparelho; toque em ATIVAR PUSH 24H.':'No Push subscription detected on this device. Tap ENABLE 24H PUSH.',
+    'Nenhuma execução do agendador registrada; confira o agendamento externo.':'No scheduled scan recorded. Check the external scheduler.',
+    'Agendador sem execução recente detectada.':'No recent scheduled scan detected.',
+    'A entrega com o aplicativo fechado precisa ser comprovada por um teste recebido.':'Delivery with the app closed must be confirmed by receiving a scheduled test.',
+    'Push: agendador recente':'Push: recent scan',
+    'Push: verificar agendador':'Push: check scheduler',
+    'Agendador externo:':'External scheduler:',
+    'requer programação externa para alertas com o app fechado.':'requires external scheduling for alerts while the app is closed.',
+    'Última execução do agendador:':'Last scheduled scan:'
+  });
+  Object.assign(STRINGS.es,{
+    'Servidor Push indisponível. Verifique a conexão e o armazenamento do servidor.':'Servidor Push no disponible. Comprueba la conexión y el almacenamiento del servidor.',
+    'Servidor Push disponível.':'Servidor Push disponible.',
+    'Agendador executou, mas a última varredura do mercado falhou.':'El programador se ejecutó, pero falló el último análisis del mercado.',
+    'Inscrição Push deste aparelho detectada.':'Suscripción Push detectada en este dispositivo.',
+    'Inscrição Push não detectada neste aparelho; toque em ATIVAR PUSH 24H.':'No se detectó una suscripción Push en este dispositivo. Toca ACTIVAR PUSH 24 H.',
+    'Nenhuma execução do agendador registrada; confira o agendamento externo.':'No hay ejecuciones programadas registradas. Comprueba la programación externa.',
+    'Agendador sem execução recente detectada.':'No se detectó una ejecución programada reciente.',
+    'A entrega com o aplicativo fechado precisa ser comprovada por um teste recebido.':'La entrega con la app cerrada debe confirmarse recibiendo una prueba programada.',
+    'Push: agendador recente':'Push: ejecución reciente',
+    'Push: verificar agendador':'Push: revisar programación',
+    'Agendador externo:':'Programador externo:',
+    'requer programação externa para alertas com o app fechado.':'requiere programación externa para recibir alertas con la app cerrada.',
+    'Última execução do agendador:':'Última ejecución programada:'
+  });
+  const V1955_DIAGNOSTIC_TEMPLATES={
+    en:[[/^Última execução do agendador: (\d+) min atrás\.$/, 'Last scheduled scan: $1 min ago.']],
+    es:[[/^Última execução do agendador: (\d+) min atrás\.$/, 'Última ejecución programada: hace $1 min.']]
+  };
   const textState=new WeakMap(), attrState=new WeakMap();
   let internalWrite=false;
   function textRecord(node){
@@ -3960,80 +4555,36 @@
     const cur=el.getAttribute(a); let all=attrState.get(el)||{},r=all[a];
     if(!r||cur!==r.lastApplied)r={base:cur,lastApplied:cur}; all[a]=r;attrState.set(el,all);return r;
   }
+  function nativeLocalized(node){const el=node?.nodeType===3?node.parentElement:node;return !!el?.closest?.('[data-cr-i18n-native]')}
   function translateText(node,lang){
+    if(nativeLocalized(node))return;
     const r=textRecord(node),base=r.base||'',trim=base.trim(); if(!trim)return;
     const out=tr(trim,lang),left=base.match(/^\s*/)?.[0]||'',right=base.match(/\s*$/)?.[0]||'';
     const val=left+out+right; if(node.nodeValue!==val){internalWrite=true;node.nodeValue=val;internalWrite=false}r.lastApplied=val;
   }
   function translateAttrs(el,lang){
+    if(nativeLocalized(el))return;
     for(const a of ['placeholder','aria-label','title','alt','data-label'])if(el.hasAttribute?.(a)){
       const r=attrRecord(el,a);if(r.base==null)continue;const val=tr(r.base,lang);if(el.getAttribute(a)!==val){internalWrite=true;el.setAttribute(a,val);internalWrite=false}r.lastApplied=val;
     }
   }
   function translateTree(root,lang){
-    if(!root)return;
+    if(!root||nativeLocalized(root))return;
     if(root.nodeType===Node.TEXT_NODE){translateText(root,lang);return}
     if(root.nodeType!==Node.ELEMENT_NODE)return;
     translateAttrs(root,lang);
-    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||nativeLocalized(p)||['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
     let n;while(n=w.nextNode())translateText(n,lang);
     root.querySelectorAll?.('[placeholder],[aria-label],[title],[alt],[data-label]').forEach(el=>translateAttrs(el,lang));
   }
-  // Antes de exibir HTML/textos produzidos pelos motores, converta-os ao idioma atual.
-  // Preserva os originais canônicos para mudanças de idioma sem reload.
-  const nativeInnerHTML=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
-  const nativeTextContent=Object.getOwnPropertyDescriptor(Node.prototype,'textContent');
-  const nativeReplaceChildren=Element.prototype.replaceChildren;
-  let preRendering=false;
-  function shouldLocalize(el){
-    const tag=el?.nodeType===1?el.tagName:'';
-    return !!tag&&!['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','OPTION','CODE','PRE','TEMPLATE','SVG','PATH'].includes(tag);
+  function localizeNode(root){
+    if(!root)return;
+    // These cards are rendered from PT-BR templates; they are not native-language
+    // server responses. Keep them observable so subsequent DOM updates and toggles
+    // are translated, including when a fragment is updated without a full rerender.
+    root.removeAttribute?.('data-cr-i18n-native');
+    translateTree(root,resolve(selectedChoice()));
   }
-  function translateFragment(fragment,lang,host){
-    const walker=document.createTreeWalker(fragment,NodeFilter.SHOW_TEXT);
-    let node;
-    while(node=walker.nextNode()){
-      const p=node.parentElement;
-      if(!(p?shouldLocalize(p):shouldLocalize(host)))continue;
-      const base=node.nodeValue||'';
-      const r={base,lastApplied:base}; textState.set(node,r);
-      const out=tr(base.trim(),lang),left=base.match(/^\s*/)?.[0]||'',right=base.match(/\s*$/)?.[0]||'';
-      const value=left+out+right;
-      if(base.trim()&&value!==base)node.nodeValue=value;
-      r.lastApplied=node.nodeValue||'';
-    }
-  }
-  function installPreRender(){
-    if(!nativeInnerHTML?.set||!nativeTextContent?.set)return;
-    Object.defineProperty(Element.prototype,'innerHTML',{
-      configurable:true,enumerable:nativeInnerHTML.enumerable,get:nativeInnerHTML.get,
-      set(value){
-        if(preRendering||!shouldLocalize(this)||typeof value!=='string'||!value){nativeInnerHTML.set.call(this,value);return}
-        try{
-          preRendering=true;
-          const range=document.createRange();
-          range.selectNodeContents(this);
-          const fragment=range.createContextualFragment(value);
-          translateFragment(fragment,resolve(selectedChoice()),this);
-          nativeReplaceChildren.call(this,...Array.from(fragment.childNodes));
-        }catch(err){nativeInnerHTML.set.call(this,value)}finally{preRendering=false}
-      }
-    });
-    Object.defineProperty(Node.prototype,'textContent',{
-      configurable:true,enumerable:nativeTextContent.enumerable,get:nativeTextContent.get,
-      set(value){
-        if(preRendering||typeof value!=='string'||!(this.nodeType===1&&shouldLocalize(this))){nativeTextContent.set.call(this,value);return}
-        const lang=resolve(selectedChoice()),translated=tr(value,lang);
-        preRendering=true;
-        try{
-          nativeTextContent.set.call(this,translated);
-          // Guardar texto original nos nós criados antes de mostrar o conteúdo.
-          if(this.firstChild?.nodeType===Node.TEXT_NODE)textState.set(this.firstChild,{base:value,lastApplied:translated});
-        }finally{preRendering=false}
-      }
-    });
-  }
-  installPreRender();
   function selectedChoice(){return localStorage.getItem(STORAGE_KEY)||'auto'}
   function syncSelectors(choice){
     bindSelectors(); document.querySelectorAll('[data-cr-language-select]').forEach(s=>{if(s.value!==choice)s.value=choice});
@@ -4042,11 +4593,14 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
-    document.title='Cripto Radar V19.6 • Radar PRO';
+    document.title='Cripto Radar • Radar PRO';
+    document.querySelectorAll('[data-cr-i18n-native]').forEach(el=>{if(el.getAttribute('data-cr-i18n-native')!==lang)el.removeAttribute('data-cr-i18n-native')});
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }
-  function t(key){return tr(key,resolve(selectedChoice()))}
+  function t(key){return tr(String(key??''),resolve(selectedChoice()))}
+  function fmtNumber(n,options){return new Intl.NumberFormat(resolve(selectedChoice()),options||{}).format(Number(n)||0)}
+  function fmtCurrency(n,currency='BRL'){return new Intl.NumberFormat(resolve(selectedChoice()),{style:'currency',currency,maximumFractionDigits:2}).format(Number(n)||0)}
   function bindSelectors(){document.querySelectorAll('[data-cr-language-select]').forEach(sel=>{if(sel.dataset.bound)return;sel.dataset.bound='1';sel.addEventListener('change',()=>apply(sel.value,true))});}
   const mo=new MutationObserver(list=>{
     if(internalWrite)return;const lang=resolve(selectedChoice());
@@ -4057,6 +4611,6 @@
     }
   });
   function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt','data-label']})}
-  window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false),format:(key,vars={})=>t(key).replace(/\{([a-zA-Z0-9_]+)\}/g,(_,name)=>String(vars[name]??''))};
+  window.CriptoRadarI18n={localizeNode,fmtNumber,fmtCurrency,setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false)};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

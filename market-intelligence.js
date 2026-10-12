@@ -11,8 +11,8 @@ const $ = id => document.getElementById(id);
 const clamp = (n,a=0,b=100) => Math.max(a, Math.min(b, Number(n)||0));
 const n = v => Number(v);
 const finite = v => Number.isFinite(Number(v));
-const fmtBRL = v => Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
-const fmtPct = v => `${Number(v||0)>=0?'+':''}${Number(v||0).toFixed(1)}%`;
+const fmtBRL = v => Number(v||0).toLocaleString(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
+const fmtPct = v => `${Number(v||0)>=0?'+':''}${Number(v||0).toLocaleString(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm = s => { try{return normalizeWalletSymbol(s)}catch(e){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'')} };
 
@@ -331,6 +331,22 @@ function bar(label,val){
   return `<div class="mi-dim"><span>${label}<b>${v}</b></span><i><em style="width:${v}%"></em></i></div>`;
 }
 function portfolioNarrative(snap,reg){
+  const lang=window.CriptoRadarI18n?.getLanguage?.()||'pt-BR';
+  // Compose market commentary in the selected language, using the same numeric risk assessments.
+  if(lang==='en'||lang==='es'){
+    const english=lang==='en';
+    if(!snap.total)return english?'Add your portfolio so Radar can assess concentration, aggregate risk and the impact of a new contribution.':'Añade tu cartera para que Radar evalúe la concentración, el riesgo agregado y el impacto de un nuevo aporte.';
+    const bits=[];
+    if(snap.health>=75)bits.push(english?'The portfolio is structurally healthy':'La cartera está estructuralmente saludable');
+    else if(snap.health>=58)bits.push(english?'The portfolio has a moderate overall condition':'La cartera se encuentra en una condición intermedia');
+    else bits.push(english?'The portfolio needs rebalancing before taking on more risk':'La cartera necesita reequilibrarse antes de aumentar el riesgo');
+    if(snap.maxWeight>.45)bits.push(english?'one position has excessive weight':'una posición presenta concentración elevada');
+    else if(snap.diversification>=70)bits.push(english?'diversification is adequate':'la diversificación es adecuada');
+    if(snap.cashPct<.06)bits.push(english?'reserves are low':'las reservas son bajas');
+    if(reg.key==='bear')bits.push(english?'the overall market calls for a defensive stance':'el mercado general exige una postura defensiva');
+    else if(reg.key==='bull')bits.push(english?'the broader market regime is favorable':'el régimen general del mercado es favorable');
+    return bits.join('; ')+'.';
+  }
   if(!snap.total)return 'Adicione sua carteira para o Radar medir concentração, risco agregado e impacto de um novo aporte.';
   const bits=[];
   if(snap.health>=75)bits.push('A carteira está estruturalmente saudável');
@@ -347,6 +363,7 @@ function portfolioNarrative(snap,reg){
 function render(){
   const root=$('marketIntelligenceCard'); if(!root)return;
   const prefs=readPrefs();
+  const L=x=>window.CriptoRadarI18n?.t?.(x)||x;
   const aporteEl=$('aporte');
   const amount=Math.max(1,n(aporteEl?.value||prefs.amount||100));
   prefs.amount=amount; savePrefs(prefs);
@@ -360,7 +377,7 @@ function render(){
 
   root.innerHTML=`
   <div class="mi-head">
-    <div><div class="mi-kicker">V19.5 • MARKET INTELLIGENCE</div><div class="coin">🧠 Central de Mercado & Aporte</div>
+    <div><div class="mi-kicker">V19.5.5 • INTELIGÊNCIA DE MERCADO</div><div class="coin">🧠 Central de Mercado & Aporte</div>
     <div class="small">Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.</div></div>
     <div class="mi-live"><i></i> análise ativa</div>
   </div>
@@ -377,8 +394,8 @@ function render(){
   <div class="mi-section">
     <div class="mi-section-head"><div><b>Simulação inteligente de aporte</b><span>Compare perfis antes de decidir como distribuir capital novo.</span></div></div>
     <div class="mi-controls">
-      <label><span>Aporte</span><input id="miAmount" type="number" min="1" inputmode="decimal" value="${amount}"></label>
-      <label><span>Perfil</span><select id="miProfile">
+      <label><span>Valor do aporte</span><input id="miAmount" type="number" min="1" inputmode="decimal" value="${amount}"></label>
+      <label><span>Perfil de aporte</span><select id="miProfile">
         <option value="conservative"${prefs.profile==='conservative'?' selected':''}>Conservador</option>
         <option value="balanced"${prefs.profile==='balanced'?' selected':''}>Equilibrado</option>
         <option value="aggressive"${prefs.profile==='aggressive'?' selected':''}>Agressivo</option>
@@ -420,6 +437,7 @@ function render(){
   <div class="mi-disclaimer">Simulação informativa. O Cripto Radar não executa ordens, não garante lucro e não substitui avaliação financeira individual.</div>
   `;
 
+  window.CriptoRadarI18n?.localizeNode?.(root);
   bind();
   updateHomeSummary(snap,reg,top);
 }
@@ -606,6 +624,7 @@ API.scenarioAllocation=scenarioAllocation;
 window.CriptoRadarMarketIntelligence=API;
 
 document.addEventListener('DOMContentLoaded',()=>setTimeout(render,1600));
+window.addEventListener('criptoradar:languagechange',()=>{try{render()}catch(e){}});
 setTimeout(render,2200);
 setInterval(tick,5000);
 })();

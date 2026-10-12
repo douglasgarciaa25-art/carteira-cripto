@@ -1,0 +1,21 @@
+CRIPTO RADAR — V19.5.6 • AUDITORIA ITERATIVA
+
+BASE: projeto integral V19.5.5, sem pastas.
+
+CORREÇÕES:
+- Blocos da carteira, alertas e mercado continuam traduzíveis quando recebem alterações dinâmicas, sem depender de refresh/abrir tela. Apenas resposta nativa da IA é protegida contra tradução dupla.
+- Agendador Push registra a última varredura mesmo quando não há assinantes; registra tentativas com falha separadas de varreduras concluídas, e diagnóstico avisa quando a API do mercado falhou.
+- Push: cooldown só é gravado após entrega aceite pelo provedor; falhas de rede podem ser tentadas novamente na próxima varredura.
+- Sinais de compra oriundos do celular expiram no servidor após uma hora sem atualização, reduzindo o uso de análises obsoletas. Monitoramento direto de preços continua ativo.
+- Endpoint do agendador aceita CRON_SECRET opcional: quando configurado na Vercel, exigir Authorization: Bearer <mesmo segredo> no agendador externo. A URL pública existente continua operando quando a variável não está configurada (atenção: sem proteção extra).
+- Service Worker remove apenas caches do Cripto Radar, evitando apagar caches de outras aplicações do domínio.
+- Cache, scripts e versão atualizados para V19.5.6.
+
+LIMITAÇÕES QUE NÃO PODEM SER TESTADAS OFFLINE:
+- A entrega real do Push com app fechado depende do agendador externo, KV, configuração VAPID e permissões Android.
+- O servidor Google Play Billing depende das credenciais e compras válidas; o acesso PRO requer as variáveis reais de licença.
+- Tradução 100% de notícias livres obtidas de sites externos depende de serviço específico de tradução/licenças de terceiros.
+- Publicação pelo GitHub/Vercel ainda precisa ser feita e validada no dispositivo.
+- assetlinks.json contém identificador de certificado Play Store de EXEMPLO. Para Android App Links verificados, substituir SHA256_DO_APP_SIGNING_DO_GOOGLE_PLAY pela impressão digital real do certificado de assinatura informada no Google Play Console. Não é possível inventar esse valor.
+
+INSTALAR: Substitua o conteúdo da RAIZ do repositório pelos arquivos extraídos deste ZIP; não crie subpastas API. Depois confira o deploy na Vercel e atualize a instalação PWA.

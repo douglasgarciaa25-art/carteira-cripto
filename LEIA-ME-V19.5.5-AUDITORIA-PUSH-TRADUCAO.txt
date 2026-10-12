@@ -1,0 +1,38 @@
+CRIPTO RADAR V19.5.5 — AUDITORIA E CORREÇÕES
+
+Projeto completo, originado diretamente da V19.5.4. Todos os arquivos
+ficam na raiz do ZIP (sem pasta api).
+
+CORREÇÃO PRINCIPAL: a página fazia GET /api/push-cron só para testar
+a saúde do sistema, inclusive ao abrir a página e a cada minuto.
+/api/push-cron não é uma consulta: executa a varredura de mercado e pode
+enviar alertas a todos os assinantes. Agora a página somente consulta
+/api/push-status, que lê o horário da última execução, sem dispará-la.
+O indicador de agendador é ativo apenas com varredura registrada nos
+últimos 10 minutos. A inscrição local não prova a entrega ao Android.
+
+IDIOMAS: adicionadas mensagens de diagnóstico em EN/ES; o teste
+de notificação enviada pelo servidor foi traduzido; os endpoints de
+teste e teste agendado mantêm o idioma escolhido na inscrição.
+
+OUTROS: revisão de rótulos e versão visível, atualização do cache da
+PWA, proteção contra cookie malformado no acesso de desenvolvedor,
+e correção de chave de texto EN no motor da API de IA.
+
+VERIFICAÇÃO PÓS-PUBLICAÇÃO:
+1. Enviar todos os arquivos da raiz do ZIP para a raiz do GitHub.
+2. Aguardar o deploy na Vercel e atualizar o PWA.
+3. Abrir Sistema / Fontes, verificar status do Push sem acionar o cron.
+4. Se o cron não executou há mais de 10 minutos, verificar o agendador
+   externo na infraestrutura: o ZIP não instala agendador automaticamente.
+5. Trocar PT/EN/ES e verificar análises, Push e textos dinâmicos.
+6. Testar recebimento agendado no Android com a tela bloqueada.
+
+LIMITAÇÕES:
+- Não publica no GitHub nem na Vercel por conta própria.
+- Não garante tradução integral de manchetes externas ou textos livres
+  sem uma API tradutora; a tradução local continua determinística.
+- Não altera ordens, saldos, cálculos de mercado ou condições de acesso PRO.
+- O endpoint /api/push-cron precisa de um agendador EXTERNO autorizado.
+  Para segurança operacional, restrinja a rota via provedor/firewall
+  caso o endpoint atualmente esteja público na internet.

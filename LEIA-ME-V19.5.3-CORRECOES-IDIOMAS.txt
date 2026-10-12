@@ -1,0 +1,22 @@
+CRIPTO RADAR V19.5.3 • REVISÃO ADICIONAL DE IDIOMAS
+Base: projeto COMPLETO V19.5.2 enviado pelo usuário.
+
+Ajustes:
+- Revisão de traduções de interface, em especial espanhol em configurações,
+  autenticação, carteira, aportes, mercado e alertas.
+- Rótulos de aporte e perfil no simulador traduzidos como frases completas,
+  evitando a inversão de ordem e mistura de idiomas.
+- Reversibilidade de idioma em conteúdo atualizado dinamicamente.
+- Service Worker agora recebe idioma ao receber configuração, atualiza o
+  idioma ao trocá-lo e monta notificações locais nesse idioma, quando possível.
+- Tradução do push enviado pelo servidor refinada (sem alterar permissões).
+- Cache e versão atualizados.
+
+Não altera sinais financeiros nem contorno de verificação PRO/assinatura.
+Valores permanecem em BRL. Tradução automática universal de notícias
+externas exigiria um provedor de tradução com credenciais próprias.
+Publicação: extrair ZIP e substituir os arquivos na raiz do GitHub; aguardar
+Vercel e renovar/reabrir o PWA. Não foi publicado automaticamente.
+
+Atenção: notícias externas e texto de origem livre podem manter o idioma
+original quando não houver serviço externo configurado.

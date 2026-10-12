@@ -11,7 +11,7 @@ const num=n=>Number.isFinite(Number(n))?Number(n):null;
 const short=(s,len=215)=>String(s||'').trim().slice(0,len);
 const shownPct=x=>x==null?'—':`${x>=0?'+':''}${x.toFixed(2)}%`;
 const fmtScore=x=>x==null?'—':Math.round(x)+'/100';
-const stamp=ms=>ms?new Date(ms).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const stamp=ms=>ms?new Date(ms).toLocaleString(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
 let filter='all',query='',alerts=[],lastTick=0,lastSeenDataset=false;
 let history=loadHistory();
 function loadHistory(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x.filter(a=>a&&a.id&&a.at).slice(0,MAX_HISTORY):[]}catch(e){return []}}
@@ -98,7 +98,7 @@ function render(){
  const count=k=>all.filter(a=>a.kind===k).length;
  const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};
  set('acRiskCount',count('risk')+count('sell'));set('acBuyCount',count('buy'));set('acWatchCount',count('watch'));set('acUnreadCount',all.filter(x=>!isRead(x)).length);
- const live=$('acLive');if(live){live.className='ac-live '+(ready?'ok':'bad');live.lastElementChild.textContent=ready?`Dados recebidos • ${new Date(lastTick).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`:'Aguardando dados recentes'}
+ const live=$('acLive');if(live){live.className='ac-live '+(ready?'ok':'bad');live.lastElementChild.textContent=ready?`Dados recebidos • ${new Date(lastTick).toLocaleTimeString(window.CriptoRadarI18n?.getLanguage?.()||'pt-BR',{hour:'2-digit',minute:'2-digit'})}`:'Aguardando dados recentes'}
  const top=$('acPriority');if(top){
   const first=all[0];const style=first?['risk','sell'].includes(first.kind)?'risk':first.kind==='buy'?'buy':'pending':'pending';
   const heading=first?`${first.symbol} • ${first.title}`:ready?'Nenhum sinal confirmado agora':'Aguardando dados recentes';
@@ -110,6 +110,7 @@ function render(){
  const list=$('acList');if(list)list.innerHTML=visible.length?visible.map(showItem).join(''):`<div class="ac-empty"><div class="ac-ico">🛡️</div>${ready?'Nenhum sinal corresponde ao filtro selecionado.':'Ainda sem dados recentes ou sinais verificáveis.'}</div>`;
  const h=$('acHistory');if(h)h.innerHTML=history.length?history.slice(0,6).map(e=>`<div class="ac-hist-row"><div>${icons[e.kind]||'🔵'} <b>${esc(e.symbol)}</b> • ${esc(e.title)} ${e.read?'✓':''}</div><span>${stamp(e.at)}</span></div>`).join(''):'<div class="ac-empty">Nenhuma mudança registrada neste aparelho ainda.</div>';
  renderPush();
+ for(const id of ['acPushStatus','acLive','acPriority','acCount','acList','acHistory'])window.CriptoRadarI18n?.localizeNode?.($(id));
 }
 function sync(){
  if(!$('alertCenterCard'))return;
@@ -133,6 +134,7 @@ function init(){
   catch(e){}finally{sync();if(b){b.disabled=false;b.textContent='↻ Atualizar'}}
  });
  window.addEventListener('storage',e=>{if(e.key===KEY){history=loadHistory();render()}});
+ window.addEventListener('criptoradar:languagechange',()=>{try{render()}catch(e){}});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
  sync();setTimeout(sync,2600);setInterval(sync,9000);
 }
