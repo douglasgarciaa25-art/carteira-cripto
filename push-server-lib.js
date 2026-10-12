@@ -34,12 +34,33 @@ function vapidSubject(req){
   const host=req?.headers?.['x-forwarded-host']||req?.headers?.host||'carteira-cripto-pi.vercel.app';
   return `https://${String(host).split(',')[0].trim()}`;
 }
+function safePushContext(raw){
+  const c=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
+  const wallet=Array.isArray(c.wallet)?c.wallet.slice(0,50).map(x=>({symbol:String(x?.symbol||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,16)})).filter(x=>x.symbol):[];
+  const opportunities=Array.isArray(c.opportunities)?c.opportunities.slice(0,16).map(x=>({
+    symbol:String(x?.symbol||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,16),
+    signalState:String(x?.signalState||x?.state||'').slice(0,32),
+    label:String(x?.label||'').slice(0,100),
+    score:Number.isFinite(Number(x?.score))?Math.max(0,Math.min(100,Number(x.score))):0,
+    reason:String(x?.reason||'').slice(0,220)
+  })).filter(x=>x.symbol):[];
+  const total=Number(c?.portfolio?.totalBRL);
+  return {wallet,opportunities,portfolio:{totalBRL:Number.isFinite(total)?Math.max(0,Math.min(total,1e12)):0}};
+}
+function safePushPrefs(raw){const p=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};return {market:p.market!==false,pullback:p.pullback!==false,portfolio:p.portfolio!==false,alertFrequency:['important','balanced','frequent','all'].includes(p.alertFrequency)?p.alertFrequency:'important'}}
+function safePushMirror(raw){const m=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};return {mode:m.mode==='alerts'?'alerts':'off',userCapital:Number.isFinite(Number(m.userCapital))?Math.max(0,Math.min(Number(m.userCapital),1e12)):0,riskPct:Number.isFinite(Number(m.riskPct))?Math.max(.1,Math.min(Number(m.riskPct),10)):1}}
 async function saveSubscription(record){
   const endpoint=record?.subscription?.endpoint;
-  if(!endpoint)throw new Error('Subscription sem endpoint');
+  let url;try{url=new URL(String(endpoint||''))}catch(_){}
+  if(!url||url.protocol!=='https:'||!url.hostname||String(endpoint).length>2048)throw new Error('Subscription endpoint inválido');
+  const keys=record?.subscription?.keys;
+  if(!keys||typeof keys.p256dh!=='string'||!keys.p256dh||typeof keys.auth!=='string'||!keys.auth||keys.p256dh.length>400||keys.auth.length>400)throw new Error('Subscription chaves inválidas');
   const id=subId(endpoint),key=SUB_PREFIX+id;
   const old=parseJSON(await kv(['GET',key]),{})||{};
-  const next={...old,...record,id,updatedAt:new Date().toISOString(),createdAt:old.createdAt||new Date().toISOString()};
+  const next={...old,...record,id,subscription:{endpoint,keys:{p256dh:keys.p256dh,auth:keys.auth}},
+    context:safePushContext(record.context??old.context),prefs:safePushPrefs(record.prefs??old.prefs),mirror:safePushMirror(record.mirror??old.mirror),
+    language:['pt-BR','en','es'].includes(record.language)?record.language:(old.language||'pt-BR'),
+    updatedAt:new Date().toISOString(),createdAt:old.createdAt||new Date().toISOString()};
   await kv(['SET',key,JSON.stringify(next)]);await kv(['SADD',SUB_SET,id]);
   return next;
 }
@@ -62,14 +83,19 @@ const PUSH_TEXT={
 };
 function localizePush(payload,lang){
  if(!['en','es'].includes(lang))return {...payload,lang:'pt-BR'};
+ if(payload.kind==='v18-signal'){
+   const match=String(payload.body||'').match(/(?:^|•)\s*(\d{1,3})\/100/);
+   const score=match?Math.min(100,Math.max(0,Number(match[1]))):null;
+   return {...payload,lang,title:`🧠 Radar V18: ${String(payload.symbol||'').replace(/[^A-Z0-9]/gi,'').slice(0,16)}`,body:lang==='en'?`Confirmed technical signal${score===null?'':` • score ${score}/100`} • Review risk before making decisions`:`Señal técnica confirmada${score===null?'':` • puntuación ${score}/100`} • Evalúa el riesgo antes de decidir`};
+ }
  const rows=[...PUSH_TEXT[lang]].sort((a,b)=>b[0].length-a[0].length);
  const convert=v=>{let out=String(v||'');for(const [pt,target] of rows)if(out.includes(pt))out=out.split(pt).join(target);return out};
  return {...payload,title:convert(payload.title),body:convert(payload.body),lang};
 }
 
 async function sendPush(req,record,payload){
-  const vapid=await ensureVapid();webpush.setVapidDetails(vapidSubject(req),vapid.publicKey,vapid.privateKey);
   try{
+    const vapid=await ensureVapid();webpush.setVapidDetails(vapidSubject(req),vapid.publicKey,vapid.privateKey);
     const result=await webpush.sendNotification(record.subscription,JSON.stringify(localizePush(payload,record?.language)),{TTL:240,urgency:'high'});
     return {ok:true,statusCode:result?.statusCode||201};
   }catch(e){

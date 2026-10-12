@@ -24,7 +24,7 @@ function detectPullback(rows){
 function allowed(state,key,mins,commit=false){const now=Date.now(),last=Number(state.cooldowns?.[key]||0);if(now-last<mins*60000)return false;if(commit){state.cooldowns=state.cooldowns||{};state.cooldowns[key]=now}return true}
 function prune(state){const now=Date.now();state.cooldowns=Object.fromEntries(Object.entries(state.cooldowns||{}).filter(([,v])=>now-Number(v)<36*3600000).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,1200));state.pullbacks=Object.fromEntries(Object.entries(state.pullbacks||{}).filter(([,v])=>now-Number(v?.seen||0)<8*3600000));}
 function confirmPullback(state,symbol,p){state.pullbacks=state.pullbacks||{};const key=symbol+':'+p.side,old=state.pullbacks[key]||{count:0,sample:0,seen:0};if(Number(old.sample)!==Number(p.candleTime)){old.count=(Date.now()-Number(old.seen||0)<60*60000)?Math.min(2,Number(old.count||0)+1):1;old.sample=Number(p.candleTime);old.seen=Date.now();state.pullbacks[key]=old}return{...p,confirmations:Number(old.count||1),confirmed:Number(old.count||1)>=2}}
-function userWatch(rec,assets){const held=(rec?.context?.wallet||[]).map(x=>clean(x.symbol)).filter(Boolean),defaults=['BTC','ETH','BNB','SOL','XRP','DOGE','ADA','LINK','SUI','AVAX'],top=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,16).map(x=>clean(x.symbol));return new Set([...held,...defaults,...top])}
+function userWatch(rec,assets){const held=(Array.isArray(rec?.context?.wallet)?rec.context.wallet:[]).map(x=>clean(x?.symbol)).filter(Boolean),defaults=['BTC','ETH','BNB','SOL','XRP','DOGE','ADA','LINK','SUI','AVAX'],top=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,16).map(x=>clean(x.symbol));return new Set([...held,...defaults,...top])}
 function mirrorBody(rec,x){const mirror=rec?.mirror||{},cap=Number(rec?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;return `${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}
 
 
@@ -36,12 +36,17 @@ function pushProfile(rec){
 }
 function contextSignal(rec){
  const seen=Date.parse(rec?.lastSeenAt||rec?.updatedAt||'');
- if(!Number.isFinite(seen)||Date.now()-seen>60*60*1000)return [];
+ const age=Date.now()-seen;
+ if(!Number.isFinite(seen)||age< -60000||age>60*60*1000)return [];
  const xs=Array.isArray(rec?.context?.opportunities)?rec.context.opportunities:[];
  return xs.filter(x=>{
-   const st=String(x?.signalState||x?.state||x?.signal||x?.label||'').toLowerCase();
+   // Never infer confirmation from a label or a high score: a candidate remains a candidate.
+   const st=String(x?.signalState||x?.state||'').trim().toLowerCase();
+   const label=String(x?.label||x?.signal||'').toLowerCase();
    const sc=Number(x?.score??x?.confidence??0);
-   return /confirm|forte|candidate|candidata|compra/.test(st)&&sc>=72;
+   return ['confirmed','strong','good','confirmado','confirmada'].includes(st)
+      && !/candidat|aguardando|waiting|pending|pendente|watch|observ/i.test(label)
+      && Number.isFinite(sc)&&sc>=72&&sc<=100;
  }).sort((a,b)=>Number(b?.score??b?.confidence??0)-Number(a?.score??a?.confidence??0)).slice(0,2);
 }
 
@@ -59,33 +64,34 @@ module.exports=async(req,res)=>{
  try{
   if(!(await acquireCronLock(50)))return res.status(200).json({ok:true,skipped:true,reason:'scan já executado recentemente'});
   const subs=await listSubscriptions();if(!subs.length){
-   const state=await getMarketState();state.at=Date.now();state.lastAttemptAt=state.at;state.source='no-subscribers';state.lastScanStatus='ok';delete state.lastScanError;
+   const state=await getMarketState();state.at=Date.now();state.lastAttemptAt=state.at;state.source='no-subscribers';state.lastScanStatus='ok';state.lastFailedCount=0;state.lastDataErrors=0;delete state.lastScanError;
    await setMarketState(state);
    return res.status(200).json({ok:true,subscriptions:0,sent:0,at:new Date(state.at).toISOString(),source:state.source});
   }
   const snap=await snapshot(),assets=snap.assets,state=await getMarketState();state.cooldowns=state.cooldowns||{};state.pullbacks=state.pullbacks||{};const oldPrices=state.prevPrices||{},newPrices={};for(const x of assets)newPrices[clean(x.symbol)]=Number(x.last)||0;
-  const kcache=new Map();let sent=0,failed=0;
+  const kcache=new Map();let sent=0,failed=0,dataErrors=0;
   for(const rec of subs){
-   if(rec.pendingLockedTest){const r=await sendPush(req,rec,{title:'🔒 Cripto Radar • tela bloqueada',body:'Teste automático recebido pelo servidor. Se você viu esta mensagem com o app fechado ou a tela bloqueada, o Push 24h está funcionando.',tag:'radar-locked-test',url:'./',kind:'locked-test'});if(r.ok){sent++;await saveSubscription({...rec,pendingLockedTest:false,pendingLockedTestSentAt:new Date().toISOString()})}else failed++;}
-   const prof=pushProfile(rec),watch=userWatch(rec,assets),cand=assets.filter(x=>watch.has(clean(x.symbol))&&Number(x.liquidityPct)>=70).sort((a,b)=>b.volume-a.volume);let userSent=0;
-   for(const x of cand){if(userSent>=prof.maxPerRun)break;const s=clean(x.symbol),price=Number(x.last),move=pct(Number(oldPrices[s]),price),ch=Number(x.change24h)||0;
+   const prof=pushProfile(rec);let userSent=0;
+   if(rec.pendingLockedTest){const r=await sendPush(req,rec,{title:'🔒 Cripto Radar • tela bloqueada',body:'Teste automático recebido pelo servidor. Se você viu esta mensagem com o app fechado ou a tela bloqueada, o Push 24h está funcionando.',tag:'radar-locked-test',url:'./',kind:'locked-test'});if(r.ok){sent++;userSent++;await saveSubscription({...rec,pendingLockedTest:false,pendingLockedTestSentAt:new Date().toISOString()})}else failed++;}
+   const watch=userWatch(rec,assets),cand=assets.filter(x=>watch.has(clean(x.symbol))&&Number(x.liquidityPct)>=70).sort((a,b)=>b.volume-a.volume);
+   for(const x of (rec?.prefs?.market===false?[]:cand)){if(userSent>=prof.maxPerRun)break;const s=clean(x.symbol),price=Number(x.last),move=pct(Number(oldPrices[s]),price),ch=Number(x.change24h)||0;
     const fastKey=rec.id+':fast:'+s+(move>0?':up':':down');
     if(Number.isFinite(move)&&Math.abs(move)>=prof.fastMove&&allowed(state,fastKey,prof.fastCooldown)){const r=await sendPush(req,rec,{title:(move>0?'🚀 Movimento rápido: ':'🔴 Queda rápida: ')+s,body:`${fmt(move)} desde a última varredura • 24h ${fmt(ch)} • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,tag:'server-fast-'+s,url:'./#urgentRadarCard',kind:'market-fast',symbol:s});if(r.ok){allowed(state,fastKey,prof.fastCooldown,true);sent++;userSent++}else failed++;continue}
     const dayKey=rec.id+':24h:'+s+(ch>0?':up':':down');
     if(Math.abs(ch)>=prof.dayMove&&Number(x.liquidityPct)>=75&&allowed(state,dayKey,prof.dayCooldown)){const r=await sendPush(req,rec,{title:(ch>0?'🟢 Movimento relevante: ':'🔴 Atenção no mercado: ')+s,body:`${fmt(ch)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100 • perfil ${String(rec?.prefs?.alertFrequency||'important')}`,tag:'server-24h-'+s,url:'./#urgentRadarCard',kind:'market-24h',symbol:s});if(r.ok){allowed(state,dayKey,prof.dayCooldown,true);sent++;userSent++}else failed++;}
    }
-   if(userSent<prof.maxPerRun){
+   if(rec?.prefs?.portfolio!==false&&userSent<prof.maxPerRun){
     for(const x of contextSignal(rec)){if(userSent>=prof.maxPerRun)break;const s=clean(x.symbol);if(!s)continue;const sc=Math.round(Number(x.score??x.confidence??0));const key=rec.id+':ctx-v18:'+s; if(!allowed(state,key,90))continue;
-     const r=await sendPush(req,rec,{title:'🧠 Radar V18: '+s,body:`${String(x.label||x.signal||'Candidata técnica')} • ${sc}/100 • ${String(x.reason||x.why||'Confluência detectada pelo motor V18').slice(0,150)}`,tag:'server-v18-'+s,url:'./#marketIntelligenceCard',kind:'v18-signal',symbol:s});
+     const r=await sendPush(req,rec,{title:'🧠 Radar V18: '+s,body:`${String(x.label||x.signal||'Compra confirmada')} • ${sc}/100 • ${String(x.reason||x.why||'Confluência detectada pelo motor V18').slice(0,150)}`,tag:'server-v18-'+s,url:'./#marketIntelligenceCard',kind:'v18-signal',symbol:s});
      if(r.ok){allowed(state,key,90,true);sent++;userSent++}else failed++;
     }
    }
-   const held=(rec?.context?.wallet||[]).map(x=>clean(x.symbol)).filter(Boolean),tops=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,8).map(x=>clean(x.symbol)),syms=[...new Set([...held,'BTC','ETH','SOL','BNB','LINK','SUI',...tops])].filter(s=>watch.has(s)).slice(0,8);
-   for(const s of syms){if(userSent>=3)break;try{let rows=kcache.get(s);if(!rows){rows=await klines(s);kcache.set(s,rows)}const raw=detectPullback(rows);if(!raw)continue;const p=confirmPullback(state,s,raw);if((!p.confirmed&&p.score<82)||p.score<prof.pullbackScore)continue;const k=rec.id+':pullback:'+s+':'+p.side;if(!allowed(state,k,prof.pullbackCooldown))continue;const mirrorOn=rec?.mirror?.mode==='alerts';const r=await sendPush(req,rec,{title:mirrorOn?'🪞 Espelhamento: '+s:(p.side==='bull'?'↗️ Falha de pullback: ':'↘️ Falha de pullback: ')+s,body:mirrorOn?mirrorBody(rec,p):`${p.label} • score técnico ${p.score}/100 • nível ${Number(p.level).toPrecision(7)} • preço ${Number(p.price).toPrecision(7)} • possível continuação ${p.side==='bull'?'da alta':'da baixa'}`,tag:'server-pullback-'+s+'-'+p.side,url:'./#urgentRadarCard',kind:'pullback',symbol:s});if(r.ok){allowed(state,k,prof.pullbackCooldown,true);sent++;userSent++}else failed++;}catch(e){}
+   const held=(Array.isArray(rec?.context?.wallet)?rec.context.wallet:[]).map(x=>clean(x?.symbol)).filter(Boolean),tops=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,8).map(x=>clean(x.symbol)),syms=[...new Set([...held,'BTC','ETH','SOL','BNB','LINK','SUI',...tops])].filter(s=>watch.has(s)).slice(0,8);
+   for(const s of (rec?.prefs?.pullback===false?[]:syms)){if(userSent>=prof.maxPerRun)break;try{let rows=kcache.get(s);if(!rows){rows=await klines(s);kcache.set(s,rows)}const raw=detectPullback(rows);if(!raw)continue;const p=confirmPullback(state,s,raw);if(!p.confirmed||p.score<prof.pullbackScore)continue;const k=rec.id+':pullback:'+s+':'+p.side;if(!allowed(state,k,prof.pullbackCooldown))continue;const mirrorOn=rec?.mirror?.mode==='alerts';const r=await sendPush(req,rec,{title:mirrorOn?'🪞 Espelhamento: '+s:(p.side==='bull'?'↗️ Falha de pullback: ':'↘️ Falha de pullback: ')+s,body:mirrorOn?mirrorBody(rec,p):`${p.label} • score técnico ${p.score}/100 • nível ${Number(p.level).toPrecision(7)} • preço ${Number(p.price).toPrecision(7)} • possível continuação ${p.side==='bull'?'da alta':'da baixa'}`,tag:'server-pullback-'+s+'-'+p.side,url:'./#urgentRadarCard',kind:'pullback',symbol:s});if(r.ok){allowed(state,k,prof.pullbackCooldown,true);sent++;userSent++}else failed++;}catch(e){dataErrors++}
    }
   }
-  state.prevPrices=newPrices;state.at=Date.now();state.lastAttemptAt=state.at;state.lastScanStatus='ok';delete state.lastScanError;state.source=snap.source;prune(state);await setMarketState(state);
-  return res.status(200).json({ok:true,subscriptions:subs.length,sent,failed,at:new Date().toISOString(),source:snap.source});
+  state.prevPrices=newPrices;state.at=Date.now();state.lastAttemptAt=state.at;state.lastScanStatus=(failed||dataErrors)?'partial':'ok';state.lastFailedCount=failed;state.lastDataErrors=dataErrors;state.lastScanError=failed?'push_delivery_failed':dataErrors?'market_candles_unavailable':undefined;state.source=snap.source;prune(state);await setMarketState(state);
+  return res.status(200).json({ok:true,subscriptions:subs.length,sent,failed,dataErrors,at:new Date().toISOString(),source:snap.source});
  }catch(e){
   // A scheduler may run yet fail to fetch market data; preserve that distinction.
   try{const state=await getMarketState();state.lastAttemptAt=Date.now();state.lastScanStatus='failed';state.lastScanError=String(e?.message||e).slice(0,120);await setMarketState(state)}catch(_){}

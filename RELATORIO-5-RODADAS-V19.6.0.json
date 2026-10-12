@@ -1,0 +1,73 @@
+{
+  "version": "19.6.0",
+  "source": "19.5.9",
+  "rounds": 5,
+  "passed": 10,
+  "failed": 0,
+  "results": [
+    {
+      "round": 1,
+      "name": "push-test.js preserves omitted fields",
+      "result": "PASS"
+    },
+    {
+      "round": 1,
+      "name": "push-schedule-test.js preserves omitted fields",
+      "result": "PASS"
+    },
+    {
+      "round": 1,
+      "name": "explicit settings still accepted",
+      "result": "PASS"
+    },
+    {
+      "round": 2,
+      "name": "missing VAPID/KV configuration is handled",
+      "result": "PASS"
+    },
+    {
+      "round": 3,
+      "name": "test notification counts against per-scan cap",
+      "result": "PASS"
+    },
+    {
+      "round": 3,
+      "name": "cron produces consistent send counters",
+      "result": "PASS"
+    },
+    {
+      "round": 4,
+      "name": "V18 alert fully localized for en",
+      "result": "PASS"
+    },
+    {
+      "round": 4,
+      "name": "V18 alert fully localized for es",
+      "result": "PASS"
+    },
+    {
+      "round": 5,
+      "name": "offline resources and first-party boundary",
+      "result": "PASS"
+    },
+    {
+      "round": 5,
+      "name": "Vercel assets, PWA manifest and package versions",
+      "result": "PASS"
+    }
+  ],
+  "pending": [
+    "Device Push and lockscreen tests",
+    "Vercel deployment and cloud KV",
+    "Google Play Billing",
+    "Foreign-language source news",
+    "Live Android UI regression"
+  ],
+  "checks": {
+    "javascriptFilesSyntaxChecked": 22,
+    "inlineScriptsSyntaxChecked": 21,
+    "brokenIndexLocalReferences": 0,
+    "zipIntegrity": null
+  },
+  "limitations": "No on-device test, live push delivery, billing integration or production translation quality assurance was performed."
+}

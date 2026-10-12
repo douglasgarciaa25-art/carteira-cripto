@@ -1,0 +1,87 @@
+{
+  "versao": "19.5.8",
+  "origem": "Cripto Radar V19.5.7",
+  "total_testes_executados": 10,
+  "total_falhas_de_teste": 0,
+  "cobertura": "Testes locais e simulações; não certifica pagamentos, push real, produção ou traduções de fornecedores externos.",
+  "resultados": [
+    {
+      "rodada": 1,
+      "teste": "Auditoria estrutural",
+      "aprovado": true,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.8'}\nPASS no_accidental_nested_directory {'files': 78}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Fluxos cron e idioma",
+      "aprovado": true,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Regressão de alerta e acesso PRO",
+      "aprovado": true,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Segurança de inscrições Push",
+      "aprovado": true,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Navegador: carteira e troca PT/EN/ES",
+      "aprovado": true,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Auditoria estrutural",
+      "aprovado": true,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.8'}\nPASS no_accidental_nested_directory {'files': 78}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Fluxos cron e idioma",
+      "aprovado": true,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Regressão de alerta e acesso PRO",
+      "aprovado": true,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Segurança de inscrições Push",
+      "aprovado": true,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Navegador: carteira e troca PT/EN/ES",
+      "aprovado": true,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation",
+      "erro": ""
+    }
+  ],
+  "pendencias_externas": [
+    "Publicação no GitHub e Vercel não realizada",
+    "Configurar CRON_SECRET no Vercel e Authorization no agendador externo para proteger a varredura",
+    "Entregas Push com app fechado/tela bloqueada exigem teste físico",
+    "Google Play Billing exige credenciais válidas, aprovação e teste em conta real",
+    "Notícias externas podem permanecer no idioma original",
+    "Serviços de mercado e agendador externos exigem teste de disponibilidade em produção"
+  ]
+}

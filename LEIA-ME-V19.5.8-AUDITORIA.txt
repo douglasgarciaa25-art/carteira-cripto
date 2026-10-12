@@ -1,0 +1,35 @@
+CRIPTO RADAR V19.5.8 — AUDITORIA E CORREÇÕES
+
+Base: projeto completo V19.5.7. Todos os arquivos permanecem na raiz do ZIP.
+
+Correções:
+1. Servidor Push passa a exigir confirmação explícita de sinal antes de notificar.
+   Um sinal candidato, mesmo com pontuação alta, não gera notificação de compra confirmada.
+2. Service Worker adota o mesmo filtro para sinais locais, evitando divergência entre app aberto/fechado.
+3. Registros de dispositivos Push são validados e limitados antes de serem persistidos,
+   protegendo a varredura contra dados malformados ou excessivamente grandes.
+4. Varredura do servidor distingue sucesso completo de sucesso parcial (Push recusado/falho).
+5. Diagnóstico do Push retorna contagem de falhas na última varredura.
+6. A validação PRO da interface não aceita cache local como autorização de pagamento.
+7. Versão e cache atualizados para evitar apresentação de código antigo.
+
+LIMITAÇÕES REAIS — PRECISAM DE TESTE EM PRODUÇÃO:
+- Segredo CRON_SECRET no ambiente da Vercel + autorização Bearer no agendador externo.
+  Sem este segredo, URL da varredura continua acessível publicamente por compatibilidade;
+  recomenda-se configurar esse segredo ANTES de publicação em produção.
+- KV_REST_API_URL/KV_REST_API_TOKEN e credenciais VAPID/Google Play.
+- Envio Push de verdade com Android bloqueado, Play Store e disponibilidade do agendador.
+- Tradução de material externo e APIs que não forneçam o idioma solicitado.
+- Não existe garantia de rentabilidade, acerto ou cobertura em tempo real do mercado.
+- Testes de sintaxe e automatizados não substituem validação funcional no aparelho.
+
+VERIFICAÇÃO AUTOMATIZADA FINAL:
+- Duas rodadas de 5 suítes automatizadas: 10 execuções aprovadas.
+- 21 arquivos JavaScript + 21 blocos JavaScript internos: sintaxe aprovada.
+- Referências do HTML, 37 builds e 14 rotas de publicação: íntegros.
+- Testes locais de idioma PT/EN/ES, filtros de sinal confirmado, segurança de
+  inscrições Push, diagnóstico, acesso PRO e editor de carteira: aprovados.
+- Resultados completos em RELATORIO-TESTES-V19.5.8.json.
+
+IMPORTANTE: não é possível garantir ausência absoluta de bugs ou funcionamento
+no Android e na Vercel apenas com inspeções locais.

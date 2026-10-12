@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.5.6 • Revisão de Push e Idiomas</title>
+<title>Cripto Radar V19.6.0 • Revisão de Push e Idiomas</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -693,7 +693,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.5.6 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.0 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -761,7 +761,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.5.6">V19.5.6</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.0">V19.6.0</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1391,7 +1391,7 @@ async function getRadarSW(){
  if(radarSWPromise)return radarSWPromise;
  radarSWPromise=(async()=>{
   try{
-   const reg=await navigator.serviceWorker.register('./sw.js?v=1956',{updateViaCache:'none'});
+   const reg=await navigator.serviceWorker.register('./sw.js?v=1959',{updateViaCache:'none'});
    try{await reg.update()}catch(e){}
    return await navigator.serviceWorker.ready;
   }catch(e){radarSWPromise=null;return null}
@@ -1409,7 +1409,7 @@ function serverPushContext(){
  let wallet=[];try{wallet=(printWallet||[]).map(x=>({symbol:normalizeWalletSymbol(x.symbol),qty:Number(x.qty)||0})).filter(x=>x.symbol&&x.qty>0)}catch(e){}
  let totalBRL=0;try{totalBRL=Number(document.getElementById('walletTotalBRL')?.dataset?.value)||0}catch(e){}
  if(!totalBRL){try{for(const x of wallet){const m=walletMarketData?.[x.symbol],p=Number(m?.brl||m?.priceBRL||0);if(p>0)totalBRL+=p*x.qty}}catch(e){}}
- let opp=[];try{opp=(latestOpportunities||[]).slice(0,12).map(x=>({symbol:normalizeWalletSymbol(x.symbol),signalState:x.signalState||x.signal||'',reason:x.reason||''}))}catch(e){}
+ let opp=[];try{opp=(latestOpportunities||[]).slice(0,12).map(x=>({symbol:normalizeWalletSymbol(x.symbol),signalState:x.signalState||x.state||x.signal||'',score:Number(x.score??x.confidence??0)||0,reason:String(x.reason||x.why||'').slice(0,240),label:String(x.label||'').slice(0,80)}))}catch(e){}
  let mirror={};try{mirror=JSON.parse(localStorage.getItem('crRadarCopyMirrorV14')||'{}')||{}}catch(e){}
  return {context:{wallet,portfolio:{totalBRL},opportunities:opp},mirror,prefs:{market:true,pullback:true,portfolio:true},language:(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt-BR')};
 }
@@ -2324,7 +2324,13 @@ async function updateWalletPrices(){
  })();
  try{return await walletUpdatePromise}finally{walletUpdatePromise=null}
 }
-function addWalletEditRow(sym='',qty=''){const d=document.createElement('div');d.className='wallet-edit-row';d.innerHTML=`<input class="wallet-sym" placeholder="Moeda (ex.: SUI)" value="${sym}"><input class="wallet-qty" inputmode="decimal" placeholder="Quantidade" value="${qty}"><button class="del-wallet" type="button">×</button>`;d.querySelector('.del-wallet').onclick=()=>d.remove();document.getElementById('walletEditRows').appendChild(d)}
+function addWalletEditRow(sym='',qty=''){
+ const d=document.createElement('div');d.className='wallet-edit-row';
+ const coin=document.createElement('input');coin.className='wallet-sym';coin.placeholder='Moeda (ex.: SUI)';coin.value=String(sym??'');
+ const amount=document.createElement('input');amount.className='wallet-qty';amount.inputMode='decimal';amount.placeholder='Quantidade';amount.value=String(qty??'');
+ const del=document.createElement('button');del.className='del-wallet';del.type='button';del.textContent='×';del.onclick=()=>d.remove();
+ d.append(coin,amount,del);document.getElementById('walletEditRows').appendChild(d);
+}
 let walletEditorMode='add', walletEditIndex=-1;
 function showWalletEditor(items=[],mode='add',editIndex=-1){walletEditorMode=mode;walletEditIndex=editIndex;document.getElementById('walletEditRows').innerHTML='';(items.length?items:[{symbol:'',qty:''}]).forEach(x=>addWalletEditRow(x.symbol,x.qty));document.getElementById('walletPreview').classList.remove('hide')}
 document.getElementById('manualWallet').onclick=()=>showWalletEditor([],'add',-1);
@@ -2799,7 +2805,7 @@ const renderUrgentRadarBeforePullback=renderUrgentRadar;renderUrgentRadar=functi
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{refreshRadarTechnicals()},1800)}); // V5 UI ocultada na V8 limpa
 </script>
 
-<script src="./ai-radar.js?v=1956"></script>
+<script src="./ai-radar.js?v=1959"></script>
 
 <script>
 function renderSmartAllocation(){
@@ -3743,7 +3749,7 @@ window.v8RunBacktest=run;
 })();
 </script>
 
-<script src="./i18n.js?v=1956"></script>
+<script src="./i18n.js?v=1959"></script>
 <style>
 .dev-owner-card{margin:12px 0 18px;padding:13px;border:1px solid #315d75;border-radius:15px;background:#0b2233;color:#e4efff}
 .dev-owner-card summary{cursor:pointer;font-weight:800;list-style:revert}.dev-owner-card p{line-height:1.5}
@@ -3973,9 +3979,9 @@ body{padding-bottom:74px}
 })();
 </script>
 
-<script src="./market-intelligence.js?v=1956"></script>
-<script src="./wallet-dashboard.js?v=1956"></script>
-<script src="./alerts-center.js?v=1956"></script>
+<script src="./market-intelligence.js?v=1959"></script>
+<script src="./wallet-dashboard.js?v=1959"></script>
+<script src="./alerts-center.js?v=1959"></script>
 
 <script>
 /* ===== V19.4 • Push Health: servidor, inscrição local e entrega diferenciados ===== */
@@ -4262,5 +4268,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 <link rel="stylesheet" href="./design-v190.css?v=1901">
 <link rel="stylesheet" href="./layout-v191.css?v=1912">
 <link rel="stylesheet" href="./layout-v194.css?v=1940">
-<link rel="stylesheet" href="./layout-v195.css?v=1956">
+<link rel="stylesheet" href="./layout-v195.css?v=1959">
 </body></html>

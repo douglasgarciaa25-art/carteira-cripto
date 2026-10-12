@@ -1,0 +1,266 @@
+{
+  "versao": "19.5.9",
+  "base": "19.5.8",
+  "rodadas": 5,
+  "suites_por_rodada": 6,
+  "executados": 30,
+  "aprovados": 30,
+  "falhas": 0,
+  "correcoes": [
+    "Rotina Push respeita preferências market, pullback e portfolio; não emite alertas de categoria desativada",
+    "A quantidade de alertas pullback respeita o limite de maxPerRun do perfil (inclusive perfil important)",
+    "Status de execução sem inscritos zera lastDataErrors para não apresentar erros obsoletos",
+    "Versão/cache Service Worker atualizados para 19.5.9"
+  ],
+  "limites_e_pendencias": [
+    "Testes locais não provam ausência absoluta de bugs",
+    "Entrega real de Push e comportamento em Android bloqueado precisam ser testados no dispositivo",
+    "Google Play Billing, credenciais e assinaturas reais não foram executados",
+    "Publicação no GitHub/Vercel não efetuada e produção não validada",
+    "Notícias externas e traduções não mapeadas podem aparecer no idioma original",
+    "Agendador externo exige configuração/segredo para execução contínua"
+  ],
+  "resultados": [
+    {
+      "rodada": 1,
+      "teste": "Auditoria estática, sintaxe, arquivos e Vercel",
+      "aprovado": true,
+      "duracao_s": 2.07,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.9'}\nPASS no_accidental_nested_directory {'files': 80}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True\n",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Rotina de Push, autenticação e traduções",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Regressão de sinais de mercado e acesso PRO",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures\n",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Validação de inscrições Push",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed\n",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Navegador, carteira, XSS e idiomas",
+      "aprovado": true,
+      "duracao_s": 1.76,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation\n",
+      "erro": ""
+    },
+    {
+      "rodada": 1,
+      "teste": "Preferências e limites de notificações",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: each notification preference honored; disabled categories silent; maximum per-run enforced\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Auditoria estática, sintaxe, arquivos e Vercel",
+      "aprovado": true,
+      "duracao_s": 2.21,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.9'}\nPASS no_accidental_nested_directory {'files': 80}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Rotina de Push, autenticação e traduções",
+      "aprovado": true,
+      "duracao_s": 0.05,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Regressão de sinais de mercado e acesso PRO",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Validação de inscrições Push",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Navegador, carteira, XSS e idiomas",
+      "aprovado": true,
+      "duracao_s": 1.87,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation\n",
+      "erro": ""
+    },
+    {
+      "rodada": 2,
+      "teste": "Preferências e limites de notificações",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: each notification preference honored; disabled categories silent; maximum per-run enforced\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Auditoria estática, sintaxe, arquivos e Vercel",
+      "aprovado": true,
+      "duracao_s": 1.95,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.9'}\nPASS no_accidental_nested_directory {'files': 80}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Rotina de Push, autenticação e traduções",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Regressão de sinais de mercado e acesso PRO",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Validação de inscrições Push",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Navegador, carteira, XSS e idiomas",
+      "aprovado": true,
+      "duracao_s": 1.78,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation\n",
+      "erro": ""
+    },
+    {
+      "rodada": 3,
+      "teste": "Preferências e limites de notificações",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: each notification preference honored; disabled categories silent; maximum per-run enforced\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Auditoria estática, sintaxe, arquivos e Vercel",
+      "aprovado": true,
+      "duracao_s": 2.04,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.9'}\nPASS no_accidental_nested_directory {'files': 80}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Rotina de Push, autenticação e traduções",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Regressão de sinais de mercado e acesso PRO",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Validação de inscrições Push",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Navegador, carteira, XSS e idiomas",
+      "aprovado": true,
+      "duracao_s": 1.85,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation\n",
+      "erro": ""
+    },
+    {
+      "rodada": 4,
+      "teste": "Preferências e limites de notificações",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: each notification preference honored; disabled categories silent; maximum per-run enforced\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Auditoria estática, sintaxe, arquivos e Vercel",
+      "aprovado": true,
+      "duracao_s": 2.06,
+      "saida": "PASS javascript_files_syntax {'checked': 21, 'errors': []}\nPASS javascript_inline_syntax {'checked': 21, 'errors': []}\nPASS local_refs {'checked': 'script/link/img', 'missing': []}\nPASS vercel_builds {'mapped': 37, 'missing': []}\nPASS vercel_routes {'routes': 14, 'missing': []}\nPASS manifest_icons {'icons': 5, 'missing': []}\nPASS sw_cache_assets {'service_worker': 'assets referenced'}\nPASS version_refs {'package': '19.5.9'}\nPASS no_accidental_nested_directory {'files': 80}\nPASS scheduler_and_translation {'output': 'PASS: scheduler health records real scan without subscribers\\nPASS: optional bearer protects scheduler\\nPASS: failed notification retries without cooldown, successful send throttled\\nPASS: Push health translations PT -> EN/ES\\n', 'errors': ''}\nPASS ui_essentials {'essential_elements': 3}\nAUDIT_PASS True\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Rotina de Push, autenticação e traduções",
+      "aprovado": true,
+      "duracao_s": 0.05,
+      "saida": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Regressão de sinais de mercado e acesso PRO",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: cron ignores candidate, watch, deceptive labels, invalid scores and stale/future data\nPASS: service worker and server both require confirmed signals\nPASS: expired or forged cached entitlement cannot unlock paid features\nPASS: diagnostics expose failed push sends and candle fetch failures\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Validação de inscrições Push",
+      "aprovado": true,
+      "duracao_s": 0.04,
+      "saida": "PASS: server validates HTTPS push endpoints and required browser keys\nPASS: malformed or oversized portfolio/push data sanitized, all subscribers can be listed\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Navegador, carteira, XSS e idiomas",
+      "aprovado": true,
+      "duracao_s": 1.74,
+      "saida": "PASS browser: wallet editor imports suspicious input as text, not HTML\nPASS browser: PT/EN/ES + dynamic DOM + reversible translation\n",
+      "erro": ""
+    },
+    {
+      "rodada": 5,
+      "teste": "Preferências e limites de notificações",
+      "aprovado": true,
+      "duracao_s": 0.03,
+      "saida": "PASS: each notification preference honored; disabled categories silent; maximum per-run enforced\n",
+      "erro": ""
+    }
+  ],
+  "gerado_em": "2026-10-12T11:28:44.620303+00:00"
+}

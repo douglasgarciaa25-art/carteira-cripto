@@ -1,0 +1,33 @@
+CRIPTO RADAR — V19.5.7 | REVISÃO INDEPENDENTE
+Base: V19.5.6 íntegra, 74 arquivos originais.
+
+CORREÇÕES CONFIRMADAS NESTA RODADA
+1. Editor da carteira: removida interpolação de dados importados em innerHTML. Os campos agora recebem seus valores pelas propriedades do DOM, evitando interpretar texto do usuário como HTML.
+2. Push / endpoint de cancelamento: solicitações públicas para remover inscrição exigem endpoint HTTPS, não aceitam apenas ID arbitrário.
+3. Push / confirmação: o agendador só emite falha de pullback após confirmação técnica, não apenas score elevado.
+4. Service Worker: o bloqueio por cooldown passa a ser gravado apenas após o navegador aceitar showNotification, permitindo nova tentativa quando falhar.
+5. Service Worker: o contador registra apenas notificações realmente exibidas pelo método do navegador, não tentativas bloqueadas por cooldown.
+6. Sinais locais: só oportunidades sinalizadas como confirmadas/fortes (não candidatas) e score >=72 chegam ao aviso local. O contexto da tela expira após 60 minutos sem atualização.
+7. Envio de contexto para Push: agora contém score, estado, legenda e motivo; antes descartava score, impedindo a filtragem correta no servidor.
+8. Abertura de notificações: a navegação permanece restrita à origem do app; evita abrir URL de origem não confiável recebida por Push.
+9. Instalação do Service Worker: falha temporária no download de um recurso não impede que o SW inicie e atualize a versão (recursos disponíveis seguem sendo guardados).
+10. Identificação de versão, QueryStrings dos scripts e cache atualizadas para 19.5.7.
+
+TESTES EXECUTADOS
+- Integridade do ZIP de origem: OK.
+- Sintaxe: todos 21 arquivos JS externos + 21 blocos inline de index.html: OK.
+- API de cancelamento de Push: ID sem endpoint rejeitado; HTTPS aceita; URL não HTTPS rejeitada.
+- Service Worker simulado: erro de exibição não grava cooldown; sucesso grava; sinal candidato/score baixo/antigo não alerta.
+- Navegador Chromium isolado: valores com caracteres HTML permanecem texto no editor de carteira, removíveis sem exceção.
+- Navegador Chromium isolado: idioma PT->EN->ES->PT, inclusive nó DOM acrescentado depois da carga: OK.
+- Conteúdo ZIP e referências de assets: OK.
+
+LIMITAÇÕES DESTA AUDITORIA
+- Sem acesso a dados reais, serviço de notificação ativo, telefones e credenciais do Google Play, não se verifica recebimento de Push com aparelho bloqueado nem cobrança PRO real.
+- Não foi realizado um ensaio ponta a ponta em Android ou no deploy Vercel. Verifique e publique o ZIP manualmente.
+- Tradução automática de notícias arbitrárias originadas em fontes externas ainda exige integração adicional com serviço específico: o dicionário interno não consegue garantir 100% de conteúdo externo.
+- assetlinks.json contém SHA256 fictícia; substituir apenas pela impressão digital real do certificado Google Play.
+- CRON_SECRET, KV e VAPID devem ser configurados em variáveis de ambiente no Vercel. NÃO incluir segredos em arquivos públicos.
+
+INSTALAÇÃO
+Extraia e suba todos os arquivos diretamente na RAIZ do repositório GitHub; não use subpastas api. Confirme o build Vercel, atualize/limpe cache do PWA se necessário e valide o aparelho.

@@ -1,0 +1,80 @@
+{
+  "version": "19.5.8",
+  "checks": {
+    "javascript_files_syntax": {
+      "pass": true,
+      "detail": {
+        "checked": 21,
+        "errors": []
+      }
+    },
+    "javascript_inline_syntax": {
+      "pass": true,
+      "detail": {
+        "checked": 21,
+        "errors": []
+      }
+    },
+    "local_refs": {
+      "pass": true,
+      "detail": {
+        "checked": "script/link/img",
+        "missing": []
+      }
+    },
+    "vercel_builds": {
+      "pass": true,
+      "detail": {
+        "mapped": 37,
+        "missing": []
+      }
+    },
+    "vercel_routes": {
+      "pass": true,
+      "detail": {
+        "routes": 14,
+        "missing": []
+      }
+    },
+    "manifest_icons": {
+      "pass": true,
+      "detail": {
+        "icons": 5,
+        "missing": []
+      }
+    },
+    "sw_cache_assets": {
+      "pass": true,
+      "detail": {
+        "service_worker": "assets referenced"
+      }
+    },
+    "version_refs": {
+      "pass": true,
+      "detail": {
+        "package": "19.5.8"
+      }
+    },
+    "no_accidental_nested_directory": {
+      "pass": true,
+      "detail": {
+        "files": 78
+      }
+    },
+    "scheduler_and_translation": {
+      "pass": true,
+      "detail": {
+        "output": "PASS: scheduler health records real scan without subscribers\nPASS: optional bearer protects scheduler\nPASS: failed notification retries without cooldown, successful send throttled\nPASS: Push health translations PT -> EN/ES\n",
+        "errors": ""
+      }
+    },
+    "ui_essentials": {
+      "pass": true,
+      "detail": {
+        "essential_elements": 3
+      }
+    }
+  },
+  "warnings": [],
+  "pass": true
+}

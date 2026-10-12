@@ -1,0 +1,7 @@
+CRIPTO RADAR V19.5.7 — SEGURANÇA, PUSH E REVISÃO DE TRADUÇÃO
+
+Projeto COMPLETO, baseado na V19.5.6, com todos os arquivos na raiz.
+Corrigidos: injeção de HTML na entrada manual da carteira; cancelamento de Push por ID sem confirmação de posse do endpoint; alertas locais sem confirmação/antigos; contagem e cooldown locais de notificações; consistência de score no contexto enviado ao servidor; clique em Push restrito ao próprio app.
+
+As APIs, o plano PRO, os cálculos financeiros e o layout principal foram preservados.
+Consulte RELATORIO-V19.5.7-VERIFICACAO.txt para testes e limitações.

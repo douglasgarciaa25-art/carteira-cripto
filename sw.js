@@ -1,10 +1,10 @@
-const CACHE='cripto-radar-v19.5.6-multicycle-audit';
+const CACHE='cripto-radar-v19.6.0-multicycle-audit';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css','./layout-v193.css','./layout-v194.css','./layout-v195.css'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
 
 self.addEventListener('install',e=>e.waitUntil((async()=>{
-  const c=await caches.open(CACHE);await c.addAll(CORE);await self.skipWaiting();
+  const c=await caches.open(CACHE);await Promise.allSettled(CORE.map(url=>c.add(url)));await self.skipWaiting();
 })()));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{
   const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('cripto-radar-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();
@@ -16,7 +16,8 @@ self.addEventListener('fetch',e=>{
   if(e.request.mode==='navigate'){
     e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy))}return r}).catch(()=>caches.match('./index.html')));return;
   }
-  e.respondWith(fetch(e.request).then(r=>{if(r.ok&&url.origin===self.location.origin){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(()=>caches.match(e.request)));
+  if(url.origin!==self.location.origin)return;
+  e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(()=>caches.match(e.request)));
 });
 
 function dbOpen(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(DB_STORE))db.createObjectStore(DB_STORE)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
@@ -47,9 +48,10 @@ async function fetchMarketSnapshot(){
   }
   throw Error('mercado indisponível');
 }
-async function cooldownAllowed(key,minutes){
+async function cooldownAllowed(key,minutes,commit=false){
   const now=Date.now(),hist=(await dbGet('cooldowns'))||{},last=Number(hist[key]||0);if(now-last<minutes*60000)return false;
-  hist[key]=now;const keys=Object.keys(hist).sort((a,b)=>hist[b]-hist[a]).slice(0,160),next={};for(const k of keys)next[k]=hist[k];await dbSet('cooldowns',next);return true;
+  if(commit){hist[key]=now;const keys=Object.keys(hist).sort((a,b)=>hist[b]-hist[a]).slice(0,160),next={};for(const k of keys)next[k]=hist[k];await dbSet('cooldowns',next)}
+  return true;
 }
 
 async function fetchKlines(symbol,interval='15m',limit=80){
@@ -90,7 +92,7 @@ async function scanPullbacks(cfg,assets,watch){
   const held=(cfg?.context?.wallet||[]).map(x=>cleanSymbol(x.symbol)).filter(Boolean),top=[...assets].sort((a,b)=>(b.volume||0)-(a.volume||0)).slice(0,12).map(x=>cleanSymbol(x.symbol));
   const syms=[...new Set([...held,'BTC','ETH','SOL','BNB','LINK','SUI',...top])].filter(s=>watch.has(s)).slice(0,8);let sent=0;
   const jobs=await Promise.allSettled(syms.map(async s=>{const rows=await fetchKlines(s,'15m',80),raw=detectPullback(rows);if(!raw)return null;return{symbol:s,...await confirmPullback(s,raw)}}));
-  for(const j of jobs){if(j.status!=='fulfilled'||!j.value)continue;const x=j.value;if(!x.confirmed||x.score<72)continue;const bull=x.side==='bull',mirror=cfg?.mirror||{},mirrorOn=mirror.mode==='alerts';let title=(bull?'↗️':'↘️')+' Falha de pullback: '+x.symbol;let body=`${x.label} • score técnico ${x.score}/100 • nível ${x.level.toPrecision(7)} • preço ${x.price.toPrecision(7)} • ${bull?'possível continuação da alta':'possível continuação da baixa'}`;if(mirrorOn){const cap=Number(cfg?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;title='🪞 Espelhamento: '+x.symbol;body=`${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}await notifyMarket((mirrorOn?'mirror-':'pullback-')+x.side+'-'+x.symbol,title,body,localeOf(cfg));sent++;if(sent>=2)break}
+  for(const j of jobs){if(j.status!=='fulfilled'||!j.value)continue;const x=j.value;if(!x.confirmed||x.score<72)continue;const bull=x.side==='bull',mirror=cfg?.mirror||{},mirrorOn=mirror.mode==='alerts';let title=(bull?'↗️':'↘️')+' Falha de pullback: '+x.symbol;let body=`${x.label} • score técnico ${x.score}/100 • nível ${x.level.toPrecision(7)} • preço ${x.price.toPrecision(7)} • ${bull?'possível continuação da alta':'possível continuação da baixa'}`;if(mirrorOn){const cap=Number(cfg?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;title='🪞 Espelhamento: '+x.symbol;body=`${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}if(await notifyMarket((mirrorOn?'mirror-':'pullback-')+x.side+'-'+x.symbol,title,body,localeOf(cfg)))sent++;if(sent>=2)break}
   return sent;
 }
 function localeOf(cfg){const lang=String(cfg?.language||'pt-BR').toLowerCase();return lang.startsWith('en')?'en':lang.startsWith('es')?'es':'pt-BR'}
@@ -105,12 +107,18 @@ function localizeBackgroundText(raw,locale){
  let out=String(raw||'');for(const [pt,target] of rows){if(out.includes(pt))out=out.split(pt).join(target)}return out;
 }
 async function notifyMarket(key,title,body,language='pt-BR'){
-  if(!(await cooldownAllowed(key, key.startsWith('fast-')?20:60)))return;
+  const minutes=key.startsWith('fast-')?20:60;
+  if(!(await cooldownAllowed(key,minutes)))return false;
   await self.registration.showNotification(localizeBackgroundText(title,language),{body:localizeBackgroundText(body,language),icon:'./icon-192.png',badge:'./badge-96.png',tag:key,renotify:true,data:{url:'./'},vibrate:[180,80,180]});
+  await cooldownAllowed(key,minutes,true);
+  return true;
 }
 async function scanConfiguredSignals(cfg){
+  // Local analysis expires after an hour; buy-candidate / waiting are not confirmed buys.
+  const last=Date.parse(cfg?.updatedAt||'');
+  if(!Number.isFinite(last)||Date.now()-last>60*60*1000)return;
   const opps=Array.isArray(cfg?.context?.opportunities)?cfg.context.opportunities:[];
-  const good=opps.filter(x=>/good|confirm|forte|compra/i.test(String(x?.signalState||x?.signal||''))).slice(0,2);
+  const good=opps.filter(x=>{const st=String(x?.signalState||x?.state||'').toLowerCase();const label=String(x?.label||x?.signal||'');const sc=Number(x?.score??x?.confidence??0);return ['confirmed','strong','good','confirmado','confirmada'].includes(st)&&!/candidat|aguardando|waiting|pending|pendente|watch|observ/i.test(label)&&Number.isFinite(sc)&&sc>=72&&sc<=100}).slice(0,2);
   for(const x of good){const s=cleanSymbol(x.symbol);if(!s)continue;await notifyMarket('ctx-'+s,'🚀 Radar: oportunidade em '+s,String(x.reason||x.signal||'Sinal confirmado pelo Radar.').slice(0,220),localeOf(cfg))}
 }
 async function runMarketScan(reason='background'){
@@ -129,10 +137,10 @@ async function runMarketScan(reason='background'){
     for(const x of candidates){
       if(sent>=3)break;const s=cleanSymbol(x.symbol),price=Number(x.last),change24=Number(x.change24h)||0,old=Number(prev.prices?.[s]);const move=pct(old,price);
       if(Number.isFinite(move)&&Math.abs(move)>=1.15){
-        const up=move>0;await notifyMarket('fast-'+(up?'up-':'down-')+s,(up?'🚀 Alta rápida: ':'🔴 Queda rápida: ')+s,`${fmtPct(move)} desde a última checagem • 24h ${fmtPct(change24)} • fonte ${snap.source||'mercado'}`,localeOf(cfg));sent++;continue;
+        const up=move>0;if(await notifyMarket('fast-'+(up?'up-':'down-')+s,(up?'🚀 Alta rápida: ':'🔴 Queda rápida: ')+s,`${fmtPct(move)} desde a última checagem • 24h ${fmtPct(change24)} • fonte ${snap.source||'mercado'}`,localeOf(cfg)))sent++;continue;
       }
       if(Math.abs(change24)>=7.5){
-        const up=change24>0;await notifyMarket('24h-'+(up?'up-':'down-')+s,(up?'🟢 Movimento forte: ':'🔴 Atenção no mercado: ')+s,`${fmtPct(change24)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,localeOf(cfg));sent++;
+        const up=change24>0;if(await notifyMarket('24h-'+(up?'up-':'down-')+s,(up?'🟢 Movimento forte: ':'🔴 Atenção no mercado: ')+s,`${fmtPct(change24)} em 24h • liquidez ${Math.round(Number(x.liquidityPct)||0)}/100`,localeOf(cfg)))sent++;
       }
     }
     const pullbackSent=await scanPullbacks(cfg,assets,watch).catch(()=>0);sent+=pullbackSent;
@@ -161,4 +169,4 @@ self.addEventListener('pushsubscriptionchange',e=>e.waitUntil((async()=>{
     await fetch('./api/push-subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),language:localeOf(await dbGet('config'))})});
   }catch(_){ }
 })()));
-self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(async ws=>{const url=e.notification.data?.url||'./';if(ws[0]){await ws[0].focus();try{ws[0].navigate(url)}catch(_){ }return}return clients.openWindow(url)}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(async ws=>{let url='./';try{const candidate=new URL(String(e.notification.data?.url||'./'),self.location.origin);if(candidate.origin===self.location.origin)url=candidate.href}catch(_){}if(ws[0]){await ws[0].focus();try{ws[0].navigate(url)}catch(_){ }return}return clients.openWindow(url)}))});

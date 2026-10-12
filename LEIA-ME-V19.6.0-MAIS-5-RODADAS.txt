@@ -1,0 +1,12 @@
+CRIPTO RADAR V19.6.0 — 5 RODADAS ADICIONAIS DE REVISÃO
+
+Base: V19.5.9. Cinco rodadas independentes:
+1. Testes Push não apagam preferências, carteira nem idioma se os campos estiverem ausentes.
+2. Falhas ao iniciar VAPID são tratadas pelo emissor, sem exceções não capturadas.
+3. Notificação de teste agendado conta no limite de notificações por varredura.
+4. Sinais V18 enviados em inglês/espanhol não exibem justificativas portuguesas misturadas; exibem síntese técnica localizada.
+5. Cache offline não intercepta requisições a domínios externos; versão/cache atualizados.
+
+O relatório JSON inclui verificações estáticas e dinâmicas das cinco rodadas.
+PENDENTE: testes em Android real, Vercel, Play Billing, disponibilidade do provedor Push e qualidade de tradução de notícias externas. Não há garantia de que não existam falhas em produção.
+INSTALAÇÃO: extrair arquivos diretamente na raiz do repositório; não copiar esta pasta como subpasta.

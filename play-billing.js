@@ -16,10 +16,11 @@ function setActive(on,data={}){
   const chip=$('proAccessChip');if(chip){chip.textContent=ownerVerified?'DESENVOLVEDOR • PRO':(active?'PRO ATIVO':'PLANO ANUAL');chip.classList.toggle('active',active)}
   const btn=$('proSubscribeBtn');if(btn)btn.textContent=ownerVerified?'✓ ACESSO DO CRIADOR':(active?'✓ PRO ATIVO':'ASSINAR PRO ANUAL');
   const restore=$('proRestoreBtn');if(restore)restore.textContent=ownerVerified?'✓ ACESSO SEM COBRANÇA':(active?'VERIFICAR ASSINATURA':'RESTAURAR COMPRA');
-  if(active&&!ownerVerified&&expiry){try{localStorage.setItem(CACHE_KEY,JSON.stringify({verified:true,expiryTime:expiry,checkedAt:Date.now()}))}catch(e){}}
+  // Cache stores only display metadata; every access must be verified during this session.
+  try{if(active&&!ownerVerified&&expiry)localStorage.setItem(CACHE_KEY,JSON.stringify({verified:true,expiryTime:expiry,checkedAt:Date.now()}));else if(!active&&!ownerVerified)localStorage.removeItem(CACHE_KEY)}catch(e){}
   window.dispatchEvent(new CustomEvent('criptoradar:prochange',{detail:{active,expiryTime:expiry}}));
 }
-function isActive(){const c=cached();return ownerVerified||active||!!c}
+function isActive(){return ownerVerified||active} // Local storage is never evidence of a paid entitlement.
 function openPaywall(reason=''){if(isActive())return;const modal=$('proPaywallModal');if($('proPaywallReason'))$('proPaywallReason').textContent=reason?`Recurso solicitado: ${reason}`:'';modal?.classList.add('show')}
 function closePaywall(){$('proPaywallModal')?.classList.remove('show')}
 async function verifyToken(purchaseToken,itemId=PRODUCT_ID){
@@ -112,7 +113,8 @@ async function activateDeveloper(){
 }
 async function init(){
   lockFeatures();
-  const c=cached();if(c)setActive(true,c);
+  // Previous-session cache is not trusted to unlock paid controls.
+  if(cached())setStatus('Verificando novamente a assinatura PRO…');
   const owner=await checkDeveloperAccess();
   $('ownerAccessBtn')?.addEventListener('click',activateDeveloper);
   $('ownerAccessCode')?.addEventListener('keydown',e=>{if(e.key==='Enter')activateDeveloper()});

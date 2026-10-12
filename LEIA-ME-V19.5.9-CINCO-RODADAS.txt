@@ -1,0 +1,12 @@
+CRIPTO RADAR V19.5.9 — CINCO RODADAS AUTOMATIZADAS
+
+Base: V19.5.8. Correções aplicadas:
+- Push de mercado só é enviado quando a preferência market não está desativada.
+- Sinais provenientes de contexto de carteira respeitam preferência portfolio.
+- Pullbacks respeitam preferência pullback e o limite de alertas do perfil.
+- Varreduras sem assinantes apagam o contador de erros de dados obsoleto.
+- Service Worker e recursos atualizados para V19.5.9.
+
+AUDITORIA: 5 rodadas x 6 suítes = 30 execuções; detalhes e saídas em RELATORIO-5-RODADAS-V19.5.9.json.
+AVISO: Testes locais não certificam produção, entrega real de Push ou Google Play Billing.
+INSTALAÇÃO: Extraia o ZIP e publique todos os arquivos diretamente na raiz do repositório.

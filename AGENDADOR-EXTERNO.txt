@@ -1,4 +1,4 @@
-CRIPTO RADAR — AGENDADOR EXTERNO • V19.5.6
+CRIPTO RADAR — AGENDADOR EXTERNO • V19.5.8
 
 A URL de varredura é https://carteira-cripto-pi.vercel.app/api/push-cron
 Método GET • agendar a cada 1 minuto (mínimo) • timeout recomendado 60s.
@@ -13,3 +13,5 @@ SEGURANÇA RECOMENDADA
 STATUS: https://carteira-cripto-pi.vercel.app/api/push-status
 - lastRunISO confirma a última varredura, inclusive quando não há assinantes.
 - Um status 'ok' não comprova entrega no Android: use TESTAR BLOQUEADO, feche o app e aguarde o agendador.
+
+A resposta lastScanStatus="partial" indica falhas de envio ou de dados; veja lastFailedCount e lastDataErrors no status.
