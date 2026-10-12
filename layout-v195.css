@@ -1,0 +1,66 @@
+/* Cripto Radar V19.5 — responsividade focada no Android. */
+:root{--radar-card-gap:12px}
+#walletTable{max-width:100%;min-width:0;overflow:visible!important}
+#walletTable table{max-width:100%}
+#walletTable .wallet-holding-row td{vertical-align:top}
+#marketIntelligenceCard,.wallet-extra,.mi-card{max-width:100%;min-width:0}
+.mi-empty{line-height:1.55}
+.mi-empty>b{display:block;margin-bottom:8px;color:#f0d18b}
+.mi-empty>span{display:block;overflow-wrap:anywhere}
+.mi-scenarios-hint,.mi-recheck{margin:9px 0 0;color:#b9cbe1;font-size:12px;line-height:1.5}
+.mi-watchlist{margin-top:13px;padding:12px;border:1px solid #3d6381;border-radius:13px;background:#0c1c2e;text-align:left}
+.mi-watchlist strong{display:block;color:#a9d6ff;font-size:12px;margin-bottom:7px}
+.mi-watch-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:7px 0;border-bottom:1px solid #263f57;font-size:12px}
+.mi-watch-row span{color:#d5bd77}
+.mi-watchlist small{display:block;color:#a5bad0;margin-top:8px;line-height:1.5}
+.app-toolbar,.cr19-language-control,.language-first{min-width:0}
+.cr19-language-select,.language-select{max-width:100%;min-width:0;text-overflow:ellipsis}
+.mi-section-head{flex-wrap:wrap;gap:8px}.mi-section-head>div{min-width:0}
+.mi-controls label{min-width:0}
+/* Accessible sticky bottom navigation with a smaller footprint. */
+.quick-dock.neo-dock{z-index:9500;box-sizing:border-box!important}
+.quick-dock.neo-dock button{min-width:0!important;overflow:hidden}
+.quick-dock.neo-dock button b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+main{padding-bottom:calc(114px + env(safe-area-inset-bottom,0px))!important}
+@media(max-width:680px){
+  .wallet-extra{overflow:visible!important}
+  #walletTable table,#walletTable tbody,#walletTable .wallet-holding-row,
+  #walletTable .wallet-spark-row{display:block;width:100%!important;min-width:0!important;box-sizing:border-box}
+  #walletTable thead{display:none!important}
+  #walletTable .wallet-holding-row{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:0 10px;margin:12px 0 0;padding:12px;border:1px solid #2b4968;
+    border-radius:17px;background:linear-gradient(155deg,#0f243b,#081727);overflow:hidden}
+  #walletTable .wallet-holding-row td{display:flex!important;flex-direction:column;align-items:flex-start;
+    min-width:0!important;width:100%!important;max-width:100%!important;padding:10px 0!important;
+    border:0!important;border-radius:0!important;background:transparent!important;box-sizing:border-box;
+    overflow-wrap:anywhere!important;word-break:normal!important;font-size:13px}
+  #walletTable .wallet-holding-row td::before{content:attr(data-label);display:block;font-size:10px;
+    font-weight:750;letter-spacing:.02em;color:#8eaac8;margin:0 0 5px}
+  #walletTable .wallet-holding-row td:first-child{grid-column:1/-1;padding-top:2px!important}
+  #walletTable .wallet-holding-row td:last-child{grid-column:1/-1;border-top:1px solid #25415c!important;margin-top:6px}
+  #walletTable .wallet-holding-row .sell-alert{display:inline-block;width:auto;max-width:100%;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+  #walletTable .wallet-holding-row .coin-cell{font-size:17px}
+  #walletTable .wallet-holding-row button{min-height:40px;padding:8px 12px;border-radius:10px}
+  #walletTable .wallet-spark-row{margin:0 0 12px}
+  #walletTable .wallet-spark-row td{display:block!important;width:100%!important;min-width:0!important;
+    box-sizing:border-box;padding:10px 12px!important;border:1px solid #2b4968!important;border-top:0!important;
+    border-radius:0 0 15px 15px!important;background:#091a2c!important}
+  #walletTable .wallet-spark{max-width:100%;min-width:0}
+  .mi-controls{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .mi-scenarios{grid-template-columns:1fr!important}
+  .mi-scenario{display:flex!important;flex-wrap:wrap;justify-content:space-between;gap:4px 8px;min-height:68px}
+  .mi-scenario small{flex-basis:100%}
+  .mi-alloc-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .mi-tranches{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .mi-tranches span{padding:8px 3px!important;text-align:center}
+  .mi-tranches b{font-size:clamp(9px,2.8vw,12px)!important}
+  .quick-dock.neo-dock{height:calc(65px + env(safe-area-inset-bottom,0px))!important;
+    padding:5px 7px calc(6px + env(safe-area-inset-bottom,0px))!important;gap:2px!important}
+  .quick-dock.neo-dock button{min-height:49px!important;padding:4px 2px!important;gap:2px!important}
+  .quick-dock.neo-dock button b{font-size:clamp(8px,2.1vw,10px)!important}
+  .quick-dock.neo-dock .dock-glyph{font-size:20px!important}
+  .quick-dock.neo-dock button.dock-main{height:auto!important;margin:0!important}
+  .v171-bottom-nav{display:none!important}
+}
+@media(max-width:360px){.mi-controls{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){.quick-dock.neo-dock,.mi-scenario{animation:none!important}}

@@ -360,7 +360,7 @@ function render(){
 
   root.innerHTML=`
   <div class="mi-head">
-    <div><div class="mi-kicker">V18 • MARKET INTELLIGENCE</div><div class="coin">🧠 Central de Mercado & Aporte</div>
+    <div><div class="mi-kicker">V19.5 • MARKET INTELLIGENCE</div><div class="coin">🧠 Central de Mercado & Aporte</div>
     <div class="small">Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.</div></div>
     <div class="mi-live"><i></i> análise ativa</div>
   </div>
@@ -396,6 +396,7 @@ function render(){
     </div>
 
     <div class="mi-scenarios">${scenarios.map(s=>scenarioCard(s,prefs.profile)).join('')}</div>
+    ${scenarios.every(s=>!s.alloc.length)?'<p class="mi-scenarios-hint">Todos os perfis estão em espera porque não há compras tecnicamente confirmadas. Os perfis mudam limites e riscos, mas não inventam sinais.</p>':''}
   </div>
 
   <div class="mi-section">
@@ -431,7 +432,19 @@ function scenarioCard(s,selected){
 }
 function allocationHtml(s,entryMode){
   if(!s.alloc.length){
-    return `<div class="mi-empty"><b>Sem alocação técnica agora</b><span>O motor prefere manter ${fmtBRL(s.amount)} em reserva até aparecer confluência suficiente.</span></div>`;
+    // O Radar nunca transforma candidatas em compras confirmadas só para preencher a simulação.
+    const ready=rankedUniverse();
+    const observations=ready.filter(a=>a.dataFresh&&a.ready&&a.status==='candidate'&&!a.canBuy)
+      .slice(0,3);
+    const waiting=ready.filter(a=>a.ready&&a.dataFresh&&!a.canBuy);
+    const missing=observations.length?observations[0].missingConfirmations||[]:[];
+    const watch=observations.length?`<div class="mi-watchlist"><strong>Ativos sob observação (não são compras)</strong>
+      ${observations.map(a=>`<div class="mi-watch-row"><b>${esc(a.symbol)}</b><span>${a.quality}/100 · ${esc(a.statusLabel)}</span></div>`).join('')}
+      <small>Exemplo do que falta para avançar: ${esc(missing.slice(0,2).join(' • ')||'confluência técnica e validação dos sinais')}. As entradas só entram na divisão após confirmação.</small></div>`:'';
+    const why=waiting.length?`${waiting.length} ativo(s) monitorado(s) não passaram pelos critérios obrigatórios de compra.`:'Ainda não há dados técnicos suficientes e atualizados para liberar uma entrada.';
+    return `<div class="mi-empty"><b>Reserva de ${fmtBRL(s.amount)} (100%) — aguardando confirmação</b>
+      <span>${esc(why)} A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.</span>
+      ${watch}<span class="mi-recheck">Aguarde nova leitura do mercado ou atualize os dados. Não há aporte obrigatório.</span></div>`;
   }
   const reservePct=s.amount?Math.round(s.reserveAmt/s.amount*100):100;
   let rows=s.alloc.map(x=>{

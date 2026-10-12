@@ -3150,6 +3150,257 @@
     const n=(navigator.language||'pt-BR').toLowerCase();
     if(n.startsWith('en'))return'en'; if(n.startsWith('es'))return'es'; return'pt-BR';
   }
+  /* V19.5: traduções completas para cartões dinâmicos de carteira, aporte e Radar.
+     Fontes do aplicativo continuam PT-BR: nunca traduzimos ticker, preço ou símbolo. */
+  Object.assign(STRINGS.en,{
+    'Moeda':'Coin','Qtd.':'Qty.','Quantidade':'Quantity','Valor':'Value','Ações':'Actions',
+    'Editar':'Edit','Excluir':'Delete','Tendência de preço • últimos 7 dias':'Price trend • last 7 days',
+    'Carregando gráfico…':'Loading chart…','Sua carteira ainda está vazia.':'Your portfolio is still empty.',
+    'Dicas para minha carteira':'Tips for my portfolio','💡 Dicas para minha carteira':'💡 Portfolio tips',
+    'O que merece sua atenção agora, usando composição da carteira + direcionamento técnico do Radar.':'What deserves attention now, based on portfolio composition and Radar technical analysis.',
+    '📌 O que fazer agora':'📌 What to do now','Revisar concentração em USDT':'Review USDT concentration',
+    'O Radar detectou pressão de venda confirmada por liquidez. Considere reduzir exposição após revisar o mercado.':'Radar detected selling pressure supported by liquidity. Reassess your exposure after reviewing the market.',
+    'Revisar posições muito pequenas':'Review very small positions','Sem ação urgente':'No urgent action',
+    'Os dados atuais não mostram uma mudança forte que exija ação imediata. Continue acompanhando os sinais.':'Current data shows no major change requiring immediate action. Keep watching the signals.',
+    'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.':'Price rose sharply, but the daily gain does not prove your personal profit. Check entry price, fees and risk before deciding.',
+    'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.':'The price move is extended. Consider reviewing partial profit taking and remaining exposure.',
+    'As dicas são informativas e mudam com os dados do mercado. Não executam ordens automaticamente.':'Tips are informational, change with market data, and never execute orders automatically.',
+    '🧭 Direcionamento da minha carteira':'🧭 Portfolio guidance',
+    'Leitura automática por ativo usando preço, variação 24h, volume e liquidez relativa.':'Asset-by-asset guidance using price, 24h change, volume and relative liquidity.',
+    'Direcionamento informativo: não executa ordens e não usa boatos como gatilho isolado. Reavalie antes de operar.':'Informational guidance; no trades are executed and rumors alone never trigger signals. Reassess before trading.',
+    '🔵 Mercado mais comprador':'🔵 Mostly buying market','Mercado mais comprador':'Mostly buying market',
+    '📊 Informações do mercado':'📊 Market information','Clima geral':'Market sentiment',
+    'Sua carteira · média 24h':'Your portfolio · 24h average',
+    'Ativos em upside':'Assets rising','Ativos em downside':'Assets falling',
+    'Atenção ao peso de':'Review weight of','Revisar concentração em':'Review concentration in',
+    'Revisar alta em':'Review strong rise in','Avaliar lucro em':'Review possible gain in',
+    'AVALIAR ALTA':'REVIEW RALLY','VENDER / REDUZIR':'SELL / REDUCE','ATENÇÃO PARA VENDA':'SELLING RISK',
+    'AGUARDAR ENTRADA':'WAIT FOR ENTRY','MANTER':'HOLD','AGUARDAR':'WAIT',
+    'COMPRAR / APORTAR':'BUY / ADD','REALIZAR PARTE':'REVIEW PARTIAL SALE',
+    'RESERVA ESTRATÉGICA':'STRATEGIC RESERVE','SEM COMPRA':'NO BUY SIGNAL','🔵 ESTÁVEL':'🔵 STABLE',
+    'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Stable reference asset; Radar has no directional signal.',
+    'Dados de mercado ainda insuficientes.':'Market data is not sufficient yet.',
+    'Sem confirmação suficiente para comprar ou vender.':'Not enough confirmation to buy or sell.',
+    'Entrada com preço e liquidez alinhados.':'Price and liquidity support the entry.',
+    'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Some signals are favorable, but confirmation is still partial.',
+    'Analisando os ativos da carteira…':'Analyzing portfolio assets…',
+    '🎯 Melhores opções da sua carteira':'🎯 Portfolio highlights',
+    '🌐 Alarmes de compra do mercado':'🌐 Market buy alerts',
+    'Nenhuma oportunidade confirmada no mercado agora. Aguardando preço e liquidez alinharem.':'No confirmed market opportunity right now. Waiting for price and liquidity to align.',
+    'Radar informativo: nenhuma ordem é enviada automaticamente e boatos não são usados como gatilho isolado.':'Informational Radar: no automatic orders. Rumors alone cannot trigger a trade.',
+    'V18 • MARKET INTELLIGENCE':'V18 • MARKET INTELLIGENCE',
+    '🧠 Central de Mercado & Aporte':'🧠 Market & Contribution Center',
+    'Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.':'Combines trend, momentum, volume, liquidity, VWAP, strength vs BTC, risk, market regime and portfolio composition.',
+    'análise ativa':'analysis active','Regime':'Regime','Saúde da carteira':'Portfolio health',
+    'Reserva atual':'Current reserve','Leitura da IA/Radar':'AI/Radar reading',
+    'Simulação inteligente de aporte':'Smart contribution simulator',
+    'Compare perfis antes de decidir como distribuir capital novo.':'Compare profiles before allocating new capital.',
+    'Aporte':'Contribution','Perfil':'Profile','Objetivo':'Goal','Entrada':'Entry',
+    'Conservador':'Conservative','Equilibrado':'Balanced','Agressivo':'Aggressive',
+    'Proteção':'Protection','Equilíbrio':'Balance','Crescimento':'Growth',
+    'Parcelada':'Phased','Só após confirmação':'After confirmation only','Mais imediata':'More immediate',
+    'Aguardar':'Wait','Divisão sugerida — Equilibrado':'Suggested allocation — Balanced',
+    'Divisão sugerida — Conservador':'Suggested allocation — Conservative',
+    'Divisão sugerida — Agressivo':'Suggested allocation — Aggressive',
+    'Reserva + ativos priorizados com limite de concentração.':'Reserve + prioritized assets within concentration limits.',
+    'Sem alocação técnica agora':'No technical allocation right now',
+    'Reserva de':'Reserve of','aguardando confirmação':'waiting for confirmation',
+    'Ativos sob observação (não são compras)':'Assets under observation (not buy signals)',
+    'Todos os perfis estão em espera porque não há compras tecnicamente confirmadas. Os perfis mudam limites e riscos, mas não inventam sinais.':'All profiles are waiting because there are no technically confirmed buys. Profiles change risk limits, not signal confirmation.',
+    'A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.':'Choosing a profile cannot bypass confirmation. All three scenarios may therefore retain a 100% reserve.',
+    'As entradas só entram na divisão após confirmação.':'Assets are only allocated after confirmation.',
+    'Aguarde nova leitura do mercado ou atualize os dados. Não há aporte obrigatório.':'Wait for new market data or refresh. No contribution is required.',
+    'Ranking técnico do mercado':'Market technical ranking','Qualidade do sinal, não previsão de lucro.':'Signal quality, not a profit forecast.',
+    'O que evitar ou esperar':'What to avoid or wait for','Ativos com risco, timing ruim ou bloqueios técnicos.':'Assets with risk, poor timing or technical blockers.',
+    'Nenhum bloqueio forte entre os ativos analisados agora.':'No strong blockers among assets analyzed now.',
+    'Simulação informativa. O Cripto Radar não executa ordens, não garante lucro e não substitui avaliação financeira individual.':'Informational simulation only. Cripto Radar does not execute trades, guarantee profits, or replace individual financial assessment.',
+    '🛡️ Reserva estratégica':'🛡️ Strategic reserve','Agora':'Now','Correção':'Pullback','Confirmação':'Confirmation',
+    'qualidade':'quality','do aporte':'of contribution', 'Em correção':'On pullback','Na confirmação':'On confirmation',
+    'Tendência':'Trend','Liquidez':'Liquidity','Risco':'Risk','Favorável':'Favorable','Seletivo':'Selective','Defensivo':'Defensive',
+    'carteira vazia':'empty portfolio','risco médio':'medium risk','risco baixo':'low risk','risco alto':'high risk',
+    'ALTA':'BULLISH','BAIXA':'BEARISH','LATERAL':'RANGE','NEUTRO':'NEUTRAL',
+    'CANDIDATA • AGUARDANDO':'CANDIDATE • WAITING','SINAL FORTE DE COMPRA':'STRONG BUY SIGNAL',
+    'Sem compra confirmada.':'No confirmed buy.','Entrada bloqueada.':'Entry blocked.',
+    'Aguardar nova leitura.':'Wait for a new reading.',
+    'ANÁLISE PENDENTE':'ANALYSIS PENDING','Dados insuficientes:':'Insufficient data:',
+    'Falta confirmar:':'Still needs confirmation:',
+    'Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.':'Waiting for structure, trend, and technical indicators before classifying an entry.',
+    'Estratégia conservadora':'Conservative strategy',
+    'Nenhuma compra confirmada agora':'No confirmed buy right now',
+    'Nenhuma compra confirmada agora.':'No confirmed buy right now.',
+    'A carteira está estruturalmente saudável':'The portfolio is structurally healthy',
+    'A carteira está em condição intermediária':'The portfolio is in moderate condition',
+    'A carteira merece reequilíbrio antes de aumentar risco':'The portfolio needs rebalancing before adding risk',
+    'há concentração elevada em uma posição':'one position has high concentration',
+    'a diversificação está boa':'diversification is good','a reserva está baixa':'cash reserves are low',
+    'com regime de mercado favorável':'under a favorable market regime',
+    'e o mercado geral pede postura defensiva':'and the broad market calls for caution',
+    'O motor prefere manter':'The engine prefers to keep','em reserva até aparecer confluência suficiente.':'in reserve until technical confirmation improves.',
+    'confluência técnica e validação dos sinais':'technical confluence and signal validation',
+    'Moedas e posições':'Coins and positions'
+  });
+  Object.assign(STRINGS.es,{
+    'Moeda':'Moneda','Qtd.':'Cant.','Quantidade':'Cantidad','Valor':'Valor','Ações':'Acciones',
+    'Editar':'Editar','Excluir':'Eliminar','Tendência de preço • últimos 7 dias':'Tendencia de precio • últimos 7 días',
+    'Carregando gráfico…':'Cargando gráfico…','Sua carteira ainda está vazia.':'Tu cartera está vacía.',
+    '💡 Dicas para minha carteira':'💡 Consejos para mi cartera','📌 O que fazer agora':'📌 Qué hacer ahora',
+    'O que merece sua atenção agora, usando composição da carteira + direcionamento técnico do Radar.':'Lo que merece atención ahora según la composición de la cartera y el análisis técnico de Radar.',
+    'As dicas são informativas e mudam com os dados do mercado. Não executam ordens automaticamente.':'Los consejos son informativos y cambian con los datos del mercado. No ejecutan órdenes.',
+    '🧭 Direcionamento da minha carteira':'🧭 Orientación de mi cartera',
+    'Leitura automática por ativo usando preço, variação 24h, volume e liquidez relativa.':'Análisis automático por activo según precio, variación 24 h, volumen y liquidez relativa.',
+    'Direcionamento informativo: não executa ordens e não usa boatos como gatilho isolado. Reavalie antes de operar.':'Orientación informativa: no ejecuta órdenes ni usa rumores como único criterio. Revisa antes de operar.',
+    '📊 Informações do mercado':'📊 Información del mercado','Clima geral':'Sentimiento del mercado',
+    'Sua carteira · média 24h':'Tu cartera · media 24 h','Ativos em upside':'Activos en alza','Ativos em downside':'Activos en baja',
+    'Revisar alta em':'Revisar subida de','Avaliar lucro em':'Evaluar beneficio en','Revisar concentração em':'Revisar concentración en',
+    'AVALIAR ALTA':'EVALUAR SUBIDA','VENDER / REDUZIR':'VENDER / REDUCIR','ATENÇÃO PARA VENDA':'RIESGO DE VENTA',
+    'AGUARDAR ENTRADA':'ESPERAR ENTRADA','MANTER':'MANTENER','AGUARDAR':'ESPERAR',
+    'COMPRAR / APORTAR':'COMPRAR / APORTAR','REALIZAR PARTE':'EVALUAR VENTA PARCIAL',
+    'Ativo de referência/estável; sem sinal direcional pelo Radar.':'Activo estable de referencia; sin señal direccional de Radar.',
+    'Dados de mercado ainda insuficientes.':'Datos de mercado insuficientes.',
+    'Sem confirmação suficiente para comprar ou vender.':'Sin confirmación suficiente para comprar o vender.',
+    'Há sinais favoráveis, mas a confirmação ainda é parcial.':'Hay señales favorables, pero la confirmación aún es parcial.',
+    'Analisando os ativos da carteira…':'Analizando activos de la cartera…',
+    '🎯 Melhores opções da sua carteira':'🎯 Activos destacados de la cartera',
+    '🌐 Alarmes de compra do mercado':'🌐 Alertas de compra del mercado',
+    'Nenhuma oportunidade confirmada no mercado agora. Aguardando preço e liquidez alinharem.':'Ninguna oportunidad confirmada ahora. Esperando que precio y liquidez se alineen.',
+    'Radar informativo: nenhuma ordem é enviada automaticamente e boatos não são usados como gatilho isolado.':'Radar informativo: no se envían órdenes y los rumores solos no activan operaciones.',
+    '🧠 Central de Mercado & Aporte':'🧠 Centro de mercado y aportes',
+    'Cruza tendência, momentum, volume, liquidez, VWAP, força vs BTC, risco, regime e composição da sua carteira.':'Combina tendencia, impulso, volumen, liquidez, VWAP, fuerza frente a BTC, riesgo, régimen y composición de cartera.',
+    'análise ativa':'análisis activo','Regime':'Régimen','Saúde da carteira':'Salud de la cartera',
+    'Reserva atual':'Reserva actual','Leitura da IA/Radar':'Lectura de IA/Radar',
+    'Simulação inteligente de aporte':'Simulación inteligente de aportes',
+    'Compare perfis antes de decidir como distribuir capital novo.':'Compara perfiles antes de distribuir nuevo capital.',
+    'Aporte':'Aporte','Perfil':'Perfil','Objetivo':'Objetivo','Entrada':'Entrada',
+    'Conservador':'Conservador','Equilibrado':'Equilibrado','Agressivo':'Agresivo',
+    'Proteção':'Protección','Equilíbrio':'Equilibrio','Crescimento':'Crecimiento',
+    'Parcelada':'Por etapas','Só após confirmação':'Solo tras confirmación','Mais imediata':'Más inmediata',
+    'Divisão sugerida — Equilibrado':'Asignación sugerida — Equilibrado',
+    'Divisão sugerida — Conservador':'Asignación sugerida — Conservador',
+    'Divisão sugerida — Agressivo':'Asignación sugerida — Agresivo',
+    'Reserva + ativos priorizados com limite de concentração.':'Reserva + activos priorizados con límite de concentración.',
+    'Sem alocação técnica agora':'Sin asignación técnica ahora',
+    'Ativos sob observação (não são compras)':'Activos en observación (no son compras)',
+    'Todos os perfis estão em espera porque não há compras tecnicamente confirmadas. Os perfis mudam limites e riscos, mas não inventam sinais.':'Todos los perfiles esperan porque no hay compras técnicamente confirmadas. Los perfiles cambian los límites de riesgo, no inventan señales.',
+    'A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.':'Elegir un perfil no evita la confirmación; los tres escenarios pueden mantener el 100% como reserva.',
+    'As entradas só entram na divisão após confirmação.':'Los activos solo se asignan después de la confirmación.',
+    'Aguarde nova leitura do mercado ou atualize os dados. Não há aporte obrigatório.':'Espera nuevos datos del mercado o actualiza. No hay aporte obligatorio.',
+    'Ranking técnico do mercado':'Clasificación técnica del mercado',
+    'Qualidade do sinal, não previsão de lucro.':'Calidad de señal, no pronóstico de ganancias.',
+    'O que evitar ou esperar':'Qué evitar o esperar','Ativos com risco, timing ruim ou bloqueios técnicos.':'Activos con riesgo, mal momento o bloqueos técnicos.',
+    'Nenhum bloqueio forte entre os ativos analisados agora.':'Ningún bloqueo fuerte entre los activos analizados ahora.',
+    'Simulação informativa. O Cripto Radar não executa ordens, não garante lucro e não substitui avaliação financeira individual.':'Simulación informativa. Cripto Radar no ejecuta órdenes ni garantiza ganancias o reemplaza una evaluación individual.',
+    '🛡️ Reserva estratégica':'🛡️ Reserva estratégica','Agora':'Ahora','Correção':'Corrección','Confirmação':'Confirmación',
+    'qualidade':'calidad','do aporte':'del aporte','Em correção':'En corrección','Na confirmação':'En confirmación',
+    'Tendência':'Tendencia','Liquidez':'Liquidez','Risco':'Riesgo','Favorável':'Favorable','Seletivo':'Selectivo','Defensivo':'Defensivo',
+    'carteira vazia':'cartera vacía','risco médio':'riesgo medio','risco baixo':'riesgo bajo','risco alto':'riesgo alto',
+    'ALTA':'ALCISTA','BAIXA':'BAJISTA','LATERAL':'LATERAL','NEUTRO':'NEUTRAL',
+    'CANDIDATA • AGUARDANDO':'CANDIDATA • EN ESPERA','SINAL FORTE DE COMPRA':'SEÑAL FUERTE DE COMPRA',
+    'Sem compra confirmada.':'Sin compra confirmada.','Entrada bloqueada.':'Entrada bloqueada.',
+    'Aguardar nova leitura.':'Esperar nuevos datos.',
+    'ANÁLISE PENDENTE':'ANÁLISIS PENDIENTE','Dados insuficientes:':'Datos insuficientes:',
+    'Falta confirmar:':'Falta confirmar:',
+    'Aguardando estrutura, tendência e indicadores técnicos antes de classificar a entrada.':'Esperando estructura, tendencia e indicadores técnicos antes de clasificar la entrada.',
+    'Nenhuma compra confirmada agora':'Ninguna compra confirmada ahora',
+    'A carteira está estruturalmente saudável':'La cartera está estructuralmente sana',
+    'A carteira está em condição intermediária':'La cartera está en condición intermedia',
+    'A carteira merece reequilíbrio antes de aumentar risco':'La cartera requiere reequilibrio antes de asumir más riesgo',
+    'há concentração elevada em uma posição':'hay alta concentración en una posición',
+    'a diversificação está boa':'la diversificación es buena','a reserva está baixa':'la reserva es baja',
+    'com regime de mercado favorável':'con un régimen favorable de mercado',
+    'e o mercado geral pede postura defensiva':'y el mercado general requiere prudencia',
+    'confluência técnica e validação dos sinais':'confluencia técnica y validación de señales'
+  });
+  Object.assign(STRINGS.en,{
+    'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.':'Advanced tools unlocked: V10/V11 engine, backtesting, Paper Trading, diagnostics and technical controls.',
+    'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.':'Advanced tools unlocked: V10/V11 engine, backtesting, Paper Trading, diagnostics and technical controls.',
+    'PAINEL COMPLETO':'FULL DASHBOARD',
+    'Dados da carteira':'Portfolio data','Radar tendências':'Trend Radar',
+    'Reserva de moedas estáveis abaixo de 5% da carteira':'Stablecoin reserve is below 5% of the portfolio',
+    'Há cotações desatualizadas no valor estimado':'Some estimated prices are outdated',
+    'Qualidade técnica média positiva':'Positive average technical quality',
+    'risco agregado elevado':'high aggregate risk',
+    'a reserva alta; pode haver capital ocioso':'high reserve; some capital may be idle',
+    'carteira concentrada em uma posição':'portfolio concentrated in one position',
+    'Período':'Period','Valor de referência':'Reference value',
+    'Negociação simulada':'Simulated trade',
+    'Resumo rápido do mercado, carteira e funcionamento do Radar.':'Quick overview of market, portfolio and Radar status.',
+    'Mercado em tempo real':'Live market','Dados atualizados':'Data updated',
+    'Nenhuma compra confirmada':'No confirmed buy',
+    'Ativos com risco, timing ruim ou bloqueios técnicos.':'Assets with risk, poor timing or technical restrictions.'
+  });
+  Object.assign(STRINGS.es,{
+    'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.':'Herramientas avanzadas habilitadas: motor V10/V11, backtest, Paper Trading, diagnóstico y controles técnicos.',
+    'PAINEL COMPLETO':'PANEL COMPLETO',
+    'Dados da carteira':'Datos de cartera','Radar tendências':'Radar de tendencias',
+    'Reserva de moedas estáveis abaixo de 5% da carteira':'Reserva de monedas estables inferior al 5% de la cartera',
+    'Há cotações desatualizadas no valor estimado':'Hay cotizaciones desactualizadas en el valor estimado',
+    'carteira concentrada em uma posição':'cartera concentrada en una posición',
+    'Período':'Período','Valor de referência':'Valor de referencia',
+    'Resumo rápido do mercado, carteira e funcionamento do Radar.':'Resumen rápido del mercado, cartera y estado de Radar.',
+    'Mercado em tempo real':'Mercado en tiempo real','Dados atualizados':'Datos actualizados',
+    'Nenhuma compra confirmada':'Ninguna compra confirmada'
+  });
+  Object.assign(STRINGS.en,{
+    '🔴 ALERTA DE VENDA':'🔴 SELL ALERT','🟠 AVALIAR ALTA':'🟠 REVIEW RALLY',
+    'ALERTA DE VENDA':'SELL ALERT','AVALIAR ALTA':'REVIEW RALLY',
+    'ALTA FORTE':'STRONG RALLY','Aguardando confirmação de mercado':'Waiting for market confirmation',
+    'Ativos em alta':'Rising assets','Ativos em queda':'Falling assets',
+    'Mercado mais vendedor':'Mostly selling market','Mercado misto':'Mixed market',
+    'Alertas cruzam variação de 24h com liquidez relativa ao mercado. Quedas sem confirmação de liquidez ficam apenas em atenção. São sinais informativos, não ordens automáticas de venda.':'Alerts combine 24h changes with relative market liquidity. Drops without confirming liquidity remain watch-only. These are informational signals, not automatic sell orders.'
+  });
+  Object.assign(STRINGS.es,{
+    '🔴 ALERTA DE VENDA':'🔴 ALERTA DE VENTA','🟠 AVALIAR ALTA':'🟠 EVALUAR SUBIDA',
+    'ALERTA DE VENDA':'ALERTA DE VENTA','AVALIAR ALTA':'EVALUAR SUBIDA',
+    'ALTA FORTE':'SUBIDA FUERTE','Aguardando confirmação de mercado':'Esperando confirmación del mercado',
+    'Ativos em alta':'Activos en alza','Ativos em queda':'Activos en baja',
+    'Mercado mais vendedor':'Mercado más vendedor','Mercado misto':'Mercado mixto',
+    'Alertas cruzam variação de 24h com liquidez relativa ao mercado. Quedas sem confirmação de liquidez ficam apenas em atenção. São sinais informativos, não ordens automáticas de venda.':'Las alertas combinan variación de 24 h con liquidez relativa del mercado. Las caídas sin confirmación de liquidez quedan en observación. Son señales informativas, no órdenes automáticas.'
+  });
+  const V195_PHRASES={
+    en:[
+      ['Aproximadamente ','About '],[' do valor da carteira está neste ativo.',' of portfolio value is held in this asset.'],
+      ['Evite aumentar a posição sem avaliar o risco de concentração.','Consider concentration risk before increasing this position.'],
+      ['O preço teve uma alta forte, mas alta diária não comprova lucro pessoal.','Price rose sharply, but daily gains do not establish your actual profit.'],
+      ['Confira seu preço médio, taxas e risco antes de decidir.','Check entry cost, fees and risk before deciding.'],
+      ['Representa cerca de ','This represents about '],[' da carteira. Um novo aporte pode aumentar a concentração.',' of the portfolio. A new contribution may increase concentration.'],
+      [' posições abaixo de 3% da carteira.',' positions under 3% of your portfolio.'],
+      ['Veja se ainda fazem sentido na sua estratégia.','Review whether they still fit your strategy.'],
+      ['Ativo(s) monitorado(s) não passaram','Monitored assets did not pass'],
+      [' ativo(s) monitorado(s) não passaram pelos critérios obrigatórios de compra.',' monitored asset(s) did not pass the mandatory buy criteria.'],
+      ['Ainda não há dados técnicos suficientes e atualizados para liberar uma entrada.','There is not enough fresh technical data to allow an entry.'],
+      ['Exemplo do que falta para avançar:','Examples of missing requirements:'],
+      ['Reserva de ','Reserve of '],[' — aguardando confirmação',' — waiting for confirmation'],
+      ['A escolha de perfil não libera compras sem confirmação, por isso os três cenários podem manter 100% em reserva.','Profile choice cannot override buy confirmation. All scenarios may hold 100% in reserve.'],
+      ['Ativos sob observação (não são compras)','Assets under observation (not buy signals)'],
+      ['A carteira merece reequilíbrio antes de aumentar risco','The portfolio needs rebalancing before increasing risk'],
+      ['A carteira está em condição intermediária','The portfolio is in moderate condition'],
+      ['A carteira está estruturalmente saudável','The portfolio is structurally healthy'],
+      ['há concentração elevada em uma posição','one position has elevated concentration'],
+      ['risco de devolver parte do movimento','risk of giving back part of the move'],
+      ['Alta de 24h muito forte','Very strong 24h gain'],
+      ['Queda forte','Sharp drop'],['Pressão negativa','Selling pressure'],['Sem confirmação suficiente para comprar ou vender.','Not enough confirmation to buy or sell.'],
+      ['Aguardando dados da carteira e do mercado','Waiting for portfolio and market data'],
+      ['liquidez muito alta','very high liquidity'],['liquidez alta','high liquidity'],['liquidez média','medium liquidity'],['liquidez baixa','low liquidity'],
+      ['movimento está esticado','price move is extended'],
+      ['O que fazer agora','What to do now'],['Dicas para minha carteira','Portfolio tips'],
+      ['Direcionamento da minha carteira','Portfolio guidance'],['Melhores opções da sua carteira','Portfolio highlights']
+    ],
+    es:[
+      ['Aproximadamente ','Aproximadamente '],[' do valor da carteira está neste ativo.',' del valor de la cartera está en este activo.'],
+      ['Evite aumentar a posição sem avaliar o risco de concentração.','Evita aumentar la posición sin evaluar la concentración.'],
+      ['Representa cerca de ','Representa cerca del '],[' da carteira. Um novo aporte pode aumentar a concentração.',' de la cartera. Un nuevo aporte puede aumentar la concentración.'],
+      [' posições abaixo de 3% da carteira.',' posiciones por debajo del 3% de la cartera.'],
+      ['Veja se ainda fazem sentido na sua estratégia.','Revisa si aún encajan en tu estrategia.'],
+      ['Ainda não há dados técnicos suficientes e atualizados para liberar uma entrada.','No hay suficientes datos técnicos actualizados para permitir una entrada.'],
+      [' ativo(s) monitorado(s) não passaram pelos critérios obrigatórios de compra.',' activo(s) vigilado(s) no cumplió(eron) los requisitos obligatorios de compra.'],
+      ['Exemplo do que falta para avançar:','Ejemplos de condiciones pendientes:'],
+      ['Reserva de ','Reserva de '],[' — aguardando confirmação',' — esperando confirmación'],
+      ['Alta de 24h muito forte','Alza de 24 h muy fuerte'],['Queda forte','Caída fuerte'],['Pressão negativa','Presión vendedora'],
+      ['liquidez muito alta','liquidez muy alta'],['liquidez alta','liquidez alta'],['liquidez média','liquidez media'],['liquidez baixa','liquidez baja'],
+      ['O que fazer agora','Qué hacer ahora'],['Dicas para minha carteira','Consejos para mi cartera'],
+      ['Direcionamento da minha carteira','Orientación de mi cartera'],['Melhores opções da sua carteira','Destacados de la cartera']
+    ]
+  };
   const PHRASES={
     en:[['Falta confirmar:','Still required:'],[' do total',' of total'],[' da carteira',' of portfolio'],[' em 24h',' in 24h'],[' ativo(s)',' asset(s)'],[' sinal(is)',' signal(s)'],[' último ciclo',' last run'],[' preço médio',' average price'],[' cotação desatualizada',' stale quotation'],[' • Novo sinal',' • New signal'],['Nenhuma compra confirmada agora','No confirmed buy right now'],['CANDIDATA • AGUARDANDO','CANDIDATE • WAITING']],
     es:[['Falta confirmar:','Falta confirmar:'],[' do total',' del total'],[' da carteira',' de la cartera'],[' em 24h',' en 24 h'],[' ativo(s)',' activo(s)'],[' sinal(is)',' señal(es)'],[' último ciclo',' último ciclo'],[' preço médio',' precio medio'],[' cotação desatualizada',' cotización desactualizada'],[' • Novo sinal',' • Nueva señal'],['Nenhuma compra confirmada agora','Ninguna compra confirmada ahora']]
@@ -3173,6 +3424,7 @@
       }
       return out+input.slice(at);
     };
+    for(const [a,b] of V195_PHRASES[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of DYNAMIC_V192[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of PHRASES[lang]||[])out=replaceRule(out,a,b);
     for(const [a,b] of FALLBACK[lang]||[])out=replaceRule(out,a,b);
@@ -3196,7 +3448,7 @@
     const val=left+out+right; if(node.nodeValue!==val){internalWrite=true;node.nodeValue=val;internalWrite=false}r.lastApplied=val;
   }
   function translateAttrs(el,lang){
-    for(const a of ['placeholder','aria-label','title','alt'])if(el.hasAttribute?.(a)){
+    for(const a of ['placeholder','aria-label','title','alt','data-label'])if(el.hasAttribute?.(a)){
       const r=attrRecord(el,a);if(r.base==null)continue;const val=tr(r.base,lang);if(el.getAttribute(a)!==val){internalWrite=true;el.setAttribute(a,val);internalWrite=false}r.lastApplied=val;
     }
   }
@@ -3207,7 +3459,7 @@
     translateAttrs(root,lang);
     const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE'].includes(p.tagName))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
     let n;while(n=w.nextNode())translateText(n,lang);
-    root.querySelectorAll?.('[placeholder],[aria-label],[title],[alt]').forEach(el=>translateAttrs(el,lang));
+    root.querySelectorAll?.('[placeholder],[aria-label],[title],[alt],[data-label]').forEach(el=>translateAttrs(el,lang));
   }
   function selectedChoice(){return localStorage.getItem(STORAGE_KEY)||'auto'}
   function syncSelectors(choice){
@@ -3217,7 +3469,7 @@
   function apply(choice,save=true){
     choice=choice||'auto';const lang=resolve(choice);if(save)localStorage.setItem(STORAGE_KEY,choice);
     document.documentElement.lang=lang;document.documentElement.dataset.crLanguage=lang;
-    document.title='Cripto Radar V19.4.1 • Radar PRO';
+    document.title='Cripto Radar V19.5 • Radar PRO';
     translateTree(document.body,lang);syncSelectors(choice);
     window.dispatchEvent(new CustomEvent('criptoradar:languagechange',{detail:{choice,language:lang}}));return lang;
   }
@@ -3231,7 +3483,7 @@
       else if(m.type==='attributes')translateAttrs(m.target,lang);
     }
   });
-  function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt']})}
+  function init(){bindSelectors();apply(selectedChoice(),false);mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt','data-label']})}
   window.CriptoRadarI18n={setLanguage:v=>apply(v,true),getLanguage:()=>resolve(selectedChoice()),getChoice:selectedChoice,t,translate:t,supported:['pt-BR','en','es'],refresh:()=>apply(selectedChoice(),false)};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

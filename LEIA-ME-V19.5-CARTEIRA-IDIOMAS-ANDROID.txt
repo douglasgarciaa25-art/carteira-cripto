@@ -1,0 +1,47 @@
+CRIPTO RADAR V19.5 — PROJETO COMPLETO | CARTEIRA, IDIOMAS E ANDROID
+
+BASE: Versão 19.4.1 completa. Mantém os arquivos web, análises,
+notificações Push, Service Worker, proteção PRO e integração Vercel.
+
+NOVIDADES / CORREÇÕES
+1. Carteira: tabela de posições adaptada em cartões responsivos para
+   celular, sem cortar colunas de moeda, quantidade, preço e ações.
+2. Sinais: mudança no texto dos alertas de alta/baixa para evitar
+   caracterizar valorização de 24 horas como lucro realizado pessoal.
+3. Simulador de aporte: quando 100% fica em reserva, indica claramente
+   por que isso ocorre e quais candidatas seguem sob observação;
+   não transforma candidata em compra confirmada só para liberar aporte.
+4. Idiomas: traduções adicionais para PT-BR / EN / ES, incluindo cartões
+   e conteúdo gerado dinamicamente, com tradução dos rótulos móveis.
+5. Navegação: barra inferior compacta e mais espaço útil no Android.
+6. Cache: Service Worker com nova identidade de versão.
+
+ORIENTAÇÕES DE INSTALAÇÃO
+1. Descompacte este ZIP.
+2. Envie TODOS os arquivos da raiz ao repositório GitHub conectado à
+   Vercel. Não crie pastas novas (inclusive "api") por conta própria.
+3. Aguarde o deploy concluir no painel Vercel.
+4. Feche e abra o app instalado; se necessário, no navegador limpe os
+   dados/cache deste site e reinstale o PWA para atualizar o Service Worker.
+5. Faça testes de carteira, troca de idioma, alertas, login e PRO.
+
+TESTES REALIZADOS NO ARQUIVO
+- JS externo e 21 scripts internos: sem erros de sintaxe.
+- Testes isolados: tradução EN/ES/PT-BR, reserva de 100% sem sinal
+  confirmado e estrutura lógica da alocação — aprovados.
+- Conferência dos arquivos originais e do conteúdo ZIP — aprovada.
+
+LIMITAÇÕES
+- Não foi possível abrir o projeto em um navegador de teste no ambiente
+  de execução; é necessário confirmar a aparência e interações no aparelho.
+- A tradução foi ampliada nas áreas relatadas, mas uma auditoria visual
+  de todas as telas e mensagens externas ainda é necessária.
+- Atualização NÃO publicada automaticamente no GitHub/Vercel.
+- Push real, Google Play Billing, licenças e cotações ao vivo dependem
+  do deploy, da conta, do aparelho, das permissões e das fontes externas.
+- Sem instalação de dependências extras ou novas variáveis de ambiente.
+
+SEGURANÇA
+Não publique senhas, chaves PRO de desenvolvedor ou segredos Google Play
+no código-fonte aberto; mantenha-os nas variáveis de ambiente privadas.
+Não há execução automática de ordens de compra/venda.

@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.4.1 • Correção PRO</title>
+<title>Cripto Radar V19.5 • Carteira e Idiomas</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -693,7 +693,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.4.1 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.5 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -761,7 +761,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.4.1">V19.4.1</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.5">V19.5</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1254,7 +1254,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div id="walletGuidance" class="wallet-guide"></div>
   <div id="walletBuyAlerts" class="buy-alert-box" style="display:none"></div>
   <div id="walletOpportunities" class="wallet-opps"></div>
-  <div id="walletTable"></div>
+  <div id="walletTable" aria-label="Posições da carteira"></div>
 </section>
 
 
@@ -2004,12 +2004,12 @@ function sellAlert(rawSymbol){
  const symbol=normalizeWalletSymbol(rawSymbol), c=walletMarketData[symbol];
  if(!c||!marketDataFresh(c)||walletStable.has(symbol))return {sell:false,text:'⚪ Aguardando confirmação de mercado'};
  const ch=Number(c.change24h), liq=liquidityProfile(symbol);
- // Venda só é confirmada quando queda e liquidez relativa apontam na mesma direção.
- if(ch<=-8 && liq.pct>=60)return {sell:true,text:'🔴 VENDA CONFIRMADA • queda '+ch.toFixed(2)+'% + '+liq.level+' liquidez'};
- if(ch<=-4 && liq.pct>=85)return {sell:true,text:'🔴 VENDA CONFIRMADA • pressão vendedora '+ch.toFixed(2)+'% + liquidez muito alta'};
+ // Alertas precoces de queda e liquidez; variação 24h não confirma venda por si só.
+ if(ch<=-8 && liq.pct>=60)return {sell:true,text:'🔴 ALERTA DE VENDA • queda '+ch.toFixed(2)+'% + '+liq.level+' liquidez'};
+ if(ch<=-4 && liq.pct>=85)return {sell:true,text:'🔴 ALERTA DE VENDA • pressão vendedora '+ch.toFixed(2)+'% + liquidez muito alta'};
  if(ch<=-4 && liq.pct<60)return {sell:false,text:'🟡 ATENÇÃO • queda '+ch.toFixed(2)+'%, mas liquidez não confirma venda'};
- if(ch>=12 && liq.pct>=60)return {sell:true,text:'🟠 REALIZAR LUCRO • alta '+ch.toFixed(2)+'% com '+liq.level+' liquidez'};
- if(ch>=12)return {sell:false,text:'🟡 ALTA FORTE • liquidez insuficiente para confirmar realização'};
+ if(ch>=12 && liq.pct>=60)return {sell:true,text:'🟠 AVALIAR ALTA • alta '+ch.toFixed(2)+'% com '+liq.level+' liquidez'};
+ if(ch>=12)return {sell:false,text:'🟡 ALTA FORTE • confirme preço médio e demais indicadores'};
  if(ch<0 && liq.pct>=85)return {sell:false,text:'🟡 OBSERVAR • pressão negativa com liquidez muito alta'};
  return {sell:false,text:'🟢 MANTER • sem confirmação de venda'};
 }
@@ -2062,7 +2062,7 @@ function walletTipAnalysis(){
  for(const p of positions){
    const a=p.dir.action;
    if(a==='VENDER / REDUZIR') tips.push({rank:95,icon:'🔴',cls:'tip-risk',title:`Reavaliar ${p.symbol}`,text:'O Radar detectou pressão de venda confirmada por liquidez. Considere reduzir exposição após revisar o mercado.'});
-   else if(a==='REALIZAR PARTE') tips.push({rank:85,icon:'🟠',cls:'tip-warn',title:`Avaliar lucro em ${p.symbol}`,text:'O movimento está esticado. Considere realizar uma parte e manter o restante exposto.'});
+   else if(a==='AVALIAR ALTA') tips.push({rank:85,icon:'🟠',cls:'tip-warn',title:`Revisar alta em ${p.symbol}`,text:'O preço teve uma alta forte, mas alta diária não comprova lucro pessoal. Confira seu preço médio, taxas e risco antes de decidir.'});
    else if(a==='COMPRAR / APORTAR') tips.push({rank:70,icon:'🟢',cls:'tip-good',title:`Possível aporte em ${p.symbol}`,text:'Preço e liquidez estão alinhados pelo Radar. Antes de aportar, confira se isso não aumenta demais a concentração.'});
    else if(a==='AGUARDAR ENTRADA') tips.push({rank:55,icon:'👀',cls:'tip-warn',title:`Esperar confirmação em ${p.symbol}`,text:'Há sinais favoráveis, mas ainda não suficientes para sugerir novo aporte.'});
  }
@@ -2105,7 +2105,7 @@ function walletDirection(rawSymbol){
  if(Number.isFinite(ch) && ch<=-4 && liq.score>=2)
    return {action:'ATENÇÃO PARA VENDA',icon:'🔴',cls:'guide-sell',why:`Pressão negativa (${ch.toFixed(2)}%) com liquidez ${liq.level}.`,liq:liq.level,vol:volTxt};
  if(Number.isFinite(ch) && ch>=9 && liq.score>=2)
-   return {action:'REALIZAR PARTE',icon:'🟠',cls:'guide-profit',why:`Alta muito forte (${ch.toFixed(2)}%); risco de devolver parte do movimento.`,liq:liq.level,vol:volTxt};
+   return {action:'AVALIAR ALTA',icon:'🟠',cls:'guide-profit',why:`Alta de 24h muito forte (${ch.toFixed(2)}%). Não é lucro realizado; confirme custo médio e risco antes de agir.`,liq:liq.level,vol:volTxt};
 
  const b=walletBuySignal(symbol);
  if(b.state==='confirmed')
@@ -2192,7 +2192,7 @@ function renderPrintWallet(){
  renderWalletMarketInfo();
  renderWalletOpportunities();
  let total=0;
- const rows=printWallet.map((w,i)=>{const sym=normalizeWalletSymbol(w.symbol),p=walletPrices[sym]||0,v=p*w.qty,sig=walletSignal(w.symbol),md=walletMarketData[sym]||{},alert=sellAlert(w.symbol);total+=v;return `<tr><td><div class="coin-cell">${signalDot(sig)}<b>${w.symbol}</b>${sym!==w.symbol?` <span class="small">→ ${sym}</span>`:''}</div><div class="sell-alert ${alert.sell?'on':'off'}">${alert.text}</div><div class="small" style="margin-top:5px">24h: ${marketDataFresh(md)&&Number.isFinite(Number(md.change24h))?((Number(md.change24h)>=0?'+':'')+Number(md.change24h).toFixed(2)+'%'):'—'} • Volume: ${marketDataFresh(md)?formatMarketVolume(md.volume):'—'} • Liquidez: ${liquidityProfile(sym).level}</div></td><td>${w.qty}</td><td>${p?WALLET_BRL.format(p):'—'}</td><td>${p?WALLET_BRL.format(v):'—'}</td><td>${sig.label}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="wallet-edit-one" data-i="${i}">✏️ Editar</button><button type="button" class="wallet-delete-one" data-i="${i}">🗑️ Excluir</button></div></td></tr><tr class="wallet-spark-row"><td colspan="6"><div class="wallet-spark-label">Tendência de preço • últimos 7 dias</div><div class="wallet-spark" data-symbol="${sym}" data-state="${sig.state}"><span class="small">Carregando gráfico…</span></div></td></tr>`}).join('');
+ const rows=printWallet.map((w,i)=>{const sym=normalizeWalletSymbol(w.symbol),p=walletPrices[sym]||0,v=p*w.qty,sig=walletSignal(w.symbol),md=walletMarketData[sym]||{},alert=sellAlert(w.symbol);total+=v;return `<tr class="wallet-holding-row"><td data-label="Moeda"><div class="coin-cell">${signalDot(sig)}<b>${w.symbol}</b>${sym!==w.symbol?` <span class="small">→ ${sym}</span>`:''}</div><div class="sell-alert ${alert.sell?'on':'off'}">${alert.text}</div><div class="small" style="margin-top:5px">24h: ${marketDataFresh(md)&&Number.isFinite(Number(md.change24h))?((Number(md.change24h)>=0?'+':'')+Number(md.change24h).toFixed(2)+'%'):'—'} • Volume: ${marketDataFresh(md)?formatMarketVolume(md.volume):'—'} • Liquidez: ${liquidityProfile(sym).level}</div></td><td data-label="Quantidade">${w.qty}</td><td data-label="Preço">${p?WALLET_BRL.format(p):'—'}</td><td data-label="Valor">${p?WALLET_BRL.format(v):'—'}</td><td data-label="Sinal">${sig.label}</td><td data-label="Ações"><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="wallet-edit-one" data-i="${i}">✏️ Editar</button><button type="button" class="wallet-delete-one" data-i="${i}">🗑️ Excluir</button></div></td></tr><tr class="wallet-spark-row"><td colspan="6"><div class="wallet-spark-label">Tendência de preço • últimos 7 dias</div><div class="wallet-spark" data-symbol="${sym}" data-state="${sig.state}"><span class="small">Carregando gráfico…</span></div></td></tr>`}).join('');
  document.getElementById('walletTotal').textContent=WALLET_BRL.format(total);
  document.getElementById('walletTable').innerHTML=printWallet.length?`<table><thead><tr><th>Moeda</th><th>Qtd.</th><th>Preço</th><th>Valor</th><th>Sinal</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table>`:'<div class="small">Sua carteira ainda está vazia.</div>';
  loadWalletSparklines();
@@ -3742,7 +3742,7 @@ window.v8RunBacktest=run;
 })();
 </script>
 
-<script src="./i18n.js?v=1941"></script>
+<script src="./i18n.js?v=1950"></script>
 <style>
 .dev-owner-card{margin:12px 0 18px;padding:13px;border:1px solid #315d75;border-radius:15px;background:#0b2233;color:#e4efff}
 .dev-owner-card summary{cursor:pointer;font-weight:800;list-style:revert}.dev-owner-card p{line-height:1.5}
@@ -3972,8 +3972,8 @@ body{padding-bottom:74px}
 })();
 </script>
 
-<script src="./market-intelligence.js"></script>
-<script src="./wallet-dashboard.js"></script>
+<script src="./market-intelligence.js?v=1950"></script>
+<script src="./wallet-dashboard.js?v=1950"></script>
 <script src="./alerts-center.js"></script>
 
 <script>
@@ -4256,4 +4256,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 <link rel="stylesheet" href="./design-v190.css?v=1901">
 <link rel="stylesheet" href="./layout-v191.css?v=1912">
 <link rel="stylesheet" href="./layout-v194.css?v=1940">
+<link rel="stylesheet" href="./layout-v195.css?v=1950">
 </body></html>
