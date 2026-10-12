@@ -8,6 +8,22 @@
 
   const STRINGS={
     en:{
+      "SEU RADAR FINANCEIRO":"YOUR FINANCIAL RADAR",
+      "Patrimônio monitorado":"Monitored portfolio",
+      "Atualizado automaticamente pela carteira":"Automatically updated from your portfolio",
+      "SEU PAINEL":"YOUR DASHBOARD",
+      "Acompanhe de perto":"Stay informed",
+      "Tudo em um lugar":"Everything in one place",
+      "Saldo e composição":"Balance and holdings",
+      "Oportunidades analisadas":"Analyzed opportunities",
+      "Sinais que merecem atenção":"Signals worth watching",
+      "Insights da sua carteira":"Portfolio insights",
+      "Explorar mercado":"Explore market",
+      "Ver alertas":"View alerts",
+      "Resumo do Cripto Radar":"Cripto Radar overview",
+      "Ferramentas profissionais":"Professional tools",
+      "Monitorando riscos":"Monitoring risks",
+
       'acesso protegido':'protected access','Primeira configuração':'First setup','Crie seu acesso':'Create your access',
       'Usuário ou e-mail':'Username or email','Senha':'Password','Confirmar senha':'Confirm password','Seu usuário':'Your username',
       'Mínimo de 8 caracteres':'At least 8 characters','Digite novamente':'Type it again','Ativar biometria neste aparelho':'Enable biometrics on this device',
@@ -67,6 +83,22 @@
       'Idioma':'Language','Automático (dispositivo)':'Automatic (device)','Português (Brasil)':'Portuguese (Brazil)','Inglês':'English','Espanhol':'Spanish','Idioma do aplicativo':'App language','Escolha o idioma da interface e das notificações.':'Choose the language for the interface and notifications.'
     },
     es:{
+      "SEU RADAR FINANCEIRO":"TU RADAR FINANCIERO",
+      "Patrimônio monitorado":"Patrimonio supervisado",
+      "Atualizado automaticamente pela carteira":"Actualizado automáticamente desde tu cartera",
+      "SEU PAINEL":"TU PANEL",
+      "Acompanhe de perto":"Sigue todo de cerca",
+      "Tudo em um lugar":"Todo en un solo lugar",
+      "Saldo e composição":"Saldo y composición",
+      "Oportunidades analisadas":"Oportunidades analizadas",
+      "Sinais que merecem atenção":"Señales que merecen atención",
+      "Insights da sua carteira":"Análisis de tu cartera",
+      "Explorar mercado":"Explorar mercado",
+      "Ver alertas":"Ver alertas",
+      "Resumo do Cripto Radar":"Resumen de Cripto Radar",
+      "Ferramentas profissionais":"Herramientas profesionales",
+      "Monitorando riscos":"Monitoreando riesgos",
+
       'acesso protegido':'acceso protegido','Primeira configuração':'Primera configuración','Crie seu acesso':'Crea tu acceso','Usuário ou e-mail':'Usuario o correo','Senha':'Contraseña','Confirmar senha':'Confirmar contraseña','Seu usuário':'Tu usuario','Mínimo de 8 caracteres':'Mínimo 8 caracteres','Digite novamente':'Escríbela de nuevo',
       'Ativar biometria neste aparelho':'Activar biometría en este dispositivo','Quando disponível, o Android usará digital, rosto ou o bloqueio seguro do aparelho.':'Cuando esté disponible, Android usará huella, rostro o el bloqueo seguro del dispositivo.','Criar acesso protegido':'Crear acceso protegido','Área protegida':'Área protegida','Desbloquear Radar':'Desbloquear Radar','Usuário':'Usuario','Conta local deste aparelho':'Cuenta local de este dispositivo','◉ Entrar com biometria':'◉ Entrar con biometría','ou use sua senha':'o usa tu contraseña','Entrar':'Entrar','Usar PIN':'Usar PIN','PIN de 4 a 6 números':'PIN de 4 a 6 números','Desbloquear com PIN':'Desbloquear con PIN','Sua senha':'Tu contraseña',
       'Navegação adaptativa':'Navegación adaptativa','Principal':'Principal','Início':'Inicio','Resumo e destaques':'Resumen y destacados','Carteira':'Cartera','Print, aporte e posições':'Captura, aportes y posiciones','Mercado':'Mercado','Ranking, notícias e tendências':'Ranking, noticias y tendencias','Alertas':'Alertas','Alarmes e notificações':'Alarmas y notificaciones','IA Radar':'IA Radar','Análise da carteira':'Análisis de cartera','Segurança':'Seguridad','Senha, PIN e biometria':'Contraseña, PIN y biometría','PRO Anual':'PRO Anual','IA, Push 24h, sinais e ferramentas avançadas':'IA, Push 24h, señales y herramientas avanzadas','Profissional':'Profesional','Motor':'Motor','V10/V11 e diagnóstico':'V10/V11 y diagnóstico','Histórico e calibração':'Historial y calibración','Validação sem ordens reais':'Validación sin órdenes reales','Sistema':'Sistema','Fontes, proteção e saúde':'Fuentes, protección y salud','Nível da interface':'Nivel de interfaz','🙂 Amador':'🙂 Principiante','⚙️ Profissional':'⚙️ Profesional',

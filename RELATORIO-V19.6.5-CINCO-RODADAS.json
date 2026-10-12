@@ -1,0 +1,69 @@
+{
+  "version": "19.6.5",
+  "rounds": [
+    {
+      "round": 1,
+      "topic": "Financial hero",
+      "description": "Portfolio value becomes the primary focus; no fabricated returns."
+    },
+    {
+      "round": 2,
+      "topic": "Four unique destinations",
+      "description": "Portfolio, market, alerts and AI each appear once with dedicated styling."
+    },
+    {
+      "round": 3,
+      "topic": "Context-aware guidance",
+      "description": "Risk labels and CTA direction depend on existing confirmation state."
+    },
+    {
+      "round": 4,
+      "topic": "Phone, tablet, desktop",
+      "description": "Static layout rendered at 320, 360, 412, 768 and 1280 px."
+    },
+    {
+      "round": 5,
+      "topic": "Accessibility / translation / build",
+      "description": "Focus, reduced motion, PT/EN/ES, JS syntax, Vercel and cache verified."
+    }
+  ],
+  "checks": {
+    "five_unique_cards": true,
+    "one_financial_value": true,
+    "one_actionable_reading": true,
+    "no_visible_duplicate_signal_source": true,
+    "dynamic_cta_link": true,
+    "no_duplicate_ids": true,
+    "css_linked": true,
+    "cache_includes_css": true,
+    "vercel_includes_css": true,
+    "package_version": true,
+    "responsive_widths": true,
+    "javascript_syntax": true,
+    "three_languages": true
+  },
+  "script_checks": 43,
+  "syntax_errors": [],
+  "translations_seen": {
+    "pt-BR": [
+      "SEU RADAR FINANCEIRO",
+      "Acompanhe de perto",
+      "Oportunidades analisadas"
+    ],
+    "en": [
+      "YOUR FINANCIAL RADAR",
+      "Stay informed",
+      "Analyzed opportunities"
+    ],
+    "es": [
+      "TU RADAR FINANCIERO",
+      "Sigue todo de cerca",
+      "Oportunidades analizadas"
+    ]
+  },
+  "locale_test_error": null,
+  "limits": [
+    "Visual review used an isolated local preview because Chromium blocks navigation to localhost and file URLs.",
+    "Full application integrations, live market sources, PRO payments and Android push notifications were not tested in production."
+  ]
+}

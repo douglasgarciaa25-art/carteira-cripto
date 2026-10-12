@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V19.6.4 • Layout aprimorado</title>
+<title>Cripto Radar V19.6.5 • Página inicial renovada</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -703,7 +703,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.4 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V19.6.5 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -771,7 +771,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.4">V19.6.4</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 19.6.5">V19.6.5</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -909,36 +909,41 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div class="security-note">A biometria exige HTTPS e suporte do navegador. Usuário + senha e PIN continuam disponíveis como alternativas.</div>
 </section>
 
-<section class="card home-dashboard neo-overview" id="homeDashboardCard">
-  <div class="neo-balance-head">
-    <div>
-      <div class="neo-eyebrow">PATRIMÔNIO MONITORADO</div>
-      <div class="neo-balance" id="homeWalletValue">Carregando…</div>
-      <div class="neo-balance-sub"><span class="neo-dot"></span> atualização automática pela carteira</div>
+<section class="card home-dashboard neo-overview cr65-home" id="homeDashboardCard" aria-label="Resumo do Cripto Radar">
+  <!-- RODADA 1: um único destaque financeiro, sem duplicar o patrimônio nos cartões. -->
+  <div class="neo-balance-head cr65-hero">
+    <div class="cr65-hero-main">
+      <div class="cr65-eyebrow"><span class="cr65-eyebrow-icon" aria-hidden="true">✦</span><span>SEU RADAR FINANCEIRO</span></div>
+      <h2 class="cr65-balance-label">Patrimônio monitorado</h2>
+      <div class="neo-balance" id="homeWalletValue" aria-live="polite">Carregando…</div>
+      <div class="neo-balance-sub"><span class="neo-dot" aria-hidden="true"></span> Atualizado automaticamente pela carteira</div>
     </div>
-    <button class="neo-wallet-open" data-route="wallet" type="button">Abrir carteira</button>
+    <button class="neo-wallet-open cr65-main-action" data-route="wallet" type="button"><span>Abrir carteira</span><span aria-hidden="true">↗</span></button>
+    <span class="cr65-hero-shine" aria-hidden="true"></span>
   </div>
 
-  <div class="v17-home-grid">
-    <button class="v17-home-card" data-route="wallet" type="button"><div class="v17-home-icon">👛</div><small>Carteira</small><b id="v17WalletSummary">Monitorando posições</b><span>Saldo, composição e aporte</span></button>
-    <button class="v17-home-card" data-route="market" type="button"><div class="v17-home-icon">📈</div><small>Mercado</small><b id="v17MarketSummary">Buscando tendência</b><span>Ranking e oportunidades</span></button>
-    <button class="v17-home-card" data-route="alerts" type="button"><div class="v17-home-icon">🚨</div><small>Alertas</small><b id="v17AlertSummary">Sem alerta crítico</b><span>Só o que merece atenção</span></button>
-    <button class="v17-home-card pro" data-route="ai" type="button"><div class="v17-home-icon">✦</div><small>IA Radar</small><b id="v17AiSummary">Análise em preparação</b><span>Leitura orientada da carteira</span></button>
+  <!-- RODADA 2: quatro destinos únicos, cada um com sua função própria. -->
+  <div class="cr65-section-head">
+    <div><span class="cr65-section-kicker">SEU PAINEL</span><h3>Acompanhe de perto</h3></div>
+    <span class="cr65-section-meta">Tudo em um lugar</span>
+  </div>
+  <div class="v17-home-grid cr65-grid">
+    <button class="v17-home-card cr65-tile cr65-wallet" data-route="wallet" type="button"><span class="cr65-tile-top"><span class="v17-home-icon" aria-hidden="true">👛</span><span class="cr65-tile-arrow" aria-hidden="true">↗</span></span><small>Carteira</small><b id="v17WalletSummary">Ver posições</b><span class="cr65-tile-desc">Saldo e composição</span></button>
+    <button class="v17-home-card cr65-tile cr65-market" data-route="market" type="button"><span class="cr65-tile-top"><span class="v17-home-icon" aria-hidden="true">📈</span><span class="cr65-tile-arrow" aria-hidden="true">↗</span></span><small>Mercado</small><b id="v17MarketSummary">Aguardando confirmação</b><span class="cr65-tile-desc">Oportunidades analisadas</span></button>
+    <button class="v17-home-card cr65-tile cr65-alerts" data-route="alerts" type="button"><span class="cr65-tile-top"><span class="v17-home-icon" aria-hidden="true">🔔</span><span class="cr65-tile-arrow" aria-hidden="true">↗</span></span><small>Alertas</small><b id="v17AlertSummary">Monitorando riscos</b><span class="cr65-tile-desc">Sinais que merecem atenção</span></button>
+    <button class="v17-home-card cr65-tile cr65-ai pro" data-route="ai" type="button"><span class="cr65-tile-top"><span class="v17-home-icon" aria-hidden="true">✦</span><span class="cr65-tile-arrow" aria-hidden="true">↗</span></span><small>IA Radar</small><b id="v17AiSummary">Análise disponível</b><span class="cr65-tile-desc">Insights da sua carteira</span></button>
   </div>
 
-  <!-- Dados compartilhados para os quatro cartões principais; não são blocos visuais duplicados. -->
-  <div id="homeSignalData" hidden aria-hidden="true">
-    <span id="homeAlarmState">Monitorando</span>
-    <span id="homeTopOpportunity">Aguardando confirmação</span>
-    <span id="homeAiState">Analisando mercado</span>
-  </div>
+  <!-- Estados internos para a fonte única dos quatro cartões; não renderizar. -->
+  <div id="homeSignalData" hidden aria-hidden="true"><span id="homeAlarmState">Monitorando</span><span id="homeTopOpportunity">Aguardando confirmação</span><span id="homeAiState">Analisando mercado</span></div>
 
-  <div class="neo-advice">
-    <div class="neo-advice-top"><span>LEITURA DO RADAR</span><div class="home-mode-pill" id="homeModePill">MODO AMADOR</div></div>
+  <!-- RODADA 3: uma leitura contextual, com destino conforme o risco. -->
+  <div class="neo-advice cr65-insight" id="homeInsightPanel" data-severity="loading">
+    <div class="neo-advice-top"><span class="cr65-insight-label"><span class="cr65-signal-mark" aria-hidden="true">✧</span> LEITURA DO RADAR</span><div class="home-mode-pill" id="homeModePill">MODO AMADOR</div></div>
     <div class="neo-advice-text" id="homeActionText">O Radar está reunindo as primeiras leituras do mercado.</div>
+    <button class="cr65-insight-action" id="homeActionCTA" data-route="market" type="button"><span id="homeActionCTAText">Explorar mercado</span><span aria-hidden="true">→</span></button>
   </div>
-
-  <div class="home-pro-tools">
+  <div class="home-pro-tools" aria-label="Ferramentas profissionais">
     <button class="home-pro-tool" data-route="engine" type="button">Motor V10/V11</button>
     <button class="home-pro-tool" data-route="backtest" type="button">Backtest</button>
     <button class="home-pro-tool" data-route="paper" type="button">Paper Trading</button>
@@ -1382,7 +1387,7 @@ async function getRadarSW(){
  if(radarSWPromise)return radarSWPromise;
  radarSWPromise=(async()=>{
   try{
-   const reg=await navigator.serviceWorker.register('./sw.js?v=1963',{updateViaCache:'none'});
+   const reg=await navigator.serviceWorker.register('./sw.js?v=1965',{updateViaCache:'none'});
    try{await reg.update()}catch(e){}
    return await navigator.serviceWorker.ready;
   }catch(e){radarSWPromise=null;return null}
@@ -3570,6 +3575,9 @@ window.v8RunBacktest=run;
    const cardMarket=$('v17MarketSummary');if(cardMarket)cardMarket.textContent=sym?i18n('Confirmado: ','Confirmed: ','Confirmado: ')+sym:i18n('Nenhuma compra confirmada','No confirmed buy','Ninguna compra confirmada');
    const cardAlerts=$('v17AlertSummary');if(cardAlerts)cardAlerts.textContent=alarm?.textContent||i18n('Verificando riscos','Checking risks','Verificando riesgos');
    const cardAi=$('v17AiSummary');if(cardAi)cardAi.textContent=i18n('Análise disponível','Analysis available','Análisis disponible');
+   const insight=$('homeInsightPanel'),cta=$('homeActionCTA'),ctaText=$('homeActionCTAText');
+   if(insight)insight.dataset.severity=s.confirmed?'risk':s.possible?'watch':s.loading?'loading':'normal';
+   if(cta&&ctaText){cta.dataset.route=s.confirmed||s.possible?'alerts':'market';ctaText.textContent=s.confirmed||s.possible?i18n('Ver alertas','View alerts','Ver alertas'):i18n('Explorar mercado','Explore market','Explorar mercado');}
    const action=$('homeActionText');if(action){
      action.textContent=s.confirmed?i18n('Existe risco forte confirmado na carteira. Consulte Alertas antes de realizar novo aporte.','A major portfolio risk is confirmed. Review Alerts before adding funds.','Hay un riesgo fuerte confirmado en la cartera. Revise Alertas antes de aportar.'):s.possible?i18n('Há um risco em observação, ainda sem confirmação forte. Acompanhe a central de Alertas.','A risk is under review, without strong confirmation. Check Alerts.','Hay un riesgo en observación, todavía sin confirmación fuerte. Consulte Alertas.'):s.loading?i18n('O Radar está analisando os dados da carteira e do mercado.','Radar is analyzing portfolio and market data.','Radar está analizando la cartera y el mercado.'):i18n('Confira oportunidades confirmadas em Mercado antes de decidir sobre novos aportes.','Review confirmed market opportunities before deciding on new contributions.','Revise oportunidades confirmadas en Mercado antes de decidir nuevos aportes.');
    }
@@ -4326,4 +4334,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 @media(max-width:390px){#homeDashboardCard .v17-home-grid{gap:9px;padding:10px!important}#homeDashboardCard .v17-home-card{padding:12px!important;min-height:130px!important}#homeDashboardCard .v17-home-card small{font-size:12px!important}#homeDashboardCard .v17-home-card b{font-size:17px!important}}
 </style>
 <link rel="stylesheet" href="./layout-v1964.css?v=1964">
+<link rel="stylesheet" href="./home-v1965.css?v=1965">
 </body></html>

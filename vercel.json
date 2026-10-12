@@ -1,5 +1,6 @@
 {
   "builds": [
+    {"src":"home-v1965.css","use":"@vercel/static"},
     {
       "src": "layout-v1964.css",
       "use": "@vercel/static"

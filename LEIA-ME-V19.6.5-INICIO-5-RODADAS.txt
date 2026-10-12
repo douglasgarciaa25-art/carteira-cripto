@@ -1,0 +1,19 @@
+CRIPTO RADAR V19.6.5 — PÁGINA INICIAL | CINCO RODADAS DE MELHORIAS
+
+Base: V19.6.4 (pacote completo). Esta revisão concentra as mudanças na página Inicial.
+
+1. Patrimônio: destaque visual para o valor real já calculado pela carteira, sem estimar retornos nem duplicar saldos.
+2. Cartões: só quatro caminhos principais (Carteira, Mercado, Alertas, IA Radar), cada um com cor e função próprias.
+3. Leitura do Radar: card contextual baseado no estado real do alerta, com botão para Alertas quando há risco e para Mercado nos demais casos.
+4. Responsividade: estrutura testada isoladamente nas larguras de 320, 360, 412, 768 e 1.280 px, sem rolagem horizontal ou vazamento das informações nos cartões.
+5. Acessibilidade e consistência: foco por teclado, toque, preferência de movimento reduzido, textos novos traduzidos em PT-BR, EN e ES; novo CSS incluído no service worker e no build da Vercel.
+
+Arquivos adicionados: home-v1965.css, este README e RELATORIO-V19.6.5-CINCO-RODADAS.json.
+Arquivos ajustados: index.html, i18n.js, sw.js, package.json e vercel.json.
+Outros componentes funcionais foram preservados da V19.6.4.
+
+Auditoria: 43 arquivos/blocos JavaScript sem erros de sintaxe; traduções PT/EN/ES verificadas em navegador; integridade e referências verificadas.
+
+LIMITAÇÕES: os testes visuais foram de uma prévia isolada; a navegação completa do app e as integrações com Vercel, mercado em tempo real, Push no Android e compras Google Play não foram testadas ao vivo.
+
+INSTALAÇÃO: extraia este ZIP e envie todos os arquivos diretamente para a raiz do repositório GitHub. Preserve as configurações de ambiente na Vercel. Não envie este ZIP como um único arquivo sem extrair.

@@ -1,5 +1,5 @@
-const CACHE='cripto-radar-v19.6.4-multicycle-audit';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css','./layout-v193.css','./layout-v194.css','./layout-v195.css','./layout-v1964.css'];
+const CACHE='cripto-radar-v19.6.5-home-refresh';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./notification-icon-192.png','./notification-icon-512.png','./badge-96.png','./ai-radar.js','./radar-worker.js','./market-intelligence.js','./wallet-dashboard.js','./alerts-center.js','./alerts-center.css','./i18n.js','./design-v190.css','./layout-v191.css','./layout-v193.css','./layout-v194.css','./layout-v195.css','./layout-v1964.css','./home-v1965.css'];
 const DB_NAME='cripto-radar-bg-v2', DB_STORE='state';
 const BG_TAG='radar-periodic', SYNC_TAG='radar-sync';
 
