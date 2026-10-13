@@ -12,8 +12,17 @@ module.exports=async function handler(req,res){
   if(!['GET','POST','DELETE'].includes(req.method))throw new lib.ApiError(405,'method_not_allowed');
   lib.guardOrigin(req);
   const conf=lib.env();
-  const user=await lib.authUser(req,conf);
-  const userToken=lib.getBearer(req);
+  let user;const userToken=lib.getBearer(req);
+  const cronToken=String(req.headers?.['x-radar-cron-token']||'');
+  if(cronToken){
+   // Internal read-only refresh: Supabase RPC grants EXECUTE only to service_role.
+   // Requires BOTH a service-role bearer and the server cron secret; never available to clients.
+   const uid=String(req.headers?.['x-radar-user-id']||'');
+   if(req.method!=='GET'||req.headers?.origin||cronToken.length<48||cronToken.length>512||!userToken||!/^[0-9a-f-]{36}$/i.test(uid))throw new lib.ApiError(403,'worker_not_authorized');
+   const auth=await fetch(conf.url+'/rest/v1/rpc/radar_paper_cron_authorized',{method:'POST',headers:{apikey:conf.publicKey,Authorization:'Bearer '+userToken,'Content-Type':'application/json'},body:JSON.stringify({supplied:cronToken}),signal:AbortSignal.timeout(7000),redirect:'error'});
+   if(!auth.ok||(await auth.json())!==true)throw new lib.ApiError(403,'worker_not_authorized');
+   user={id:uid};
+  }else user=await lib.authUser(req,conf);
   if(req.method==='POST'){
    if(Number(req.headers?.['content-length']||0)>8192)throw new lib.ApiError(413,'payload_too_large');
    let input=req.body;
@@ -52,3 +61,4 @@ module.exports=async function handler(req,res){
   });
  }
 };
+

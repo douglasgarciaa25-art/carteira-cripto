@@ -28,8 +28,13 @@
   const key=accountKey();if(key===storageKey&&ledger)return;
   storageKey=key;
   let found=null;try{found=cleanLoaded(JSON.parse(localStorage.getItem(key)||'null'))}catch(e){}
-  ledger=found||C.createLedger(1000);ledger.autoEnabled=false;ledger.mode='manual';
+  ledger=found||C.createLedger(1);if(!found){ledger.cash=0;ledger.initialUSDT=0;ledger.dayStartNAV=0;}ledger.autoEnabled=false;ledger.mode='manual';
   persist();lastMessage='Conta virtual carregada. Botão automático desligado por segurança.';
+ }
+ function syncReference(){
+  const b=window.CriptoRadarBinanceSnapshot;
+  try{if(!b||b.userId!==window.CriptoRadarAuth?.userId())throw Error('binance_account_mismatch');C.syncBinanceReference(ledger,b);persist();return true;}
+  catch(_){ledger.binanceSyncError='Saldo Binance pendente';return false;}
  }
  function market(){return window.walletMarketData||{}}
  function snap(){return window.CriptoRadarBinanceSnapshot||null}
@@ -47,6 +52,7 @@
   if(!ledger||!ledger.autoEnabled||ledger.killed||document.visibilityState==='hidden'||busy)return;
   busy=true;
   try{
+   if(!syncReference()){lastScanMsg="Aguardando saldo atualizado da Binance.";return;}
    C.rollover(ledger,market());
    const m=C.metrics(ledger,market());
    // Manage existing virtual positions first. Stop and profit values are illustrative, based on average simulated cost.
@@ -104,7 +110,7 @@
    <div class="rt20-actions"><button class="rt20-danger" type="button" data-rt="kill">⛔ PARADA DE EMERGÊNCIA</button><button type="button" data-rt="resume">Rearmar (com confirmação)</button></div>
    <div class="rt20-box"><div class="rt20-row"><b>Posições virtuais</b><span id="rt20Count"></span></div><div id="rt20Positions">Nenhuma posição.</div></div>
    <div class="rt20-box"><div class="rt20-row"><b>Histórico local das ordens</b><button type="button" data-rt="export">Exportar CSV</button></div><div id="rt20History">Sem operações simuladas.</div></div>
-   <details class="rt20-box"><summary>Gerenciar capital fictício</summary><p class="rt20-muted">Iniciar um novo teste apaga somente as operações virtuais deste navegador. Não altera Binance nem a carteira manual.</p><label class="rt20-field">USDT fictício inicial<input id="rt20Capital" type="number" step="any" min="0" value="1000" /></label><button type="button" data-rt="copy-cash">Usar saldo Binance como referência</button><button type="button" class="rt20-danger" data-rt="reset">Reiniciar simulação</button></details>
+   <details class="rt20-box"><summary>Base Binance e histórico fictício</summary><p class="rt20-muted">Iniciar um novo teste apaga somente as operações virtuais deste navegador. Não altera Binance nem a carteira manual.</p><p class="rt20-muted">Todas as ordens usam o USDT livre da Binance como base. Compras fictícias consomem a reserva virtual; atualizar o saldo não repõe valores já utilizados.</p><input id="rt20Capital" type="hidden"/><button type="button" data-rt="copy-cash">Atualizar referência Binance</button><button type="button" class="rt20-danger" data-rt="reset">Reiniciar simulação</button></details>
    <p class="rt20-disclaimer">CONTAS DIFERENTES: este painel é LOCAL, guardado apenas neste navegador. O Radar Trader 20.1 (abaixo) é a NUVEM, com operações fictícias próprias. Os botões de emergência são independentes. Resultados são simulados a partir de cotações indicativas; não garantem retorno. Sem envio de ordens à Binance, sem chaves de negociação e sem execução com o aplicativo fechado.</p>
   `;
   parent.appendChild(shell);
@@ -132,9 +138,11 @@
   $('rt20Safety').className='rt20-alert'+(kill||risk?' rt20-alert-danger':'');
   const tbody=$('rt20Positions');
   tbody.innerHTML=m.rows.length?m.rows.map(p=>`<div class="rt20-pos"><div><b>${esc(p.symbol)}</b><small>${fmt(p.qty,12)} un. • médio ${fmt(p.costUSDT/p.qty,5)} USDT</small></div><div><b>${fmt(p.value)} USDT</b><small class="${p.unrealized<0?'rt20-negative':'rt20-positive'}">${p.unrealized>=0?'+':''}${fmt(p.unrealized)} USDT ${p.fresh?'':'• cotação antiga'}</small></div></div>`).join(''):'<p class="rt20-muted">Sem posições virtuais. Os USDT estão em reserva.</p>';
+  if($('rt20Safety'))$('rt20Safety').textContent=(kill||risk||C.referenceError(ledger)||lastMessage)+' • '+(!ledger.binanceReference?'Saldo Binance pendente':('Base Binance: '+fmt(ledger.binanceReference.freeUSDT)+' USDT livres • atualizada '+new Date(ledger.binanceReference.updatedAt).toLocaleTimeString('pt-BR')+' • reserva virtual desconta as operações fictícias.'));
   $('rt20History').innerHTML=ledger.orders.length?[...ledger.orders].slice(-8).reverse().map(o=>`<div class="rt20-order"><span><b>${o.side==='BUY'?'🟢 COMPRA':'🔴 VENDA'} ${esc(o.symbol)}</b><small>${esc(o.mode)} • ${esc(o.at.replace('T',' ').slice(0,16))} UTC</small></span><span>${fmt(o.amountUSDT)} USDT<small>${fmt(o.fillPrice,5)} / un.</small></span></div>`).join(''):'<p class="rt20-muted">Nenhuma ordem simulada executada.</p>';
  }
  function manualPreview(){
+  syncReference();
   const side=$('rt20Side').value,symbol=$('rt20Symbol').value,amount=Number($('rt20Amount').value);
   const draft={side,symbol,amount,auto:false};
   C.rollover(ledger,market());
@@ -145,22 +153,20 @@
   const qty=side==='BUY'?(amount*(1-fee))/estimatedPrice:amount/test.price;
   const txt=`SIMULAÇÃO, NENHUMA ORDEM REAL.\n${side==='BUY'?'Comprar':'Vender'} ${symbol}\nValor: ${fmt(amount)} USDT\nPreço indicativo: ${fmt(test.price,6)} USDT\nPreço simulado: ${fmt(estimatedPrice,6)} USDT\nQuantidade aprox.: ${fmt(qty,12)}\nTaxa estimada 0,1% e slippage 0,1%.\nConfirmar operação fictícia?`;
   if(!window.confirm(txt))return;
+  syncReference();
   const outcome=C.execute(ledger,draft,market());
   lastMessage=outcome.ok?'✅ Ordem fictícia registrada. Nenhum dinheiro real foi movimentado.':'⛔ '+outcome.reason;
   persist();updateUI();
  }
  function reset(){
-  const val=Number($('rt20Capital')?.value);
+  if(!syncReference()){lastMessage='Aguarde a sincronização Binance antes de reiniciar.';updateUI();return;}
+  const val=Number(snap()?.freeUSDT);
   if(!Number.isFinite(val)||val<=0||val>1e7){lastMessage='Capital virtual inválido.';updateUI();return}
   if(!window.confirm('Apagar histórico e posições APENAS SIMULADOS desta conta? A Binance não será modificada.'))return;
-  ledger=C.createLedger(val);ledger.autoEnabled=false;lastScanMsg='Automático desligado.';
+  const killed=ledger.killed,killReason=ledger.killReason;ledger=C.createLedger(val);ledger.killed=killed;ledger.killReason=killReason;syncReference();ledger.autoEnabled=false;lastScanMsg='Automático desligado.';
   lastMessage='Simulação zerada, com '+fmt(val)+' USDT fictícios.';persist();updateUI();
  }
- function copyCash(){const s=snap();if(!s||s.source!=='binance_spot'||!Number.isFinite(Number(s.freeUSDT))){lastMessage='Importe a carteira Binance e consulte os saldos antes de usar como referência.';updateUI();return}
-  $('rt20Capital').value=String(Math.max(0,Number(s.freeUSDT)));
-  lastMessage='Referência preenchida. Clique em Reiniciar simulação para usar USDT FICTÍCIOS. O dinheiro real continuará intocado.';
-  updateUI();
- }
+ function copyCash(){syncReference();lastMessage=C.referenceError(ledger)||'Referência Binance atualizada; histórico e posições fictícias preservados.';updateUI();}
  function downloadCSV(){
   const header=['data_utc','modo','tipo','ativo','valor_usdt','quantidade','preco_execucao_usdt','taxa_usdt','pnl_realizado_usdt','observacao'];
   const rows=ledger.orders.map(o=>[o.at,o.mode,o.side,o.symbol,o.amountUSDT,o.quantity,o.fillPrice,o.feeUSDT,o.realizedUSDT,'SIMULADO']);
@@ -194,18 +200,20 @@
   persist();updateUI();
   if(ledger.autoEnabled)updateAuto();
  }
- function init(){if(!renderStatic())return;load();updateUI();
+ function init(){if(!renderStatic())return;load();syncReference();updateUI();
   const tick=()=>{
    if(accountKey()!==storageKey){load();updateUI()}
-   if(!ledger)return;C.rollover(ledger,market());
+   if(!ledger)return;syncReference();C.rollover(ledger,market());
    if(ledger.autoEnabled&&document.visibilityState!=='hidden'&&now()-ledger.lastScanAt>=30000)updateAuto();
    if(now()-lastAutoRenderAt>10000){updateUI();lastAutoRenderAt=now()}
   };
   setInterval(tick,5000);
   window.addEventListener('criptoradar:binancesync',tick);
+  window.addEventListener('criptoradar:authchange',tick);
   window.addEventListener('criptoradar:walletchange',tick);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick()});
   window.RadarTraderSim={status:()=>({mode:ledger?.mode,autoEnabled:!!ledger?.autoEnabled,simulationOnly:true,orders:ledger?.orders.length||0})};
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+

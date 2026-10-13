@@ -6,13 +6,35 @@
  if(root)root.RadarTraderCore=api;
 })(typeof window!=='undefined'?window:null,function(){
  'use strict';
- const VERSION='20.1.2',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
+ const VERSION='20.1.3',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
  const DEFAULT_LIMITS=Object.freeze({maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:3,cooldownMinutes:15,feePct:0.1,slippagePct:0.1,minQuote:0});
  const rnd=(x,p=12)=>Number((Number(x)||0).toFixed(p));
  const good=x=>Number.isFinite(Number(x))&&Number(x)>0;
  const day=(at)=>new Date(at).toISOString().slice(0,10); // UTC date for deterministic daily reset
  const bounded=(v,a,b)=>Math.max(a,Math.min(b,Number(v)||0));
  const finiteValue=(x,fallback=0)=>Number.isFinite(Number(x))?Number(x):fallback;
+
+ function syncBinanceReference(s,b,now=Date.now()){
+  const at=Date.parse(b?.updatedAt||''),free=Number(b?.freeUSDT);
+  if(typeof b?.userId!=='string'||!b.userId||b?.source!=='binance_spot'||!Number.isFinite(at)||at>now+60000||now-at>180000||!Number.isFinite(free)||free<0)throw Error('binance_balance_stale');
+  if(s.binanceReference?.userId&&s.binanceReference.userId!==b.userId)throw Error('binance_account_mismatch');
+  const previous=s.binanceReference;
+  if(previous&&at<Date.parse(previous.updatedAt))throw Error('binance_balance_stale');
+  const delta=free-(previous?Number(previous.freeUSDT):Number(s.initialUSDT));
+  if(!Number.isFinite(delta))throw Error('binance_reference_invalid');
+  s.cash=Number((Number(s.cash)+delta).toFixed(12));
+  s.dayStartNAV=Number((Number(s.dayStartNAV)+delta).toFixed(12));
+  s.initialUSDT=Number((Number(s.initialUSDT)+delta).toFixed(12));
+  s.capitalSource='binance_spot';
+  s.binanceReference={userId:b.userId,freeUSDT:free,updatedAt:b.updatedAt};
+  s.binanceSyncError='';
+  return s;
+ }
+ function referenceError(s,now=Date.now()){
+  const b=s.binanceReference,at=Date.parse(b?.updatedAt||'');
+  if(s.binanceSyncError||!b||!Number.isFinite(at)||now-at>180000||at>now+60000)return 'Saldo Binance indisponível ou desatualizado. Aguarde a sincronização.';
+  return '';
+ }
  function createLedger(initialUSDT=1000){
   const cash=finiteValue(initialUSDT);if(!(cash>0&&cash<=1e7))throw Error('Capital fictício deve ser maior que zero.');
   return {version:VERSION,cash:rnd(cash),initialUSDT:rnd(cash),positions:{},lastPrices:{},orders:[],
@@ -57,6 +79,7 @@
   return '';
  }
  function validate(ledger,order,markets={},now=Date.now()){
+  if(referenceError(ledger,now))return {ok:false,reason:referenceError(ledger,now)};
   if(ledger.killed)return {ok:false,reason:'Parada de emergência acionada. Use Retomar somente após revisar.'};
   if(!order||!['BUY','SELL'].includes(order.side))return {ok:false,reason:'Tipo de ordem inválido.'};
   const sym=String(order.symbol||'').toUpperCase(),amount=Number(order.amount);
@@ -121,7 +144,7 @@
   ledger.lastPrices[symbol]=price;
   const result={id:String(now)+'-'+(ledger.orders.length+1),at:new Date(now).toISOString(),side:order.side,symbol,mode:order.auto?'AUTO':'MANUAL',
    amountUSDT:rnd(amount,12),quantity:rnd(qty,12),referencePrice:rnd(price,12),fillPrice:rnd(fill,12),feeUSDT:rnd(feeUSDT,12),realizedUSDT:realized,
-   protectiveExit:!!protective,belowIllustrativeMin:false,
+   binanceFreeUSDT:ledger.binanceReference.freeUSDT,binanceUpdatedAt:ledger.binanceReference.updatedAt,protectiveExit:!!protective,belowIllustrativeMin:false,
    note:'SIMULAÇÃO SEM ORDEM REAL; o mínimo de execução na Binance depende do par e deve ser validado separadamente'};
   ledger.orders.push(result);ledger.orders=ledger.orders.slice(-300);
   return {ok:true,order:result,metrics:metrics(ledger,markets)};
@@ -131,5 +154,6 @@
   if(r){ledger.lastRiskReason=r;return r}
   return '';
  }
- return {VERSION,ALLOWED,DEFAULT_LIMITS,createLedger,quoteFor,metrics,rollover,todayOrders,reasonForRisk,validate,execute,checkRiskAndPause};
+ return {syncBinanceReference,referenceError,VERSION,ALLOWED,DEFAULT_LIMITS,createLedger,quoteFor,metrics,rollover,todayOrders,reasonForRisk,validate,execute,checkRiskAndPause};
 });
+

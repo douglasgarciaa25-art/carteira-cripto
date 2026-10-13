@@ -1,0 +1,36 @@
+RADAR TRADER 20.1.3 — SALDO BINANCE AUTOMATICO
+
+Todos os arquivos estao na raiz, sem subpastas.
+
+Substitua estes CINCO arquivos .js na raiz do repositorio carteira-cripto:
+- binance-wallet.js
+- binance-wallet-api.js
+- radar-trader-core.js
+- radar-trader-sim.js
+- radar-trader-cloud.js
+Nao exclua os demais arquivos existentes.
+
+radar-paper-worker.ts e o codigo preparado para a funcao do servidor Supabase.
+Ele pode ser guardado na raiz do repositorio, mas o upload GitHub NAO publica essa funcao.
+Apos enviar o pacote, informe "Subi" para aplicar a funcao no Supabase e validar o conjunto.
+A funcao do servidor ainda NAO foi alterada nesta entrega.
+
+MUDANCAS
+- Login persistente com renovacao da sessao e saida explicita.
+- Atualizacao automatica dos saldos com app aberto, aproximadamente a cada 2 minutos.
+- Importacao automatica para a carteira e referencia para os dois simuladores.
+- Todas as compras e vendas ficticias exigem referencia recente da Binance.
+- Capital baseado no USDT LIVRE: moedas e valores bloqueados nao sao vendidos nem convertidos automaticamente.
+- Atualizar a referencia nao apaga posicoes, historico, taxas ou resultado ficticio, nem repoe saldo ja gasto em compras ficticias.
+- Variacoes do saldo livre externo ajustam o capital sem serem contabilizadas como lucro da simulacao.
+- Servidor preparado para consultar o saldo a cada ciclo de 5 minutos, mesmo com o app fechado.
+- Falha de sincronizacao pausa as ordens ficticias ate obter saldo valido.
+- Sem saldo minimo artificial; mantidos limites de risco e parada de emergencia.
+
+VALIDACAO
+21 verificacoes automatizadas de saldo, isolamento, ordens e autorizacao.
+5 verificacoes de persistencia, renovacao e encerramento de sessao.
+Sintaxe verificada nos cinco scripts e no worker.
+Testes usam saldos e servicos simulados. A validacao integrada em producao depende do upload e da publicacao do worker.
+
+SOMENTE SIMULACAO. Nao transfere dinheiro e nao envia ordens reais a Binance.
