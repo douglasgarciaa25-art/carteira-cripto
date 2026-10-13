@@ -1,11 +1,11 @@
 {
   "name": "cripto-radar",
   "private": true,
-  "version": "20.1.5",
+  "version": "20.1.6",
   "dependencies": {
     "web-push": "^3.6.7"
   },
   "scripts": {
-    "test": "node test-sync.cjs && node test-auth.cjs && node test-audit.cjs && node testes-v1960.js && node test-unified.cjs"
+    "test": "node test-sync.cjs && node test-auth.cjs && node test-audit.cjs && node testes-v1960.js && node test-unified.cjs && node test-health.cjs"
   }
 }

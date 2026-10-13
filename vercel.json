@@ -187,6 +187,10 @@
     {
       "src": "radar-paper-view.js",
       "use": "@vercel/static"
+    },
+    {
+      "src": "radar-health.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [

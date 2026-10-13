@@ -1,0 +1,12 @@
+RADAR 20.1.6 — VISTORIA 24H
+
+Envie todos os arquivos deste pacote à raiz do GitHub e substitua os correspondentes. Preserve os demais arquivos.
+O servidor Supabase já está configurado: função radar-health-worker e agendamento a cada 5 minutos, 24 horas por dia. Não precisa manter o celular ou o app aberto.
+O painel Vistoria 24h fica na carteira, junto aos simuladores. Mostra a última verificação, falhas e botão Verificar agora.
+Verifica serviço de configuração do app, preço público BTC/USDT, saldo Spot Binance, atraso do robô e consistência dos registros fictícios na nuvem.
+A vistoria não cria ordens, não muda configurações, não corrige código e não altera os históricos. A consulta Binance pode atualizar seu cache de leitura.
+Saldo zero é válido. Robô desligado é informação; emergência é atenção. Relatório com mais de 8 minutos é marcado como desatualizado.
+A vistoria não inspeciona dados locais do celular fechado, não faz auditoria completa de segurança nem envia notificações push.
+O agendador processa até 8 contas por execução, priorizando as menos recentes. Com mais de 8 contas a frequência individual pode superar 5 minutos; exige ampliação antes de escalar. Serviços indisponíveis também podem atrasar verificações.
+Fontes do worker e SQL são entregues para versionamento. Não é necessário executar o SQL novamente.
+75 testes automatizados aprovados, incluindo 11 novos testes de vistoria/autorização. Execute npm test no projeto completo.
