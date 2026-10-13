@@ -72,7 +72,7 @@
   if(!renewing)renewing=(navigator.locks?navigator.locks.request('radar-auth-refresh',refresh):refresh()).finally(()=>{renewing=null});
   return renewing;
  }
- window.CriptoRadarAuth={getToken:validToken,userId:()=>state.user?.id||null};
+ window.CriptoRadarAuth={getToken:validToken,userId:()=>state.user?.id||null,userEmail:()=>state.user?.email||''};
  async function requireToken(){const token=await validToken();if(!token)throw Error('login_required');return token}
  function manualWallet(){try{const saved=JSON.parse(localStorage.getItem('crWallet')||'[]');return Array.isArray(saved)?saved:[]}catch(_){return []}}
  function detach(){
@@ -208,7 +208,7 @@
  function currentBinanceBalances(){return Array.isArray(state.latest?.balances)?state.latest.balances:[];}
  function isImported(){return !!state.user&&state.importedFor===state.user.id&&window.CriptoRadarBinanceActiveImport===true;}
  function bridgeSnapshot(){
-  if(!state.user||!state.connected||!state.latest)return null;
+  if(!state.user||!state.connected||!state.latest||state.lastSyncError)return null;
   const b=currentBinanceBalances();
   const freeUSDT=b.find(x=>x.symbol==='USDT')?.free||0;
   const lockedUSDT=b.find(x=>x.symbol==='USDT')?.locked||0;
@@ -374,7 +374,7 @@
    renderBalances();if(!silent)message(list.length?t().ready(list.length):t().empty);
    if(localStorage.getItem(importKey())!=='no')useBalances(false);else activateBridge();
    return true;
-  }catch(e){if(e.message==='account_changed')return false;state.lastSyncError=true;if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);renderInsights();return false}
+  }catch(e){if(e.message==='account_changed')return false;state.lastSyncError=true;window.CriptoRadarBinanceSnapshot=null;window.dispatchEvent(new Event('criptoradar:binancesync'));if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);renderInsights();return false}
   finally{state.busy=false;view()}
  }
  async function status(){
@@ -419,6 +419,17 @@
   detach();clearAuth();$('radarBinancePreview')?.replaceChildren();message(t().bye);view();
   try{if(token)await authRequest('logout',{},token)}catch(_){}
  }
+ let recovering=false;
+ async function recoverConnection(){
+  if(recovering||state.busy||!isVisible())return;
+  recovering=true;
+  try{
+   if(!state.user){if(!localStorage.getItem(SESSION_KEY))return;if(!await loadUser())return;}
+   if(!state.connected)await status();
+   else if(hasAuto()&&Date.now()-state.lastFetched>=120000)await check(true);
+  }catch(_){/* Temporary failures retry on the next timer/online event. */}
+  finally{recovering=false;}
+ }
  async function init(){
   // Remove old V19.6.6 shared/developer session import, if present.
   try{if(localStorage.getItem(OLD_IMPORT)==='yes'){const back=JSON.parse(localStorage.getItem('crRadarBinanceManualBackupV1966')||'null');if(Array.isArray(back))localStorage.setItem('crWallet',JSON.stringify(back));localStorage.removeItem(OLD_IMPORT);localStorage.removeItem('crRadarBinanceAutoSyncV1966')}}catch(_){}
@@ -435,13 +446,13 @@
   window.addEventListener('criptoradar:walletchange',renderInsights);
   // Os motores de mercado e de IA já usam window.printWallet; reavaliar após novos preços.
   window.setInterval(()=>{if(isVisible()&&isImported())renderInsights()},15000);
-  document.addEventListener('visibilitychange',()=>{if(isVisible()&&hasAuto()&&Date.now()-state.lastFetched>=120000)check(true)});
-  window.setInterval(()=>{if(isVisible()&&hasAuto()&&Date.now()-state.lastFetched>=120000)check(true)},30000);
+  document.addEventListener('visibilitychange',()=>{recoverConnection()});
+  window.setInterval(()=>{recoverConnection()},30000);
   try{const stored=JSON.parse(localStorage.getItem(SESSION_KEY)||sessionStorage.getItem(SESSION_KEY)||'null');if(stored?.access_token&&stored?.refresh_token)saveAuth(stored);
    if(await loadUser())await status();else message(t().signedOut);
   }catch(e){message(t().notConfigured,true)}
   renderText();
-  window.addEventListener('online',()=>{if(state.user&&state.connected)check(true)});
+  window.addEventListener('online',()=>{state.lastFetched=0;recoverConnection()});
   window.addEventListener('storage',e=>{if(e.key===SESSION_KEY){authEpoch++;detach();state.auth=null;state.user=null;state.connected=false;state.latest=null;state.lastFetched=0;view();window.dispatchEvent(new Event('criptoradar:authchange'));loadUser().then(u=>{view();if(u)return status()}).catch(()=>{});}});
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
@@ -452,9 +463,9 @@
  if(window.RadarTrader20Loaded)return;
  window.RadarTrader20Loaded=true;
  const styles=document.createElement('link');styles.rel='stylesheet';styles.href='./radar-trader-sim.css?v=2000';document.head.appendChild(styles);
- const core=document.createElement('script');core.src='./radar-trader-core.js?v=2014';core.defer=true;
+ const core=document.createElement('script');core.src='./radar-trader-core.js?v=2015';core.defer=true;
  core.onload=function(){
-  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2014';sim.defer=true;
+  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2015';sim.defer=true;
   sim.onerror=()=>console.warn('Radar Trader 20: interface simulada indisponível');
   document.head.appendChild(sim);
  };
@@ -467,7 +478,7 @@
  if(window.RadarTraderCloud21Loaded)return;
  window.RadarTraderCloud21Loaded=true;
  const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2111';document.head.appendChild(css);
- const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2014';
+ const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2015';
  js.onerror=()=>console.warn('Radar Trader 20.1: carregamento da interface indisponível');
  document.head.appendChild(js);
 })();

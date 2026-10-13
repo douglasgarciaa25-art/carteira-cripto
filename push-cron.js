@@ -25,7 +25,8 @@ function allowed(state,key,mins,commit=false){const now=Date.now(),last=Number(s
 function prune(state){const now=Date.now();state.cooldowns=Object.fromEntries(Object.entries(state.cooldowns||{}).filter(([,v])=>now-Number(v)<36*3600000).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,1200));state.pullbacks=Object.fromEntries(Object.entries(state.pullbacks||{}).filter(([,v])=>now-Number(v?.seen||0)<8*3600000));}
 function confirmPullback(state,symbol,p){state.pullbacks=state.pullbacks||{};const key=symbol+':'+p.side,old=state.pullbacks[key]||{count:0,sample:0,seen:0};if(Number(old.sample)!==Number(p.candleTime)){old.count=(Date.now()-Number(old.seen||0)<60*60000)?Math.min(2,Number(old.count||0)+1):1;old.sample=Number(p.candleTime);old.seen=Date.now();state.pullbacks[key]=old}return{...p,confirmations:Number(old.count||1),confirmed:Number(old.count||1)>=2}}
 function userWatch(rec,assets){const held=(Array.isArray(rec?.context?.wallet)?rec.context.wallet:[]).map(x=>clean(x?.symbol)).filter(Boolean),defaults=['BTC','ETH','BNB','SOL','XRP','DOGE','ADA','LINK','SUI','AVAX'],top=[...assets].sort((a,b)=>b.volume-a.volume).slice(0,16).map(x=>clean(x.symbol));return new Set([...held,...defaults,...top])}
-function mirrorBody(rec,x){const mirror=rec?.mirror||{},cap=Number(rec?.context?.portfolio?.totalBRL)||Number(mirror.userCapital)||100,riskPct=Math.max(.25,Math.min(2,Number(mirror.riskPct)||1)),stopPct=Math.max(.8,Math.min(4,Math.abs((x.price-x.level)/x.price)*100+.45)),allocPct=Math.max(2,Math.min(25,riskPct/stopPct*100)),alloc=cap*allocPct/100;return `${x.label} • ${x.score}/100 • simulação R$ ${alloc.toLocaleString('pt-BR',{maximumFractionDigits:2})} • risco ${riskPct.toLocaleString('pt-BR')}% • alvo técnico ~2R`}
+function mirrorBody(rec,x){return `${x.label} • ${x.score}/100 • Abra o app para simular com o saldo livre Binance atualizado • alvo técnico ~2R`}
+
 
 
 function pushProfile(rec){

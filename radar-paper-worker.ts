@@ -22,10 +22,11 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   if(previous&&at<Date.parse(previous.updatedAt))throw Error('binance_balance_stale');
   const delta=free-(previous?Number(previous.freeUSDT):Number(s.initialUSDT));
   if(!Number.isFinite(delta))throw Error('binance_reference_invalid');
-  s.cash=Number((Number(s.cash)+delta).toFixed(12));
+  const netCash=Number((Number(s.cash)-Number(s.pendingWithdrawalUSDT||0)+delta).toFixed(12));
+  s.cash=Math.max(0,netCash);s.pendingWithdrawalUSDT=Math.max(0,-netCash);
   s.dayStartNAV=Number((Number(s.dayStartNAV)+delta).toFixed(12));
   s.initialUSDT=Number((Number(s.initialUSDT)+delta).toFixed(12));
-  s.version='20.1.4';s.capitalSource='binance_spot';
+  s.version='20.1.5';s.capitalSource='binance_spot';
   s.binanceReference={userId:b.userId,freeUSDT:free,updatedAt:b.updatedAt};
   s.binanceSyncError='';
   return s;
@@ -35,8 +36,8 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   if(s.binanceSyncError||!b||!Number.isFinite(at)||now-at>180000||at>now+60000)return 'Saldo Binance indisponível ou desatualizado. Aguarde a sincronização.';
   return '';
  }
-function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.4',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
-function stats(s,m){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=q&&good(q.price)&&Math.abs(Date.now()-q.at)<180000;const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested),start=Number(s.dayStartNAV)||s.initialUSDT;return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
+function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.5',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,pendingWithdrawalUSDT:0,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
+function stats(s,m){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=q&&good(q.price)&&Math.abs(Date.now()-q.at)<180000;const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested-Number(s.pendingWithdrawalUSDT||0)),start=Number(s.dayStartNAV)||s.initialUSDT;return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
 function available(s,m,sym,side,amount,auto,at,protective=false){
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
  if(referenceError(s,at))return 'binance_balance_stale';
@@ -48,12 +49,12 @@ function available(s,m,sym,side,amount,auto,at,protective=false){
  if(exit){if(!(q.volume>0)||!(q.spread>=0&&q.spread<=1))return 'protective_exit_no_liquidity';}
  else if(!(q.volume>=3000000)||!(q.spread>=0&&q.spread<=0.3))return 'insufficient_liquidity';
  if(side==='SELL'&&!exit&&r8(amount/q.price)<=0)return 'quantity_precision_unavailable';
- const st=stats(s,m);
- if(st.stale.length&&!exit)return 'stale_open_position';
+ const st=stats(s,m),reducing=exit||(side==='SELL'&&Number(s.pendingWithdrawalUSDT||0)>0);
+ if(st.stale.length&&!reducing)return 'stale_open_position';
  if(side==='BUY'&&st.dailyPnlPct<=-s.limits.maxDailyLossPct)return 'daily_loss_limit';
  if(side==='BUY'&&s.orders.filter(o=>o.at.slice(0,10)===nowDate(at)&&o.side==='BUY').length>=s.limits.maxTradesPerDay)return 'daily_orders_limit';
- if(!exit&&at-Number(s.lastTradeAt||0)<s.limits.cooldownMinutes*60000)return 'cooldown';
- if(!exit&&amount>st.nav*s.limits.maxTradePct/100+1e-12)return 'single_order_limit';
+ if(!reducing&&at-Number(s.lastTradeAt||0)<s.limits.cooldownMinutes*60000)return 'cooldown';
+ if(!reducing&&amount>st.nav*s.limits.maxTradePct/100+1e-12)return 'single_order_limit';
  if(side==='BUY'){
   if(amount>s.cash+1e-12)return 'insufficient_virtual_cash';
   if(st.invested+amount>st.nav*s.limits.maxVolatilePct/100+1e-12)return 'total_exposure_limit';
@@ -70,7 +71,7 @@ function trade(s,side,sym,amount,market,auto,reason,at,protective=false){
  const px=market[sym].price,slip=s.limits.slippagePct/100,rate=s.limits.feePct/100;
  let qty,fee,pnl=0,fill;
  if(side==='BUY'){fill=px*(1+slip);fee=amount*rate;qty=r8((amount-fee)/fill);if(!(qty>0))return {ok:false,reason:'quantity_precision_unavailable'};const p=s.positions[sym]||{qty:0,cost:0};s.positions[sym]={qty:r8(p.qty+qty),cost:r8(p.cost+amount)};s.cash=r8(s.cash-amount);}
- else{const p=s.positions[sym];fill=px*(1-slip);qty=exit?p.qty:Math.min(p.qty,r8(amount/px));fee=qty*fill*rate;const basis=p.cost*qty/p.qty;const proceeds=qty*fill-fee;pnl=r8(proceeds-basis);s.cash=r8(s.cash+proceeds);const left=r8(p.qty-qty);if(left<=0)delete s.positions[sym];else s.positions[sym]={qty:left,cost:r8(p.cost-basis)};}
+ else{const p=s.positions[sym];fill=px*(1-slip);qty=exit?p.qty:Math.min(p.qty,r8(amount/px));fee=qty*fill*rate;const basis=p.cost*qty/p.qty;const proceeds=qty*fill-fee;pnl=r8(proceeds-basis);const netCash=r8(s.cash-Number(s.pendingWithdrawalUSDT||0)+proceeds);s.cash=Math.max(0,netCash);s.pendingWithdrawalUSDT=Math.max(0,-netCash);const left=r8(p.qty-qty);if(left<=0)delete s.positions[sym];else s.positions[sym]={qty:left,cost:r8(p.cost-basis)};}
  s.lastTradeAt=at;s.lastPrices[sym]=px;
  const order={binanceFreeUSDT:s.binanceReference.freeUSDT,binanceUpdatedAt:s.binanceReference.updatedAt,id:String(at)+'-'+String(s.orders.length+1),at:new Date(at).toISOString(),side,symbol:sym,quote:r8(amount),qty,price:r8(fill),fee:r8(fee),realized:pnl,source:auto?'AUTO':'MANUAL',reason,paper:true,protectiveExit:!!exit,belowIllustrativeMin:false,
   disclaimer:'Somente simulação. Ordem real abaixo do mínimo do par pode ser rejeitada pela Binance.'};

@@ -183,6 +183,10 @@
     {
       "src": "radar-trader-cloud.css",
       "use": "@vercel/static"
+    },
+    {
+      "src": "radar-paper-view.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [

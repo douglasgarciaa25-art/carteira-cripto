@@ -1,0 +1,14 @@
+CRIPTO RADAR 20.1.5
+
+Atualização dos simuladores, isolamento por conta, sinais, espelhamento e ajustes de saldo.
+Site e worker já publicados. Para manter o GitHub alinhado, envie TODOS os arquivos deste ZIP à raiz do repositório e substitua os existentes. Preserve os outros arquivos do projeto.
+
+Inclua o novo radar-paper-view.js e o vercel.json atualizado.
+O ZIP é um pacote de atualização, não o repositório completo.
+
+O painel Paper antigo agora mostra a mesma conta do Trader local.
+A conta de simulação na nuvem continua separada da local; ambas usam sua referência Binance.
+O histórico global antigo não é misturado entre usuários. O histórico do Trader já vinculado à sua conta é preservado na migração.
+
+Leia RELATORIO-CORRECOES-20-1-5.md para os detalhes e limites.
+Teste no projeto completo: npm test (64 verificações).

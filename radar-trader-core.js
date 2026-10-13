@@ -6,7 +6,7 @@
  if(root)root.RadarTraderCore=api;
 })(typeof window!=='undefined'?window:null,function(){
  'use strict';
- const VERSION='20.1.4',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
+ const VERSION='20.1.5',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
  const DEFAULT_LIMITS=Object.freeze({maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:3,cooldownMinutes:15,feePct:0.1,slippagePct:0.1,minQuote:0});
  const rnd=(x,p=12)=>Number((Number(x)||0).toFixed(p));
  const good=x=>Number.isFinite(Number(x))&&Number(x)>0;
@@ -22,10 +22,11 @@
   if(previous&&at<Date.parse(previous.updatedAt))throw Error('binance_balance_stale');
   const delta=free-(previous?Number(previous.freeUSDT):Number(s.initialUSDT));
   if(!Number.isFinite(delta))throw Error('binance_reference_invalid');
-  s.cash=Number((Number(s.cash)+delta).toFixed(12));
+  const netCash=Number((Number(s.cash)-Number(s.pendingWithdrawalUSDT||0)+delta).toFixed(12));
+  s.cash=Math.max(0,netCash);s.pendingWithdrawalUSDT=Math.max(0,-netCash);
   s.dayStartNAV=Number((Number(s.dayStartNAV)+delta).toFixed(12));
   s.initialUSDT=Number((Number(s.initialUSDT)+delta).toFixed(12));
-  s.capitalSource='binance_spot';
+  s.version=VERSION;s.capitalSource='binance_spot';
   s.binanceReference={userId:b.userId,freeUSDT:free,updatedAt:b.updatedAt};
   s.binanceSyncError='';
   return s;
@@ -37,7 +38,7 @@
  }
  function createLedger(initialUSDT=1000){
   const cash=finiteValue(initialUSDT);if(!(cash>0&&cash<=1e7))throw Error('Capital fictício deve ser maior que zero.');
-  return {version:VERSION,cash:rnd(cash),initialUSDT:rnd(cash),positions:{},lastPrices:{},orders:[],
+  return {version:VERSION,cash:rnd(cash),initialUSDT:rnd(cash),pendingWithdrawalUSDT:0,positions:{},lastPrices:{},orders:[],
    limits:{...DEFAULT_LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',
    day:day(Date.now()),dayStartNAV:cash,createdAt:new Date().toISOString(),lastScanAt:0};
  }
@@ -57,8 +58,9 @@
    volatile+=value;unrealized+=value-pos.costUSDT;
    rows.push({symbol,qty:pos.qty,costUSDT:pos.costUSDT,price,value,unrealized:value-pos.costUSDT,fresh:q.fresh});
   }
-  const nav=finiteValue(ledger.cash)+volatile;
-  return {cash:rnd(ledger.cash),volatile:rnd(volatile),nav:rnd(nav),unrealized:rnd(unrealized),
+  const pendingWithdrawalUSDT=Math.max(0,finiteValue(ledger.pendingWithdrawalUSDT));
+  const nav=finiteValue(ledger.cash)+volatile-pendingWithdrawalUSDT;
+  return {pendingWithdrawalUSDT,cash:rnd(ledger.cash),volatile:rnd(volatile),nav:rnd(nav),unrealized:rnd(unrealized),
    dailyPnl:rnd(nav-finiteValue(ledger.dayStartNAV,nav)),dailyPnlPct:finiteValue(ledger.dayStartNAV)>0?100*(nav-ledger.dayStartNAV)/ledger.dayStartNAV:0,
    exposurePct:nav>0?100*volatile/nav:0,rows,unknown};
  }
@@ -89,12 +91,13 @@
    const q=quoteFor(sym,markets,ledger);
   if(!q.fresh)return {ok:false,reason:'Dados de mercado indisponíveis ou desatualizados.'};
   const m=metrics(ledger,markets),nav=m.nav;
-  if(m.unknown.length&&!protective)return {ok:false,reason:'Há posições com cotações desatualizadas. Operação suspensa.'};
+  const reducing=protective||(order.side==='SELL'&&m.pendingWithdrawalUSDT>0);
+  if(m.unknown.length&&!reducing)return {ok:false,reason:'Há posições com cotações desatualizadas. Operação suspensa.'};
   if(order.side==='BUY'&&m.dailyPnlPct<=-ledger.limits.maxDailyLossPct)return {ok:false,reason:'Limite de perda diária atingido. Operação bloqueada.'};
-  if(!protective&&amount>nav*ledger.limits.maxTradePct/100+1e-12)return {ok:false,reason:'Operação acima de '+ledger.limits.maxTradePct+'% do patrimônio virtual.'};
+  if(!reducing&&amount>nav*ledger.limits.maxTradePct/100+1e-12)return {ok:false,reason:'Operação acima de '+ledger.limits.maxTradePct+'% do patrimônio virtual.'};
   if(order.side==='BUY'&&todayOrders(ledger,now).filter(o=>o.side==='BUY').length>=ledger.limits.maxTradesPerDay)return {ok:false,reason:'Limite de '+ledger.limits.maxTradesPerDay+' operações por dia atingido.'};
   const prior=todayOrders(ledger,now).filter(o=>o.symbol===sym).slice(-1)[0];
-  if(!protective&&prior&&now-Date.parse(prior.at)<ledger.limits.cooldownMinutes*60000)return {ok:false,reason:'Proteção de intervalo de '+ledger.limits.cooldownMinutes+' min entre operações deste ativo.'};
+  if(!reducing&&prior&&now-Date.parse(prior.at)<ledger.limits.cooldownMinutes*60000)return {ok:false,reason:'Proteção de intervalo de '+ledger.limits.cooldownMinutes+' min entre operações deste ativo.'};
   if(order.auto){
    if(ledger.mode!=='auto'||!ledger.autoEnabled)return {ok:false,reason:'Automático não ativado.'};
    if(!good(q.volume)||(!protective&&!(q.liquidity>=35)))return {ok:false,reason:'Liquidez insuficiente ou não verificada.'};
@@ -136,7 +139,8 @@
    const revenue=actualQty*fill-feeUSDT;
    const basis=before.costUSDT*(actualQty/before.qty);
    realized=rnd(revenue-basis);
-   ledger.cash=rnd(ledger.cash+revenue);
+   const netCash=rnd(ledger.cash-Number(ledger.pendingWithdrawalUSDT||0)+revenue);
+   ledger.cash=Math.max(0,netCash);ledger.pendingWithdrawalUSDT=Math.max(0,-netCash);
    const remaining=before.qty-actualQty;
    if(remaining<=0)delete ledger.positions[symbol];
    else ledger.positions[symbol]={qty:rnd(remaining,12),costUSDT:rnd(before.costUSDT-basis,12)};

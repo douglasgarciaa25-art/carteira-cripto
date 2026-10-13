@@ -9,15 +9,17 @@
  let ledger=null,storageKey='',lastMessage='Simulação pronta. Nenhuma ordem real pode ser enviada.',lastScanMsg='Automático desligado.';
  let lastAutoRenderAt=0,busy=false;
  const now=()=>Date.now();
- function accountKey(){
-  const email=String($('radarBinanceAccountLabel')?.textContent||'').trim().toLowerCase();
-  if(!email)return 'radar:paper:20:local-demo';
+ function accountKey(){return 'radar:paper:20:uid:'+(window.CriptoRadarAuth?.userId()||'signed-out')}
+ function migrateBoundLedger(){
+  const uid=window.CriptoRadarAuth?.userId(),email=String(window.CriptoRadarAuth?.userEmail?.()||'').trim().toLowerCase();
+  if(!uid||!email)return null;
   let h=2166136261;for(let i=0;i<email.length;i++){h^=email.charCodeAt(i);h=Math.imul(h,16777619)}
-  return 'radar:paper:20:'+((h>>>0).toString(16));
+  const old=JSON.parse(localStorage.getItem('radar:paper:20:'+((h>>>0).toString(16)))||'null');
+  return old?.binanceReference?.userId===uid?cleanLoaded(old):null;
  }
- function persist(){if(!ledger)return;try{localStorage.setItem(storageKey,JSON.stringify(ledger))}catch(e){lastMessage='Não foi possível salvar o simulador neste navegador.'}}
+ function persist(){if(!ledger||!window.CriptoRadarAuth?.userId())return;try{localStorage.setItem(storageKey,JSON.stringify(ledger))}catch(e){lastMessage='Não foi possível salvar o simulador neste navegador.'}}
  function cleanLoaded(x){
-  if(!x||!x.limits||!Number.isFinite(Number(x.cash))||typeof x.positions!=='object'||!Array.isArray(x.orders))return null;
+  if(!x||!x.limits||!Number.isFinite(Number(x.cash))||(!x.positions||typeof x.positions!=='object')||!Array.isArray(x.orders))return null;
   // Ignore stored risk overrides: tested hard limits cannot be silently weakened by changing localStorage.
   x.limits={...C.DEFAULT_LIMITS};x.autoEnabled=false;x.mode='manual';
   if(!x.lastPrices||typeof x.lastPrices!=='object')x.lastPrices={};
@@ -27,7 +29,7 @@
  function load(){
   const key=accountKey();if(key===storageKey&&ledger)return;
   storageKey=key;
-  let found=null;try{found=cleanLoaded(JSON.parse(localStorage.getItem(key)||'null'))}catch(e){}
+  let found=null;try{found=cleanLoaded(JSON.parse(localStorage.getItem(key)||'null'))||migrateBoundLedger();if(found?.binanceReference?.userId!==window.CriptoRadarAuth?.userId())found=null}catch(e){}
   ledger=found||C.createLedger(1);if(!found){ledger.cash=0;ledger.initialUSDT=0;ledger.dayStartNAV=0;}ledger.autoEnabled=false;ledger.mode='manual';
   persist();lastMessage='Conta virtual carregada. Botão automático desligado por segurança.';
  }
@@ -42,7 +44,7 @@
   try{
    const s=window.CriptoRadarMarketIntelligence?.scoreAsset?.(symbol);
    if(!s||!s.ready||!s.dataFresh)return {confirmed:false,ready:false,score:0,label:'Dados técnicos pendentes'};
-   return {confirmed:s.canBuy===true,ready:true,score:Number(s.quality)||0,label:String(s.statusLabel||'OBSERVAR'),risk:Number(s.riskScore)||100};
+   return {confirmed:s.canBuy===true,ready:true,score:Number(s.quality)||0,label:String(s.statusLabel||'OBSERVAR'),risk:s.riskScore!=null&&Number.isFinite(Number(s.riskScore))?Number(s.riskScore):100};
   }catch(e){return {confirmed:false,ready:false,score:0,label:'Motor técnico indisponível'}}
  }
  function pricesFresh(){
@@ -139,6 +141,8 @@
   const tbody=$('rt20Positions');
   tbody.innerHTML=m.rows.length?m.rows.map(p=>`<div class="rt20-pos"><div><b>${esc(p.symbol)}</b><small>${fmt(p.qty,12)} un. • médio ${fmt(p.costUSDT/p.qty,5)} USDT</small></div><div><b>${fmt(p.value)} USDT</b><small class="${p.unrealized<0?'rt20-negative':'rt20-positive'}">${p.unrealized>=0?'+':''}${fmt(p.unrealized)} USDT ${p.fresh?'':'• cotação antiga'}</small></div></div>`).join(''):'<p class="rt20-muted">Sem posições virtuais. Os USDT estão em reserva.</p>';
   if($('rt20Safety'))$('rt20Safety').textContent=(kill||risk||C.referenceError(ledger)||lastMessage)+' • '+(!ledger.binanceReference?'Saldo Binance pendente':('Base Binance: '+fmt(ledger.binanceReference.freeUSDT)+' USDT livres • atualizada '+new Date(ledger.binanceReference.updatedAt).toLocaleTimeString('pt-BR')+' • reserva virtual desconta as operações fictícias.'));
+  if(m.pendingWithdrawalUSDT>0)$('rt20Safety').textContent+=' Ajuste de retirada pendente: '+fmt(m.pendingWithdrawalUSDT)+' USDT; próximas vendas fictícias/entradas compensam esse ajuste.';
+  window.dispatchEvent(new Event('criptoradar:paperchange'));
   $('rt20History').innerHTML=ledger.orders.length?[...ledger.orders].slice(-8).reverse().map(o=>`<div class="rt20-order"><span><b>${o.side==='BUY'?'🟢 COMPRA':'🔴 VENDA'} ${esc(o.symbol)}</b><small>${esc(o.mode)} • ${esc(o.at.replace('T',' ').slice(0,16))} UTC</small></span><span>${fmt(o.amountUSDT)} USDT<small>${fmt(o.fillPrice,5)} / un.</small></span></div>`).join(''):'<p class="rt20-muted">Nenhuma ordem simulada executada.</p>';
  }
  function manualPreview(){
@@ -161,9 +165,9 @@
  function reset(){
   if(!syncReference()){lastMessage='Aguarde a sincronização Binance antes de reiniciar.';updateUI();return;}
   const val=Number(snap()?.freeUSDT);
-  if(!Number.isFinite(val)||val<=0||val>1e7){lastMessage='Capital virtual inválido.';updateUI();return}
+  if(!Number.isFinite(val)||val<0||val>1e7){lastMessage='Capital virtual inválido.';updateUI();return}
   if(!window.confirm('Apagar histórico e posições APENAS SIMULADOS desta conta? A Binance não será modificada.'))return;
-  const killed=ledger.killed,killReason=ledger.killReason;ledger=C.createLedger(val);ledger.killed=killed;ledger.killReason=killReason;syncReference();ledger.autoEnabled=false;lastScanMsg='Automático desligado.';
+  const killed=ledger.killed,killReason=ledger.killReason;ledger=C.createLedger(val||1);ledger.cash=val;ledger.initialUSDT=val;ledger.dayStartNAV=val;ledger.killed=killed;ledger.killReason=killReason;syncReference();ledger.autoEnabled=false;lastScanMsg='Automático desligado.';
   lastMessage='Simulação zerada, com '+fmt(val)+' USDT fictícios.';persist();updateUI();
  }
  function copyCash(){syncReference();lastMessage=C.referenceError(ledger)||'Referência Binance atualizada; histórico e posições fictícias preservados.';updateUI();}
@@ -212,7 +216,7 @@
   window.addEventListener('criptoradar:authchange',tick);
   window.addEventListener('criptoradar:walletchange',tick);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick()});
-  window.RadarTraderSim={status:()=>({mode:ledger?.mode,autoEnabled:!!ledger?.autoEnabled,simulationOnly:true,orders:ledger?.orders.length||0})};
+  window.RadarTraderSim={inspect:()=>{load();if(!window.CriptoRadarAuth?.userId())return null;syncReference();return {ledger:JSON.parse(JSON.stringify(ledger)),metrics:C.metrics(ledger,market()),referenceError:C.referenceError(ledger),risk:C.reasonForRisk(ledger,market())}},scan:()=>{load();if(now()-ledger.lastScanAt>=30000)updateAuto()},reset:()=>{load();reset()},review:()=>{load();ledger.mode='manual';ledger.autoEnabled=false;persist();updateUI();$('rt20Amount').value=Math.max(0,Math.min(ledger.cash,C.metrics(ledger,market()).nav*.05));$('radarTrader20').scrollIntoView({behavior:'smooth'});},status:()=>({mode:ledger?.mode,autoEnabled:!!ledger?.autoEnabled,simulationOnly:true,orders:ledger?.orders.length||0})};
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
