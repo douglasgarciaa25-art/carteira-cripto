@@ -163,6 +163,18 @@
     {
       "src": "binance-wallet.css",
       "use": "@vercel/static"
+    },
+    {
+      "src": "radar-trader-core.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "radar-trader-sim.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "radar-trader-sim.css",
+      "use": "@vercel/static"
     }
   ],
   "routes": [

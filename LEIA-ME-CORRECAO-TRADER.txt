@@ -1,0 +1,16 @@
+RADAR TRADER 20.0 - CORREÇÃO DO DEPLOY NA VERCEL
+
+Os arquivos de simulação foram enviados ao GitHub mas estavam ausentes da lista de "builds" do vercel.json. Esse arquivo acrescenta os três recursos estáticos:
+- radar-trader-core.js
+- radar-trader-sim.js
+- radar-trader-sim.css
+
+PASSOS:
+1) No GitHub, abra o repositório carteira-cripto, branch main.
+2) Envie este arquivo "vercel.json" PARA A RAIZ do repositório e SUBSTITUA o vercel.json existente. Não crie pasta nova.
+3) Aguarde a publicação em produção na Vercel e confira se ficou READY.
+4) No Radar, abra Carteira e veja o painel "Trader 20.0". Ative a importação de saldos para obter referência da carteira real.
+5) Se a interface não atualizar, feche e reabra o app/PWA ou limpe seu cache.
+
+SEGURANÇA: Nenhuma negociação real. O motor usa apenas saldo fictício, inclusive o modo automático.
+Não envie API Key/Secret Key para este chat nem adicione chaves ao GitHub.
