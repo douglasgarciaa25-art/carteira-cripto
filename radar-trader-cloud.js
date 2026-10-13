@@ -1,0 +1,49 @@
+/* Cripto Radar Trader 20.1 — servidor 24h, 100% dinheiro fictício. */
+(function(){'use strict';
+const $=id=>document.getElementById(id);const KEY='radar:auth:1967';let busy=false,current=null,conf=null,lastUserId='',lastError='',timer=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const fmt=(x,d=2)=>Number(x||0).toLocaleString('pt-BR',{maximumFractionDigits:d,minimumFractionDigits:d});
+function creds(){try{return JSON.parse(sessionStorage.getItem(KEY)||'{}')}catch(_){return {}}}
+async function config(){if(conf)return conf;const r=await fetch('./api/radar-auth-config',{cache:'no-store'});if(!r.ok)throw Error('Serviço de autenticação indisponível');conf=await r.json();if(!conf?.supabaseUrl||!conf?.publicKey)throw Error('Configuração incompleta');return conf}
+async function query(data){const c=await config(),t=creds();if(!t.access_token)throw Error('Faça login na conta Radar para usar o robô 24h.');
+ const r=await fetch(c.supabaseUrl+'/functions/v1/radar-paper-worker',{method:data?'POST':'GET',headers:{'Content-Type':'application/json',apikey:c.publicKey,Authorization:'Bearer '+t.access_token},body:data?JSON.stringify(data):undefined,cache:'no-store'});
+ const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw Error(({login_required:'Sessão expirada. Saia e entre novamente na conta Radar.',market_data_unavailable:'Mercado público indisponível. Nenhuma ordem foi feita.',auto_not_enabled:'Ative primeiro o robô fictício no servidor.',paper_account_not_initialized:'Inicie primeiro sua conta fictícia.',trade_blocked:j.reason||'Ordem bloqueada pelos limites',state_changed_retry:'Outra atualização ocorreu. Tente novamente.'})[j.error]||'Servidor indisponível ou ação bloqueada ('+(j.error||r.status)+')');return j}
+function shell(){let root=$('radarTraderCloud21');if(root)return root;const anchor=$('radarTrader20');if(!anchor)return null;root=document.createElement('section');root.id='radarTraderCloud21';root.className='rt21';root.innerHTML=`<div class="rt21-title"><span>☁️ RADAR TRADER 20.1 • SERVIDOR</span><b>Robô fictício 24h</b><small>Simula no servidor mesmo com app fechado. Nunca envia ordens à Binance.</small></div>
+<div id="rt21Message" class="rt21-msg">Conectando ao serviço de simulação...</div>
+<div id="rt21Content"></div>`;anchor.insertAdjacentElement('afterend',root);root.addEventListener('click',click);return root}
+function error(s){lastError=String(s).slice(0,220);const el=$('rt21Message');if(el)el.textContent=lastError}
+function btn(act,name,cls=''){return `<button type="button" data-rt21="${act}" class="${cls}">${name}</button>`}
+function render(){const box=$('rt21Content');if(!box)return;const r=current?.account,s=r?.ledger;if(!s){box.innerHTML=`<p class="rt21-muted">Sua carteira real permanece intocada. Crie uma conta de teste no servidor para começar.</p><label>Capital fictício inicial (USDT)<input id="rt21Initial" type="number" min="10" max="10000000" value="1000" step=".01"></label>${btn('init','Iniciar simulação no servidor','primary')}`;return}
+const nav=Object.values(s.positions||{}).reduce((tot,p)=>tot+((s.lastMarket?.[p.symbol]?.price||s.lastPrices?.[p.symbol]||0)*p.qty),Number(s.cash)||0);
+const updated=r.last_tick?new Date(r.last_tick).toLocaleString('pt-BR'):'Ainda não executou';
+const orders=[...(s.orders||[])].slice(-8).reverse();const positions=Object.entries(s.positions||{});
+box.innerHTML=`<div class="rt21-grid"><div><small>Patrimônio virtual estimado</small><b>${fmt(nav)} USDT</b></div><div><small>Reserva fictícia</small><b>${fmt(s.cash)} USDT</b></div><div><small>Estado no servidor</small><b>${s.killed?'⛔ Emergência':s.autoEnabled?'🟢 Auto 24h ativo':'⚪ Parado'}</b></div><div><small>Última verificação</small><b>${esc(updated)}</b></div></div><div class="rt21-msg">${esc(s.lastStatus||'Aguardando')} • ${esc(lastError)}</div>
+<div class="rt21-section"><b>Modalidade no servidor</b><div class="rt21-actions">${btn('manual','✋ Manual',s.mode==='manual'?'active':'')}${btn('auto-mode','🤖 Automático',s.mode==='auto'?'active':'')}</div>
+<div class="rt21-actions">${btn('enable','Ativar robô fictício 24h','primary')}${btn('disable','Desligar robô')}${btn('scan','Verificar agora')}</div>
+<p class="rt21-muted">Verificação agendada a cada 5 minutos, sujeita à disponibilidade do serviço. App fechado não impede o servidor de simular.</p></div>
+<div class="rt21-section"><b>Controle de risco</b><p class="rt21-muted">Até ${s.limits.maxTradePct}% do patrimônio por ordem, ${s.limits.maxVolatilePct}% em ativos, ${s.limits.maxDailyLossPct}% de perda diária e ${s.limits.maxTradesPerDay} operações/dia. Mínimo ilustrativo: ${s.limits.minQuote} USDT.</p><div class="rt21-actions">${btn('kill','⛔ PARADA DE EMERGÊNCIA','danger')}${btn('resume','Rearmar (sem religar o automático)')}</div></div>
+<div class="rt21-section"><b>Ordem manual fictícia</b><div class="rt21-actions"><label>Tipo<select id="rt21Side"><option>BUY</option><option>SELL</option></select></label><label>Moeda<select id="rt21Symbol">${['BTC','ETH','SOL','BNB','XRP'].map(x=>`<option>${x}</option>`).join('')}</select></label></div><label>Valor (USDT)<input id="rt21Quote" type="number" min="10" step=".01" value="20"></label>${btn('manual-trade','Revisar e confirmar operação FICTÍCIA')}</div>
+<div class="rt21-section"><b>Posições fictícias no servidor (${positions.length})</b>${positions.length?positions.map(([sym,p])=>`<div class="rt21-line"><span>${esc(sym)}</span><span>${fmt(p.qty,8)} un.</span></div>`).join(''):'<p class="rt21-muted">Nenhuma posição virtual; saldo em reserva.</p>'}</div>
+<div class="rt21-section"><b>Últimas operações fictícias</b>${orders.length?orders.map(o=>`<div class="rt21-line"><span>${o.side==='BUY'?'COMPRA':'VENDA'} ${esc(o.symbol)}<small>${esc(o.at.slice(0,16).replace('T',' '))} UTC</small></span><span>${fmt(o.quote)} USDT<small>${esc(o.source)}</small></span></div>`).join(''):'<p class="rt21-muted">Nenhuma operação fictícia registrada.</p>'}</div>
+<details class="rt21-section"><summary>Reiniciar capital e histórico fictício</summary><p class="rt21-muted">Apaga somente a simulação do servidor desta conta. Não acessa seu saldo real.</p><label>USDT de teste<input id="rt21Initial" type="number" min="10" value="1000" step=".01"></label>${btn('reset','Reiniciar conta fictícia','danger')}</details>`;
+}
+async function refresh(silent=false){if(busy||document.visibilityState==='hidden')return;const root=shell();if(!root)return;try{const data=await query();const uid=data.account?.user_id||'';if(lastUserId&&uid&&uid!==lastUserId)lastError='';lastUserId=uid;current=data;const status=$('rt21Message');if(status)status.textContent='Servidor conectado • somente operações fictícias.';render()}catch(e){if(!silent)error(e.message)}}
+async function click(e){const b=e.target.closest('button[data-rt21]');if(!b||busy)return;const action=b.dataset.rt21;let payload=null;try{
+ if(action==='init'||action==='reset'){const n=Number($('rt21Initial')?.value);if(!Number.isFinite(n)||n<10||n>1e7)throw Error('Capital fictício inválido.');if(action==='reset'&&!confirm('Apagar somente o histórico FICTÍCIO do servidor?'))return;payload={action,initialUSDT:n};}
+ if(action==='manual'||action==='auto-mode')payload={action:'mode',mode:action==='manual'?'manual':'auto'};
+ if(action==='enable'){if(!confirm('ATIVAR ROBÔ FICTÍCIO NO SERVIDOR: poderá simular compras e vendas mesmo com o aplicativo FECHADO. Não movimentará dinheiro real. Confirmar?'))return;payload={action:'auto',enabled:true};}
+ if(action==='disable')payload={action:'auto',enabled:false};
+ if(action==='scan')payload={action:'scan'};
+ if(action==='kill')payload={action:'kill'};
+ if(action==='resume'){if(!confirm('Rearmar o robô fictício? Ele permanecerá desligado até você ativar novamente.'))return;payload={action:'resume'};}
+ if(action==='manual-trade'){const side=$('rt21Side')?.value,symbol=$('rt21Symbol')?.value,quote=Number($('rt21Quote')?.value);if(!Number.isFinite(quote)||quote<10)throw Error('Valor mínimo fictício: 10 USDT');if(!confirm('ORDEM FICTÍCIA, NÃO REAL.\n'+side+' '+symbol+' • '+fmt(quote)+' USDT.\nSerá sujeita às cotações e aos limites no servidor. Confirmar?'))return;payload={action:'manual',side,symbol,quote};}
+ if(!payload)return;
+ busy=true;b.disabled=true;error('Aguardando resposta do simulador no servidor...');const data=await query(payload);current=data;lastError='';render();
+ if(action==='enable'){
+  // Evita dois robôs locais e remotos correndo ao mesmo tempo; contas fictícias são distintas.
+  const local=$('rt20AutoEnable');if(local?.checked){local.checked=false;local.dispatchEvent(new Event('change',{bubbles:true}));}
+ }
+ }catch(err){error(err.message)}finally{busy=false;b.disabled=false}}
+function start(){shell();refresh();setTimeout(()=>{shell();refresh()},1400);setTimeout(()=>{shell();refresh()},4000);if(timer)clearInterval(timer);timer=setInterval(()=>refresh(true),30000);window.addEventListener('criptoradar:binancesync',()=>refresh(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh(true)})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();

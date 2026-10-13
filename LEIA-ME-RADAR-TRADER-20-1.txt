@@ -1,0 +1,47 @@
+RADAR TRADER 20.1 — ROBÔ FICTÍCIO NO SERVIDOR (5 MINUTOS)
+
+SITUAÇÃO DO SERVIDOR
+- Edge Function Supabase 'radar-paper-worker' implantada e verificada.
+- Banco de dados público 'radar_paper_cloud_accounts' com RLS (cada usuário lê apenas sua conta).
+- Agendamento Supabase pg_cron ativo em intervalos de cinco minutos.
+- Requisição de cron autenticada testada com retorno HTTP 200.
+- Nenhuma carteira virtual criada/ativada por padrão; nenhuma operação real na Binance.
+
+SUBA OS 4 ARQUIVOS ABAIXO NA RAIZ DO GITHUB:
+1. binance-wallet.js       (substituir arquivo atual)
+2. radar-trader-cloud.js   (novo)
+3. radar-trader-cloud.css  (novo)
+4. vercel.json             (substituir arquivo atual)
+
+Não exclua radar-trader-core.js, radar-trader-sim.js nem radar-trader-sim.css.
+Não crie pasta api. Não envie credenciais Binance; não é necessário criar nova chave API.
+
+APÓS PUBLICAR
+1. Abra https://carteira-cripto-pi.vercel.app e atualize; se estiver instalado como PWA, feche e reabra.
+2. Entre na aba CARTEIRA, faça login na conta Radar.
+3. Desça até 'Robô fictício 24h' (painel abaixo do Trader 20.0).
+4. Clique 'Iniciar simulação no servidor' para criar conta fictícia (padrão: 1000 USDT).
+5. Clique 'Automático'; em seguida 'Ativar robô fictício 24h' e confirme.
+6. Depois de ativado, o servidor pode simular operações mesmo com app fechado.
+7. Se não houver confirmação técnica, o robô manterá o capital virtual em USDT.
+8. Ao abrir novamente, consulte a última verificação, posições e histórico do servidor.
+
+IMPORTANTÍSSIMO
+- Estes são DOIS simuladores independentes: Trader 20.0 LOCAL (aberto) e Trader 20.1 SERVIDOR (fechado).
+- Apenas o Trader 20.1 atua com o app fechado. O Trader 20.0 é desligado ao ativar o Trader 20.1 pelo painel.
+- Não são enviadas ordens reais. A integração com a Binance continua somente leitura.
+- Limites: 5% por ordem, 30% de exposição, 20% por ativo, 2% de perda diária, até 3 ordens/dia,
+  intervalo mínimo de 15min, stop fictício 4%, alvo 8%, mínimo 10 USDT por operação.
+- Com saldo fictício de 17,38 USDT e limite 5% por ordem, NENHUMA ordem poderá passar do mínimo 10 USDT.
+  Use 1000 USDT FICTÍCIOS no teste, se quiser observar as operações sem aumentar nenhum dinheiro real.
+- A verificação a cada cinco minutos depende da disponibilidade da Supabase, do agendador e das APIs públicas.
+- O painel continua usando autenticação individual da conta Radar; o servidor não lê chaves de negociação.
+- Em caso de emergência, pressione PARADA DE EMERGÊNCIA no painel 20.1 (o botão do 20.0 é independente).
+- O 20.1 não envia notificações push diretamente; o histórico aparece ao reabrir o aplicativo.
+
+TESTES FEITOS
+- Motor fictício local: criação, execução fictícia, limites por ordem, cooldown, parada emergencial.
+- Arquivos JS: verificação de sintaxe.
+- Agendamento Supabase: ativo */5 * * * *.
+- Edge Function: implantada e ativada; cron autenticado HTTP 200 com 0 contas fictícias (segurança por padrão).
+- Ainda não foi feita uma ordem real nem um teste autenticado completo no celular.

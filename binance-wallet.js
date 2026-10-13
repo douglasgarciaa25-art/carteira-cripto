@@ -442,3 +442,13 @@
  core.onerror=()=>console.warn('Radar Trader 20: motor de simulação indisponível');
  document.head.appendChild(core);
 })();
+
+/* Radar Trader 20.1: interface de simulação 24h, independente das ordens locais. */
+(function(){
+ if(window.RadarTraderCloud21Loaded)return;
+ window.RadarTraderCloud21Loaded=true;
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2101';document.head.appendChild(css);
+ const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2101';
+ js.onerror=()=>console.warn('Radar Trader 20.1: carregamento da interface indisponível');
+ document.head.appendChild(js);
+})();

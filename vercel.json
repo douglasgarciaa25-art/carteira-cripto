@@ -175,6 +175,14 @@
     {
       "src": "radar-trader-sim.css",
       "use": "@vercel/static"
+    },
+    {
+      "src": "radar-trader-cloud.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "radar-trader-cloud.css",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
