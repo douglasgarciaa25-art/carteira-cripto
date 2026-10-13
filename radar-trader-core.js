@@ -6,7 +6,7 @@
  if(root)root.RadarTraderCore=api;
 })(typeof window!=='undefined'?window:null,function(){
  'use strict';
- const VERSION='20.0.0',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
+ const VERSION='20.1.1',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
  const DEFAULT_LIMITS=Object.freeze({maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:3,cooldownMinutes:15,feePct:0.1,slippagePct:0.1,minQuote:10});
  const rnd=(x,p=8)=>Number((Number(x)||0).toFixed(p));
  const good=x=>Number.isFinite(Number(x))&&Number(x)>0;
@@ -60,21 +60,22 @@
   if(ledger.killed)return {ok:false,reason:'Parada de emergência acionada. Use Retomar somente após revisar.'};
   if(!order||!['BUY','SELL'].includes(order.side))return {ok:false,reason:'Tipo de ordem inválido.'};
   const sym=String(order.symbol||'').toUpperCase(),amount=Number(order.amount);
+  const protective=order.side==='SELL'&&order.auto===true&&order.protective===true&&ledger.mode==='auto'&&ledger.autoEnabled;
   if(!ALLOWED.includes(sym))return {ok:false,reason:'Ativo não autorizado neste simulador.'};
   if(!good(amount)||!Number.isFinite(amount)||amount>1e9)return {ok:false,reason:'Valor em USDT inválido.'};
-  if(amount+1e-7<finiteValue(ledger.limits.minQuote,10))return {ok:false,reason:'Abaixo do valor mínimo ilustrativo de '+ledger.limits.minQuote+' USDT. Verificar o mínimo real por par.'};
+  if(!protective&&amount+1e-7<finiteValue(ledger.limits.minQuote,10))return {ok:false,reason:'Abaixo do valor mínimo ilustrativo de '+ledger.limits.minQuote+' USDT. Verificar o mínimo real por par.'};
   const q=quoteFor(sym,markets,ledger);
   if(!q.fresh)return {ok:false,reason:'Dados de mercado indisponíveis ou desatualizados.'};
   const m=metrics(ledger,markets),nav=m.nav;
-  if(m.unknown.length)return {ok:false,reason:'Há posições com cotações desatualizadas. Operação suspensa.'};
-  if(m.dailyPnlPct<=-ledger.limits.maxDailyLossPct)return {ok:false,reason:'Limite de perda diária atingido. Operação bloqueada.'};
-  if(amount>nav*ledger.limits.maxTradePct/100+1e-6)return {ok:false,reason:'Operação acima de '+ledger.limits.maxTradePct+'% do patrimônio virtual.'};
-  if(todayOrders(ledger,now).length>=ledger.limits.maxTradesPerDay)return {ok:false,reason:'Limite de '+ledger.limits.maxTradesPerDay+' operações por dia atingido.'};
+  if(m.unknown.length&&!protective)return {ok:false,reason:'Há posições com cotações desatualizadas. Operação suspensa.'};
+  if(order.side==='BUY'&&m.dailyPnlPct<=-ledger.limits.maxDailyLossPct)return {ok:false,reason:'Limite de perda diária atingido. Operação bloqueada.'};
+  if(!protective&&amount>nav*ledger.limits.maxTradePct/100+1e-6)return {ok:false,reason:'Operação acima de '+ledger.limits.maxTradePct+'% do patrimônio virtual.'};
+  if(order.side==='BUY'&&todayOrders(ledger,now).filter(o=>o.side==='BUY').length>=ledger.limits.maxTradesPerDay)return {ok:false,reason:'Limite de '+ledger.limits.maxTradesPerDay+' operações por dia atingido.'};
   const prior=todayOrders(ledger,now).filter(o=>o.symbol===sym).slice(-1)[0];
-  if(prior&&now-Date.parse(prior.at)<ledger.limits.cooldownMinutes*60000)return {ok:false,reason:'Proteção de intervalo de '+ledger.limits.cooldownMinutes+' min entre operações deste ativo.'};
+  if(!protective&&prior&&now-Date.parse(prior.at)<ledger.limits.cooldownMinutes*60000)return {ok:false,reason:'Proteção de intervalo de '+ledger.limits.cooldownMinutes+' min entre operações deste ativo.'};
   if(order.auto){
    if(ledger.mode!=='auto'||!ledger.autoEnabled)return {ok:false,reason:'Automático não ativado.'};
-   if(!good(q.volume)||!(q.liquidity>=35))return {ok:false,reason:'Liquidez insuficiente ou não verificada.'};
+   if(!good(q.volume)||(!protective&&!(q.liquidity>=35)))return {ok:false,reason:'Liquidez insuficiente ou não verificada.'};
   }
   const fee=ledger.limits.feePct/100,slip=ledger.limits.slippagePct/100;
   if(order.side==='BUY'){
@@ -95,6 +96,7 @@
   rollover(ledger,markets,now);
   const accepted=validate(ledger,order,markets,now);if(!accepted.ok)return accepted;
   const symbol=String(order.symbol).toUpperCase(),amount=Number(order.amount),price=accepted.price;
+  const protective=order.side==='SELL'&&order.auto===true&&order.protective===true&&ledger.autoEnabled&&ledger.mode==='auto';
   const feeRate=ledger.limits.feePct/100,slip=ledger.limits.slippagePct/100;
   let qty,fill,feeUSDT,realized=0;
   if(order.side==='BUY'){
@@ -105,7 +107,7 @@
    ledger.positions[symbol]={qty:rnd(before.qty+qty),costUSDT:rnd(before.costUSDT+amount)};
    ledger.cash=rnd(ledger.cash-amount);
   }else{
-   fill=price*(1-slip);qty=rnd(amount/price,8);
+   fill=price*(1-slip);qty=protective?ledger.positions[symbol].qty:rnd(amount/price,8);
    const before=ledger.positions[symbol],actualQty=Math.min(before.qty,qty);
    feeUSDT=actualQty*fill*feeRate;
    const revenue=actualQty*fill-feeUSDT;
@@ -120,13 +122,14 @@
   ledger.lastPrices[symbol]=price;
   const result={id:String(now)+'-'+(ledger.orders.length+1),at:new Date(now).toISOString(),side:order.side,symbol,mode:order.auto?'AUTO':'MANUAL',
    amountUSDT:rnd(amount),quantity:rnd(qty),referencePrice:rnd(price),fillPrice:rnd(fill),feeUSDT:rnd(feeUSDT),realizedUSDT:realized,
-   note:'SIMULAÇÃO — SEM ORDEM REAL'};
+   protectiveExit:!!protective,belowIllustrativeMin:protective&&amount<ledger.limits.minQuote,
+   note:protective&&amount<ledger.limits.minQuote?'SIMULAÇÃO abaixo do mínimo: ordem real poderia ser rejeitada':'SIMULAÇÃO — SEM ORDEM REAL'};
   ledger.orders.push(result);ledger.orders=ledger.orders.slice(-300);
   return {ok:true,order:result,metrics:metrics(ledger,markets)};
  }
  function checkRiskAndPause(ledger,markets={}){
   const r=reasonForRisk(ledger,markets);
-  if(r){ledger.autoEnabled=false;ledger.killed=true;ledger.killReason=r;return r}
+  if(r){ledger.lastRiskReason=r;return r}
   return '';
  }
  return {VERSION,ALLOWED,DEFAULT_LIMITS,createLedger,quoteFor,metrics,rollover,todayOrders,reasonForRisk,validate,execute,checkRiskAndPause};

@@ -1,0 +1,39 @@
+RADAR TRADER 20.1.1 — CORRECOES DE SEGURANCA
+
+O QUE JA FOI CORRIGIDO NO SERVIDOR (SUPABASE, SEM UPLOAD)
+- Worker ficticio publicado na versao 2.
+- Vendas simuladas de protecao podem fechar a posicao inteira sem bloqueio por minimo ilustrativo, cooldown de entrada ou limite de 5% por compra.
+- Saidas ficticias continuam sujeitas a preco atualizado e verificacao de liquidez; abaixo do minimo da Binance SAO SIMULACOES, NAO EXECUCOES REAIS VIAVEIS.
+- Queda de uma fonte de dados nao bloqueia protecao de outros ativos com preco fresco. Novas compras ficam pausadas em dados incompletos.
+- Limite de perda diaria impede compras novas, sem impedir o monitoramento de saidas ficticias.
+- Com 17 USDT de capital ficticio e limite de 5% por ordem, nenhuma compra de minimo 10 USDT e possivel. Teste com 1000 USDT FICTICIOS se desejar. NUNCA deposite na Binance para testar.
+- Chave CRON_SECRET instalada na Vercel de producao e novo agendador Supabase configurado para a rota de notificacoes a cada 5 minutos.
+- Teste de chamada com autorizacao HTTP 200 e chamada sem autorizacao HTTP 401.
+
+O QUE DEVE SER ENVIADO AO GITHUB
+Envie SOMENTE estes cinco arquivos para a RAIZ do repositorio douglasgarciaa25-art/carteira-cripto, substituindo existentes:
+1) binance-wallet.js
+2) radar-trader-core.js
+3) radar-trader-sim.js
+4) radar-trader-cloud.js
+5) radar-trader-cloud.css
+
+NAO exclua index.html, vercel.json, api/binance-wallet, radar-trader-sim.css ou os outros modulos.
+A Vercel publicara automaticamente a alteracao. Espere READY e reabra o app.
+
+O QUE ESTA PENDENTE NA PRIVACIDADE DA IA
+O GitHub conectado recusou gravacao (403), portanto nao alteramos o arquivo ai.js na producao.
+Abra ai.js no GitHub, clique em Editar e LOCALIZE EXATAMENTE a linha:
+if(wallet.length)await kv(['SET','radar:wallet:last',JSON.stringify({at,wallet})]);
+Substitua por:
+// Privacidade: nao persistir a carteira do usuario em uma chave compartilhada do Redis.
+Salve (commit) o arquivo. Esta mudanca preserva as analises da requisicao, mas evita novas gravacoes globais. O registro antigo do Redis ainda precisa ser excluido com seguranca usando acesso administrativo apropriado, sem expor credenciais aqui.
+
+LIMITACOES
+- O robô permanece SOMENTE FICTICIO. Nenhuma ordem real na Binance e enviada.
+- O servidor faz scans a cada 5 minutos, nao executa ordens stop nativas da Binance.
+- Historicos local (20.0) e nuvem (20.1) continuam independentes, com limites e paradas independentes.
+- Notificacoes especificas das ordens FICTICIAS da nuvem ainda nao estao integradas.
+- Os sinais de compra do Trader 20.0 e do Worker 20.1 ainda usam algoritmos diferentes.
+- O risco de execucao real abaixo do minimo de negociacao continua: a saida simulada nao significa que seria aceita na corretora.
+- Testes automatizados nao substituem backtesting, auditoria externa e verificacao de longo prazo.

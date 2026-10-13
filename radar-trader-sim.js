@@ -48,21 +48,21 @@
   busy=true;
   try{
    C.rollover(ledger,market());
-   const error=C.checkRiskAndPause(ledger,market());
-   if(error){lastScanMsg='AUTO PAUSADO: '+error;lastMessage=lastScanMsg;persist();return}
    const m=C.metrics(ledger,market());
    // Manage existing virtual positions first. Stop and profit values are illustrative, based on average simulated cost.
    for(const p of m.rows){
     const q=C.quoteFor(p.symbol,market(),ledger);if(!q.fresh||!p.qty||!p.costUSDT)continue;
     const change=(q.price/(p.costUSDT/p.qty)-1)*100;
     if(change<=-4||change>=8){
-     const side='SELL',amount=Math.min(p.qty*q.price,m.nav*ledger.limits.maxTradePct/100);
-     const done=C.execute(ledger,{side,symbol:p.symbol,amount,auto:true},market());
+     const side='SELL',amount=p.qty*q.price;
+     const done=C.execute(ledger,{side,symbol:p.symbol,amount,auto:true,protective:true},market());
      if(done.ok){lastMessage=`AUTO SIMULADO: venda ${p.symbol} (${change.toFixed(1)}% desde a compra).`;
        lastScanMsg=lastMessage;persist();return}
      lastScanMsg='Saída de '+p.symbol+' não executada: '+done.reason;
     }
    }
+   const error=C.checkRiskAndPause(ledger,market());
+   if(error){lastScanMsg='NOVAS COMPRAS PAUSADAS: '+error;lastMessage=lastScanMsg;persist();return}
    // No guessing: purchases require market freshness, independent technical confirmation and liquidity.
    let tried=0;
    for(const symbol of C.ALLOWED){
@@ -76,7 +76,7 @@
       lastScanMsg=lastMessage;persist();return}
     lastScanMsg=symbol+': '+result.reason;
    }
-   if(!tried)lastScanMsg='Sem compra tecnicamente confirmada ou liquidez suficiente. Mantendo USDT virtual.';
+   if(!tried)lastScanMsg=m.nav*ledger.limits.maxTradePct/100<ledger.limits.minQuote?'Capital abaixo do necessário com limite de 5% por ordem. Para testar compras use pelo menos '+Math.ceil(ledger.limits.minQuote/(ledger.limits.maxTradePct/100))+' USDT FICTÍCIOS; nunca deposite por causa da simulação.':'Sem compra tecnicamente confirmada ou liquidez suficiente. Mantendo USDT virtual.';
   }finally{ledger.lastScanAt=now();persist();busy=false;updateUI()}
  }
  function renderStatic(){
@@ -105,7 +105,7 @@
    <div class="rt20-box"><div class="rt20-row"><b>Posições virtuais</b><span id="rt20Count"></span></div><div id="rt20Positions">Nenhuma posição.</div></div>
    <div class="rt20-box"><div class="rt20-row"><b>Histórico local das ordens</b><button type="button" data-rt="export">Exportar CSV</button></div><div id="rt20History">Sem operações simuladas.</div></div>
    <details class="rt20-box"><summary>Gerenciar capital fictício</summary><p class="rt20-muted">Iniciar um novo teste apaga somente as operações virtuais deste navegador. Não altera Binance nem a carteira manual.</p><label class="rt20-field">USDT fictício inicial<input id="rt20Capital" type="number" step="0.01" min="0.01" value="1000" /></label><button type="button" data-rt="copy-cash">Usar saldo Binance como referência</button><button type="button" class="rt20-danger" data-rt="reset">Reiniciar simulação</button></details>
-   <p class="rt20-disclaimer">Resultados são simulados a partir de cotações indicativas; não garantem retorno. Sem envio de ordens à Binance, sem chaves de negociação e sem execução com o aplicativo fechado.</p>
+   <p class="rt20-disclaimer">CONTAS DIFERENTES: este painel é LOCAL, guardado apenas neste navegador. O Radar Trader 20.1 (abaixo) é a NUVEM, com operações fictícias próprias. Os botões de emergência são independentes. Resultados são simulados a partir de cotações indicativas; não garantem retorno. Sem envio de ordens à Binance, sem chaves de negociação e sem execução com o aplicativo fechado.</p>
   `;
   parent.appendChild(shell);
   shell.addEventListener('click',onClick);
