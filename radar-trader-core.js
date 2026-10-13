@@ -6,7 +6,7 @@
  if(root)root.RadarTraderCore=api;
 })(typeof window!=='undefined'?window:null,function(){
  'use strict';
- const VERSION='20.1.3',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
+ const VERSION='20.1.4',ALLOWED=['BTC','ETH','SOL','BNB','XRP','ADA','LINK','SUI','NEAR','AVAX','DOT'];
  const DEFAULT_LIMITS=Object.freeze({maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:3,cooldownMinutes:15,feePct:0.1,slippagePct:0.1,minQuote:0});
  const rnd=(x,p=12)=>Number((Number(x)||0).toFixed(p));
  const good=x=>Number.isFinite(Number(x))&&Number(x)>0;
@@ -110,6 +110,7 @@
    if(!good(quantity)||rnd(quantity,12)<=0)return {ok:false,reason:'Quantidade inferior à precisão simulada.'};
   }else{
    const qty=amount/q.price;
+   if(!protective&&rnd(qty,12)<=0)return {ok:false,reason:'Quantidade inferior à precisão simulada.'};
    if(!good(ledger.positions?.[sym]?.qty)||qty>ledger.positions[sym].qty*(1+1e-10))return {ok:false,reason:'Saldo virtual do ativo insuficiente para venda.'};
   }
   return {ok:true,reason:'Ordem fictícia aceita',price:q.price};

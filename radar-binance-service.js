@@ -42,7 +42,7 @@ async function authUser(req,conf=env()){
  if(!token||token.length>8192)throw new ApiError(401,'login_required');
  let r;
  try{r=await fetch(conf.url+'/auth/v1/user',{headers:{apikey:conf.publicKey,Authorization:'Bearer '+token},signal:AbortSignal.timeout(7000),cache:'no-store'})}catch(_){throw new ApiError(503,'auth_service_unavailable')}
- if(!r.ok)throw new ApiError(401,'session_invalid');
+ if(!r.ok)throw new ApiError(r.status===429||r.status>=500?503:401,r.status===429||r.status>=500?'auth_service_unavailable':'session_invalid');
  const user=await r.json();
  if(!/^[0-9a-f-]{36}$/i.test(String(user.id||''))||!user.email||!user.email_confirmed_at)throw new ApiError(403,'email_confirmation_required');
  return user;

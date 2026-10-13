@@ -49,10 +49,15 @@ function safePushContext(raw){
 }
 function safePushPrefs(raw){const p=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};return {market:p.market!==false,pullback:p.pullback!==false,portfolio:p.portfolio!==false,alertFrequency:['important','balanced','frequent','all'].includes(p.alertFrequency)?p.alertFrequency:'important'}}
 function safePushMirror(raw){const m=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};return {mode:m.mode==='alerts'?'alerts':'off',userCapital:Number.isFinite(Number(m.userCapital))?Math.max(0,Math.min(Number(m.userCapital),1e12)):0,riskPct:Number.isFinite(Number(m.riskPct))?Math.max(.1,Math.min(Number(m.riskPct),10)):1}}
+function validatePushEndpoint(endpoint){
+  let url;try{url=new URL(String(endpoint||''))}catch(_){}
+  const h=url?.hostname||'';
+  const allowed=h==='fcm.googleapis.com'||h==='android.googleapis.com'||h==='updates.push.services.mozilla.com'||h.endsWith('.notify.windows.com')||h==='notify.windows.com'||h.endsWith('.push.apple.com')||h==='push.apple.com';
+  if(!url||url.protocol!=='https:'||!allowed||url.username||url.password||url.port||url.hash||String(endpoint).length>2048)throw new Error('Subscription endpoint inválido');
+}
 async function saveSubscription(record){
   const endpoint=record?.subscription?.endpoint;
-  let url;try{url=new URL(String(endpoint||''))}catch(_){}
-  if(!url||url.protocol!=='https:'||!url.hostname||String(endpoint).length>2048)throw new Error('Subscription endpoint inválido');
+  validatePushEndpoint(endpoint);
   const keys=record?.subscription?.keys;
   if(!keys||typeof keys.p256dh!=='string'||!keys.p256dh||typeof keys.auth!=='string'||!keys.auth||keys.p256dh.length>400||keys.auth.length>400)throw new Error('Subscription chaves inválidas');
   const id=subId(endpoint),key=SUB_PREFIX+id;
@@ -96,6 +101,7 @@ function localizePush(payload,lang){
 async function sendPush(req,record,payload){
   try{
     const vapid=await ensureVapid();webpush.setVapidDetails(vapidSubject(req),vapid.publicKey,vapid.privateKey);
+    validatePushEndpoint(record?.subscription?.endpoint);
     const result=await webpush.sendNotification(record.subscription,JSON.stringify(localizePush(payload,record?.language)),{TTL:240,urgency:'high'});
     return {ok:true,statusCode:result?.statusCode||201};
   }catch(e){

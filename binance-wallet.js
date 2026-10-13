@@ -6,12 +6,13 @@
  const OLD_IMPORT='crRadarBinanceImportedV1966';
  const I18N={
   'pt-BR':{title:'Binance • Minha carteira',desc:'Cada pessoa conecta sua própria conta. Apenas leitura Spot, sem ordens ou saques.',check:'Consultar saldos',import:'Usar saldos na carteira',auto:'Sincronizar a cada 2 minutos com o app aberto',keep:'Conexão mantida neste aparelho até você sair. Saldo atualizado automaticamente a cada 2 minutos com o app aberto.',backup:'Voltar à carteira manual',signedOut:'Entre ou crie sua conta Radar para conectar sua Binance.',connect:'Conectar minha Binance',disconnect:'Desconectar Binance',signup:'Criar conta',signin:'Entrar',logout:'Sair da conta',email:'E-mail',password:'Senha (mínimo 8 caracteres)',apikey:'Binance API Key (somente leitura)',apisecret:'Binance Secret Key',account:'Conta Radar',tutorial:'Como criar uma chave de somente leitura na Binance',loading:'Consultando seus saldos…',connecting:'Verificando permissões da chave…',ready:n=>`${n} ativo(s) atualizado(s) da Binance.`,empty:'Nenhum saldo Spot positivo.',synced:'Saldo Binance sincronizado automaticamente com a carteira e os simuladores.',connected:'Binance conectada à sua conta.',notConnected:'Sua Binance ainda não foi conectada.',confirmed:'Confira sua caixa de e-mail e confirme o cadastro antes de entrar.',logged:'Conta conectada.',bye:'Você saiu. Carteira manual restaurada.',removed:'Conexão Binance excluída.',saved:'Sua chave foi validada e guardada criptografada no servidor.',confirm:'Exibir os saldos Spot na sua carteira? A carteira manual não será excluída.',confirmRemove:'Remover a conexão Binance desta conta? Você precisará cadastrar outra chave para reconectar.',manual:'Carteira manual restaurada.',error:'Não foi possível concluir. Verifique sua conexão e tente novamente.',authError:'E-mail ou senha inválidos, conta não confirmada ou sessão expirada.',readOnly:'Rejeitamos chaves com permissão de negociação, transferência ou saque.',keys:'Crie a chave na Binance com apenas “Enable Reading”. Nunca informe senha ou código 2FA neste aplicativo.',notConfigured:'A autenticação ainda precisa ser configurada pelo administrador.',busy:'Aguarde…'},
-  en:{title:'Binance • My portfolio',desc:'Each person connects their own account. Read-only Spot access; no trades or withdrawals.',check:'Check balances',import:'Use balances in portfolio',auto:'Sync every 2 minutes while app is open',keep:'Balances are displayed only during your session. Your manual portfolio stays on this device.',backup:'Return to manual portfolio',signedOut:'Sign in or create a Radar account to connect Binance.',connect:'Connect my Binance',disconnect:'Disconnect Binance',signup:'Create account',signin:'Sign in',logout:'Sign out',email:'Email',password:'Password (at least 8 characters)',apikey:'Binance API Key (read only)',apisecret:'Binance Secret Key',account:'Radar account',tutorial:'How to create a read-only Binance key',loading:'Checking balances…',connecting:'Checking API permissions…',ready:n=>`${n} asset(s) found. Review before importing.`,empty:'No positive Spot balances.',synced:'Balances imported for this session only.',connected:'Binance connected to your account.',notConnected:'Binance not connected yet.',confirmed:'Check your email to verify your new account before signing in.',logged:'Signed in.',bye:'Signed out. Manual portfolio restored.',removed:'Binance connection removed.',saved:'Your key was validated and encrypted on the server.',confirm:'Show your Spot balances in your portfolio? Your manual portfolio will be preserved.',confirmRemove:'Remove your Binance connection? A new key will be required.',manual:'Manual portfolio restored.',error:'Request failed. Check your connection and try again.',authError:'Incorrect credentials, unverified account or expired session.',readOnly:'Trading, transfer and withdrawal permissions are not allowed.',keys:'Create a Binance key with “Enable Reading” only. Never enter a password or 2FA code here.',notConfigured:'The app administrator must configure authentication first.',busy:'Please wait…'},
-  es:{title:'Binance • Mi cartera',desc:'Cada persona conecta su propia cuenta. Spot de solo lectura, sin operaciones ni retiros.',check:'Consultar saldos',import:'Usar saldos en la cartera',auto:'Sincronizar cada 2 minutos con la app abierta',keep:'Los saldos solo aparecen durante la sesión. Su cartera manual se conserva en este dispositivo.',backup:'Volver a la cartera manual',signedOut:'Inicie sesión o cree una cuenta Radar para conectar Binance.',connect:'Conectar mi Binance',disconnect:'Desconectar Binance',signup:'Crear cuenta',signin:'Iniciar sesión',logout:'Cerrar sesión',email:'Correo electrónico',password:'Contraseña (mínimo 8 caracteres)',apikey:'Clave API Binance (solo lectura)',apisecret:'Clave secreta Binance',account:'Cuenta Radar',tutorial:'Cómo crear una clave Binance de solo lectura',loading:'Consultando saldos…',connecting:'Verificando permisos…',ready:n=>`${n} activo(s) encontrado(s). Revíselos antes de importar.`,empty:'Sin saldos Spot positivos.',synced:'Saldos importados solo para esta sesión.',connected:'Binance conectada a su cuenta.',notConnected:'Binance aún no conectada.',confirmed:'Revise su correo para confirmar el registro antes de entrar.',logged:'Sesión iniciada.',bye:'Sesión cerrada. Cartera manual restaurada.',removed:'Conexión Binance eliminada.',saved:'Clave validada y cifrada en el servidor.',confirm:'¿Mostrar los saldos Spot en su cartera? Se conservará la cartera manual.',confirmRemove:'¿Eliminar la conexión Binance? Deberá ingresar otra clave.',manual:'Cartera manual restaurada.',error:'No se pudo completar. Revise la conexión.',authError:'Credenciales incorrectas, cuenta sin confirmar o sesión vencida.',readOnly:'No se aceptan permisos de negociación, transferencia ni retiro.',keys:'Cree una clave Binance solo con “Enable Reading”. Nunca introduzca contraseñas ni códigos 2FA aquí.',notConfigured:'El administrador debe configurar la autenticación.',busy:'Espere…'}
+  en:{title:'Binance • My portfolio',desc:'Each person connects their own account. Read-only Spot access; no trades or withdrawals.',check:'Check balances',import:'Use balances in portfolio',auto:'Sync every 2 minutes while app is open',keep:'Connection stays on this device until you sign out. Balances refresh automatically every 2 minutes while the app is open.',backup:'Return to manual portfolio',signedOut:'Sign in or create a Radar account to connect Binance.',connect:'Connect my Binance',disconnect:'Disconnect Binance',signup:'Create account',signin:'Sign in',logout:'Sign out',email:'Email',password:'Password (at least 8 characters)',apikey:'Binance API Key (read only)',apisecret:'Binance Secret Key',account:'Radar account',tutorial:'How to create a read-only Binance key',loading:'Checking balances…',connecting:'Checking API permissions…',ready:n=>`${n} asset(s) found. Review before importing.`,empty:'No positive Spot balances.',synced:'Binance balances synchronized automatically with the portfolio and simulators.',connected:'Binance connected to your account.',notConnected:'Binance not connected yet.',confirmed:'Check your email to verify your new account before signing in.',logged:'Signed in.',bye:'Signed out. Manual portfolio restored.',removed:'Binance connection removed.',saved:'Your key was validated and encrypted on the server.',confirm:'Show your Spot balances in your portfolio? Your manual portfolio will be preserved.',confirmRemove:'Remove your Binance connection? A new key will be required.',manual:'Manual portfolio restored.',error:'Request failed. Check your connection and try again.',authError:'Incorrect credentials, unverified account or expired session.',readOnly:'Trading, transfer and withdrawal permissions are not allowed.',keys:'Create a Binance key with “Enable Reading” only. Never enter a password or 2FA code here.',notConfigured:'The app administrator must configure authentication first.',busy:'Please wait…'},
+  es:{title:'Binance • Mi cartera',desc:'Cada persona conecta su propia cuenta. Spot de solo lectura, sin operaciones ni retiros.',check:'Consultar saldos',import:'Usar saldos en la cartera',auto:'Sincronizar cada 2 minutos con la app abierta',keep:'La conexión permanece en este dispositivo hasta cerrar sesión. Los saldos se actualizan automáticamente cada 2 minutos con la app abierta.',backup:'Volver a la cartera manual',signedOut:'Inicie sesión o cree una cuenta Radar para conectar Binance.',connect:'Conectar mi Binance',disconnect:'Desconectar Binance',signup:'Crear cuenta',signin:'Iniciar sesión',logout:'Cerrar sesión',email:'Correo electrónico',password:'Contraseña (mínimo 8 caracteres)',apikey:'Clave API Binance (solo lectura)',apisecret:'Clave secreta Binance',account:'Cuenta Radar',tutorial:'Cómo crear una clave Binance de solo lectura',loading:'Consultando saldos…',connecting:'Verificando permisos…',ready:n=>`${n} activo(s) encontrado(s). Revíselos antes de importar.`,empty:'Sin saldos Spot positivos.',synced:'Saldos Binance sincronizados automáticamente con la cartera y los simuladores.',connected:'Binance conectada a su cuenta.',notConnected:'Binance aún no conectada.',confirmed:'Revise su correo para confirmar el registro antes de entrar.',logged:'Sesión iniciada.',bye:'Sesión cerrada. Cartera manual restaurada.',removed:'Conexión Binance eliminada.',saved:'Clave validada y cifrada en el servidor.',confirm:'¿Mostrar los saldos Spot en su cartera? Se conservará la cartera manual.',confirmRemove:'¿Eliminar la conexión Binance? Deberá ingresar otra clave.',manual:'Cartera manual restaurada.',error:'No se pudo completar. Revise la conexión.',authError:'Credenciales incorrectas, cuenta sin confirmar o sesión vencida.',readOnly:'No se aceptan permisos de negociación, transferencia ni retiro.',keys:'Cree una clave Binance solo con “Enable Reading”. Nunca introduzca contraseñas ni códigos 2FA aquí.',notConfigured:'El administrador debe configurar la autenticación.',busy:'Espere…'}
  };
  const lang=()=>{const x=String(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt-BR');return x.startsWith('en')?'en':x.startsWith('es')?'es':'pt-BR'};
  const t=()=>I18N[lang()];
  const state={conf:null,auth:null,user:null,connected:false,busy:false,latest:null,importedFor:null,lastFetched:0,lastSyncError:false};
+ let authEpoch=0;
  const autoKey=()=>state.user?'radar:binance:auto:'+state.user.id:'';
  const importKey=()=>state.user?'radar:binance:import:'+state.user.id:'';
  const hasAuto=()=>!!state.user&&localStorage.getItem(autoKey())!=='off';
@@ -40,7 +41,7 @@
  function saveAuth(auth){
   if(auth?.access_token&&auth?.refresh_token){const stored={access_token:auth.access_token,refresh_token:auth.refresh_token,expires_at:Number(auth.expires_at)||Math.floor(Date.now()/1000)+Number(auth.expires_in||3600)};state.auth=stored;localStorage.setItem(SESSION_KEY,JSON.stringify(stored));sessionStorage.removeItem(SESSION_KEY);return true}return false;
  }
- function clearAuth(){state.auth=null;state.user=null;state.connected=false;state.latest=null;window.CriptoRadarBinanceSnapshot=null;sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);window.dispatchEvent(new Event('criptoradar:authchange'));}
+ function clearAuth(){authEpoch++;state.auth=null;state.user=null;state.connected=false;state.latest=null;window.CriptoRadarBinanceSnapshot=null;sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);view();window.dispatchEvent(new Event('criptoradar:authchange'));}
  async function initializeConfig(){
   if(state.conf)return state.conf;
   const r=await fetch('./api/radar-auth-config',{cache:'no-store'});
@@ -59,8 +60,12 @@
    try{const stored=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');if(stored?.refresh_token)state.auth=stored;}catch(_){}
    if(!state.auth)return null;
    if(Date.now()/1000>Number(state.auth.expires_at||0)-90){
-    try{const renew=await authRequest('token?grant_type=refresh_token',{refresh_token:state.auth.refresh_token});if(!saveAuth(renew))throw Error('refresh_error')}
-    catch(e){if(e.message==='auth_rejected'){detach();clearAuth();view();}throw e;}
+    const refreshToken=state.auth.refresh_token,epoch=authEpoch;
+    try{const renew=await authRequest('token?grant_type=refresh_token',{refresh_token:refreshToken});
+     const stored=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');
+     if(epoch!==authEpoch||stored?.refresh_token!==refreshToken)throw Error('account_changed');
+     if(!saveAuth(renew))throw Error('refresh_error')}
+    catch(e){if(e.message==='auth_rejected'&&epoch===authEpoch&&JSON.parse(localStorage.getItem(SESSION_KEY)||'null')?.refresh_token===refreshToken){detach();clearAuth();view();}throw e;}
    }
    return state.auth.access_token;
   }
@@ -77,17 +82,20 @@
   if(Array.isArray(window.printWallet)){window.printWallet=manualWallet();if(typeof renderPrintWallet==='function')renderPrintWallet();try{window.dispatchEvent(new Event('criptoradar:walletchange'))}catch(_){}}
  }
  async function loadUser(){
-  const token=await validToken();if(!token)return null;
-  try{const user=await authRequest('user',null,token);if(!user?.id||!user?.email)throw Error('invalid_user');
+  const epoch=authEpoch;
+  const token=await validToken();if(epoch!==authEpoch)return null;if(!token)return null;
+  try{const user=await authRequest('user',null,token);if(epoch!==authEpoch)return null;if(!user?.id||!user?.email)throw Error('invalid_user');
    if(state.user?.id&&state.user.id!==user.id)detach();
-   state.user={id:user.id,email:user.email};return state.user;
-  }catch(e){if(e.message==='auth_rejected'||e.message==='invalid_user'){detach();clearAuth();return null;}throw e;}
+   state.user={id:user.id,email:user.email};view();window.dispatchEvent(new Event('criptoradar:authchange'));return state.user;
+  }catch(e){if(epoch!==authEpoch)return null;if(e.message==='auth_rejected'||e.message==='invalid_user'){detach();clearAuth();return null;}throw e;}
  }
  async function callApi(method='GET',data=null,action=''){
-  const token=await requireToken();
+  const epoch=authEpoch,userId=state.user?.id;
+  const assertAccount=()=>{if(epoch!==authEpoch||userId!==state.user?.id)throw Error('account_changed')};
+  const token=await requireToken();assertAccount();
   const url='./api/binance-wallet'+(action?'?action='+encodeURIComponent(action):'');
   const r=await fetch(url,{method,headers:{Authorization:'Bearer '+token,Accept:'application/json',...(data?{'Content-Type':'application/json'}:{})},body:data?JSON.stringify(data):undefined,cache:'no-store',credentials:'same-origin'});
-  const j=await r.json().catch(()=>({}));
+  const j=await r.json().catch(()=>({}));assertAccount();
   if(!r.ok||!j.ok){
    // Only accept structured error codes, never show raw server messages.
    const code=typeof j.error==='string'&&/^[a-z][a-z0-9_]{2,64}$/.test(j.error)?j.error:r.status===404?'endpoint_unavailable':'http_'+r.status;
@@ -270,7 +278,7 @@
    const current=valueInBRL(a.symbol,Number(position?.qty)||0)||0;
    const maxSpend=Math.max(0,total*capPct-current);
    const value=Math.max(0,Math.min(left,spend/Math.max(1,confirmed.length),maxSpend));
-   if(value>=Math.max(5,total*.005)){items.push({symbol:a.symbol,value});left-=value;}
+   if(value>0){items.push({symbol:a.symbol,value});left-=value;}
   }
   const used=items.reduce((sum,x)=>sum+x.value,0);
   return {reserve:Math.max(0,investable-used),items};
@@ -366,25 +374,26 @@
    renderBalances();if(!silent)message(list.length?t().ready(list.length):t().empty);
    if(localStorage.getItem(importKey())!=='no')useBalances(false);else activateBridge();
    return true;
-  }catch(e){state.lastSyncError=true;if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);renderInsights();return false}
+  }catch(e){if(e.message==='account_changed')return false;state.lastSyncError=true;if(e?.status===401){detach();clearAuth();view()}if(!silent)message(friendlyError(e),true);renderInsights();return false}
   finally{state.busy=false;view()}
  }
  async function status(){
   if(!state.user)return;
   try{const data=await callApi('GET',null,'status');state.connected=!!data.connected;message(state.connected?t().connected:t().notConnected);view();
     if(state.connected&&hasAuto())await check(true);
-  }catch(e){message(friendlyError(e),true);view()}
+  }catch(e){if(e.message!=='account_changed')message(friendlyError(e),true);view()}
  }
  async function enter(mode){
   if(state.busy)return;
   const email=String($('radarBinanceEmail')?.value||'').trim(),password=String($('radarBinancePassword')?.value||'');
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)||password.length<8){message(t().authError,true);return}
-  state.busy=true;message(t().busy);view();
+  const epoch=++authEpoch;state.busy=true;message(t().busy);view();
   try{
    const session=await authRequest(mode==='signup'?'signup':'token?grant_type=password',{email,password});
+   if(epoch!==authEpoch)return;
    $('radarBinancePassword').value='';
    if(!saveAuth(session)) {message(t().confirmed);return;}
-   if(await loadUser()){message(t().logged);view();await status()}
+   if(await loadUser()){message(t().logged);state.busy=false;view();await status()}
    else message(t().authError,true);
   }catch(e){message(t().authError,true)}finally{state.busy=false;view()}
  }
@@ -406,8 +415,9 @@
   }catch(e){message(friendlyError(e),true)}finally{state.busy=false;view()}
  }
  async function logout(){
-  try{const token=await validToken();if(token)await authRequest('logout',{},token)}catch(_){}
-  detach();clearAuth();$('radarBinancePreview').replaceChildren();message(t().bye);view();
+  const token=state.auth?.access_token;
+  detach();clearAuth();$('radarBinancePreview')?.replaceChildren();message(t().bye);view();
+  try{if(token)await authRequest('logout',{},token)}catch(_){}
  }
  async function init(){
   // Remove old V19.6.6 shared/developer session import, if present.
@@ -432,7 +442,7 @@
   }catch(e){message(t().notConfigured,true)}
   renderText();
   window.addEventListener('online',()=>{if(state.user&&state.connected)check(true)});
-  window.addEventListener('storage',e=>{if(e.key===SESSION_KEY){detach();state.auth=null;state.user=null;state.connected=false;view();loadUser().then(u=>{view();if(u)return status()}).catch(()=>{});}});
+  window.addEventListener('storage',e=>{if(e.key===SESSION_KEY){authEpoch++;detach();state.auth=null;state.user=null;state.connected=false;state.latest=null;state.lastFetched=0;view();window.dispatchEvent(new Event('criptoradar:authchange'));loadUser().then(u=>{view();if(u)return status()}).catch(()=>{});}});
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
@@ -442,9 +452,9 @@
  if(window.RadarTrader20Loaded)return;
  window.RadarTrader20Loaded=true;
  const styles=document.createElement('link');styles.rel='stylesheet';styles.href='./radar-trader-sim.css?v=2000';document.head.appendChild(styles);
- const core=document.createElement('script');core.src='./radar-trader-core.js?v=2013';core.defer=true;
+ const core=document.createElement('script');core.src='./radar-trader-core.js?v=2014';core.defer=true;
  core.onload=function(){
-  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2013';sim.defer=true;
+  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2014';sim.defer=true;
   sim.onerror=()=>console.warn('Radar Trader 20: interface simulada indisponível');
   document.head.appendChild(sim);
  };
@@ -457,7 +467,7 @@
  if(window.RadarTraderCloud21Loaded)return;
  window.RadarTraderCloud21Loaded=true;
  const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2111';document.head.appendChild(css);
- const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2112';
+ const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2014';
  js.onerror=()=>console.warn('Radar Trader 20.1: carregamento da interface indisponível');
  document.head.appendChild(js);
 })();

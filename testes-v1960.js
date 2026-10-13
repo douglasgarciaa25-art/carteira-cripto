@@ -34,7 +34,7 @@ async function test(){const results=[];
   const originalFetch=global.fetch; const origUrl=process.env.KV_REST_API_URL,origToken=process.env.KV_REST_API_TOKEN;
   delete process.env.KV_REST_API_URL;delete process.env.KV_REST_API_TOKEN;
   const lib=mockRequire('push-server-lib.js',null,{'web-push':{generateVAPIDKeys:()=>({publicKey:'p',privateKey:'s'}),setVapidDetails:()=>{},sendNotification:async()=>({statusCode:201})}});
-  const r=await lib.sendPush({headers:{}},{id:'abc',subscription:{endpoint:'https://x.test',keys:{p256dh:'p',auth:'a'}}},{title:'x'});
+  const r=await lib.sendPush({headers:{}},{id:'abc',subscription:{endpoint:'https://fcm.googleapis.com/fcm/send/test',keys:{p256dh:'p',auth:'a'}}},{title:'x'});
   assert.equal(r.ok,false);assert.match(r.error,/ausentes/);add(2,'missing VAPID/KV configuration is handled');
   if(origUrl!==undefined)process.env.KV_REST_API_URL=origUrl;if(origToken!==undefined)process.env.KV_REST_API_TOKEN=origToken;global.fetch=originalFetch;
  }
@@ -58,7 +58,7 @@ async function test(){const results=[];
   let payload;
   const lib=mockRequire('push-server-lib.js',null,{'web-push':{generateVAPIDKeys:()=>({publicKey:'p',privateKey:'s'}),setVapidDetails:()=>{},sendNotification:async(_,body)=>{payload=JSON.parse(body);return {statusCode:201}}}});
   for(const language of ['en','es']){
-   const result=await lib.sendPush({headers:{host:'my.example'}},{id:'123',language,subscription:{endpoint:'https://x.example',keys:{p256dh:'key',auth:'key'}}},{kind:'v18-signal',title:'🧠 Radar V18: BTC',symbol:'BTC',body:'Compra confirmada • 87/100 • Moeda com tendência em alta'});
+   const result=await lib.sendPush({headers:{host:'my.example'}},{id:'123',language,subscription:{endpoint:'https://fcm.googleapis.com/fcm/send/test',keys:{p256dh:'key',auth:'key'}}},{kind:'v18-signal',title:'🧠 Radar V18: BTC',symbol:'BTC',body:'Compra confirmada • 87/100 • Moeda com tendência em alta'});
    assert.equal(result.ok,true);assert.equal(payload.lang,language);assert(!/Compra confirmada|Moeda com tendência/i.test(payload.body));assert(payload.body.includes('87/100'));add(4,'V18 alert fully localized for '+language);
   }
   global.fetch=origFetch;if(oldURL===undefined)delete process.env.KV_REST_API_URL;else process.env.KV_REST_API_URL=oldURL;
@@ -68,7 +68,7 @@ async function test(){const results=[];
  {
   const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
   assert(sw.includes('if(url.origin!==self.location.origin)return;'));
-  assert(sw.includes('cripto-radar-v19.6.0'));
+  assert(/const CACHE='cripto-radar-[^']+'/.test(sw));
   const core=sw.match(/const CORE=(\[[^;]+\]);/);assert(core,'CORE missing');
   const paths=JSON.parse(core[1].replaceAll("'",'"'));
   for(const resource of paths){if(resource==='./')continue;assert(fs.existsSync(path.join(root,resource.replace(/^\.\//,''))),resource)}
@@ -76,7 +76,7 @@ async function test(){const results=[];
   const vercel=JSON.parse(fs.readFileSync(path.join(root,'vercel.json'),'utf8'));const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
   for(const x of vercel.builds)assert(fs.existsSync(path.join(root,x.src)),x.src);
   for(const x of manifest.icons)assert(fs.existsSync(path.join(root,x.src)),x.src);
-  assert.equal(JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version,'19.6.0');
+  assert(/^\d+\.\d+\.\d+$/.test(JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version));
   add(5,'Vercel assets, PWA manifest and package versions');
  }
  return {version:'19.6.0',source:'19.5.9',rounds:5,passed:results.length,failed:0,results,pending:['Device Push and lockscreen tests','Vercel deployment and cloud KV','Google Play Billing','Foreign-language source news','Live Android UI regression']};

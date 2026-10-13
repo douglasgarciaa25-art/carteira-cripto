@@ -1,0 +1,13 @@
+CRIPTO RADAR 20.1.4 — ATUALIZAÇÃO DA AUDITORIA
+
+Correções já publicadas no site e no worker de simulação.
+
+Este ZIP contém os arquivos alterados e testes, todos na raiz. Não é uma cópia completa do repositório.
+Envie os arquivos à raiz de douglasgarciaa25-art/carteira-cripto, substituindo os correspondentes. Preserve os outros arquivos.
+Isso mantém o GitHub alinhado com a publicação direta e evita regressão no próximo deploy.
+
+O worker Supabase já foi atualizado; radar-paper-worker.ts é a cópia da fonte publicada.
+Leia RELATORIO-AUDITORIA-20-1-4.md para falhas corrigidas, validações e pendências.
+Execute npm test na raiz do projeto completo para repetir os 50 testes.
+
+Não inclua chaves, senhas nem arquivos .env no GitHub.

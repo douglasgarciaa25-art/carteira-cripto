@@ -25,7 +25,7 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   s.cash=Number((Number(s.cash)+delta).toFixed(12));
   s.dayStartNAV=Number((Number(s.dayStartNAV)+delta).toFixed(12));
   s.initialUSDT=Number((Number(s.initialUSDT)+delta).toFixed(12));
-  s.version='20.1.3';s.capitalSource='binance_spot';
+  s.version='20.1.4';s.capitalSource='binance_spot';
   s.binanceReference={userId:b.userId,freeUSDT:free,updatedAt:b.updatedAt};
   s.binanceSyncError='';
   return s;
@@ -35,7 +35,7 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   if(s.binanceSyncError||!b||!Number.isFinite(at)||now-at>180000||at>now+60000)return 'Saldo Binance indisponível ou desatualizado. Aguarde a sincronização.';
   return '';
  }
-function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.3',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
+function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.4',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
 function stats(s,m){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=q&&good(q.price)&&Math.abs(Date.now()-q.at)<180000;const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested),start=Number(s.dayStartNAV)||s.initialUSDT;return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
 function available(s,m,sym,side,amount,auto,at,protective=false){
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
@@ -47,6 +47,7 @@ function available(s,m,sym,side,amount,auto,at,protective=false){
  const q=m[sym];if(!q||!good(q.price)||Math.abs(at-q.at)>180000)return 'stale_price';
  if(exit){if(!(q.volume>0)||!(q.spread>=0&&q.spread<=1))return 'protective_exit_no_liquidity';}
  else if(!(q.volume>=3000000)||!(q.spread>=0&&q.spread<=0.3))return 'insufficient_liquidity';
+ if(side==='SELL'&&!exit&&r8(amount/q.price)<=0)return 'quantity_precision_unavailable';
  const st=stats(s,m);
  if(st.stale.length&&!exit)return 'stale_open_position';
  if(side==='BUY'&&st.dailyPnlPct<=-s.limits.maxDailyLossPct)return 'daily_loss_limit';
@@ -62,6 +63,7 @@ function available(s,m,sym,side,amount,auto,at,protective=false){
  return '';
 }
 function trade(s,side,sym,amount,market,auto,reason,at,protective=false){
+ if(s.day!==nowDate(at)){s.day=nowDate(at);s.dayStartNAV=stats(s,market).nav;}
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
  if(exit)amount=s.positions[sym].qty*Number(market[sym]?.price||0);
  const why=available(s,market,sym,side,amount,auto,at,exit);if(why)return {ok:false,reason:why};
