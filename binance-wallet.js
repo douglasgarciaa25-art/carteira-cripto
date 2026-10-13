@@ -427,3 +427,18 @@
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
+/* RADAR TRADER 20.0 - only loads a local, isolated PAPER simulator. */
+(function(){
+ if(window.RadarTrader20Loaded)return;
+ window.RadarTrader20Loaded=true;
+ const styles=document.createElement('link');styles.rel='stylesheet';styles.href='./radar-trader-sim.css?v=2000';document.head.appendChild(styles);
+ const core=document.createElement('script');core.src='./radar-trader-core.js?v=2000';core.defer=true;
+ core.onload=function(){
+  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2000';sim.defer=true;
+  sim.onerror=()=>console.warn('Radar Trader 20: interface simulada indisponível');
+  document.head.appendChild(sim);
+ };
+ core.onerror=()=>console.warn('Radar Trader 20: motor de simulação indisponível');
+ document.head.appendChild(core);
+})();

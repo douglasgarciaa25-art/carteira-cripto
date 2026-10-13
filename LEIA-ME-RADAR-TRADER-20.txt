@@ -1,0 +1,49 @@
+RADAR TRADER 20.0 — FASE 1, SOMENTE SIMULAÇÃO
+
+ATENÇÃO: ESTE PACOTE NÃO ENVIA ORDENS REAIS À BINANCE.
+NÃO PEDE NOVA API KEY E NÃO ALTERA AS PERMISSÕES ATUAIS.
+
+O QUE FOI ENTREGUE
+- Simulação manual com confirmação obrigatória antes de cada ordem fictícia.
+- Robô simulado opcional (desligado por padrão e a cada abertura do aplicativo).
+- Compras automáticas somente quando o motor atual do Radar indicar entrada tecnicamente confirmada, cotação recente e liquidez suficiente.
+- Monitoramento ilustrativo das posições virtuais: stop -4% e realização +8% sobre preço médio fictício.
+- Limites fixos de proteção do teste: 5% por operação, 30% da carteira em criptoativos voláteis, 20% por ativo, 2% de perda diária, 3 operações por dia e 15 minutos entre ordens do mesmo ativo.
+- Preço de execução SIMULADO com 0,1% de taxa e 0,1% de slippage.
+- Histórico local, exportação CSV e parada de emergência com rearme manual.
+- Por padrão, saldo virtual inicial de 1.000 USDT. Opcionalmente, é possível COPIAR o número do USDT livre da Binance apenas como referência inicial, sem usar fundos reais.
+- Opera com o aplicativo aberto. Não executa em segundo plano ou com tela bloqueada nesta fase.
+
+INSTALAÇÃO NO GITHUB (TODOS OS ARQUIVOS NA RAIZ)
+1. Faça backup do atual binance-wallet.js do GitHub.
+2. Extraia ESTE ZIP e envie os 4 arquivos de código à raiz do repositório, junto com os arquivos existentes, substituindo apenas binance-wallet.js:
+   binance-wallet.js
+   radar-trader-core.js
+   radar-trader-sim.js
+   radar-trader-sim.css
+3. A Vercel deve reconstruir o deploy automaticamente se o projeto estiver conectado à branch principal (main).
+4. Aguarde a Vercel mostrar READY. Reabra o Radar, atualize a página, toque em CARTEIRA e procure o painel "Radar Trader 20.0 — Operações simuladas" dentro do bloco Binance.
+5. Se não aparecer, limpe o cache da página/PWA e verifique se os 4 arquivos estão na raiz. NÃO crie uma subpasta.
+
+COMO TESTAR
+- Abra Carteira > Radar Trader 20.0.
+- Modo manual: selecione BTC ou outro ativo, 20 USDT, clique "Revisar ordem simulada" e confirme.
+- Modo automático: selecione "Automático simulado" e habilite a caixa. Pode NÃO executar nada caso não haja sinal validado, liquidez suficiente, ou a ordem mínima/limites impeçam. Isso é o comportamento seguro.
+- Teste "PARADA DE EMERGÊNCIA": a simulação deve bloquear novas ordens até rearmar.
+- O USDT real da Binance NÃO será debitado.
+
+OBSERVAÇÕES IMPORTANTES
+- O limite mínimo simulado de 10 USDT é apenas ilustrativo: a Binance aplica regras específicas de cada mercado.
+- Com 17,38 USDT virtuais, 5% por operação é inferior a 10 USDT, portanto o sistema NÃO força uma compra. Teste com 1.000 USDT fictícios antes de ajustar parâmetros.
+- Os retornos e sinais são probabilísticos, não garantias de lucro.
+- NÃO há autorização para criar API de negociação, ordens reais, margem, futuros ou saques.
+- A arquitetura de negociação real e os testes na Binance Spot Testnet são ETAPAS FUTURAS e NÃO estão prontos neste pacote.
+- O código existente da IA no servidor ainda requer revisão de isolamento de carteira por usuário antes de qualquer funcionalidade real de trade.
+- Se usado em outros países, revisar a interface e as normas locais; nesta fase, mensagens estão em português.
+
+CONFERÊNCIA REALIZADA
+- Verificação de sintaxe com Node.js dos 3 scripts JS.
+- 14 testes automatizados do motor principal (saldo, limites, bloqueios, assinatura de execução fictícia, parada de emergência etc.).
+- Teste visual no navegador não executado neste ambiente; validar a interface no dispositivo após publicar.
+
+Versão experimental. Não usar como evidência de operação, lucro ou sincronização real.
