@@ -1,0 +1,6 @@
+CRIPTO RADAR 20.1.8 — REVISÃO GERAL
+
+Envie todos os 12 arquivos à raiz do GitHub, substituindo os correspondentes. Preserve os demais arquivos.
+O site já foi atualizado diretamente na Vercel. Este ZIP contém as alterações da revisão, não uma cópia completa do repositório.
+Leia RELATORIO-REVISAO-GERAL-20-1-8.md para correções, verificações e pendências, incluindo cobrança Google Play ainda não configurada.
+90 testes aprovados. Execute npm test no projeto completo.

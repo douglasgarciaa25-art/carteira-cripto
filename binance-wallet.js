@@ -42,17 +42,23 @@
   if(auth?.access_token&&auth?.refresh_token){const stored={access_token:auth.access_token,refresh_token:auth.refresh_token,expires_at:Number(auth.expires_at)||Math.floor(Date.now()/1000)+Number(auth.expires_in||3600)};state.auth=stored;localStorage.setItem(SESSION_KEY,JSON.stringify(stored));sessionStorage.removeItem(SESSION_KEY);return true}return false;
  }
  function clearAuth(){authEpoch++;state.auth=null;state.user=null;state.connected=false;state.latest=null;window.CriptoRadarBinanceSnapshot=null;sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);view();window.dispatchEvent(new Event('criptoradar:authchange'));}
+ async function requestJson(url,options={},ms=20000){
+  const controller=new AbortController();let timer;
+  const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error('request_timeout'))},ms)});
+  try{return await Promise.race([(async()=>{const response=await fetch(url,{...options,signal:controller.signal});const data=await response.json().catch(()=>({}));return {response,data}})(),deadline]);}
+  finally{clearTimeout(timer)}
+ }
  async function initializeConfig(){
   if(state.conf)return state.conf;
-  const r=await fetch('./api/radar-auth-config',{cache:'no-store'});
+  const {response:r,data:j}=await requestJson('./api/radar-auth-config',{cache:'no-store'});
   if(!r.ok)throw Error('auth_config');
-  const j=await r.json();if(!j.ok||!/^https:\/\//.test(j.supabaseUrl)||!j.publicKey)throw Error('auth_config');
+  if(!j.ok||!/^https:\/\//.test(j.supabaseUrl)||!j.publicKey)throw Error('auth_config');
   state.conf=j;return j;
  }
  async function authRequest(path,body,token){
   const conf=await initializeConfig();
-  const r=await fetch(conf.supabaseUrl+'/auth/v1/'+path,{method:body?'POST':'GET',headers:{apikey:conf.publicKey,'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):undefined,cache:'no-store'});
-  const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(r.status===429||r.status>=500?'auth_temporarily_unavailable':'auth_rejected');return j;
+  const {response:r,data:j}=await requestJson(conf.supabaseUrl+'/auth/v1/'+path,{method:body?'POST':'GET',headers:{apikey:conf.publicKey,'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):undefined,cache:'no-store'});
+  if(!r.ok)throw Error(r.status===429||r.status>=500?'auth_temporarily_unavailable':'auth_rejected');return j;
  }
  let renewing=null;
  async function validToken(){
@@ -94,8 +100,8 @@
   const assertAccount=()=>{if(epoch!==authEpoch||userId!==state.user?.id)throw Error('account_changed')};
   const token=await requireToken();assertAccount();
   const url='./api/binance-wallet'+(action?'?action='+encodeURIComponent(action):'');
-  const r=await fetch(url,{method,headers:{Authorization:'Bearer '+token,Accept:'application/json',...(data?{'Content-Type':'application/json'}:{})},body:data?JSON.stringify(data):undefined,cache:'no-store',credentials:'same-origin'});
-  const j=await r.json().catch(()=>({}));assertAccount();
+  const {response:r,data:j}=await requestJson(url,{method,headers:{Authorization:'Bearer '+token,Accept:'application/json',...(data?{'Content-Type':'application/json'}:{})},body:data?JSON.stringify(data):undefined,cache:'no-store',credentials:'same-origin'},35000);
+  assertAccount();
   if(!r.ok||!j.ok){
    // Only accept structured error codes, never show raw server messages.
    const code=typeof j.error==='string'&&/^[a-z][a-z0-9_]{2,64}$/.test(j.error)?j.error:r.status===404?'endpoint_unavailable':'http_'+r.status;
@@ -194,6 +200,7 @@
  };
  function friendlyError(err){
   const code=String(err?.message||'');
+  if(code==='request_timeout'||code==='auth_temporarily_unavailable')return lang()==='en'?'Service unavailable or taking too long. Your saved connection is preserved; try again.':lang()==='es'?'Servicio no disponible o lento. Se conserva la conexión guardada; vuelva a intentar.':'Serviço indisponível ou demorando para responder. Sua conexão salva foi preservada; tente novamente.';
   if(/^(login_required|session_invalid|email_confirmation_required|auth_rejected)$/.test(code))return t().authError;
   const detail=(DIAGNOSTICS[lang()]||DIAGNOSTICS['pt-BR'])[code];
   if(detail)return detail+(Number.isInteger(err?.binanceCode)&&err.binanceCode<0?' (Código Binance: '+err.binanceCode+')':'');
@@ -369,6 +376,8 @@
   state.busy=true;if(!silent)message(t().loading);view();
   try{
    const data=await callApi();
+   const at=Date.parse(data.updatedAt||''),number=x=>x!==null&&x!==undefined&&x!==''&&Number.isFinite(Number(x))&&Number(x)>=0;
+   if(!Array.isArray(data.balances)||!Number.isFinite(at)||at>Date.now()+60000||Date.now()-at>180000||data.balances.some(x=>!x||!/^[A-Z0-9]{2,18}$/.test(String(x.symbol||''))||!number(x.free)||!number(x.locked)||!number(x.qty)))throw Error('binance_invalid_response');
    const list=(Array.isArray(data.balances)?data.balances:[]).filter(x=>/^[A-Z0-9]{2,18}$/.test(String(x.symbol||''))&&Number.isFinite(Number(x.qty))&&Number(x.qty)>0).map(x=>({symbol:x.symbol,free:+x.free,locked:+x.locked,qty:+x.qty}));
    state.latest={balances:list,updatedAt:data.updatedAt};state.lastFetched=Date.now();state.lastSyncError=false;
    renderBalances();if(!silent)message(list.length?t().ready(list.length):t().empty);
@@ -395,7 +404,7 @@
    if(!saveAuth(session)) {message(t().confirmed);return;}
    if(await loadUser()){message(t().logged);state.busy=false;view();await status()}
    else message(t().authError,true);
-  }catch(e){message(t().authError,true)}finally{state.busy=false;view()}
+  }catch(e){message(friendlyError(e),true)}finally{state.busy=false;view()}
  }
  async function link(){
   if(state.busy||!state.user)return;
@@ -478,7 +487,7 @@
  if(window.RadarTraderCloud21Loaded)return;
  window.RadarTraderCloud21Loaded=true;
  const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2111';document.head.appendChild(css);
- const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2015';
+ const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2018';
  js.onerror=()=>console.warn('Radar Trader 20.1: carregamento da interface indisponível');
  document.head.appendChild(js);
 })();

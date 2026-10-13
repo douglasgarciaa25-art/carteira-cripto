@@ -106,7 +106,8 @@ async function balances(key,secret,timeOffset){
  const result=[];
  for(const x of data.balances){
   const symbol=String(x?.asset||'').toUpperCase();const free=decimal(x?.free),locked=decimal(x?.locked);
-  if(!/^[A-Z0-9]{2,18}$/.test(symbol)||free===null||locked===null||free+locked<=0)continue;
+  if(free===null||locked===null)throw new ApiError(502,'binance_invalid_response');
+  if(!/^[A-Z0-9]{2,18}$/.test(symbol)||free+locked<=0)continue;
   result.push({symbol,free,locked,qty:free+locked});
  }
  return result.sort((a,b)=>a.symbol.localeCompare(b.symbol));
