@@ -12,8 +12,9 @@ Nao exclua os demais arquivos existentes.
 
 radar-paper-worker.ts e o codigo preparado para a funcao do servidor Supabase.
 Ele pode ser guardado na raiz do repositorio, mas o upload GitHub NAO publica essa funcao.
-Apos enviar o pacote, informe "Subi" para aplicar a funcao no Supabase e validar o conjunto.
-A funcao do servidor ainda NAO foi alterada nesta entrega.
+Funcao do servidor publicada e validada em 13/10/2026.
+Esta copia inclui a correcao final da autenticacao interna da API de saldos.
+A correcao foi publicada diretamente na Vercel. Atualize binance-wallet-api.js no GitHub antes da proxima publicacao pelo repositorio para preservar essa correcao.
 
 MUDANCAS
 - Login persistente com renovacao da sessao e saida explicita.
@@ -31,6 +32,7 @@ VALIDACAO
 21 verificacoes automatizadas de saldo, isolamento, ordens e autorizacao.
 5 verificacoes de persistencia, renovacao e encerramento de sessao.
 Sintaxe verificada nos cinco scripts e no worker.
-Testes usam saldos e servicos simulados. A validacao integrada em producao depende do upload e da publicacao do worker.
+Testes automatizados usam saldos e servicos simulados.
+Validacao integrada em producao: HTTP 200, uma conta consultada, zero pausas e saldo Binance sincronizado no servidor.
 
 SOMENTE SIMULACAO. Nao transfere dinheiro e nao envia ordens reais a Binance.

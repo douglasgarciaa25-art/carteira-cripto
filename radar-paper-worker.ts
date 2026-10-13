@@ -25,7 +25,7 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   s.cash=Number((Number(s.cash)+delta).toFixed(12));
   s.dayStartNAV=Number((Number(s.dayStartNAV)+delta).toFixed(12));
   s.initialUSDT=Number((Number(s.initialUSDT)+delta).toFixed(12));
-  s.capitalSource='binance_spot';
+  s.version='20.1.3';s.capitalSource='binance_spot';
   s.binanceReference={userId:b.userId,freeUSDT:free,updatedAt:b.updatedAt};
   s.binanceSyncError='';
   return s;
@@ -115,7 +115,7 @@ async function syncBalance(req,uid,s,cron=false){
  const headers=cron?{Authorization:'Bearer '+SRK,'x-radar-cron-token':req.headers.get('x-radar-cron-token'),'x-radar-user-id':uid}:{Authorization:req.headers.get('authorization')||''};
  const r=await fetch('https://carteira-cripto-pi.vercel.app/api/binance-wallet',{headers,signal:AbortSignal.timeout(25000),redirect:'error'});
  const j=await r.json().catch(()=>({}));
- if(!r.ok||!j.ok||!Array.isArray(j.balances))throw Error('binance_sync_unavailable');
+ if(!r.ok||!j.ok||!Array.isArray(j.balances))throw Error('binance_sync_'+r.status+'_'+(/^[a-z_]{3,64}$/.test(j.error||'')?j.error:'unavailable'));
  const entry=j.balances.find(x=>x.symbol==='USDT');
  syncBinanceReference(s,{source:'binance_spot',userId:uid,freeUSDT:entry?Number(entry.free):0,updatedAt:j.updatedAt});
 }
@@ -127,7 +127,7 @@ async function runCron(req){
  for(let start=0;start<rows.length;start+=4)await Promise.all(rows.slice(start,start+4).map(async row=>{try{
   const state=structuredClone(row.ledger),prior=state.orders?.at(-1)?.id;state.limits={...LIMITS,...state.limits,minQuote:0};
   try{await syncBalance(req,row.user_id,state,true);scan(state,market,Date.now());}
-  catch(_){state.binanceSyncError='binance_sync_unavailable';state.lastStatus='Saldo Binance indisponível: ordens fictícias pausadas';paused++;}
+  catch(e){const code=/^[a-z0-9_]{3,100}$/.test(String(e.message))?String(e.message):'binance_sync_unavailable';state.binanceSyncError=code;state.lastStatus='Saldo Binance indisponível: ordens fictícias pausadas ('+code+')';paused++;}
   const saved=await save(row,state,new Date().toISOString());if(saved){checked++;if(state.orders?.at(-1)?.id!==prior)orders++;}
  }catch(_){} }));
  return out(req,200,{ok:true,checked,orders,paused,marketSymbols:Object.keys(market).length,paper:true});

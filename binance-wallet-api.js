@@ -19,8 +19,9 @@ module.exports=async function handler(req,res){
    // Requires BOTH a service-role bearer and the server cron secret; never available to clients.
    const uid=String(req.headers?.['x-radar-user-id']||'');
    if(req.method!=='GET'||req.headers?.origin||cronToken.length<48||cronToken.length>512||!userToken||!/^[0-9a-f-]{36}$/i.test(uid))throw new lib.ApiError(403,'worker_not_authorized');
-   const auth=await fetch(conf.url+'/rest/v1/rpc/radar_paper_cron_authorized',{method:'POST',headers:{apikey:conf.publicKey,Authorization:'Bearer '+userToken,'Content-Type':'application/json'},body:JSON.stringify({supplied:cronToken}),signal:AbortSignal.timeout(7000),redirect:'error'});
+   const auth=await fetch(conf.url+'/rest/v1/rpc/radar_paper_cron_authorized',{method:'POST',headers:{apikey:userToken,Authorization:'Bearer '+userToken,'Content-Type':'application/json'},body:JSON.stringify({supplied:cronToken}),signal:AbortSignal.timeout(7000),redirect:'error'});
    if(!auth.ok||(await auth.json())!==true)throw new lib.ApiError(403,'worker_not_authorized');
+   conf.publicKey=userToken; // Server credential is used only after the cron authentication succeeds.
    user={id:uid};
   }else user=await lib.authUser(req,conf);
   if(req.method==='POST'){
