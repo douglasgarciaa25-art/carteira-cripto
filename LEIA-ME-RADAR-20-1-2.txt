@@ -1,0 +1,38 @@
+RADAR TRADER 20.1.2 — PEQUENOS VALORES (SOMENTE SIMULACAO)
+
+TODOS OS ARQUIVOS DESTE ZIP ESTAO DIRETAMENTE NA RAIZ. SEM SUBPASTAS.
+
+SUBSTITUIR NA RAIZ DO GITHUB:
+- binance-wallet.js
+- radar-trader-core.js
+- radar-trader-sim.js
+- radar-trader-cloud.js
+
+NAO EXCLUIR OS OUTROS ARQUIVOS. NAO PRECISA ALTERAR O CSS.
+
+O QUE MUDA
+1. Nao ha minimo fixo de 10 USDT para abrir ordem ficticia ou exigencia de capital ficticio acima de 200 USDT.
+2. Permite simular aportes de menos de 1 USDT, inclusive com carteira pequena, respeitando o teto de 5% por ordem.
+3. Campo de ordem manual aceita valores fracionarios; o painel exibe quantias inferiores a 1 centavo com mais casas.
+4. Mantidos: parada de emergencia, checagem de cotacao, exposicao total, teto por ativo, cooldown e limite diario de perdas.
+5. O motor em nuvem foi atualizado previamente no Supabase. A conta virtual existente e o modo automatico foram preservados. Nao apaga historico.
+6. Quantidades ficticias possuem precisao computacional de ate 12 casas. Valores arredondados a zero podem ser recusados tecnicamente; isto nao e um minimo artificial de saldo.
+
+LIMITACOES IMPORTANTES
+- E apenas simulacao. NUNCA envia ordem real nem acessa trading na Binance.
+- Ordens REAIS estao sujeitas aos filtros PRICE_FILTER, LOT_SIZE, MIN_NOTIONAL / NOTIONAL e taxas de cada mercado. O Radar ficticio nao deve ser interpretado como validacao de execucao real.
+- O robô 24h faz verificacoes aproximadamente a cada 5 minutos quando os servicos estao disponiveis. Nao garante encontrar oportunidades.
+- Dados e resultados podem variar; nao garantem lucro.
+
+TESTES
+- Testados saldos ficticios de 0,01; 0,10; 0,50; 1; 5; 17; 199; 1000 USDT.
+- Testados bloqueios de risco, indisponibilidade de cotacao e venda protetiva.
+- 14 testes locais aprovados.
+- Worker Supabase versao 3: HTTP 200, uma conta existente ativa, minQuote = 0 e sem reinicializacao do historico.
+
+COMO PUBLICAR
+1. Extrair o ZIP.
+2. Enviar os quatro .js diretamente para a pasta raiz de douglasgarciaa25-art/carteira-cripto.
+3. Aguardar READY na Vercel.
+4. Fechar e reabrir o Radar. Em Carteira, selecionar o simulador e verificar o valor fracionario.
+5. Se o navegador guardar codigo antigo, atualizar a pagina pelo navegador ou limpar o cache deste site.
