@@ -31,7 +31,8 @@ function inspectPaper(row,uid,at){
 async function globals(){
  return await Promise.all([
   (async()=>{try{const r=await fetch(SITE+'/api/radar-auth-config',{cache:'no-store',signal:AbortSignal.timeout(8000)});const j=await r.json();return item('Serviço do app',r.ok&&j.supabaseUrl===URL_BASE&&!!j.publicKey?'ok':'error',r.ok&&j.supabaseUrl===URL_BASE&&!!j.publicKey?'Serviço de configuração respondeu corretamente.':'Serviço indisponível ou configuração divergente.')}catch(_){return item('Serviço do app','error','Sem resposta válida do serviço do app.')}})(),
-  (async()=>{try{const j=await pub('/api/v3/ticker/price?symbol=BTCUSDT');if(!(Number(j.price)>0))throw Error();return item('Mercado público','ok','Consulta de preço BTC/USDT disponível.')}catch(_){return item('Mercado público','error','Não foi possível consultar o preço de referência.')}})()
+  (async()=>{try{const r=await fetch(SITE+'/api/market?kind=price&symbol=BTC',{cache:'no-store',signal:AbortSignal.timeout(15000)}),j=await r.json();if(!r.ok||!j.ok||j.symbol!=='BTC'||!(Number(j.price)>0)||j.stale||!fresh(j.at,Date.now(),180000))throw Error();return item('Mercado do app','ok','Preço BTC/USDT recente confirmado pelo serviço usado no aplicativo.')}catch(_){return item('Mercado do app','error','Serviço de preços do app indisponível ou com cotação desatualizada.')}})(),
+  (async()=>{try{const checks=await Promise.all([['/','radar-health.js'],['/radar-health.js','radarHealth'],['/binance-wallet.js','CriptoRadarAuth'],['/radar-trader-core.js','RadarTraderCore']].map(async([path,marker])=>{const r=await fetch(SITE+path,{cache:'no-store',signal:AbortSignal.timeout(8000)});return r.ok&&(await r.text()).includes(marker)}));if(!checks.every(Boolean))throw Error();return item('Arquivos do aplicativo','ok','Página inicial e scripts essenciais disponíveis.')}catch(_){return item('Arquivos do aplicativo','error','A página inicial ou um arquivo essencial não carregou corretamente.')}})()
  ]);
 }
 async function balance(req,uid,cron,at){
@@ -47,7 +48,7 @@ async function audit(req,uid,cron,common){
  const at=Date.now(),stamp=new Date(at).toISOString();
  const [rows,b]=await Promise.all([db('GET','radar_paper_cloud_accounts','?user_id=eq.'+uid+'&select=ledger,last_tick'),balance(req,uid,cron,at)]);
  const checks=[...common,b,...inspectPaper(rows?.[0],uid,at)];
- const report={version:'20.1.6',checkedAt:stamp,source:'server',status:checks.some(c=>c.status==='error')?'error':checks.some(c=>c.status==='warning')?'warning':'ok',checks};
+ const report={version:'20.1.7',checkedAt:stamp,source:'server',status:checks.some(c=>c.status==='error')?'error':checks.some(c=>c.status==='warning')?'warning':'ok',checks};
  await db('POST','radar_health_reports','?on_conflict=user_id',{user_id:uid},'resolution=ignore-duplicates');
  // A resposta de uma execução antiga nunca substitui um relatório mais novo.
  await db('PATCH','radar_health_reports','?user_id=eq.'+uid+'&or=(checked_at.is.null,checked_at.lt.'+encodeURIComponent(stamp)+')',{checked_at:stamp,report});

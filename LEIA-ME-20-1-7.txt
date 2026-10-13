@@ -1,0 +1,17 @@
+RADAR 20.1.7 — AVISOS MAIS CLAROS E VISTORIA MAIS COMPLETA
+
+Envie os 9 arquivos deste ZIP à raiz do GitHub, substituindo os correspondentes. Preserve os demais arquivos.
+O site e o worker Supabase já foram publicados. O agendamento existente de 5 minutos foi preservado.
+
+Melhorias:
+- Falha na consulta, aparelho offline, resultado incompleto e relatório antigo não aparecem como estado saudável confirmado.
+- Problemas e avisos vêm primeiro, com orientações para o próximo passo.
+- Mostra a idade do relatório e trata falta de sessão sem ficar silencioso.
+- Renovação de autenticação travada não prende indefinidamente o botão da vistoria.
+- Verifica a API de preços efetivamente utilizada pelo app e sua atualização, além da página inicial e scripts essenciais.
+- Melhor contraste, foco de teclado e área de toque no painel.
+
+81 testes automatizados aprovados (17 da vistoria). Execute npm test no projeto completo.
+Nenhuma alteração no capital, limites, ordens ou configurações do robô.
+A vistoria verifica disponibilidade dos arquivos, não todas as interações da interface ou dados locais do celular fechado.
+Mantidos os limites operacionais já documentados: até 8 contas por ciclo e dependência da disponibilidade dos serviços.
