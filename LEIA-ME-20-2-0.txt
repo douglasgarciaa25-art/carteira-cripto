@@ -1,0 +1,11 @@
+Cripto Radar 20.2.0 — robô fictício 24h e resultado
+
+Suba os arquivos na raiz do repositório, sem pastas. O servidor Supabase já foi atualizado separadamente.
+
+Perfil padrão: até 6 compras por dia UTC, até 3% por entrada, intervalo global de 15 minutos, exposição máxima 30%, 20% por ativo e limite de perda diária 2%. Entradas continuam exigindo confirmação 15m/1h, liquidez e spread. Não há garantia de quantidade mínima de entradas nem lucro. Perfis personalizados mais restritos são preservados.
+
+Lucro/prejuízo acumulado = patrimônio virtual menos capital ajustado. Variações do saldo Binance não contam como rendimento. Resultado realizado calculado pela contabilidade integral, mesmo após limite de 200 registros. Taxas exibidas são apenas das últimas 200 operações; já estão consideradas nos resultados aplicáveis. Posições abertas usam última cotação e não descontam taxa de uma venda futura.
+
+A atualização não apaga histórico nem religa robô parado. Nenhuma ordem real.
+
+Validação: testes existentes, navegação e novos cenários de lucro/prejuízo e limites. Não representa teste de rentabilidade nem validação visual completa no Android autenticado.

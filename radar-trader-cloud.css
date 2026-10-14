@@ -4,3 +4,5 @@
 
 /* Garantir que o modo automático não exiba comandos manuais. */
 .rt21 [hidden]{display:none!important}
+
+.rt21 .rt21-grid b.rt21-profit{color:#73edb6}.rt21 .rt21-grid b.rt21-loss{color:#ff9eab}

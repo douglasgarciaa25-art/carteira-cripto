@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Cripto Radar V20.1.8 • Página inicial renovada</title>
+<title>Cripto Radar V20.2.0 • Página inicial renovada</title>
 <style>
 :root{color-scheme:dark;--bg:#07101d;--card:#101b2d;--muted:#8fa3bd;--ok:#32d583;--bad:#f97066;--warn:#fdb022;--line:#243550}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(#07101d,#0b1525);color:#eef4ff}
@@ -704,7 +704,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 <aside class="app-drawer" id="appDrawer" aria-label="Menu principal">
   <div class="app-drawer-head">
     <div class="app-drawer-logo"><img src="./icon.svg" alt=""></div>
-    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V20.1.8 • RADAR PRO</span></div>
+    <div><div class="app-drawer-title">Cripto Radar</div><div class="app-drawer-sub">Painel inteligente de mercado</div><span class="v17-version-chip">V20.2.0 • RADAR PRO</span></div>
     <button class="app-drawer-close" id="appMenuClose" type="button" aria-label="Fechar menu">✕</button>
   </div>
   <div class="language-box">
@@ -719,11 +719,13 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <div class="app-nav-section">Principal</div>
   <nav class="app-nav-list">
     <button class="app-nav-btn" data-route="home" type="button"><span class="app-nav-icon">🏠</span><span><span class="app-nav-label">Início</span><span class="app-nav-meta">Resumo e destaques</span></span><span class="app-nav-chevron">›</span></button>
-    <button class="app-nav-btn" data-route="wallet" type="button"><span class="app-nav-icon">👛</span><span><span class="app-nav-label">Carteira</span><span class="app-nav-meta">Print, aporte e posições</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="wallet" type="button"><span class="app-nav-icon">👛</span><span><span class="app-nav-label">Carteira</span><span class="app-nav-meta">Saldo Binance, importação e posições</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="simulations" type="button"><span class="app-nav-icon">🧪</span><span><span class="app-nav-label">Simulações</span><span class="app-nav-meta">Ordens fictícias, robô local e robô 24h</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="market" type="button"><span class="app-nav-icon">📈</span><span><span class="app-nav-label">Mercado</span><span class="app-nav-meta">Ranking, notícias e tendências</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="alerts" type="button"><span class="app-nav-icon">🚨</span><span><span class="app-nav-label">Alertas</span><span class="app-nav-meta">Alarmes e notificações</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="history" type="button"><span class="app-nav-icon">🕘</span><span><span class="app-nav-label">Histórico</span><span class="app-nav-meta">Alertas e oportunidades recentes</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="ai" type="button"><span class="app-nav-icon">🤖</span><span><span class="app-nav-label">IA Radar</span><span class="app-nav-meta">Análise da carteira</span></span><span class="app-nav-chevron">›</span></button>
+    <button class="app-nav-btn" data-route="health" type="button"><span class="app-nav-icon">🩺</span><span><span class="app-nav-label">Vistoria</span><span class="app-nav-meta">Conexões, falhas e verificações a cada 5 min</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="security" type="button"><span class="app-nav-icon">🔐</span><span><span class="app-nav-label">Segurança</span><span class="app-nav-meta">Senha, PIN e biometria</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="settings" type="button"><span class="app-nav-icon">⚙️</span><span><span class="app-nav-label">Configurações</span><span class="app-nav-meta">Alertas, risco, favoritas e idioma</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn" data-route="pro" type="button"><span class="app-nav-icon">⭐</span><span><span class="app-nav-label">PRO Anual <i class="app-pro-lock">R$ 99,90</i></span><span class="app-nav-meta">Compare Grátis e Premium</span></span><span class="app-nav-chevron">›</span></button>
@@ -732,7 +734,6 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <nav class="app-nav-list pro-menu">
     <button class="app-nav-btn pro-menu" data-route="engine" type="button"><span class="app-nav-icon">🧠</span><span><span class="app-nav-label">Motor <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">V10/V11 e diagnóstico</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn pro-menu" data-route="backtest" type="button"><span class="app-nav-icon">📊</span><span><span class="app-nav-label">Backtest <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Histórico e calibração</span></span><span class="app-nav-chevron">›</span></button>
-    <button class="app-nav-btn pro-menu" data-route="paper" type="button"><span class="app-nav-icon">🧪</span><span><span class="app-nav-label">Paper Trading <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Validação sem ordens reais</span></span><span class="app-nav-chevron">›</span></button>
     <button class="app-nav-btn pro-menu" data-route="system" type="button"><span class="app-nav-icon">⚙️</span><span><span class="app-nav-label">Sistema <i class="app-pro-lock">PRO</i></span><span class="app-nav-meta">Fontes, proteção e saúde</span></span><span class="app-nav-chevron">›</span></button>
   </nav>
   <div class="app-drawer-mode"><div class="app-drawer-mode-title">Nível da interface</div><div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 Amador</button><button data-mode="professional" type="button">⚙️ Profissional</button></div></div>
@@ -745,7 +746,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
   <h2>Como você quer usar o Radar?</h2>
   <div class="mode-choice-desc">Você pode trocar depois a qualquer momento. O mercado e a IA continuam os mesmos; muda apenas a quantidade de ferramentas e detalhes exibidos.</div>
   <div class="mode-choice-grid">
-   <div class="mode-choice-card amateur" data-pick-mode="amateur"><div style="font-size:28px">🙂</div><strong>Modo Amador</strong><div class="small">Interface mais simples, focada em carteira, alertas, mercado e IA. Esconde ferramentas técnicas avançadas.</div><span class="pick">USAR MODO AMADOR</span></div>
+   <div class="mode-choice-card amateur" data-pick-mode="amateur"><div style="font-size:28px">🙂</div><strong>Modo Amador</strong><div class="small">Interface mais simples, focada em carteira, simulações, vistoria, alertas, mercado e IA. Esconde ferramentas técnicas avançadas.</div><span class="pick">USAR MODO AMADOR</span></div>
    <div class="mode-choice-card professional" data-pick-mode="professional"><div style="font-size:28px">⚙️</div><strong>Modo Profissional</strong><div class="small">Libera motor V10/V11, backtest, Paper Trading, diagnóstico de fontes e controles avançados.</div><span class="pick">USAR MODO PROFISSIONAL</span></div>
   </div>
  </div>
@@ -772,7 +773,7 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 </div>
 <div class="app-toolbar" id="appToolbar">
  <button class="app-menu-button" id="appMenuToggle" type="button" aria-label="Abrir menu">☰</button>
- <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 20.1.8">V20.1.8</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
+ <div class="app-view-copy"><div class="app-view-kicker">ÁREA ATUAL <span class="cr191-version" aria-label="Versão 20.2.0">V20.2.0</span></div><div class="app-view-title" id="appViewTitle">Início</div></div>
  <div class="cr19-language-control"><label for="cr19Language" class="cr19-language-label">🌐 <span data-cr19-lang-name>Idioma</span></label><select id="cr19Language" class="language-select cr19-language-select" data-cr-language-select aria-label="Idioma da interface"><option value="auto">Auto</option><option value="pt-BR">PT · Português</option><option value="en">EN · English</option><option value="es">ES · Español</option></select></div>
  <div class="experience-switch" data-mode-switch><button data-mode="amateur" type="button">🙂 <span class="mode-word">Amador</span></button><button data-mode="professional" type="button">⚙️ <span class="mode-word">Pro</span></button></div>
 </div>
@@ -1153,6 +1154,12 @@ main{width:100%;max-width:1180px!important;margin:0 auto!important;padding:10px 
 
 
 
+<section id="simulationWorkspace" class="app-view-section route-hidden" aria-label="Simulações">
+ <div class="card"><h2>🧪 Simulações</h2><p>Ordens fictícias com referência no saldo Binance. O robô local funciona com o app aberto; o robô na nuvem funciona 24h. Cada um mantém seu próprio histórico e sua parada de emergência.</p><button type="button" data-route="wallet">Ver saldo e conexão Binance</button><button type="button" data-route="health">Ver vistoria do app</button></div>
+</section>
+<section id="healthWorkspace" class="app-view-section route-hidden" aria-label="Vistoria">
+ <div class="card"><h2>🩺 Vistoria do app</h2><p>Acompanhe as verificações automáticas do servidor a cada 5 minutos, inclusive com o app fechado.</p><button type="button" data-route="simulations">Ver robôs fictícios</button></div>
+</section>
 <section class="card" id="radarBinanceCard" aria-label="Binance Spot">
  <div class="radar-binance-head"><div><h2>🔗 <span data-radar-binance-t="title">Binance • Minha carteira</span></h2><p class="small" data-radar-binance-t="desc">Cada pessoa conecta sua própria conta, somente leitura.</p></div><span class="radar-binance-badge">🔒 READ ONLY</span></div>
  <div id="radarBinanceAuth" class="radar-binance-auth-card">
@@ -2876,7 +2883,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{try{renderSmar
 
 <script defer src="./radar-paper-view.js?v=2015"></script>
 <link rel="stylesheet" href="./radar-health.css?v=2017">
-<script defer src="./radar-health.js?v=2017"></script>
+<script defer src="./radar-health.js?v=2019"></script>
 
 
 <script>
@@ -3624,7 +3631,9 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
  const MODE_KEY='crRadarExperienceMode', ROUTE_KEY='crRadarRoute';
  const routes={
   home:{title:'Início',ids:['homeDashboardCard']},
-  wallet:{title:'Carteira',ids:['walletDashboardCard','radarBinanceCard','walletCaptureCard','aporteCard','copyMirrorCard']},
+  wallet:{title:'Carteira',ids:['walletDashboardCard','radarBinanceCard','walletCaptureCard','aporteCard']},
+  simulations:{title:'Simulações',ids:['simulationWorkspace','copyMirrorCard']},
+  health:{title:'Vistoria',ids:['healthWorkspace']},
   market:{title:'Mercado',ids:['marketIntelligenceCard','opportunitiesCard','marketTopMoversDetails','marketRumorsCard','trendsCard']},
   alerts:{title:'Alertas',ids:['alertCenterCard','urgentRadarCard','notifyCard']},
   history:{title:'Histórico',ids:['v171HistoryCard','bt184Card']},
@@ -3648,7 +3657,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   const amateur=mode==='amateur';
   if($('modeGuideIcon'))$('modeGuideIcon').textContent=amateur?'🙂':'⚙️';
   if($('modeGuideTitle'))$('modeGuideTitle').textContent=amateur?'Modo Amador':'Modo Profissional';
-  if($('modeGuideText'))$('modeGuideText').textContent=amateur?'Mostrando só o essencial: carteira, alertas, mercado e IA. As ferramentas técnicas continuam trabalhando por trás, mas sem poluir a tela.':'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.';
+  if($('modeGuideText'))$('modeGuideText').textContent=amateur?'Mostrando só o essencial: carteira, simulações, vistoria, alertas, mercado e IA. As ferramentas técnicas continuam trabalhando por trás, mas sem poluir a tela.':'Ferramentas avançadas liberadas: motor V10/V11, backtest, Paper Trading, diagnóstico e controles técnicos.';
   if($('modeGuideChip'))$('modeGuideChip').textContent=amateur?'INTERFACE SIMPLIFICADA':'PAINEL COMPLETO';
  }
  function setMode(mode,save=true){
@@ -3663,6 +3672,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   if(mode==='amateur'&&routes[current]?.pro) setRoute('home'); else setRoute(current,false);
  }
  function setRoute(route,save=true){
+  if(route==='paper')route='simulations';
   const mode=getMode();
   if(routes[route]?.paid&&!window.CriptoRadarPro?.isActive?.()){if(save)window.CriptoRadarPro?.openPaywall?.(routes[route].title);route='home';}
   if(!routes[route]||(routes[route].pro&&mode!=='professional'))route='home';
@@ -3673,7 +3683,7 @@ body.pro-developer .v17-pro-hero .v17-title:after{content:' • CRIADOR PRO';col
   document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===route));
   if($('appViewTitle')){
     const lang=String(window.CriptoRadarI18n?.getLanguage?.()||document.documentElement.lang||'pt').toLowerCase();
-    const headings={home:['Início','Home','Inicio'],wallet:['Carteira','Portfolio','Cartera'],market:['Mercado','Market','Mercado'],alerts:['Alertas','Alerts','Alertas'],history:['Histórico','History','Historial'],ai:['IA Radar','Radar AI','IA Radar'],security:['Segurança','Security','Seguridad'],settings:['Configurações','Settings','Configuración'],pro:['PRO Anual','Annual PRO','PRO Anual'],engine:['Motor profissional','Professional engine','Motor profesional'],backtest:['Backtest e calibração','Backtest and calibration','Backtest y calibración'],paper:['Simulação','Paper trading','Simulación'],system:['Sistema e fontes','System and sources','Sistema y fuentes']};
+    const headings={simulations:['Simulações','Simulations','Simulaciones'],health:['Vistoria','App health','Estado del app'],home:['Início','Home','Inicio'],wallet:['Carteira','Portfolio','Cartera'],market:['Mercado','Market','Mercado'],alerts:['Alertas','Alerts','Alertas'],history:['Histórico','History','Historial'],ai:['IA Radar','Radar AI','IA Radar'],security:['Segurança','Security','Seguridad'],settings:['Configurações','Settings','Configuración'],pro:['PRO Anual','Annual PRO','PRO Anual'],engine:['Motor profissional','Professional engine','Motor profesional'],backtest:['Backtest e calibração','Backtest and calibration','Backtest y calibración'],paper:['Simulação','Paper trading','Simulación'],system:['Sistema e fontes','System and sources','Sistema y fuentes']};
     const names=headings[route];$('appViewTitle').textContent=names?names[lang.startsWith('en')?1:lang.startsWith('es')?2:0]:routes[route].title;
   }
   if(save)localStorage.setItem(ROUTE_KEY,route);
@@ -4142,5 +4152,5 @@ window.CriptoRadarBacktestV184={run,load,metrics};
 </style>
 <link rel="stylesheet" href="./layout-v1964.css?v=1964">
 <link rel="stylesheet" href="./home-v1965.css?v=1965">
-<script defer src="./binance-wallet.js?v=2018"></script>
+<script defer src="./binance-wallet.js?v=2020"></script>
 </body></html>

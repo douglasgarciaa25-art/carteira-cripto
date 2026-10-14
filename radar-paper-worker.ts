@@ -37,6 +37,14 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   return '';
  }
 function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.5',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,pendingWithdrawalUSDT:0,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
+function entryPolicy(s){
+ s.limits={...LIMITS,...s.limits,minQuote:0};
+ if(!s.entryPolicy){
+  // Only migrate the previous default profile; preserve custom tighter limits.
+  if(s.limits.maxTradesPerDay===3&&s.limits.maxTradePct===5){s.limits.maxTradesPerDay=6;s.limits.maxTradePct=3;}
+  s.entryPolicy='balanced-6-v1';
+ }
+}
 function stats(s,m){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=q&&good(q.price)&&Math.abs(Date.now()-q.at)<180000;const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested-Number(s.pendingWithdrawalUSDT||0)),start=Number(s.dayStartNAV)||s.initialUSDT;return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
 function available(s,m,sym,side,amount,auto,at,protective=false){
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
@@ -85,7 +93,7 @@ async function quote(sym,at){
  const [k15,k60,t,b]=await Promise.all([pub('/api/v3/klines?symbol='+pair+'&interval=15m&limit=48'),pub('/api/v3/klines?symbol='+pair+'&interval=1h&limit=48'),pub('/api/v3/ticker/24hr?symbol='+pair),pub('/api/v3/ticker/bookTicker?symbol='+pair)]);
  if(!Array.isArray(k15)||!Array.isArray(k60)||k15.length<35||k60.length<35)throw Error('kline_missing');
  const a=k15.slice(0,-1),h=k60.slice(0,-1),pr=a.map(x=>Number(x[4])),hr=h.map(x=>Number(x[4]));
- if(!pr.every(good)||!hr.every(good)||Math.abs(at-Number(a.at(-1)[6]))>35*60000)throw Error('kline_old');
+ if(!pr.every(good)||!hr.every(good)||!Number.isFinite(Number(a.at(-1)[6]))||!Number.isFinite(Number(h.at(-1)[6]))||Math.abs(at-Number(a.at(-1)[6]))>35*60000||Math.abs(at-Number(h.at(-1)[6]))>125*60000)throw Error('kline_old');
  const price=Number(t.lastPrice),volume=Number(t.quoteVolume),bid=Number(b.bidPrice),ask=Number(b.askPrice);
  if(!good(price)||!good(volume)||!good(bid)||!good(ask))throw Error('price_missing');
  const spread=100*(ask-bid)/((bid+ask)/2);
@@ -105,8 +113,9 @@ function scan(s,market,at){s.lastTick=at;
  if(st.stale.length){s.lastStatus='Posições sem cotação recente: '+st.stale.join(', ');return null;}
  if(st.dailyPnlPct<=-s.limits.maxDailyLossPct){s.lastStatus='Limite de perda diário: compras pausadas; proteção segue monitorada';return null;}
  if(Object.keys(market).length!==SYMBOLS.length){s.lastStatus='Mercado parcial: novas compras suspensas';return null;}
- for(const q of Object.values(market).filter(x=>x.confirmed&&!s.positions?.[x.symbol]).sort((a,b)=>a.spread-b.spread)){const amount=r8(Math.min(s.cash,st.nav*s.limits.maxTradePct/100,st.nav*s.limits.maxVolatilePct/100-st.invested,st.nav*s.limits.maxAssetPct/100));if(!(amount>0))continue;const done=trade(s,'BUY',q.symbol,amount,market,true,'Confluência confirmada 15m/1h',at);if(done.ok){s.lastStatus='Compra fictícia '+q.symbol;return done;}}
- s.lastStatus='Nenhuma compra confirmada dentro do risco';return null;
+ let blocked='';
+ for(const q of Object.values(market).filter(x=>x.confirmed&&!s.positions?.[x.symbol]).sort((a,b)=>a.spread-b.spread)){const amount=r8(Math.min(s.cash,st.nav*s.limits.maxTradePct/100,st.nav*s.limits.maxVolatilePct/100-st.invested,st.nav*s.limits.maxAssetPct/100));if(!(amount>0))continue;const done=trade(s,'BUY',q.symbol,amount,market,true,'Confluência confirmada 15m/1h',at);if(done.ok){s.lastStatus='Compra fictícia '+q.symbol;return done;}blocked=done.reason;}
+ s.lastStatus=blocked?'Entrada confirmada, mas bloqueada: '+({daily_orders_limit:'limite diário de entradas',cooldown:'intervalo de segurança entre operações',single_order_limit:'limite por entrada',total_exposure_limit:'exposição máxima',asset_concentration_limit:'concentração por moeda',insufficient_virtual_cash:'reserva insuficiente'}[blocked]||blocked):'Sem novo sinal confirmado 15m/1h em moeda ainda não comprada';return null;
 }
 const fields='user_id,ledger,version,auto_enabled,last_tick,last_status,updated_at';
 const accountQuery=uid=>'?user_id=eq.'+uid+'&select='+fields;
@@ -128,7 +137,7 @@ async function runCron(req){
  if(!rows?.length)return out(req,200,{ok:true,checked:0,orders:0,paper:true});
  const at=Date.now(),market=await allMarket(at);let checked=0,orders=0,paused=0;
  for(let start=0;start<rows.length;start+=4)await Promise.all(rows.slice(start,start+4).map(async row=>{try{
-  const state=structuredClone(row.ledger),prior=state.orders?.at(-1)?.id;state.limits={...LIMITS,...state.limits,minQuote:0};
+  const state=structuredClone(row.ledger),prior=state.orders?.at(-1)?.id;entryPolicy(state);
   try{await syncBalance(req,row.user_id,state,true);scan(state,market,Date.now());}
   catch(e){const code=/^[a-z0-9_]{3,100}$/.test(String(e.message))?String(e.message):'binance_sync_unavailable';state.binanceSyncError=code;state.lastStatus='Saldo Binance indisponível: ordens fictícias pausadas ('+code+')';paused++;}
   const saved=await save(row,state,new Date().toISOString());if(saved){checked++;if(state.orders?.at(-1)?.id!==prior)orders++;}
@@ -139,15 +148,15 @@ async function handle(req,u,payload){
  let row=await get(u.id);
  if(req.method==='GET')return out(req,200,{ok:true,account:row,paper:true});
  const action=String(payload.action||'');
- if(action==='init'||(action==='sync-balance'&&!row)){if(!row){const state=create(1);await syncBalance(req,u.id,state);const made=await db('POST','radar_paper_cloud_accounts','?on_conflict=user_id&select='+fields,{user_id:u.id,ledger:state,version:1,auto_enabled:false,last_status:state.lastStatus},'resolution=ignore-duplicates,return=representation');row=made?.[0]||await get(u.id);}return out(req,200,{ok:true,account:row,paper:true});}
+ if(action==='init'||(action==='sync-balance'&&!row)){if(!row){const state=create(1);entryPolicy(state);await syncBalance(req,u.id,state);const made=await db('POST','radar_paper_cloud_accounts','?on_conflict=user_id&select='+fields,{user_id:u.id,ledger:state,version:1,auto_enabled:false,last_status:state.lastStatus},'resolution=ignore-duplicates,return=representation');row=made?.[0]||await get(u.id);}return out(req,200,{ok:true,account:row,paper:true});}
  if(!row)return err(req,404,'paper_account_not_initialized');
- const s=structuredClone(row.ledger);s.limits={...LIMITS,...s.limits,minQuote:0};let order=null;
+ const s=structuredClone(row.ledger);entryPolicy(s);let order=null;
  if(action==='mode'){s.mode=payload.mode==='auto'?'auto':'manual';s.autoEnabled=false;s.lastStatus='Modo alterado; automático desligado';}
  else if(action==='auto'){if(payload.enabled===true){if(s.killed||s.mode!=='auto')return err(req,409,'emergency_or_manual_mode');s.autoEnabled=true;s.lastStatus='Robô fictício do servidor ativado';}else{s.autoEnabled=false;s.lastStatus='Robô fictício desligado';}}
  else if(action==='kill'){s.killed=true;s.autoEnabled=false;s.killReason='Acionado pelo usuário';s.lastStatus='PARADA DE EMERGÊNCIA ATIVA';}
  else if(action==='resume'){s.killed=false;s.autoEnabled=false;s.killReason='';s.lastStatus='Rearmado; automático desligado';}
- else if(action==='reset'){const fresh=create(1);await syncBalance(req,u.id,fresh);if(s.killed){fresh.killed=true;fresh.killReason='Parada mantida';}Object.assign(s,fresh);s.lastStatus='Conta fictícia reiniciada';}
- else if(action==='limits'){const safe={maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:3,cooldownMinutes:1440,stopLossPct:4,takeProfitPct:12};for(const [k,v] of Object.entries(payload.limits||{})){const n=Number(v);if(!(k in safe)||!Number.isFinite(n)||n<=0||n>safe[k]||(k==='cooldownMinutes'&&n<15)||(k==='maxTradesPerDay'&&!Number.isInteger(n)))return err(req,400,'invalid_limits');s.limits[k]=n;}s.autoEnabled=false;s.lastStatus='Limites alterados; automático desligado';}
+ else if(action==='reset'){const fresh=create(1);entryPolicy(fresh);await syncBalance(req,u.id,fresh);if(s.killed){fresh.killed=true;fresh.killReason='Parada mantida';}Object.assign(s,fresh);s.lastStatus='Conta fictícia reiniciada';}
+ else if(action==='limits'){const safe={maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:6,cooldownMinutes:1440,stopLossPct:4,takeProfitPct:12};for(const [k,v] of Object.entries(payload.limits||{})){const n=Number(v);if(!(k in safe)||!Number.isFinite(n)||n<=0||n>safe[k]||(k==='cooldownMinutes'&&n<15)||(k==='maxTradesPerDay'&&!Number.isInteger(n)))return err(req,400,'invalid_limits');s.limits[k]=n;}s.autoEnabled=false;s.lastStatus='Limites alterados; automático desligado';}
  else if(action==='manual'){if(s.mode!=='manual')return err(req,409,'select_manual_mode');await syncBalance(req,u.id,s);const market=await allMarket(Date.now());if(!Object.keys(market).length)return err(req,503,'market_data_unavailable');const result=trade(s,String(payload.side||'').toUpperCase(),String(payload.symbol||'').toUpperCase(),Number(payload.quote),market,false,'Manual autorizado pelo usuário',Date.now());if(!result.ok)return out(req,422,{ok:false,error:'trade_blocked',reason:result.reason,paper:true});order=result.order;s.lastMarket=market;s.lastStatus='Ordem fictícia manual registrada';}
  else if(action==='scan'){if(s.mode!=='auto'||!s.autoEnabled)return err(req,409,'auto_not_enabled');await syncBalance(req,u.id,s);const market=await allMarket(Date.now());if(!Object.keys(market).length)return err(req,503,'market_data_unavailable');const done=scan(s,market,Date.now());order=done?.order||null;}
  else if(action==='sync-balance'){await syncBalance(req,u.id,s);s.lastStatus='Saldo Binance atualizado para todas as ordens fictícias';}
