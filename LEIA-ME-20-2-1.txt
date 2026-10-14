@@ -1,0 +1,7 @@
+Cripto Radar 20.2.1 — pacote cumulativo organização + robô 24h
+
+Extraia e envie TODOS os 12 arquivos para a raiz do GitHub, substituindo os existentes. Sem subpastas.
+Inclui radar-trader-sim.js e radar-health.js, que faltaram no pacote anterior e causaram a regressão após o deploy do GitHub.
+
+Carteira: saldo, conexão e posições. Simulações: local, nuvem e espelhamento. Vistoria: saúde do app. Mantém lucro/prejuízo, 6 entradas por dia e 3% por entrada na nuvem. Não apaga histórico nem modifica saldos.
+Servidor já atualizado. Testes de navegação e contabilidade/limites aprovados.

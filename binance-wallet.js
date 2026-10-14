@@ -474,7 +474,7 @@
  const styles=document.createElement('link');styles.rel='stylesheet';styles.href='./radar-trader-sim.css?v=2000';document.head.appendChild(styles);
  const core=document.createElement('script');core.src='./radar-trader-core.js?v=2015';core.defer=true;
  core.onload=function(){
-  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2019';sim.defer=true;
+  const sim=document.createElement('script');sim.src='./radar-trader-sim.js?v=2021';sim.defer=true;
   sim.onerror=()=>console.warn('Radar Trader 20: interface simulada indisponível');
   document.head.appendChild(sim);
  };

@@ -88,7 +88,7 @@
   }finally{ledger.lastScanAt=now();persist();busy=false;updateUI()}
  }
  function renderStatic(){
-  const parent=$('radarBinanceCard');if(!parent)return false;
+  const parent=$('simulationWorkspace')||$('radarBinanceCard');if(!parent)return false;
   if($('radarTrader20'))return true;
   const shell=document.createElement('section');shell.id='radarTrader20';shell.className='rt20';shell.innerHTML=`
    <div class="rt20-head"><div><small>🧪 RADAR TRADER 20.0</small><h3>Operações simuladas</h3></div><span class="rt20-pill">SEM DINHEIRO REAL</span></div>
@@ -216,7 +216,7 @@
   window.addEventListener('criptoradar:authchange',tick);
   window.addEventListener('criptoradar:walletchange',tick);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')tick()});
-  window.RadarTraderSim={inspect:()=>{load();if(!window.CriptoRadarAuth?.userId())return null;syncReference();return {ledger:JSON.parse(JSON.stringify(ledger)),metrics:C.metrics(ledger,market()),referenceError:C.referenceError(ledger),risk:C.reasonForRisk(ledger,market())}},scan:()=>{load();if(now()-ledger.lastScanAt>=30000)updateAuto()},reset:()=>{load();reset()},review:()=>{load();ledger.mode='manual';ledger.autoEnabled=false;persist();updateUI();$('rt20Amount').value=Math.max(0,Math.min(ledger.cash,C.metrics(ledger,market()).nav*.05));$('radarTrader20').scrollIntoView({behavior:'smooth'});},status:()=>({mode:ledger?.mode,autoEnabled:!!ledger?.autoEnabled,simulationOnly:true,orders:ledger?.orders.length||0})};
+  window.RadarTraderSim={inspect:()=>{load();if(!window.CriptoRadarAuth?.userId())return null;syncReference();return {ledger:JSON.parse(JSON.stringify(ledger)),metrics:C.metrics(ledger,market()),referenceError:C.referenceError(ledger),risk:C.reasonForRisk(ledger,market())}},scan:()=>{load();if(now()-ledger.lastScanAt>=30000)updateAuto()},reset:()=>{load();reset()},review:()=>{load();ledger.mode='manual';ledger.autoEnabled=false;persist();updateUI();$('rt20Amount').value=Math.max(0,Math.min(ledger.cash,C.metrics(ledger,market()).nav*.05));window.crRadarOpenView?.('simulations');$('radarTrader20').scrollIntoView({behavior:'smooth'});},status:()=>({mode:ledger?.mode,autoEnabled:!!ledger?.autoEnabled,simulationOnly:true,orders:ledger?.orders.length||0})};
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

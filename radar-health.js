@@ -24,10 +24,10 @@ function guidance(c){
 }
 function shell(){
  if($('radarHealth'))return true;
- const anchor=$('radarTraderCloud21')||$('radarTrader20');if(!anchor)return false;
+ const anchor=$('healthWorkspace')||$('radarTraderCloud21')||$('radarTrader20');if(!anchor)return false;
  const el=document.createElement('section');el.id='radarHealth';el.className='rt21';
  el.innerHTML='<div class="rt21-title"><span>🛠 VISTORIA 24H</span><b>Saúde do aplicativo</b><small>Verificação no servidor a cada 5 minutos, mesmo com o app fechado ou o celular bloqueado.</small></div><div id="radarHealthBody" aria-live="polite"></div><div class="rt21-actions"><button type="button" id="radarHealthCheck">Verificar agora</button></div><p class="rt21-muted">Inspeciona serviços, arquivos do app, saldo Binance e simulação na nuvem. O horário exibido é do seu aparelho. Dados locais e todas as interações das telas não são cobertos por esta vistoria.</p>';
- anchor.insertAdjacentElement('afterend',el);$('radarHealthCheck').addEventListener('click',()=>refresh(true));return true;
+ const host=$('healthWorkspace');if(host)host.appendChild(el);else anchor.insertAdjacentElement('afterend',el);$('radarHealthCheck').addEventListener('click',()=>refresh(true));return true;
 }
 function render(){
  if(!shell())return;
