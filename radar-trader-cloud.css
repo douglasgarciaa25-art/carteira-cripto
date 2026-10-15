@@ -6,3 +6,31 @@
 .rt21 [hidden]{display:none!important}
 
 .rt21 .rt21-grid b.rt21-profit{color:#73edb6}.rt21 .rt21-grid b.rt21-loss{color:#ff9eab}
+
+/* Mobile layout: keep coin symbols intact and separate diagnostics from amounts. */
+#radarTraderCloud21{padding:20px 16px;background:linear-gradient(155deg,#0b2639,#071a2b);font-size:14px;line-height:1.55}
+#radarTraderCloud21 .rt21-title{gap:8px;padding-bottom:16px;border-bottom:1px solid #29475b}
+#radarTraderCloud21 .rt21-title b{font-size:24px;line-height:1.2}
+#radarTraderCloud21 .rt21-title small{line-height:1.6}
+#radarTraderCloud21 .rt21-section{margin-top:20px;padding-top:18px}
+#radarTraderCloud21 .rt21-section>b{display:block;margin-bottom:12px;font-size:17px;line-height:1.35}
+#radarTraderCloud21 .rt21-line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:12px;padding:12px 0}
+#radarTraderCloud21 .rt21-line>span{min-width:0}
+#radarTraderCloud21 .rt21-line>span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+#radarTraderCloud21 .rt21-line:has(>b){grid-template-columns:64px minmax(0,1fr);padding:14px 12px;margin:8px 0;border:1px solid #28485c;border-radius:12px;background:#102b3d}
+#radarTraderCloud21 .rt21-line>b{display:block;white-space:nowrap;word-break:normal;overflow-wrap:normal;flex-shrink:0;color:#91dfef;font-size:15px;line-height:1.5}
+#radarTraderCloud21 .rt21-line:has(>b)>span{font-size:13px;line-height:1.65;text-align:left;color:#c3d8e4}
+#radarTraderCloud21 .rt21-muted{font-size:12px;line-height:1.65}
+#radarTraderCloud21 .rt21-grid{gap:10px;margin-top:12px}
+#radarTraderCloud21 .rt21-grid>div{padding:14px 12px;gap:8px;border-color:#31556a}
+#radarTraderCloud21 .rt21-grid b{font-size:17px;line-height:1.4;font-variant-numeric:tabular-nums}
+#radarTraderCloud21 .rt21-actions{gap:10px}
+#radarTraderCloud21 .rt21-actions>button{flex:1 1 140px}
+#radarTraderCloud21 .rt21-actions>label{flex:1 1 120px;min-width:0}
+#radarTraderCloud21 input,#radarTraderCloud21 select{min-height:46px;font-size:16px}
+#radarTraderCloud21 button{min-height:46px;line-height:1.4}
+@media(max-width:380px){
+ #radarTraderCloud21{padding:16px 12px}
+ #radarTraderCloud21 .rt21-line:has(>b){grid-template-columns:1fr;gap:6px}
+ #radarTraderCloud21 .rt21-grid{grid-template-columns:1fr}
+}

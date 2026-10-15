@@ -1,0 +1,9 @@
+Atualização focada no robô fictício 24 horas — 14/10/2026
+
+Correções: horário consistente na avaliação de risco; rejeição de cotações mais de 60 segundos no futuro; cache conserva a última cotação válida; RSI neutro em preços constantes; bloqueio de operações com contabilidade ou limites inválidos; validação do formato de requisição.
+
+50 cenários automatizados passaram; lista em REVISAO-ROBO-24H.txt. Os quatro testes presentes no pacote 20.2.3 também passaram. Os demais testes mencionados no package.json antigo não estavam no pacote e não foram executados.
+
+Extraia os quatro arquivos na raiz do repositório, substituindo apenas radar-paper-worker.ts. O worker é executado no Supabase: subir ao GitHub sozinho não o implanta. Não altera layout, saldos ou limites configurados. Não habilita negociação real.
+
+Não são 50 atualizações sucessivas: são correções consolidadas e 50 cenários de verificação. Não foi feito backtest de rentabilidade.

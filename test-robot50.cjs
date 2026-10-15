@@ -1,0 +1,28 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const w={Deno:{env:{get:()=>''},serve(){}},Date,Response,AbortSignal,structuredClone};
+vm.runInNewContext(fs.readFileSync('radar-paper-worker.ts','utf8')+';globalThis.api={create,entryPolicy,syncBinanceReference,available,scan,stats,rsi,fresh,trade};',w);
+const A=w.api,at=Date.now(),report=[];
+function test(name,fn){fn();report.push(name);console.log('PASS '+report.length+' '+name)}
+function state(){let s=A.create(100);A.entryPolicy(s);s.mode='auto';s.autoEnabled=true;A.syncBinanceReference(s,{userId:'test',source:'binance_spot',freeUSDT:100,updatedAt:new Date(at).toISOString()},at);return s}
+function market(){return Object.fromEntries(['BTC','ETH','SOL','BNB','XRP'].map(symbol=>[symbol,{symbol,price:100,at,volume:1e8,spread:.01,confirmed:false,bear:false}]))}
+for(const [name,patch,expected] of [
+ ['cotação atual',{},true],['limite de 3 minutos',{at:at-180000},true],['cotação vencida',{at:at-180001},false],['futuro tolerado',{at:at+60000},true],['futuro excessivo',{at:at+60001},false],['horário ausente',{at:undefined},false],['horário NaN',{at:NaN},false],['preço zero',{price:0},false],['preço negativo',{price:-1},false],['preço infinito',{price:Infinity},false]])test(name,()=>assert.equal(A.fresh({...market().BTC,...patch},at),expected));
+for(const [key,value] of [['maxTradePct',NaN],['maxTradePct',6],['maxVolatilePct',31],['maxAssetPct',21],['maxDailyLossPct',3],['maxTradesPerDay',7],['maxTradesPerDay',1.5],['cooldownMinutes',14],['feePct',-1],['slippagePct',Infinity]])test('limite inválido '+key+'='+value,()=>{let s=state();s.limits[key]=value;assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'invalid_limits')});
+for(const [name,change] of [['caixa NaN',s=>s.cash=NaN],['caixa negativo',s=>s.cash=-1],['capital ausente',s=>s.initialUSDT=undefined],['base diária NaN',s=>s.dayStartNAV=NaN],['retirada negativa',s=>s.pendingWithdrawalUSDT=-1],['horário da ordem inválido',s=>s.lastTradeAt=NaN],['ordens malformadas',s=>s.orders={}],['ordem sem horário',s=>s.orders=[{side:'BUY'}]],['quantidade negativa',s=>s.positions.BTC={qty:-1,cost:1}],['custo inválido',s=>s.positions.BTC={qty:1,cost:NaN}]] )test(name,()=>{let s=state();change(s);assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'invalid_ledger');assert.equal(A.scan(s,market(),at),null)});
+for(const [name,prices,expected] of [['RSI estável',Array(20).fill(100),50],['RSI crescente',Array.from({length:20},(_,i)=>i+1),100],['RSI decrescente',Array.from({length:20},(_,i)=>20-i),0],['RSI equilibrado',Array.from({length:20},(_,i)=>100+i%2),50],['RSI estável preço pequeno',Array(20).fill(.00001),50]])test(name,()=>assert.equal(A.rsi(prices),expected));
+test('emergência impede compra',()=>{let s=state();s.killed=true;assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'emergency_active')});
+test('automático desligado',()=>{let s=state();s.autoEnabled=false;assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'automatic_disabled')});
+test('intervalo de compra',()=>{let s=state();s.lastTradeAt=at-60000;assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'cooldown')});
+test('máximo diário',()=>{let s=state();s.orders=Array.from({length:6},()=>({side:'BUY',at:new Date(at).toISOString()}));assert.equal(A.available(s,market(),'BTC','BUY',1,true,at),'daily_orders_limit')});
+test('caixa pequeno permitido',()=>{let s=state();s.cash=s.initialUSDT=s.dayStartNAV=.1;assert.equal(A.available(s,market(),'BTC','BUY',.003,true,at),'')});
+test('relógio de ciclo consistente',()=>{let s=state(),m=market();s.positions.BTC={qty:.01,cost:1};m.BTC.at=at+3600000;assert.equal(A.stats(s,m,at+3600000).stale.length,0)});
+test('cotação velha não sobrescreve cache',()=>{let s=state(),m=market();s.lastPrices.BTC=99;m.BTC.at=at-180001;A.scan(s,m,at);assert.equal(s.lastPrices.BTC,99)});
+test('mercado parcial impede entrada',()=>{let s=state(),m=market();delete m.ETH;m.BTC.confirmed=true;A.scan(s,m,at);assert.equal(s.orders.length,0)});
+test('sinal confirmado entra',()=>{let s=state(),m=market();m.BTC.confirmed=true;assert(A.scan(s,m,at).ok);assert.equal(s.orders[0].paper,true)});
+test('repetição do ciclo não duplica',()=>{let s=state(),m=market();m.BTC.confirmed=true;A.scan(s,m,at);A.scan(s,m,at);assert.equal(s.orders.length,1)});
+test('stop apesar do intervalo',()=>{let s=state(),m=market();s.positions.BTC={qty:.01,cost:1.1};s.lastTradeAt=at;assert(A.scan(s,m,at).ok);assert(!s.positions.BTC)});
+test('depósito não cria lucro',()=>{let s=state();A.syncBinanceReference(s,{userId:'test',source:'binance_spot',freeUSDT:150,updatedAt:new Date(at).toISOString()},at);assert.equal(s.cash-s.initialUSDT,0)});
+test('retirada não cria prejuízo',()=>{let s=state();A.syncBinanceReference(s,{userId:'test',source:'binance_spot',freeUSDT:50,updatedAt:new Date(at).toISOString()},at);assert.equal(s.cash-s.initialUSDT,0)});
+test('compra contabiliza taxa e deslizamento',()=>{let s=state(),m=market();let r=A.trade(s,'BUY','BTC',3,m,true,'test',at);assert(r.ok);assert.equal(s.cash,97);assert.equal(r.order.fee,.003);assert(r.order.qty<.03);assert.equal(s.positions.BTC.cost,3)});
+test('venda preserva identidade contábil',()=>{let s=state(),m=market();A.trade(s,'BUY','BTC',3,m,true,'test',at);let r=A.trade(s,'SELL','BTC',3,m,true,'test',at,true);assert(r.ok);assert(Math.abs(s.cash-s.initialUSDT-r.order.realized)<1e-10);assert.equal(Object.keys(s.positions).length,0)});
+assert.equal(report.length,50);fs.writeFileSync('REVISAO-ROBO-24H.txt','50 cenários automatizados aprovados. Não são 50 versões nem prova de rentabilidade.\n\n'+report.map((n,i)=>`${i+1}. PASS: ${n}`).join('\n')+'\n');

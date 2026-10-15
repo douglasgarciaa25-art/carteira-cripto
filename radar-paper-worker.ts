@@ -10,6 +10,7 @@ function out(req,n,v){return new Response(JSON.stringify(v),{status:n,headers:hd
 function err(req,n,e){return out(req,n,{ok:false,error:e});}
 const nowDate=ms=>new Date(ms).toISOString().slice(0,10);
 const r8=x=>Number((Number(x)||0).toFixed(12));
+const fresh=(q,at=Date.now())=>!!q&&Number.isFinite(q.at)&&Number.isFinite(at)&&at-q.at<=180000&&q.at-at<=60000&&Number.isFinite(q.price)&&q.price>0;
 const good=x=>Number.isFinite(Number(x))&&Number(x)>0;
 const dbHeaders=p=>({apikey:SRK,Authorization:'Bearer '+SRK,'Content-Type':'application/json',...(p?{Prefer:p}:{})});
 async function db(method,table,query='',value=null,prefer=''){const r=await fetch(URL_BASE+'/rest/v1/'+table+query,{method,headers:dbHeaders(prefer),body:value?JSON.stringify(value):undefined,signal:AbortSignal.timeout(8000)});if(!r.ok)throw Error('db_'+r.status);return await r.json().catch(()=>null);}
@@ -36,7 +37,7 @@ async function db(method,table,query='',value=null,prefer=''){const r=await fetc
   if(s.binanceSyncError||!b||!Number.isFinite(at)||now-at>180000||at>now+60000)return 'Saldo Binance indisponível ou desatualizado. Aguarde a sincronização.';
   return '';
  }
-function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.5',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,pendingWithdrawalUSDT:0,positions:{},orders:[],lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
+function create(cap=1000){cap=Number(cap);if(!Number.isFinite(cap)||cap<=0||cap>1e7)throw Error('invalid_capital');return {version:'20.1.5',createdAt:new Date().toISOString(),initialUSDT:cap,cash:cap,pendingWithdrawalUSDT:0,positions:{},orders:[],lastDecision:null,lastPrices:{},lastMarket:{},limits:{...LIMITS},mode:'manual',autoEnabled:false,killed:false,killReason:'',day:nowDate(Date.now()),dayStartNAV:cap,lastTradeAt:0,lastTick:0,lastStatus:'Aguardando leitura do servidor'};}
 function entryPolicy(s){
  s.limits={...LIMITS,...s.limits,minQuote:0};
  if(!s.entryPolicy){
@@ -45,19 +46,37 @@ function entryPolicy(s){
   s.entryPolicy='balanced-6-v1';
  }
 }
-function stats(s,m){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=q&&good(q.price)&&Math.abs(Date.now()-q.at)<180000;const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested-Number(s.pendingWithdrawalUSDT||0)),start=Number(s.dayStartNAV)||s.initialUSDT;return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
+function stats(s,m,at=Date.now()){let invested=0,stale=[];for(const [symbol,p] of Object.entries(s.positions||{})){const q=m[symbol],valid=fresh(q,at);const px=valid?q.price:s.lastPrices?.[symbol];if(!valid)stale.push(symbol);invested+=good(px)?px*Number(p.qty):0;}const nav=r8(s.cash+invested-Number(s.pendingWithdrawalUSDT||0)),start=Number.isFinite(Number(s.dayStartNAV))?Number(s.dayStartNAV):Number(s.initialUSDT);return {nav,invested,stale,dailyPnlPct:start?100*(nav-start)/start:0};}
+
+// Fail closed on corrupted persisted values rather than bypass risk comparisons with NaN.
+function validLedger(s){
+ return Number.isFinite(s.cash)&&s.cash>=0&&Number.isFinite(s.initialUSDT)&&
+ Number.isFinite(s.dayStartNAV)&&Number.isFinite(s.pendingWithdrawalUSDT??0)&&(s.pendingWithdrawalUSDT??0)>=0&&
+ Number.isFinite(s.lastTradeAt)&&s.lastTradeAt>=0&&Array.isArray(s.orders)&&
+ s.orders.every(o=>o&&['BUY','SELL'].includes(o.side)&&typeof o.at==='string'&&Number.isFinite(Date.parse(o.at)))&&
+ s.positions&&typeof s.positions==='object'&&!Array.isArray(s.positions)&&
+ Object.entries(s.positions).every(([sym,p])=>SYMBOLS.includes(sym)&&p&&Number.isFinite(p.qty)&&p.qty>0&&Number.isFinite(p.cost)&&p.cost>0);
+}
+function validLimits(l){
+ const bounds={maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:6,cooldownMinutes:1440,stopLossPct:4,takeProfitPct:12};
+ return !!l&&Object.entries(bounds).every(([k,max])=>Number.isFinite(l[k])&&l[k]>0&&l[k]<=max)&&
+ Number.isInteger(l.maxTradesPerDay)&&l.cooldownMinutes>=15&&
+ Number.isFinite(l.feePct)&&l.feePct>=0&&l.feePct<=1&&Number.isFinite(l.slippagePct)&&l.slippagePct>=0&&l.slippagePct<=1;
+}
 function available(s,m,sym,side,amount,auto,at,protective=false){
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
+ if(!validLedger(s))return 'invalid_ledger';
+ if(!validLimits(s.limits))return 'invalid_limits';
  if(referenceError(s,at))return 'binance_balance_stale';
  if(s.killed)return 'emergency_active';
  if(auto&&(!s.autoEnabled||s.mode!=='auto'))return 'automatic_disabled';
  if(!SYMBOLS.includes(sym)||!['BUY','SELL'].includes(side))return 'unsupported_symbol';
  if(!Number.isFinite(amount)||amount<=0)return 'invalid_virtual_quote';
- const q=m[sym];if(!q||!good(q.price)||Math.abs(at-q.at)>180000)return 'stale_price';
+ const q=m[sym];if(!fresh(q,at))return 'stale_price';
  if(exit){if(!(q.volume>0)||!(q.spread>=0&&q.spread<=1))return 'protective_exit_no_liquidity';}
  else if(!(q.volume>=3000000)||!(q.spread>=0&&q.spread<=0.3))return 'insufficient_liquidity';
  if(side==='SELL'&&!exit&&r8(amount/q.price)<=0)return 'quantity_precision_unavailable';
- const st=stats(s,m),reducing=exit||(side==='SELL'&&Number(s.pendingWithdrawalUSDT||0)>0);
+ const st=stats(s,m,at),reducing=exit||(side==='SELL'&&Number(s.pendingWithdrawalUSDT||0)>0);
  if(st.stale.length&&!reducing)return 'stale_open_position';
  if(side==='BUY'&&st.dailyPnlPct<=-s.limits.maxDailyLossPct)return 'daily_loss_limit';
  if(side==='BUY'&&s.orders.filter(o=>o.at.slice(0,10)===nowDate(at)&&o.side==='BUY').length>=s.limits.maxTradesPerDay)return 'daily_orders_limit';
@@ -72,7 +91,7 @@ function available(s,m,sym,side,amount,auto,at,protective=false){
  return '';
 }
 function trade(s,side,sym,amount,market,auto,reason,at,protective=false){
- if(s.day!==nowDate(at)){s.day=nowDate(at);s.dayStartNAV=stats(s,market).nav;}
+ if(s.day!==nowDate(at)){s.day=nowDate(at);s.dayStartNAV=stats(s,market,at).nav;}
  const exit=protective&&auto&&side==='SELL'&&!!s.positions?.[sym];
  if(exit)amount=s.positions[sym].qty*Number(market[sym]?.price||0);
  const why=available(s,market,sym,side,amount,auto,at,exit);if(why)return {ok:false,reason:why};
@@ -86,36 +105,54 @@ function trade(s,side,sym,amount,market,auto,reason,at,protective=false){
  s.orders.push(order);s.orders=s.orders.slice(-200);return {ok:true,order};
 }
 const ema=(a,len)=>{let v=a.slice(0,len).reduce((x,y)=>x+y,0)/len;for(let i=len;i<a.length;i++)v=(a[i]-v)*2/(len+1)+v;return v;};
-function rsi(a){let g=0,l=0;for(let i=a.length-14;i<a.length;i++){const d=a[i]-a[i-1];if(d>0)g+=d;else l-=d;}return l<=0?100:100-100/(1+g/l);}
+function rsi(a){let g=0,l=0;for(let i=a.length-14;i<a.length;i++){const d=a[i]-a[i-1];if(d>0)g+=d;else l-=d;}return g===0&&l===0?50:l<=0?100:100-100/(1+g/l);}
 async function pub(path){for(const root of ['https://data-api.binance.vision','https://api.binance.com'])try{const r=await fetch(root+path,{signal:AbortSignal.timeout(4500),headers:{Accept:'application/json'}});if(r.ok)return await r.json();}catch(_){}throw Error('market_source_down');}
 async function quote(sym,at){
  const pair=sym+'USDT';
  const [k15,k60,t,b]=await Promise.all([pub('/api/v3/klines?symbol='+pair+'&interval=15m&limit=48'),pub('/api/v3/klines?symbol='+pair+'&interval=1h&limit=48'),pub('/api/v3/ticker/24hr?symbol='+pair),pub('/api/v3/ticker/bookTicker?symbol='+pair)]);
  if(!Array.isArray(k15)||!Array.isArray(k60)||k15.length<35||k60.length<35)throw Error('kline_missing');
  const a=k15.slice(0,-1),h=k60.slice(0,-1),pr=a.map(x=>Number(x[4])),hr=h.map(x=>Number(x[4]));
- if(!pr.every(good)||!hr.every(good)||!Number.isFinite(Number(a.at(-1)[6]))||!Number.isFinite(Number(h.at(-1)[6]))||Math.abs(at-Number(a.at(-1)[6]))>35*60000||Math.abs(at-Number(h.at(-1)[6]))>125*60000)throw Error('kline_old');
+ if(!pr.every(good)||!hr.every(good)||!Number.isFinite(Number(a.at(-1)[6]))||!Number.isFinite(Number(h.at(-1)[6]))||Math.abs(at-Number(a.at(-1)[6]))>35*60000||Math.abs(at-Number(h.at(-1)[6]))>125*60000||Number(a.at(-1)[6])>at||Number(h.at(-1)[6])>at)throw Error('kline_old');
  const price=Number(t.lastPrice),volume=Number(t.quoteVolume),bid=Number(b.bidPrice),ask=Number(b.askPrice);
- if(!good(price)||!good(volume)||!good(bid)||!good(ask))throw Error('price_missing');
+ if(!good(price)||!good(volume)||!good(bid)||!good(ask)||ask<bid)throw Error('price_missing');
  const spread=100*(ask-bid)/((bid+ask)/2);
  const v=Number(a.at(-1)[5]),prior=a.slice(-21,-1).reduce((sum,x)=>sum+Number(x[5]),0)/20;
  const bull=ema(pr,9)>ema(pr,21)&&ema(hr,9)>ema(hr,21);
  const bear=ema(pr,9)<ema(pr,21)&&ema(hr,9)<ema(hr,21);
- return {symbol:sym,price,volume,spread,at,confirmed:bull&&rsi(pr)>=45&&rsi(pr)<=67&&v>=prior*1.1&&volume>=3000000&&spread<=0.3,bear};
+ const strength=rsi(pr),volumeRatio=prior>0?v/prior:0;
+ const reasons=[];
+ if(!bull)reasons.push('Tendência 15m/1h sem alinhamento');
+ if(strength<45||strength>67)reasons.push('RSI fora de 45–67');
+ if(!Number.isFinite(volumeRatio)||volumeRatio<1.1)reasons.push('Volume sem confirmação');
+ if(volume<3000000)reasons.push('Liquidez insuficiente');
+ if(spread>0.3)reasons.push('Spread elevado');
+ return {symbol:sym,price,volume,spread,at,confirmed:reasons.length===0,bear,rsi:strength,volumeRatio,reasons};
 }
 async function allMarket(at){const list=await Promise.allSettled(SYMBOLS.map(sym=>quote(sym,at)));const ret={};for(let i=0;i<list.length;i++)if(list[i].status==='fulfilled')ret[SYMBOLS[i]]=list[i].value;return ret;}
-function scan(s,market,at){s.lastTick=at;
- if(s.day!==nowDate(at)){s.day=nowDate(at);s.dayStartNAV=stats(s,market).nav;}
- s.lastMarket=market;for(const [k,x] of Object.entries(market))if(good(x.price))s.lastPrices[k]=x.price;
- const st=stats(s,market);
+function scanCore(s,market,at){s.lastTick=at;
+ if(!validLedger(s)||!validLimits(s.limits)){s.lastStatus='Estado ou limites inválidos: operações suspensas para revisão';return null;}
+ if(s.day!==nowDate(at)){s.day=nowDate(at);s.dayStartNAV=stats(s,market,at).nav;}
+ s.lastMarket=market;for(const [k,x] of Object.entries(market))if(fresh(x,at))s.lastPrices[k]=x.price;
+ const st=stats(s,market,at);
  if(s.killed||!s.autoEnabled||s.mode!=='auto'){s.lastStatus=s.killed?'Emergência ativa':'Robô desligado';return null;}
- for(const [symbol,pos] of Object.entries(s.positions||{})){const q=market[symbol];if(!q||!good(q.price)||Math.abs(at-q.at)>180000){s.lastStatus='Cotação indisponível para proteção de '+symbol;continue;}const ret=100*(q.price/(pos.cost/pos.qty)-1);
-  if(ret<=-s.limits.stopLossPct||ret>=s.limits.takeProfitPct||q.bear){const reason=ret<=-s.limits.stopLossPct?'Stop fictício':ret>=s.limits.takeProfitPct?'Take profit fictício':'Tendência de baixa';const amount=pos.qty*q.price;const done=trade(s,'SELL',symbol,amount,market,true,reason,at,true);s.lastStatus=done.ok?'Venda fictícia '+symbol:'Venda bloqueada: '+done.reason;return done.ok?done:null;}}
+ const exits=[],exitBlocks=[];
+ for(const [symbol,pos] of Object.entries(s.positions||{})){const q=market[symbol];if(!fresh(q,at)){s.lastStatus='Cotação indisponível para proteção de '+symbol;continue;}const ret=100*(q.price/(pos.cost/pos.qty)-1);
+  if(ret<=-s.limits.stopLossPct||ret>=s.limits.takeProfitPct||q.bear){const reason=ret<=-s.limits.stopLossPct?'Stop fictício':ret>=s.limits.takeProfitPct?'Take profit fictício':'Tendência de baixa';const amount=pos.qty*q.price;const done=trade(s,'SELL',symbol,amount,market,true,reason,at,true);if(done.ok)exits.push(done.order);else exitBlocks.push(symbol+': '+done.reason);}}
+ if(exits.length||exitBlocks.length){s.lastStatus=(exits.length?'Proteção: '+exits.length+' venda(s) fictícia(s). ':'')+(exitBlocks.length?'Saídas bloqueadas: '+exitBlocks.join('; '):'');return exits.length?{ok:true,order:exits.at(-1),orders:exits}:null;}
  if(st.stale.length){s.lastStatus='Posições sem cotação recente: '+st.stale.join(', ');return null;}
  if(st.dailyPnlPct<=-s.limits.maxDailyLossPct){s.lastStatus='Limite de perda diário: compras pausadas; proteção segue monitorada';return null;}
  if(Object.keys(market).length!==SYMBOLS.length){s.lastStatus='Mercado parcial: novas compras suspensas';return null;}
  let blocked='';
  for(const q of Object.values(market).filter(x=>x.confirmed&&!s.positions?.[x.symbol]).sort((a,b)=>a.spread-b.spread)){const amount=r8(Math.min(s.cash,st.nav*s.limits.maxTradePct/100,st.nav*s.limits.maxVolatilePct/100-st.invested,st.nav*s.limits.maxAssetPct/100));if(!(amount>0))continue;const done=trade(s,'BUY',q.symbol,amount,market,true,'Confluência confirmada 15m/1h',at);if(done.ok){s.lastStatus='Compra fictícia '+q.symbol;return done;}blocked=done.reason;}
  s.lastStatus=blocked?'Entrada confirmada, mas bloqueada: '+({daily_orders_limit:'limite diário de entradas',cooldown:'intervalo de segurança entre operações',single_order_limit:'limite por entrada',total_exposure_limit:'exposição máxima',asset_concentration_limit:'concentração por moeda',insufficient_virtual_cash:'reserva insuficiente'}[blocked]||blocked):'Sem novo sinal confirmado 15m/1h em moeda ainda não comprada';return null;
+}
+function scan(s,market,at){
+ const result=scanCore(s,market,at);
+ s.lastDecision={at:new Date(at).toISOString(),status:s.lastStatus,marketCount:Object.keys(market).length,
+  confirmed:SYMBOLS.filter(sym=>market[sym]?.confirmed),
+  buysToday:(Array.isArray(s.orders)?s.orders:[]).filter(o=>o?.side==='BUY'&&typeof o.at==='string'&&o.at.slice(0,10)===nowDate(at)).length,
+  symbols:SYMBOLS.map(sym=>{const q=market[sym];return {symbol:sym,confirmed:!!q?.confirmed,fresh:fresh(q,at),held:!!s.positions?.[sym],reasons:q?.reasons||(!q?['Cotação indisponível']:[])};})};
+ return result;
 }
 const fields='user_id,ledger,version,auto_enabled,last_tick,last_status,updated_at';
 const accountQuery=uid=>'?user_id=eq.'+uid+'&select='+fields;
@@ -135,14 +172,14 @@ async function runCron(req){
  if(!await cronAuth(req))return err(req,401,'cron_not_authorized');
  const rows=await db('GET','radar_paper_cloud_accounts','?select='+fields+'&order=last_tick.asc.nullsfirst&limit=8');
  if(!rows?.length)return out(req,200,{ok:true,checked:0,orders:0,paper:true});
- const at=Date.now(),market=await allMarket(at);let checked=0,orders=0,paused=0;
+ const at=Date.now(),market=await allMarket(at);let checked=0,orders=0,paused=0,conflicts=0,failed=0;
  for(let start=0;start<rows.length;start+=4)await Promise.all(rows.slice(start,start+4).map(async row=>{try{
-  const state=structuredClone(row.ledger),prior=state.orders?.at(-1)?.id;entryPolicy(state);
-  try{await syncBalance(req,row.user_id,state,true);scan(state,market,Date.now());}
+  const state=structuredClone(row.ledger);let produced=0;entryPolicy(state);
+  try{await syncBalance(req,row.user_id,state,true);const result=scan(state,market,Date.now());produced=result?.orders?.length||(result?.order?1:0);}
   catch(e){const code=/^[a-z0-9_]{3,100}$/.test(String(e.message))?String(e.message):'binance_sync_unavailable';state.binanceSyncError=code;state.lastStatus='Saldo Binance indisponível: ordens fictícias pausadas ('+code+')';paused++;}
-  const saved=await save(row,state,new Date().toISOString());if(saved){checked++;if(state.orders?.at(-1)?.id!==prior)orders++;}
- }catch(_){} }));
- return out(req,200,{ok:true,checked,orders,paused,marketSymbols:Object.keys(market).length,paper:true});
+  const saved=await save(row,state,new Date().toISOString());if(saved){checked++;orders+=produced;}else conflicts++;
+ }catch(_){failed++;} }));
+ return out(req,200,{ok:true,checked,orders,paused,conflicts,failed,marketSymbols:Object.keys(market).length,paper:true});
 }
 async function handle(req,u,payload){
  let row=await get(u.id);
@@ -159,7 +196,7 @@ async function handle(req,u,payload){
  else if(action==='limits'){const safe={maxTradePct:5,maxVolatilePct:30,maxAssetPct:20,maxDailyLossPct:2,maxTradesPerDay:6,cooldownMinutes:1440,stopLossPct:4,takeProfitPct:12};for(const [k,v] of Object.entries(payload.limits||{})){const n=Number(v);if(!(k in safe)||!Number.isFinite(n)||n<=0||n>safe[k]||(k==='cooldownMinutes'&&n<15)||(k==='maxTradesPerDay'&&!Number.isInteger(n)))return err(req,400,'invalid_limits');s.limits[k]=n;}s.autoEnabled=false;s.lastStatus='Limites alterados; automático desligado';}
  else if(action==='manual'){if(s.mode!=='manual')return err(req,409,'select_manual_mode');await syncBalance(req,u.id,s);const market=await allMarket(Date.now());if(!Object.keys(market).length)return err(req,503,'market_data_unavailable');const result=trade(s,String(payload.side||'').toUpperCase(),String(payload.symbol||'').toUpperCase(),Number(payload.quote),market,false,'Manual autorizado pelo usuário',Date.now());if(!result.ok)return out(req,422,{ok:false,error:'trade_blocked',reason:result.reason,paper:true});order=result.order;s.lastMarket=market;s.lastStatus='Ordem fictícia manual registrada';}
  else if(action==='scan'){if(s.mode!=='auto'||!s.autoEnabled)return err(req,409,'auto_not_enabled');await syncBalance(req,u.id,s);const market=await allMarket(Date.now());if(!Object.keys(market).length)return err(req,503,'market_data_unavailable');const done=scan(s,market,Date.now());order=done?.order||null;}
- else if(action==='sync-balance'){await syncBalance(req,u.id,s);s.lastStatus='Saldo Binance atualizado para todas as ordens fictícias';}
+ else if(action==='sync-balance'){await syncBalance(req,u.id,s);if(!s.lastStatus)s.lastStatus='Saldo Binance atualizado para todas as ordens fictícias';}
  else return err(req,400,'invalid_action');
  const saved=await save(row,s,action==='scan'?new Date().toISOString():undefined);return saved?out(req,200,{ok:true,account:saved,order,paper:true}):err(req,409,'state_changed_retry');
 }
@@ -168,6 +205,6 @@ Deno.serve(async req=>{
  if(!['GET','POST'].includes(req.method))return err(req,405,'method_not_allowed');
  const origin=req.headers.get('origin');if(origin&&!ORIGINS.includes(origin))return err(req,403,'origin_forbidden');
  if(!URL_BASE||!SRK)return err(req,503,'server_not_configured');
- try{const raw=req.method==='POST'?await req.text():'';if(raw.length>3500)return err(req,413,'request_too_large');const body=raw?JSON.parse(raw):{};if(req.method==='POST'&&body.action==='cron')return await runCron(req);const u=await user(req);if(!u)return err(req,401,'login_required');return await handle(req,u,body);}catch(e){if(String(e.message)==='invalid_capital')return err(req,400,'invalid_parameters');if(String(e.message).startsWith('binance_'))return err(req,503,'binance_sync_unavailable');return err(req,503,'paper_worker_temporarily_unavailable');}
+ try{const raw=req.method==='POST'?await req.text():'';if(raw.length>3500)return err(req,413,'request_too_large');const body=raw?JSON.parse(raw):{};if(!body||typeof body!=='object'||Array.isArray(body))return err(req,400,'invalid_parameters');if(req.method==='POST'&&body.action==='cron')return await runCron(req);const u=await user(req);if(!u)return err(req,401,'login_required');return await handle(req,u,body);}catch(e){if(String(e.message)==='invalid_capital')return err(req,400,'invalid_parameters');if(String(e.message).startsWith('binance_'))return err(req,503,'binance_sync_unavailable');return err(req,503,'paper_worker_temporarily_unavailable');}
 });
 

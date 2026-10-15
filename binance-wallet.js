@@ -486,8 +486,8 @@
 (function(){
  if(window.RadarTraderCloud21Loaded)return;
  window.RadarTraderCloud21Loaded=true;
- const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2020';document.head.appendChild(css);
- const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2020';
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./radar-trader-cloud.css?v=2024';document.head.appendChild(css);
+ const js=document.createElement('script');js.src='./radar-trader-cloud.js?v=2023';
  js.onerror=()=>console.warn('Radar Trader 20.1: carregamento da interface indisponível');
  document.head.appendChild(js);
 })();

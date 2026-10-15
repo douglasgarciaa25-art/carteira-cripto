@@ -1,0 +1,52 @@
+50 cenários automatizados aprovados. Não são 50 versões nem prova de rentabilidade.
+
+1. PASS: cotação atual
+2. PASS: limite de 3 minutos
+3. PASS: cotação vencida
+4. PASS: futuro tolerado
+5. PASS: futuro excessivo
+6. PASS: horário ausente
+7. PASS: horário NaN
+8. PASS: preço zero
+9. PASS: preço negativo
+10. PASS: preço infinito
+11. PASS: limite inválido maxTradePct=NaN
+12. PASS: limite inválido maxTradePct=6
+13. PASS: limite inválido maxVolatilePct=31
+14. PASS: limite inválido maxAssetPct=21
+15. PASS: limite inválido maxDailyLossPct=3
+16. PASS: limite inválido maxTradesPerDay=7
+17. PASS: limite inválido maxTradesPerDay=1.5
+18. PASS: limite inválido cooldownMinutes=14
+19. PASS: limite inválido feePct=-1
+20. PASS: limite inválido slippagePct=Infinity
+21. PASS: caixa NaN
+22. PASS: caixa negativo
+23. PASS: capital ausente
+24. PASS: base diária NaN
+25. PASS: retirada negativa
+26. PASS: horário da ordem inválido
+27. PASS: ordens malformadas
+28. PASS: ordem sem horário
+29. PASS: quantidade negativa
+30. PASS: custo inválido
+31. PASS: RSI estável
+32. PASS: RSI crescente
+33. PASS: RSI decrescente
+34. PASS: RSI equilibrado
+35. PASS: RSI estável preço pequeno
+36. PASS: emergência impede compra
+37. PASS: automático desligado
+38. PASS: intervalo de compra
+39. PASS: máximo diário
+40. PASS: caixa pequeno permitido
+41. PASS: relógio de ciclo consistente
+42. PASS: cotação velha não sobrescreve cache
+43. PASS: mercado parcial impede entrada
+44. PASS: sinal confirmado entra
+45. PASS: repetição do ciclo não duplica
+46. PASS: stop apesar do intervalo
+47. PASS: depósito não cria lucro
+48. PASS: retirada não cria prejuízo
+49. PASS: compra contabiliza taxa e deslizamento
+50. PASS: venda preserva identidade contábil
